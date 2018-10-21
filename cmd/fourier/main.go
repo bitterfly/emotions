@@ -40,7 +40,6 @@ func main() {
 	signal := wf.GetData()
 
 	coefficients, _ := fourier.Dft(signal)
-	panic(coefficients[1000])
 
 	inverseSignal := fourier.Idft(coefficients)
 

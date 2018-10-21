@@ -56,7 +56,7 @@ func (c *Complex) divided(x float64) {
 }
 
 func (c Complex) conjugate() Complex {
-	return Complex{Re: c.Re, Im: c.Im}
+	return Complex{Re: c.Re, Im: -c.Im}
 }
 
 func (c *Complex) added(o Complex) {
@@ -114,10 +114,10 @@ func a(k int, b []Complex, n int) Complex {
 	// b[1000] = 0 + i0.5
 
 	for j := 0; j < len(b); j++ {
-		d := dot(b[j], e(k, j, n))
+		d := dot(b[j].conjugate(), e(k, j, n))
 		sum.added(d)
 
-		d = dot(b[j].conjugate(), e(k, j, n))
+		d = dot(b[j], e(k, n-j, n))
 		sum.added(d)
 	}
 
