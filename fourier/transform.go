@@ -93,8 +93,8 @@ func dot(c1, c2 Complex) Complex {
 	// ac + bd + i(bc - ad)
 
 	return Complex{
-		Re: c1.Re*c2.Re + c1.Im*c2.Im,
-		Im: c1.Im*c2.Re - c1.Re*c2.Im,
+		Re: c1.Re*c2.Re - c1.Im*c2.Im,
+		Im: c1.Im*c2.Re + c1.Re*c2.Im,
 	}
 }
 
@@ -105,7 +105,7 @@ func Edot(k, s, n int) Complex {
 	for i := 0; i < n; i++ {
 		sum.added(dot(e(k, i, n), e(s, i, n)))
 	}
-	// sum.divided(float64(n))
+	sum.divided(float64(n))
 	return sum
 }
 
@@ -113,11 +113,11 @@ func a(k int, b []Complex, n int) Complex {
 	sum := zeroComplex()
 	// b[1000] = 0 + i0.5
 
-	for j := 0; j < len(b); j++ {
-		d := dot(b[j].conjugate(), e(k, j, n))
+	for j := 0; j <= n/2-1; j++ {
+		d := dot(b[j], e(k, j, n))
 		sum.added(d)
 
-		d = dot(b[j], e(k, n-j, n))
+		d = dot(b[j+1].conjugate(), e(k, n-j-1, n))
 		sum.added(d)
 	}
 
@@ -128,7 +128,7 @@ func a(k int, b []Complex, n int) Complex {
 func b(k int, x []Complex) Complex {
 	sum := zeroComplex()
 	for j := 0; j < len(x); j++ {
-		d := dot(x[j], e(k, j, len(x)))
+		d := dot(x[j], e(k, j, len(x)).conjugate())
 		sum.added(d)
 	}
 
@@ -141,7 +141,7 @@ func Magnitude(c Complex) float64 {
 }
 
 func Idft(c []Complex) []Complex {
-	n := len(c) * 2
+	n := (len(c) - 1) * 2
 	x := make([]Complex, n, n)
 
 	for k := 0; k < n; k++ {
@@ -154,11 +154,13 @@ func Idft(c []Complex) []Complex {
 
 //Dft returns the discrete fourier transform
 func Dft(x []Complex) ([]Complex, error) {
-	coefficients := make([]Complex, len(x)/2, len(x)/2)
-	for k := 0; k < len(x)/2; k++ {
+	// coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
+	coefficients := make([]Complex, len(x), len(x))
+	// for k := 0; k < len(x)/2+1; k++ {
+	for k := 0; k < len(x); k++ {
 		coefficients[k] = b(k, x)
 
-		coefficients[k].divided(1 / float64(2))
+		// coefficients[k].divided(1 / float64(2))
 	}
 	return coefficients, nil
 }
