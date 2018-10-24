@@ -2,17 +2,13 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 	"math"
 
 	"github.com/bitterfly/emotions/fourier"
-	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/plotter"
-	"gonum.org/v1/plot/vg"
 )
 
 func main() {
-	n := 4
+	n := 2048
 	old := make([]fourier.Complex, n, n)
 	for i := 0; i < n; i++ {
 		// T = 1 sec
@@ -20,7 +16,7 @@ func main() {
 		// 800Hz
 
 		old[i] = fourier.Complex{
-			Re: 2 * math.Cos(math.Pi*float64(2*i*1)/float64(n)),
+			Re: 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n)),
 			Im: 0.0,
 		}
 	}
@@ -33,65 +29,72 @@ func main() {
 	// signal := wf.GetData()
 
 	coefficients := fourier.Fft(old)
+	fmt.Printf("Fast:\n")
 	for i, c := range coefficients {
 		fmt.Printf("%d %s\n", i, c)
 	}
 
-	inverseSignal := fourier.Idft(coefficients)
-	for i, s := range inverseSignal {
-		real := fourier.Complex{
-			Re: 2 * math.Cos(math.Pi*float64(2*i*1000)/float64(n)),
-			// Re: math.Cos(math.Pi/2 + math.Pi*float64(2*i*800)/float64(n)),
-			Im: 0.0,
-		}
-		fmt.Printf("%d %s %s\n", i, s, real)
+	fmt.Printf("Slow: \n")
+	coefficients = fourier.Dft(old)
+	for i, c := range coefficients {
+		fmt.Printf("%d %s\n", i, c)
 	}
 
-	// // v := make(plotter.Values, len(coefficients))
-	// // for i := range v {
-	// // 	if fourier.Magnitude(coefficients[i]) > fourier.EPS {
-	// // 		fmt.Printf("%d %s\n", i, coefficients[i])
-	// // 		fmt.Printf("%d %.3f\n", i, fourier.Magnitude(coefficients[i]))
-	// // 	}
-	// // 	v[i] = fourier.Magnitude(coefficients[i])
-	// // }
+	// inverseSignal := fourier.Idft(coefficients)
+	// for i, s := range inverseSignal {
+	// 	real := fourier.Complex{
+	// 		Re: 2 * math.Cos(math.Pi*float64(2*i*1000)/float64(n)),
+	// 		// Re: math.Cos(math.Pi/2 + math.Pi*float64(2*i*800)/float64(n)),
+	// 		Im: 0.0,
+	// 	}
+	// 	fmt.Printf("%d %s %s\n", i, s, real)
+	// }
 
-	f := make(plotter.XYs, 50)
-	s := make(plotter.XYs, 50)
-	for i := 0; i < 50; i++ {
-		fmt.Printf("%d %s\n", i, inverseSignal[i])
+	// // // v := make(plotter.Values, len(coefficients))
+	// // // for i := range v {
+	// // // 	if fourier.Magnitude(coefficients[i]) > fourier.EPS {
+	// // // 		fmt.Printf("%d %s\n", i, coefficients[i])
+	// // // 		fmt.Printf("%d %.3f\n", i, fourier.Magnitude(coefficients[i]))
+	// // // 	}
+	// // // 	v[i] = fourier.Magnitude(coefficients[i])
+	// // // }
 
-		f[i].X = float64(i)
-		f[i].Y = old[i].Re
-		// f[i].Y = fourier.Magnitude(signal[i])
+	// f := make(plotter.XYs, 50)
+	// s := make(plotter.XYs, 50)
+	// for i := 0; i < 50; i++ {
+	// 	fmt.Printf("%d %s\n", i, inverseSignal[i])
 
-		s[i].X = float64(i)
-		s[i].Y = inverseSignal[i].Re
-		// s[i].Y = fourier.Magnitude(inverseSignal[i])
+	// 	f[i].X = float64(i)
+	// 	f[i].Y = old[i].Re
+	// 	// f[i].Y = fourier.Magnitude(signal[i])
 
-	}
+	// 	s[i].X = float64(i)
+	// 	s[i].Y = inverseSignal[i].Re
+	// 	// s[i].Y = fourier.Magnitude(inverseSignal[i])
 
-	p, err := plot.New()
-	if err != nil {
-		panic(err)
-	}
+	// }
 
-	// // p.X.Min = 0
-	// // p.X.Max = float64(len(coefficients))
-	// // p.X.Label.Text = "Frequency"
-	// // p.Y.Label.Text = "Energy"
-	// // bars, err := plotter.NewBarChart(v, 2)
-	// // bars.Color = color.RGBA{10, 120, 120, 1}
-	// // p.Add(bars)
+	// p, err := plot.New()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	fl, _ := plotter.NewLine(f)
-	fl.Color = color.RGBA{254, 1, 2, 1}
+	// // // p.X.Min = 0
+	// // // p.X.Max = float64(len(coefficients))
+	// // // p.X.Label.Text = "Frequency"
+	// // // p.Y.Label.Text = "Energy"
+	// // // bars, err := plotter.NewBarChart(v, 2)
+	// // // bars.Color = color.RGBA{10, 120, 120, 1}
+	// // // p.Add(bars)
 
-	sl, _ := plotter.NewLine(s)
-	p.Add(fl)
-	p.Add(sl)
+	// fl, _ := plotter.NewLine(f)
+	// fl.Color = color.RGBA{254, 1, 2, 1}
 
-	if err := p.Save(4*vg.Inch, 4*vg.Inch, "forward.png"); err != nil {
-		panic(err)
-	}
+	// sl, _ := plotter.NewLine(s)
+	// p.Add(fl)
+	// p.Add(sl)
+
+	// if err := p.Save(4*vg.Inch, 4*vg.Inch, "forward.png"); err != nil {
+	// 	panic(err)
+	// }
 }

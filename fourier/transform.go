@@ -150,40 +150,41 @@ func Idft(c []Complex) []Complex {
 	return x
 }
 
-func b_k_fast(x []Complex, W_k Complex) Complex {
-	fmt.Printf("w_k: %s\n", W_k)
-	for _, el := range x {
-		fmt.Printf("%s ", el)
-	}
-	fmt.Printf("\n---------------------\n")
+func b_k_fast(x []Complex, W []Complex, depth int) Complex {
+	even := make([]Complex, len(x)/2, len(x)/2)
+	odd := make([]Complex, len(x)/2, len(x)/2)
+
 	if len(x) == 1 {
 		return x[0]
 	}
-	even := make([]Complex, len(x)/2, len(x)/2)
-	odd := make([]Complex, len(x)/2, len(x)/2)
 
 	j := 0
 	for i := 0; i < len(x)-1; i += 2 {
 		even[j] = x[i]
 		odd[j] = x[i+1]
-		j += 1
+		j++
 	}
 
-	return b_k_fast(even, W_k).add(dot(W_k, b_k_fast(odd, W_k)))
+	return b_k_fast(even, W, depth+1).add(dot(W[depth], b_k_fast(odd, W, depth+1))).divide(2)
 
 }
 
 func Fft(x []Complex) []Complex {
 	n := len(x)
-	W := make([]Complex, n, n)
-	for i := 0; i < n; i++ {
-		W[i] = e(1, i, n)
+	W := make([][]Complex, n, n)
+
+	for k := 0; k < n; k++ {
+		W[k] = make([]Complex, n, n)
+		j := 0
+		for m := n; m != 0; m /= 2 {
+			W[k][j] = e(1, k, m).conjugate()
+			j++
+		}
 	}
 
 	coefficients := make([]Complex, n, n)
 	for k := 0; k < n; k++ {
-		fmt.Printf("k: %d\n", k)
-		coefficients[k] = b_k_fast(x, W[k])
+		coefficients[k] = b_k_fast(x, W[k], 0)
 	}
 
 	return coefficients
