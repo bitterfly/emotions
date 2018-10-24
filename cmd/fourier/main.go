@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/bitterfly/emotions/fourier"
 )
 
 func main() {
-	n := 2048
+	n := 16184
 	old := make([]fourier.Complex, n, n)
 	for i := 0; i < n; i++ {
 		// T = 1 sec
@@ -28,17 +27,19 @@ func main() {
 
 	// signal := wf.GetData()
 
-	coefficients := fourier.Fft(old)
-	fmt.Printf("Fast:\n")
-	for i, c := range coefficients {
-		fmt.Printf("%d %s\n", i, c)
-	}
+	// fourier.Fft(old)
+	// coefficients := fourier.Fft(old)
+	// fmt.Printf("Fast:\n")
+	// for i, c := range coefficients {
+	// 	fmt.Printf("%d %s\n", i, c)
+	// }
 
-	fmt.Printf("Slow: \n")
-	coefficients = fourier.Dft(old)
-	for i, c := range coefficients {
-		fmt.Printf("%d %s\n", i, c)
-	}
+	// fmt.Printf("Slow: \n")
+	fourier.Dft(old)
+	// coefficients = fourier.Dft(old)
+	// for i, c := range coefficients {
+	// 	fmt.Printf("%d %s\n", i, c)
+	// }
 
 	// inverseSignal := fourier.Idft(coefficients)
 	// for i, s := range inverseSignal {

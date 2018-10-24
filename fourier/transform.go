@@ -150,22 +150,12 @@ func Idft(c []Complex) []Complex {
 	return x
 }
 
-func b_k_fast(x []Complex, W []Complex, depth int) Complex {
-	even := make([]Complex, len(x)/2, len(x)/2)
-	odd := make([]Complex, len(x)/2, len(x)/2)
-
-	if len(x) == 1 {
-		return x[0]
+func b_k_fast(x []Complex, W []Complex, depth int, first int, step int, len int) Complex {
+	if len == 1 {
+		return x[first]
 	}
 
-	j := 0
-	for i := 0; i < len(x)-1; i += 2 {
-		even[j] = x[i]
-		odd[j] = x[i+1]
-		j++
-	}
-
-	return b_k_fast(even, W, depth+1).add(dot(W[depth], b_k_fast(odd, W, depth+1))).divide(2)
+	return b_k_fast(x, W, depth+1, first, step*2, len/2).add(dot(W[depth], b_k_fast(x, W, depth+1, first+step, step*2, len/2))).divide(2)
 
 }
 
@@ -184,7 +174,7 @@ func Fft(x []Complex) []Complex {
 
 	coefficients := make([]Complex, n, n)
 	for k := 0; k < n; k++ {
-		coefficients[k] = b_k_fast(x, W[k], 0)
+		coefficients[k] = b_k_fast(x, W[k], 0, 0, 1, len(x))
 	}
 
 	return coefficients
