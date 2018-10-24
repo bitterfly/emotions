@@ -155,12 +155,12 @@ func Idft(c []Complex) []Complex {
 //Dft returns the discrete fourier transform
 func Dft(x []Complex) ([]Complex, error) {
 	// coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
-	coefficients := make([]Complex, len(x), len(x))
+	coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
 	// for k := 0; k < len(x)/2+1; k++ {
-	for k := 0; k < len(x); k++ {
+	for k := 0; k < len(x)/2+1; k++ {
 		coefficients[k] = b(k, x)
 
-		// coefficients[k].divided(1 / float64(2))
+		coefficients[k].divided(1 / float64(2))
 	}
 	return coefficients, nil
 }
