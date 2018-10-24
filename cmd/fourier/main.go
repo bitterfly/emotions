@@ -16,7 +16,7 @@ func main() {
 		// 800Hz
 
 		old[i] = fourier.Complex{
-			Re: 2 * math.Cos(2-math.Pi*float64(2*i*1)/float64(n)),
+			Re: 2 * math.Cos(math.Pi*float64(2*i*1)/float64(n)),
 			// Re: math.Cos(math.Pi/2 + math.Pi*float64(2*i*800)/float64(n)),
 			Im: 0.0,
 		}
@@ -29,7 +29,7 @@ func main() {
 
 	// signal := wf.GetData()
 
-	coefficients, _ := fourier.Dft(old)
+	coefficients := fourier.Fft(old)
 	for i, c := range coefficients {
 		fmt.Printf("%d %s\n", i, c)
 	}
