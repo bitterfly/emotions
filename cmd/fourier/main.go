@@ -1,22 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/bitterfly/emotions/fourier"
 )
 
 func main() {
-	n := 16184
-	old := make([]fourier.Complex, n, n)
+	n := 2048
+	x := make([]float64, n, n)
+	y := make([]float64, n, n)
 	for i := 0; i < n; i++ {
-		// T = 1 sec
-		// n =  16000
-		// 800Hz
+		x[i] = 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n))
+		y[i] = 4 * math.Cos(math.Pi*float64(2*i*800)/float64(n))
+	}
 
-		old[i] = fourier.Complex{
-			Re: 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n)),
-			Im: 0.0,
+	xc, yc := fourier.DoubleReal(x, y)
+
+	fmt.Printf("X:\n")
+	for i, c := range xc {
+		if fourier.Magnitude(c) > fourier.EPS {
+			fmt.Printf("%d %s\n", i, c)
+		}
+	}
+
+	fmt.Printf("Y:\n")
+	for i, c := range yc {
+		if fourier.Magnitude(c) > fourier.EPS {
+			fmt.Printf("%d %s\n", i, c)
 		}
 	}
 
@@ -35,7 +47,6 @@ func main() {
 	// }
 
 	// fmt.Printf("Slow: \n")
-	fourier.Dft(old)
 	// coefficients = fourier.Dft(old)
 	// for i, c := range coefficients {
 	// 	fmt.Printf("%d %s\n", i, c)

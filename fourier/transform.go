@@ -180,6 +180,30 @@ func Fft(x []Complex) []Complex {
 	return coefficients
 }
 
+func DoubleReal(x, y []float64) ([]Complex, []Complex) {
+	n := len(x)
+
+	xCoefficients := make([]Complex, n, n)
+	yCoefficients := make([]Complex, n, n)
+
+	z := make([]Complex, n, n)
+	for i := 0; i < n; i++ {
+		z[i].Re = x[i]
+		z[i].Im = y[i]
+	}
+
+	zCoefficients := Fft(z)
+	for k := 1; k < n; k++ {
+		xCoefficients[k].Re = (zCoefficients[k].Re + zCoefficients[n-k].Re) / 2.0
+		xCoefficients[k].Im = (zCoefficients[k].Im - zCoefficients[n-k].Im) / 2.0
+
+		yCoefficients[k].Re = (zCoefficients[k].Im + zCoefficients[n-k].Im) / 2.0
+		yCoefficients[k].Im = -(zCoefficients[k].Re - zCoefficients[n-k].Re) / 2.0
+	}
+
+	return xCoefficients, yCoefficients
+}
+
 //Dft returns the discrete fourier transform
 func Dft(x []Complex) []Complex {
 	// coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
