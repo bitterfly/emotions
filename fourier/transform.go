@@ -159,19 +159,8 @@ func b_k_fast(x []Complex, W []Complex, depth int, first int, step int, len int)
 
 }
 
-func Fft(x []Complex) []Complex {
+func fft(x []Complex, W [][]Complex) []Complex {
 	n := len(x)
-	W := make([][]Complex, n, n)
-
-	for k := 0; k < n; k++ {
-		W[k] = make([]Complex, n, n)
-		j := 0
-		for m := n; m != 0; m /= 2 {
-			W[k][j] = e(1, k, m).conjugate()
-			j++
-		}
-	}
-
 	coefficients := make([]Complex, n, n)
 	for k := 0; k < n; k++ {
 		coefficients[k] = b_k_fast(x, W[k], 0, 0, 1, len(x))
@@ -180,17 +169,63 @@ func Fft(x []Complex) []Complex {
 	return coefficients
 }
 
+func Fft(x []Complex) []Complex {
+	n := len(x)
+
+	W := make([][]Complex, n, n)
+	for k := 0; k < n; k++ {
+		W[k] = make([]Complex, n, n)
+		j := 0
+		for m := n; m != 0; m /= 2 {
+			W[k][j] = e(1, k, m).conjugate()
+			j++
+		}
+	}
+	return fft(x, W)
+}
+
+func FftReal(x []float64) []Complex {
+	n := len(x)
+	even := make([]float64, n/2, n/2)
+	odd := make([]float64, n/2, n/2)
+
+	X := make([]Complex, n/2, n/2)
+
+	for k := 0; k < n/2; k++ {
+		X[0].Re += x[2*k] + x[2*k+1]
+
+		even[k] = x[2*k]
+		odd[k] = x[2*k+1]
+	}
+	X[0].Re = X[0].Re / float64(n)
+
+	Even, Odd := DoubleReal(even, odd)
+
+	for k := 1; k < n/2; k++ {
+		X[k] = Even[k].add(dot(e(k, 1, n).conjugate(), Odd[k]))
+	}
+
+	return X
+}
+
 func DoubleReal(x, y []float64) ([]Complex, []Complex) {
 	n := len(x)
 
 	xCoefficients := make([]Complex, n, n)
 	yCoefficients := make([]Complex, n, n)
 
+	//TODO: check this
 	z := make([]Complex, n, n)
 	for i := 0; i < n; i++ {
+		xCoefficients[0].Re += x[i]
+		yCoefficients[0].Re += y[i]
+
 		z[i].Re = x[i]
 		z[i].Im = y[i]
 	}
+
+	xCoefficients[0].Re = xCoefficients[0].Re / float64(n)
+	yCoefficients[0].Re = yCoefficients[0].Re / float64(n)
 
 	zCoefficients := Fft(z)
 	for k := 1; k < n; k++ {

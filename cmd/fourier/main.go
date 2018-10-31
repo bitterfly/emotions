@@ -11,9 +11,12 @@ func main() {
 	n := 2048
 	x := make([]float64, n, n)
 	y := make([]float64, n, n)
+	z := make([]float64, n, n)
+
 	for i := 0; i < n; i++ {
 		x[i] = 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n))
-		y[i] = 4 * math.Cos(math.Pi*float64(2*i*800)/float64(n))
+		y[i] = 3 * math.Cos(math.Pi*float64(2*i*800)/float64(n))
+		z[i] = x[i] + y[i]
 	}
 
 	xc, yc := fourier.DoubleReal(x, y)
@@ -27,6 +30,14 @@ func main() {
 
 	fmt.Printf("Y:\n")
 	for i, c := range yc {
+		if fourier.Magnitude(c) > fourier.EPS {
+			fmt.Printf("%d %s\n", i, c)
+		}
+	}
+
+	zc := fourier.FftReal(z)
+	fmt.Printf("Z real:\n")
+	for i, c := range zc {
 		if fourier.Magnitude(c) > fourier.EPS {
 			fmt.Printf("%d %s\n", i, c)
 		}
