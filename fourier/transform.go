@@ -43,6 +43,12 @@ func (c Complex) String() string {
 	return fmt.Sprintf("%.3f + i(%.3f)", c.Re, c.Im)
 }
 
+func (c *Complex) swapped() {
+	temp := c.Re
+	c.Re = c.Im
+	c.Im = temp
+}
+
 func (c Complex) divide(x float64) Complex {
 	return Complex{
 		Re: c.Re / x,
@@ -182,6 +188,32 @@ func Fft(x []Complex) []Complex {
 		}
 	}
 	return fft(x, W)
+}
+
+func Ifft(x []Complex) []Complex {
+	n := len(x)
+
+	W := make([][]Complex, n, n)
+	for k := 0; k < n; k++ {
+		W[k] = make([]Complex, n, n)
+		j := 0
+		for m := n; m != 0; m /= 2 {
+			W[k][j] = e(1, k, m).conjugate()
+			j++
+		}
+	}
+
+	for i := 0; i < n; i++ {
+		x[i].swapped()
+	}
+
+	coefficients := fft(x, W)
+	for i := 0; i < n; i++ {
+		coefficients[i].swapped()
+		// 	// coefficients[i].divided(float64(n))
+	}
+
+	return coefficients
 }
 
 func FftReal(x []float64) []Complex {

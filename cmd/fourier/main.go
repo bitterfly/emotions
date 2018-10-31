@@ -12,11 +12,13 @@ func main() {
 	x := make([]float64, n, n)
 	y := make([]float64, n, n)
 	z := make([]float64, n, n)
+	c := make([]fourier.Complex, n, n)
 
 	for i := 0; i < n; i++ {
 		x[i] = 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n))
 		y[i] = 3 * math.Cos(math.Pi*float64(2*i*800)/float64(n))
 		z[i] = x[i] + y[i]
+		c[i] = fourier.Complex{Re: 4 * math.Cos(math.Pi*float64(2*i*1000)/float64(n)), Im: 0.0}
 	}
 
 	xc, yc := fourier.DoubleReal(x, y)
@@ -43,6 +45,14 @@ func main() {
 		}
 	}
 
+	cc := fourier.Fft(c)
+	ccc := fourier.Ifft(cc)
+	fmt.Printf("C complex:\n")
+	for i, b := range ccc {
+		if fourier.Magnitude(b) > fourier.EPS {
+			fmt.Printf("%d %s %s\n", i, b, c[i])
+		}
+	}
 	// wf, err := fourier.Read(os.Args[1])
 	// if err != nil {
 	// 	panic(err)
