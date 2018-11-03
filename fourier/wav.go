@@ -14,11 +14,11 @@ type WavFile struct {
 
 	header []byte
 
-	data []Complex
+	data []float64
 }
 
 //GetData returns the array with only the data part of the wav
-func (wf WavFile) GetData() []Complex {
+func (wf WavFile) GetData() []float64 {
 	return wf.data
 }
 
@@ -97,10 +97,9 @@ func readContent(reader io.Reader) (WavFile, error) {
 	}
 
 	index := 0
-	data := make([]Complex, lenData/2, lenData/2)
+	data := make([]float64, lenData/2, lenData/2)
 	for b := beginData; b < beginData+lenData; b += 2 {
-		data[index].Re = endianFunc(content[b:b+2]) / max
-		data[index].Re = endianFunc(content[b:b+2]) / max
+		data[index] = endianFunc(content[b:b+2]) / max
 		index++
 	}
 
