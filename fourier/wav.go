@@ -13,8 +13,7 @@ type WavFile struct {
 	sampleRate uint32
 
 	header []byte
-
-	data []float64
+	data   []float64
 }
 
 //GetData returns the array with only the data part of the wav
