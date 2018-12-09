@@ -17,13 +17,14 @@ func main() {
 	fmt.Printf("%d\n", fourier.FindClosestPower(513))
 
 	n := 40000
+	sr := 44100
 	s := make([]float64, n, n)
 	for i := 0; i < n; i++ {
-		s[i] = math.Cos(math.Pi * float64(2*i*30) / float64(n))
+		s[i] = math.Cos(math.Pi * float64(2*i*500*sr) / float64(n))
 	}
 
 	// 8192
-	frames := fourier.CutSliceIntoFrames(s, 40000/8192.0, 8192)
+	frames := fourier.CutSliceIntoFrames(s, uint32(sr))
 	fourier.PrintFrameSlice(frames)
 
 	// coefficients := fourier.FftReal(s)

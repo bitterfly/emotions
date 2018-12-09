@@ -85,16 +85,19 @@ func PlotCoefficients(coefficients []Complex, file string) {
 
 func PrintFrameSlice(frames [][]float64) {
 	for i, frame := range frames {
-		fmt.Printf("Frame %d: \n", i)
-		counter := 0
-		for _, el := range frame {
-			fmt.Printf("%f ", el)
-			if el < -EPS || el > EPS {
-				counter++
-			}
-		}
-		fmt.Printf("\nElements: %d, nonZero: %d", len(frame), counter)
-		fmt.Printf("\n\n\n")
+		// fmt.Printf("Frame %d: \n", i)
+		// counter := 0
+		// for _, el := range frame {
+		// 	fmt.Printf("%f ", el)
+		// 	if el < -EPS || el > EPS {
+		// 		counter++
+		// 	}
+		// }
+		fmt.Printf("%d\n", i)
+		PlotSignal(frame, fmt.Sprintf("signal%d.png", i))
+		PlotCoefficients(FftReal(frame), fmt.Sprintf("spectre%d.png", i))
+		// fmt.Printf("\nElements: %d, nonZero: %d", len(frame), counter)
+		// fmt.Printf("\n\n\n")
 	}
 }
 
@@ -115,5 +118,6 @@ func Min(a, b int) int {
 func sliceCopy(first []float64, from, to, length int) []float64 {
 	second := make([]float64, length, length)
 	copy(second, first[from:Min(to, len(first))])
+	hanningWindow(second[0 : Min(to, len(first))-from])
 	return second
 }
