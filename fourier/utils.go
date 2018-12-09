@@ -82,3 +82,33 @@ func PlotCoefficients(coefficients []Complex, file string) {
 	}
 
 }
+
+func PrintFrameSlice(frames [][]float64) {
+	for i, frame := range frames {
+		fmt.Printf("Frame %d: \n", i)
+		for _, el := range frame {
+			fmt.Printf("%f ", el)
+		}
+		fmt.Printf("\n\n\n")
+	}
+}
+
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func sliceCopy(first []float64, from, to, length int) []float64 {
+	second := make([]float64, length, length)
+	copy(second, first[from:Min(to, len(first))])
+	return second
+}

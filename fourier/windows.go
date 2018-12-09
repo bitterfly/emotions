@@ -1,40 +1,67 @@
 package fourier
 
-// import "math"
+import (
+	"fmt"
+	"math"
+)
 
-// const WINDOW int = 1024
-// const INNER_WINDOW = 768
+func rectangular(x int, n int) float64 {
+	return 1
+}
 
-// func f(x float64) float64 {
-// 	return 1 / (1 + math.Exp(-x))
-// }
+func hanning(x int, n int) float64 {
+	return 0.5 - 0.5*math.Cos(float64(x*2)*math.Pi/float64(n))
+}
 
-// func rectangular(x float64) float64 {
-// 	return 1
-// }
+func hamming(x int, n int) float64 {
+	return 0.54 - 0.46*math.Cos(float64(x*2)*math.Pi/float64(n))
+}
 
-// func hanning(x float64) float64 {
-// 	return 0.5 - 0.5*math.Cos(2*math.Pi*x/INNER_WINDOW)
-// }
+func window(content []float64, windowFunction func(int, int) float64) {
+	for x, y := range content {
+		content[x] = y * windowFunction(x, len(content))
+	}
+}
 
-// func hamming(x float64) float64 {
-// 	return 0.54 - 0.46*math.Cos(2*math.Pi*x/INNER_WINDOW)
-// }
+func hammingWindow(content []float64) {
+	window(content, hamming)
+}
 
-// func window(content []float64, windowFunction func(float64) float64) {
-// 	for i, x := range content {
-// 		content[i] = x * windowFunction(i)
-// 	}
-// }
+func hanningWindow(content []float64) {
+	window(content, hanning)
+}
 
-// func hammingWindow(content []float64) {
-// 	window(content, hamming)
-// }
+func rectangularWindow(content []float64) {
+	window(content, rectangular)
+}
 
-// func hanningWindow(content []float64) {
-// 	window(content, hanning)
-// }
+func CutSliceIntoFrames(data []float64, length float64, sampleRate uint32) [][]float64 {
+	// First we want to devide the wavFile into frames with lenght ~20ms
+	// so first find the closest length of frames that contains number of samples that is a power of two
+	realSamplesPerFrame := (25 / 1000.0) * float64(sampleRate)
 
-// func rectangularWindow(content []float64) {
-// 	window(content, rectangular)
-// }
+	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
+	step := int((10 / 1000.0) * float64(sampleRate))
+
+	fmt.Printf("Slice len: %d\n", len(data))
+	fmt.Printf("Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
+
+	fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+
+	frames := make([][]float64, len(data)/step+1, len(data)/step+1)
+
+	frame := 0
+	for i := 0; i < len(data); i += step {
+
+		fmt.Printf("Copying data from: %d to %d\n", i, i+samplesPerFrame+1)
+		frames[frame] = sliceCopy(data, i, i+samplesPerFrame+1, samplesPerFrame)
+
+		frame++
+	}
+
+	return frames
+}
+
+func CutWavFileIntoFrames(wf WavFile) [][]float64 {
+	return CutSliceIntoFrames(wf.data, wf.GetLenInSeconds(), wf.sampleRate)
+}
