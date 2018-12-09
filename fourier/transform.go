@@ -216,17 +216,11 @@ func Ifft(x []Complex) []Complex {
 	return coefficients
 }
 
-func findClosestPower(x int) int {
-	for i := 2; i < x/2; i++ {
-		if math.Pow(2, float64(i)) < float64(x) {
-			continue
-		}
-		return int(math.Pow(2, float64(i-1)))
-	}
-	return 1
-}
-
 func FftReal(x []float64) []Complex {
+	if !IsPowerOfTwo(len(x)) {
+		panic("FFT expects the len of the data to be a power of 2")
+	}
+
 	n := len(x)
 	even := make([]float64, n/2, n/2)
 	odd := make([]float64, n/2, n/2)
@@ -240,7 +234,6 @@ func FftReal(x []float64) []Complex {
 		odd[k] = x[2*k+1]
 	}
 	X[0].Re = X[0].Re / float64(n)
-
 	Even, Odd := DoubleReal(even, odd)
 
 	for k := 1; k < n/2; k++ {
@@ -251,20 +244,21 @@ func FftReal(x []float64) []Complex {
 }
 
 func FftWav(f WavFile) []Complex {
-	data := f.data[0:findClosestPower(len(f.data))]
-	fmt.Printf("%d %d\n", len(f.data), len(data))
+	if !IsPowerOfTwo(len(f.data)) {
+		panic("FFT expects the len of the data to be a power of 2")
+	}
 
-	n := len(data)
+	n := len(f.data)
 	even := make([]float64, n/2, n/2)
 	odd := make([]float64, n/2, n/2)
 
 	X := make([]Complex, n/2, n/2)
 
 	for k := 0; k < n/2; k++ {
-		X[0].Re += data[2*k] + data[2*k+1]
+		X[0].Re += f.data[2*k] + f.data[2*k+1]
 
-		even[k] = data[2*k]
-		odd[k] = data[2*k+1]
+		even[k] = f.data[2*k]
+		odd[k] = f.data[2*k+1]
 	}
 	X[0].Re = X[0].Re / float64(n)
 
