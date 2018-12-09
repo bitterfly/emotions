@@ -16,6 +16,10 @@ type WavFile struct {
 	data   []float64
 }
 
+func (wf WavFile) GetLenInSeconds() float64 {
+	return float64(len(wf.data)) / float64(wf.sampleRate)
+}
+
 //GetData returns the array with only the data part of the wav
 func (wf WavFile) GetData() []float64 {
 	return wf.data
@@ -103,6 +107,7 @@ func readContent(reader io.Reader) (WavFile, error) {
 	}
 
 	wavFile.data = data
+
 	return wavFile, nil
 }
 
