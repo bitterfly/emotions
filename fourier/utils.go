@@ -20,6 +20,11 @@ func FindClosestPower(x int) int {
 	return p
 }
 
+//IsPowerOfTwo returns whether a number is a power of two
+func IsPowerOfTwo(x int) bool {
+	return (x & (x - 1)) == 0
+}
+
 // PrintCoefficients prints only those fourier coefficients that are greater than ɛ
 func PrintCoefficients(coefficients []Complex) {
 	for i, c := range coefficients {
