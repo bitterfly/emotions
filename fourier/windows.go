@@ -38,12 +38,13 @@ func rectangularWindow(content []float64) {
 func CutSliceIntoFrames(data []float64, length float64, sampleRate uint32) [][]float64 {
 	// First we want to devide the wavFile into frames with lenght ~20ms
 	// so first find the closest length of frames that contains number of samples that is a power of two
-	realSamplesPerFrame := (25 / 1000.0) * float64(sampleRate)
+	realSamplesPerFrame := int((25 / 1000.0) * float64(sampleRate))
 
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
 	step := int((10 / 1000.0) * float64(sampleRate))
 
 	fmt.Printf("Slice len: %d\n", len(data))
+	fmt.Printf("Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
 	fmt.Printf("Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
 
 	fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
@@ -53,8 +54,8 @@ func CutSliceIntoFrames(data []float64, length float64, sampleRate uint32) [][]f
 	frame := 0
 	for i := 0; i < len(data); i += step {
 
-		fmt.Printf("Copying data from: %d to %d\n", i, i+samplesPerFrame+1)
-		frames[frame] = sliceCopy(data, i, i+samplesPerFrame+1, samplesPerFrame)
+		fmt.Printf("Copying data from: %d to %d\n", i, i+realSamplesPerFrame+1)
+		frames[frame] = sliceCopy(data, i, i+realSamplesPerFrame+1, samplesPerFrame)
 
 		frame++
 	}
