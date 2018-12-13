@@ -16,16 +16,28 @@ func main() {
 
 	fmt.Printf("%d\n", fourier.FindClosestPower(513))
 
-	n := 40000
-	sr := 44100
+	n := 32768
+	// sr := 44100
 	s := make([]float64, n, n)
+	t := make([]fourier.Complex, n, n)
+
 	for i := 0; i < n; i++ {
-		s[i] = math.Cos(math.Pi * float64(2*i*500*sr) / float64(n))
+		// s[i] = math.Cos(math.Pi * float64(2*i*22050*sr) / float64(n))
+		// t[i] = fourier.Complex{Re: math.Cos(math.Pi * float64(2*i*22050*sr) / float64(n)), Im: 0.0}
+
+		s[i] = math.Pow(-1.0, float64(i))
+		t[i] = fourier.Complex{Re: s[i], Im: 0.0}
 	}
 
-	// 8192
-	frames := fourier.CutSliceIntoFrames(s, uint32(sr))
-	fourier.PrintFrameSlice(frames)
+	fmt.Printf("Fast fourier\n")
+	fc := fourier.FftReal(s)
+	fmt.Printf("Slow fourier\n")
+	sc := fourier.Dft(t)
+
+	fourier.PrintCoefficients(fc)
+	fourier.PrintCoefficients(sc)
+	// frames := fourier.CutSliceIntoFrames(s, uint32(sr))
+	// fourier.Bank(fourier.FftReal(frames[0]), sr, 3)
 
 	// coefficients := fourier.FftReal(s)
 	// fourier.PrintCoefficients(coefficients)

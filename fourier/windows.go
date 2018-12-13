@@ -1,7 +1,6 @@
 package fourier
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -52,30 +51,29 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
 	step := int((STEP_IN_MS / 1000.0) * float64(sampleRate))
 
-	fmt.Printf("Slice len: %d\n", len(data))
-	fmt.Printf("Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
-	fmt.Printf("Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
+	// fmt.Printf("Slice len: %d\n", len(data))
+	// fmt.Printf("Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
+	// fmt.Printf("Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
 
-	fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+	// fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
 
 	frames := make([][]float64, len(data)/step+1, len(data)/step+1)
 
 	frame := 0
 	for i := 0; i < len(data); i += step {
 
-		fmt.Printf("Copying data from: %d to %d\n", i, i+realSamplesPerFrame+1)
+		// fmt.Printf("Copying data from: %d to %d\n", i, i+realSamplesPerFrame+1)
 		frames[frame] = sliceCopyWithWindow(data, i, i+realSamplesPerFrame+1, samplesPerFrame)
 
 		frame++
 	}
-
 	return frames
 }
 
 func sliceCopyWithWindow(first []float64, from, to, length int) []float64 {
 	second := make([]float64, length, length)
 	copy(second, first[from:Min(to, len(first))])
-	// hammingWindow(second[0 : Min(to, len(first))-from])
+	hanningWindow(second[0 : Min(to, len(first))-from])
 	return second
 }
 

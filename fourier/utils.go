@@ -27,6 +27,7 @@ func IsPowerOfTwo(x int) bool {
 
 // PrintCoefficients prints only those fourier coefficients that are greater than ɛ
 func PrintCoefficients(coefficients []Complex) {
+	fmt.Printf("%d\n", len(coefficients))
 	for i, c := range coefficients {
 		if Magnitude(c) > 0.0001 {
 			fmt.Printf("%d: %s\n", i, c)
@@ -85,19 +86,10 @@ func PlotCoefficients(coefficients []Complex, file string) {
 
 func PrintFrameSlice(frames [][]float64) {
 	for i, frame := range frames {
-		// fmt.Printf("Frame %d: \n", i)
-		// counter := 0
-		// for _, el := range frame {
-		// 	fmt.Printf("%f ", el)
-		// 	if el < -EPS || el > EPS {
-		// 		counter++
-		// 	}
-		// }
 		fmt.Printf("%d\n", i)
-		PlotSignal(frame, fmt.Sprintf("signal%d.png", i))
-		PlotCoefficients(FftReal(frame), fmt.Sprintf("spectre%d.png", i))
-		// fmt.Printf("\nElements: %d, nonZero: %d", len(frame), counter)
-		// fmt.Printf("\n\n\n")
+		PlotSignal(frame, fmt.Sprintf("signal/signal%d.png", i))
+		PlotCoefficients(FftReal(frame), fmt.Sprintf("spectrum/spectrum%d.png", i))
+
 	}
 }
 

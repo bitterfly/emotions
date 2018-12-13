@@ -210,7 +210,6 @@ func Ifft(x []Complex) []Complex {
 	coefficients := fft(x, W)
 	for i := 0; i < n; i++ {
 		coefficients[i].swapped()
-		// 	// coefficients[i].divided(float64(n))
 	}
 
 	return coefficients
@@ -304,9 +303,7 @@ func DoubleReal(x, y []float64) ([]Complex, []Complex) {
 
 //Dft returns the discrete fourier transform
 func Dft(x []Complex) []Complex {
-	// coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
 	coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
-	// for k := 0; k < len(x)/2+1; k++ {
 	for k := 0; k < len(x)/2+1; k++ {
 		coefficients[k] = b(k, x)
 

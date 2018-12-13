@@ -1,49 +1,30 @@
 package fourier
 
-// import (
-// 	"fmt"
-// 	"math"
-// )
+import (
+	"fmt"
+	"math"
+)
 
-// func melToInd(mel float64) float64 {
-// 	return (math.Pow(10, mel/2595.0) - 1) * 700 * n / float64(sr)
-// }
+func melToIndex(mel float64, sr int, n int) float64 {
+	return (math.Pow(10, mel/2595.0) - 1) * float64(700*n) / float64(sr)
+}
 
-// func IndToMel(ind float64, sr int, n int) float64 {
-// 	return 2595 * math.Log10(1+i*sr/n*700.0)
-// }
+func IndToMel(ind float64, sr int, n int) float64 {
+	return 2595 * math.Log10(1+float64(sr)*ind/float64(n)*700.0)
+}
 
-// func Check() {
+func melToFreq(mel float64) float64 {
+	return (math.Pow(10, mel/2595.0) - 1) * 700
+}
 
-// 	// freq := 500 //Hz
+func freqToMel(freq float64) float64 {
+	return 2595 * math.Log10(1+freq/700.0)
+}
 
-// 	// sr = 1000
-// 	// n = 2000
+func Bank(coefficients []Complex, samplingRate int, numBanks int) []Complex {
+	fmt.Printf("%d\n", len(coefficients))
+	// fmt.Printf("1 to mel and back: %f\n", melToIndex(IndToMel(1, samplingRate, len(coefficients)), samplingRate, len(coefficients)))
+	// fmt.Printf("1 to mel and back: %f\n", melToIndex(IndToMel(1, samplingRate, len(coefficients)), samplingRate, len(coefficients)))
 
-// 	//sec = 2
-
-// 	panic(fmt.Sprintf("%f %f", freqToMel(500), indToMel(1000)))
-
-// }
-
-// func melToFreq(mel float64) float64 {
-// 	return (math.Pow(10, mel/2595.0) - 1) * 700
-// }
-
-// func freqToMel(freq float64) float64 {
-// 	return 2595 * math.Log10(1+freq/700.0)
-// }
-
-// //sr
-// //n
-// //
-// //sec = sr/n
-// //
-// //i
-// //freq = i / sec
-// //
-// //i * n / sr
-
-// func bank(coefficients []Complex, numBanks int) []Complex {
-// 	return nil
-// }
+	return nil
+}
