@@ -16,26 +16,34 @@ func main() {
 
 	fmt.Printf("%d\n", fourier.FindClosestPower(513))
 
-	n := 32768
+	n := 8
 	// sr := 44100
 	s := make([]float64, n, n)
 	t := make([]fourier.Complex, n, n)
 
 	for i := 0; i < n; i++ {
-		// s[i] = math.Cos(math.Pi * float64(2*i*22050*sr) / float64(n))
-		// t[i] = fourier.Complex{Re: math.Cos(math.Pi * float64(2*i*22050*sr) / float64(n)), Im: 0.0}
-
 		s[i] = math.Pow(-1.0, float64(i))
 		t[i] = fourier.Complex{Re: s[i], Im: 0.0}
 	}
 
-	fmt.Printf("Fast fourier\n")
-	fc := fourier.FftReal(s)
-	fmt.Printf("Slow fourier\n")
-	sc := fourier.Dft(t)
+	a := make([]fourier.Complex, n, n)
+	a[0] = fourier.Complex{Re: 1.0, Im: -1.0}
+	a[1] = fourier.Complex{Re: -1.0, Im: 0.0}
+	a[2] = fourier.Complex{Re: 0.0, Im: 1.0}
+	a[3] = fourier.Complex{Re: 0.5, Im: 0.5}
+	a[4] = fourier.Complex{Re: 0.5, Im: -0.5}
+	a[5] = fourier.Complex{Re: -0.5, Im: 2.0}
+	a[6] = fourier.Complex{Re: 2, Im: 1.5}
+	a[7] = fourier.Complex{Re: -1.5, Im: 0.5}
 
-	fourier.PrintCoefficients(fc)
+	fmt.Printf("Slow fourier:\n")
+	sc := fourier.Dft(a)
 	fourier.PrintCoefficients(sc)
+
+	fmt.Printf("Fast fourier:\n")
+	fc := fourier.Fft(a)
+	fourier.PrintCoefficients(fc)
+
 	// frames := fourier.CutSliceIntoFrames(s, uint32(sr))
 	// fourier.Bank(fourier.FftReal(frames[0]), sr, 3)
 

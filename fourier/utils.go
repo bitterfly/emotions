@@ -27,11 +27,11 @@ func IsPowerOfTwo(x int) bool {
 
 // PrintCoefficients prints only those fourier coefficients that are greater than ɛ
 func PrintCoefficients(coefficients []Complex) {
-	fmt.Printf("%d\n", len(coefficients))
+	fmt.Printf("Number of coefficients: %d\n", len(coefficients))
 	for i, c := range coefficients {
-		if Magnitude(c) > 0.0001 {
-			fmt.Printf("%d: %s\n", i, c)
-		}
+		// if Magnitude(c) > 0.0001 {
+		fmt.Printf("%d: %s\n", i, c)
+		// }
 	}
 }
 

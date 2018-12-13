@@ -303,11 +303,9 @@ func DoubleReal(x, y []float64) ([]Complex, []Complex) {
 
 //Dft returns the discrete fourier transform
 func Dft(x []Complex) []Complex {
-	coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
-	for k := 0; k < len(x)/2+1; k++ {
+	coefficients := make([]Complex, len(x), len(x))
+	for k := 0; k < len(x); k++ {
 		coefficients[k] = b(k, x)
-
-		coefficients[k].divided(1 / float64(2))
 	}
 	return coefficients
 }
