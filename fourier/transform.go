@@ -129,6 +129,20 @@ func a(k int, b []Complex, n int) Complex {
 	return sum
 }
 
+func b_real(k int, x []float64) Complex {
+	sum := zeroComplex()
+
+	for j := 0; j < len(x); j++ {
+		d := Complex{}
+		d.Re = x[j] * math.Cos(2*math.Pi*float64(k)*float64(j)/float64(len(x)))
+		d.Im = -x[j] * math.Sin(2*math.Pi*float64(k)*float64(j)/float64(len(x)))
+		sum.added(d)
+	}
+
+	sum.divided(float64(len(x)))
+	return sum
+}
+
 func b(k int, x []Complex) Complex {
 	sum := zeroComplex()
 	for j := 0; j < len(x); j++ {
@@ -224,20 +238,21 @@ func FftReal(x []float64) []Complex {
 	even := make([]float64, n/2, n/2)
 	odd := make([]float64, n/2, n/2)
 
-	X := make([]Complex, n/2, n/2)
+	X := make([]Complex, n/2+1, n/2+1)
 
 	for k := 0; k < n/2; k++ {
-		X[0].Re += x[2*k] + x[2*k+1]
-
+		X[n/2].Re += x[2*k] - x[2*k+1]
 		even[k] = x[2*k]
 		odd[k] = x[2*k+1]
 	}
-	X[0].Re = X[0].Re / float64(n)
 	Even, Odd := DoubleReal(even, odd)
 
-	for k := 1; k < n/2; k++ {
+	for k := 0; k < n/2; k++ {
 		X[k] = Even[k].add(dot(e(k, 1, n).conjugate(), Odd[k]))
 	}
+
+	X[0].divided(2.0)
+	X[n/2].divided(float64(n))
 
 	return X
 }
@@ -247,27 +262,7 @@ func FftWav(f WavFile) []Complex {
 		panic("FFT expects the len of the data to be a power of 2")
 	}
 
-	n := len(f.data)
-	even := make([]float64, n/2, n/2)
-	odd := make([]float64, n/2, n/2)
-
-	X := make([]Complex, n/2, n/2)
-
-	for k := 0; k < n/2; k++ {
-		X[0].Re += f.data[2*k] + f.data[2*k+1]
-
-		even[k] = f.data[2*k]
-		odd[k] = f.data[2*k+1]
-	}
-	X[0].Re = X[0].Re / float64(n)
-
-	Even, Odd := DoubleReal(even, odd)
-
-	for k := 1; k < n/2; k++ {
-		X[k] = Even[k].add(dot(e(k, 1, n).conjugate(), Odd[k]))
-	}
-
-	return X
+	return FftReal(f.data)
 }
 
 func DoubleReal(x, y []float64) ([]Complex, []Complex) {
@@ -306,6 +301,20 @@ func Dft(x []Complex) []Complex {
 	coefficients := make([]Complex, len(x), len(x))
 	for k := 0; k < len(x); k++ {
 		coefficients[k] = b(k, x)
+	}
+	return coefficients
+}
+
+//Dft returns the discrete fourier transform
+func DftReal(x []float64) []Complex {
+	coefficients := make([]Complex, len(x)/2+1, len(x)/2+1)
+	for k := 0; k < len(x)/2+1; k++ {
+		coefficients[k] = b_real(k, x)
+
+		if k > 0 && k < len(x)/2 {
+			coefficients[k].divided(0.5)
+		}
+
 	}
 	return coefficients
 }

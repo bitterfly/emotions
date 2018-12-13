@@ -29,9 +29,9 @@ func IsPowerOfTwo(x int) bool {
 func PrintCoefficients(coefficients []Complex) {
 	fmt.Printf("Number of coefficients: %d\n", len(coefficients))
 	for i, c := range coefficients {
-		// if Magnitude(c) > 0.0001 {
-		fmt.Printf("%d: %s\n", i, c)
-		// }
+		if Magnitude(c) > EPS {
+			fmt.Printf("%d: %s\n", i, c)
+		}
 	}
 }
 
@@ -56,14 +56,23 @@ func PlotSignal(data []float64, file string) {
 	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
 		panic(err)
 	}
+
 }
 
 // PlotCoefficients draws a bar plot of the fourier coefficients and saves it into a file
 func PlotCoefficients(coefficients []Complex, file string) {
 	v := make(plotter.Values, len(coefficients))
+	max := 0.0
+	j := 0
 	for i := range v {
 		v[i] = Magnitude(coefficients[i])
+		if v[i]-max > EPS {
+			max = v[i]
+			j = i
+		}
 	}
+
+	fmt.Printf("%d: %f\n", j, max)
 
 	plotc, err := plot.New()
 	if err != nil {
