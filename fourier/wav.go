@@ -16,6 +16,10 @@ type WavFile struct {
 	data   []float64
 }
 
+func (wf WavFile) GetSampleRate() int {
+	return int(wf.sampleRate)
+}
+
 func (wf WavFile) GetLenInSeconds() float64 {
 	return float64(len(wf.data)) / float64(wf.sampleRate)
 }
