@@ -154,6 +154,10 @@ func b(k int, x []Complex) Complex {
 	return sum
 }
 
+func Power(c Complex) float64 {
+	return (c.Re*c.Re + c.Im*c.Im)
+}
+
 func Magnitude(c Complex) float64 {
 	return math.Sqrt(c.Re*c.Re + c.Im*c.Im)
 }

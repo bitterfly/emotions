@@ -3,6 +3,7 @@ package fourier
 import (
 	"fmt"
 	"image/color"
+	"math"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
@@ -42,10 +43,22 @@ func PlotSignal(data []float64, file string) {
 		panic(err)
 	}
 
+	for _, b := range data {
+		if math.IsInf(b, 0) {
+			fmt.Printf("inf\n")
+		} else {
+			fmt.Printf("%f\n", b)
+		}
+	}
+
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
 		s[i].X = float64(i)
-		s[i].Y = data[i]
+		if math.IsInf(data[i], 0) {
+			s[i].Y = -10
+		} else {
+			s[i].Y = data[i]
+		}
 	}
 
 	line, _ := plotter.NewLine(s)
@@ -56,8 +69,31 @@ func PlotSignal(data []float64, file string) {
 	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
 		panic(err)
 	}
-
 }
+
+// func PlotSignals(data [][]float64, offsets []int, file string) {
+// 	plots, err := plot.New()
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	for j, d := range data {
+// 		s := make(plotter.XYs, len(d))
+// 		for i := 0; i < len(d); i++ {
+// 			s[i].X = float64(i + offsets[j])
+// 			s[i].Y = d[i]
+// 		}
+
+// 		line, _ := plotter.NewLine(s)
+// 		line.Color = color.RGBA{0, 232, 88, 255}
+
+// 		plots.Add(line)
+// 	}
+
+// 	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
+// 		panic(err)
+// 	}
+// }
 
 // PlotCoefficients draws a bar plot of the fourier coefficients and saves it into a file
 func PlotCoefficients(coefficients []Complex, file string) {

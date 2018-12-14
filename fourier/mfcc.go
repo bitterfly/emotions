@@ -1,6 +1,7 @@
 package fourier
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -30,22 +31,36 @@ func freqToMel(freq float64) float64 {
 	return 2595 * math.Log10(1+freq/700.0)
 }
 
-func triangleBank(coefficients []Complex, s, e, center int) float64 {
+func triangleBank(coefficients []Complex, s, e, center int) (float64, []float64) {
 	sum := 0.0
 
+	fmt.Printf("%d %d %d\n", s, center, e)
+	bank := make([]float64, e-s+1, e-s+1)
+
+	j := 0
 	for i := s; i <= e; i++ {
+
 		if i < center {
-			sum += Magnitude(coefficients[i]) * float64(i-s) / float64(center-e)
+			bank[j] = float64(i-s) / float64(center-s)
+			sum += math.Log(Power(coefficients[i]) * float64(i-s) / float64(center-e))
 		} else {
-			sum += Magnitude(coefficients[i]) * float64(e-i) / float64(e-center)
+			bank[j] = float64(e-i) / float64(e-center)
+			sum += math.Log(Power(coefficients[i]) * float64(e-i) / float64(e-center))
+		}
+		j++
+		if math.IsInf(sum, 0) {
+			return math.Inf(-1), bank
 		}
 	}
 
-	return sum
+	return sum, bank
 }
 
-func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
+func Bank(coefficients []Complex, sampleRate int, M int) ([]float64, [][]float64, []int) {
 	maxMel := freqToMel(float64(sampleRate) / 2.0)
+
+	bla := make([][]float64, M, M)
+	offsets := make([]int, M, M)
 
 	banks := make([]float64, M, M)
 	for m := 0; m < M; m++ {
@@ -53,7 +68,10 @@ func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
 		center := int(melToIndex(M, float64(m+1), sampleRate, len(coefficients), maxMel))
 		e := int(melToIndex(M, float64(m+2), sampleRate, len(coefficients), maxMel))
 
-		banks[m] = triangleBank(coefficients, s, e, center)
+		sum, b := triangleBank(coefficients, s, e, center)
+		bla[m] = b
+		banks[m] = sum
+		offsets[m] = s
 	}
 
 	// m := IndToMel(numBanks, 1.0, samplingRate, len(coefficients), maxMel)
@@ -62,5 +80,5 @@ func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
 
 	// fmt.Printf("1 to mel and back: %f\n", melToIndex(IndToMel(1, samplingRate, len(coefficients)), samplingRate, len(coefficients)))
 
-	return banks
+	return banks, bla, offsets
 }

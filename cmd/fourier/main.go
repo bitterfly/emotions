@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/bitterfly/emotions/fourier"
@@ -28,7 +29,11 @@ func main() {
 	// 	fourier.PlotCoefficients(fourier.FftReal(f), fmt.Sprintf("spectrum%d.png", i))
 	// }
 
-	fourier.Bank(fourier.FftReal(frames[0]), wf.GetSampleRate(), 15)
+	for i, f := range frames {
+		bank, _, _ := fourier.Bank(fourier.FftReal(f), wf.GetSampleRate(), 16)
+		// fourier.PlotSignals(bla, offsets, "triangles.png")
+		fourier.PlotSignal(bank, fmt.Sprintf("bank%d.png", i))
+	}
 
 	// coefficients := fourier.FftReal(s)
 	// fourier.PrintCoefficients(coefficients)
