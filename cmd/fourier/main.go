@@ -10,7 +10,8 @@ import (
 
 func main() {
 	filename := os.Args[1]
-	wf, err := fourier.Read(filename)
+	// wf, err := fourier.Read(filename, 0)
+	wf, err := fourier.Read(filename, 0.1)
 	if err != nil {
 		panic(err.Error)
 	}
@@ -28,17 +29,26 @@ func main() {
 	start := time.Now()
 	frames := fourier.CutWavFileIntoFrames(wf)
 	fmt.Printf("Frames: %s\n", time.Since(start))
-	// pprof.StopCPUProfile()
+	// // pprof.StopCPUProfile()
 
 	fmt.Printf("frames: %d\n", len(frames))
-
+	M := 16
+	banks := make([][]float64, len(frames), len(frames))
 	start = time.Now()
+
 	for i, f := range frames {
-		bank := fourier.Bank(fourier.FftReal(f), wf.GetSampleRate(), 16)
+		banks[i] = fourier.Bank(fourier.FftReal(f), wf.GetSampleRate(), M)
 		fmt.Printf("%d ", i)
-		_ = fourier.MFCC(bank)
 	}
 	fmt.Printf("\nBanks: %s\n", time.Since(start))
+
+	start = time.Now()
+	mfccs := fourier.MFCCS(banks)
+	fmt.Printf("\nMFCCs: %s\n", time.Since(start))
+
+	for i, mfcc := range mfccs {
+		fourier.PlotSignal(mfcc, fmt.Sprintf("/tmp/mfcc%d.png", i))
+	}
 
 	// fmt.Printf("frames: %d\n", len(frames))
 	// for i, f := range frames {

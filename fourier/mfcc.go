@@ -39,9 +39,9 @@ func triangleBank(coefficients []Complex, s, e, center int) float64 {
 	var power float64
 	for i := s; i <= e; i++ {
 
-		if Power(coefficients[i]) < EPS && Power(coefficients[i]) > EPS {
-			continue
-		}
+		// if Power(coefficients[i]) < EPS && Power(coefficients[i]) > EPS {
+		// 	continue
+		// }
 		power = math.Log(Power(coefficients[i]))
 
 		if i < center {
@@ -59,7 +59,7 @@ func triangleBank(coefficients []Complex, s, e, center int) float64 {
 }
 
 func MFCCS(banks [][]float64) [][]float64 {
-	M := len(banks)
+	M := len(banks[0])
 	cosines := make([][]float64, M, M)
 	for n := 0; n < M; n++ {
 		cosines[n] = make([]float64, M, M)
@@ -68,7 +68,7 @@ func MFCCS(banks [][]float64) [][]float64 {
 		}
 	}
 
-	mfccs := make([][]float64, M, M)
+	mfccs := make([][]float64, len(banks), len(banks))
 
 	for i, bank := range banks {
 		mfccs[i] = make([]float64, M, M)

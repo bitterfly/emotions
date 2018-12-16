@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"math"
+	"math/rand"
 	"os"
 )
 
@@ -30,13 +31,18 @@ func (wf WavFile) GetData() []float64 {
 }
 
 // Read reads a wav file from a given filename into WavFile format
-func Read(filename string) (WavFile, error) {
+func Read(filename string, ditherCoefficient float64) (WavFile, error) {
 	reader, err := readFile(filename)
 	if err != nil {
 		return WavFile{}, err
 	}
 
 	wf, err := readContent(reader)
+
+	for i := 0; i < len(wf.data); i++ {
+		wf.data[i] += rand.NormFloat64() * ditherCoefficient
+	}
+
 	if err != nil {
 		return WavFile{}, err
 	}
