@@ -43,14 +43,6 @@ func PlotSignal(data []float64, file string) {
 		panic(err)
 	}
 
-	for _, b := range data {
-		if math.IsInf(b, 0) {
-			fmt.Printf("inf\n")
-		} else {
-			fmt.Printf("%f\n", b)
-		}
-	}
-
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
 		s[i].X = float64(i)
