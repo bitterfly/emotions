@@ -1,7 +1,6 @@
 package fourier
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -31,36 +30,80 @@ func freqToMel(freq float64) float64 {
 	return 2595 * math.Log10(1+freq/700.0)
 }
 
-func triangleBank(coefficients []Complex, s, e, center int) (float64, []float64) {
+func triangleBank(coefficients []Complex, s, e, center int) float64 {
 	sum := 0.0
 
-	fmt.Printf("%d %d %d\n", s, center, e)
-	bank := make([]float64, e-s+1, e-s+1)
-
+	// fmt.Printf("%d %d %d\n", s, center, e)
 	j := 0
+
+	var power float64
 	for i := s; i <= e; i++ {
 
+		if Power(coefficients[i]) < EPS && Power(coefficients[i]) > EPS {
+			continue
+		}
+		power = math.Log(Power(coefficients[i]))
+
 		if i < center {
-			bank[j] = float64(i-s) / float64(center-s)
-			sum += math.Log(Power(coefficients[i]) * float64(i-s) / float64(center-e))
+			sum += power * float64(i-s) / float64(center-e)
 		} else {
-			bank[j] = float64(e-i) / float64(e-center)
-			sum += math.Log(Power(coefficients[i]) * float64(e-i) / float64(e-center))
+			sum += power * float64(e-i) / float64(e-center)
 		}
 		j++
 		if math.IsInf(sum, 0) {
-			return math.Inf(-1), bank
+			return math.Inf(-1)
 		}
 	}
 
-	return sum, bank
+	return sum
 }
 
-func Bank(coefficients []Complex, sampleRate int, M int) ([]float64, [][]float64, []int) {
-	maxMel := freqToMel(float64(sampleRate) / 2.0)
+func MFCCS(banks [][]float64) [][]float64 {
+	M := len(banks)
+	cosines := make([][]float64, M, M)
+	for n := 0; n < M; n++ {
+		cosines[n] = make([]float64, M, M)
+		for m := 0; m < M; m++ {
+			cosines[n][m] = math.Cos(math.Pi * float64(n) * (float64(m) + 0.5) / float64(M))
+		}
+	}
 
-	bla := make([][]float64, M, M)
-	offsets := make([]int, M, M)
+	mfccs := make([][]float64, M, M)
+
+	for i, bank := range banks {
+		mfccs[i] = make([]float64, M, M)
+		for n := 0; n < M; n++ {
+			for m := 0; m < M; m++ {
+				mfccs[i][n] += bank[m] * cosines[n][m]
+			}
+		}
+	}
+
+	return mfccs
+}
+
+func MFCC(bank []float64) []float64 {
+	M := len(bank)
+	cosines := make([][]float64, M, M)
+	for n := 0; n < M; n++ {
+		cosines[n] = make([]float64, M, M)
+		for m := 0; m < M; m++ {
+			cosines[n][m] = math.Cos(math.Pi * float64(n) * (float64(m) + 0.5) / float64(M))
+		}
+	}
+
+	mfcc := make([]float64, M, M)
+	for n := 0; n < M; n++ {
+		for m := 0; m < M; m++ {
+			mfcc[n] += bank[m] * cosines[n][m]
+		}
+	}
+
+	return mfcc
+}
+
+func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
+	maxMel := freqToMel(float64(sampleRate) / 2.0)
 
 	banks := make([]float64, M, M)
 	for m := 0; m < M; m++ {
@@ -68,17 +111,8 @@ func Bank(coefficients []Complex, sampleRate int, M int) ([]float64, [][]float64
 		center := int(melToIndex(M, float64(m+1), sampleRate, len(coefficients), maxMel))
 		e := int(melToIndex(M, float64(m+2), sampleRate, len(coefficients), maxMel))
 
-		sum, b := triangleBank(coefficients, s, e, center)
-		bla[m] = b
-		banks[m] = sum
-		offsets[m] = s
+		banks[m] = triangleBank(coefficients, s, e, center)
 	}
 
-	// m := IndToMel(numBanks, 1.0, samplingRate, len(coefficients), maxMel)
-	// fmt.Printf("100 to mel: %f\n", m)
-	// fmt.Printf("mel to 100: %f\n", melToIndex(numBanks, m, samplingRate, len(coefficients), maxMel))
-
-	// fmt.Printf("1 to mel and back: %f\n", melToIndex(IndToMel(1, samplingRate, len(coefficients)), samplingRate, len(coefficients)))
-
-	return banks, bla, offsets
+	return banks
 }
