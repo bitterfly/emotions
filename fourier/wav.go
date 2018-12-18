@@ -112,8 +112,7 @@ func readContent(reader io.Reader) (WavFile, error) {
 	index := 0
 	data := make([]float64, lenData/2, lenData/2)
 	for b := beginData; b < beginData+lenData; b += 2 {
-		// data[index] = endianFunc(content[b:b+2]) / max
-		data[index] = endianFunc(content[b : b+2])
+		data[index] = endianFunc(content[b:b+2]) / max
 		index++
 	}
 
