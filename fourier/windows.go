@@ -44,9 +44,10 @@ func rectangularWindow(content []float64) {
 	}
 }
 
+// CutSliceIntoFrames receives float array and cuts it into frames
+// It takes approximately 25mS of real data and then pads it with zeroes to the first power of two
+// It takes frames with len 25ms with step of 10ms and applies a window function to the frame (hamming)
 func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
-	// First we want to devide the wavFile into frames with lenght ~20ms
-	// so first find the closest length of frames that contains number of samples that is a power of two
 	realSamplesPerFrame := int((FRAME_IN_MS / 1000.0) * float64(sampleRate))
 
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
@@ -63,8 +64,7 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
 	frame := 0
 	for i := 0; i < len(data); i += step {
 
-		// fmt.Printf("Copying data from: %d to %d\n", i, i+realSamplesPerFrame+1)
-		frames[frame] = sliceCopyWithWindow(data, i, i+realSamplesPerFrame+1, samplesPerFrame)
+		frames[frame] = sliceCopyWithWindow(data, i, i+realSamplesPerFrame, samplesPerFrame)
 
 		frame++
 	}
@@ -74,10 +74,11 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
 func sliceCopyWithWindow(first []float64, from, to, length int) []float64 {
 	second := make([]float64, length, length)
 	copy(second, first[from:Min(to, len(first))])
-	hanningWindow(second[0 : Min(to, len(first))-from])
+	hammingWindow(second[0 : Min(to, len(first))-from])
 	return second
 }
 
+//CutWavFileIntoFrames takes a wavfiles and cuts it into frames
 func CutWavFileIntoFrames(wf WavFile) [][]float64 {
 	return CutSliceIntoFrames(wf.data, wf.sampleRate)
 }
