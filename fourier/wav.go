@@ -101,18 +101,19 @@ func readContent(reader io.Reader) (WavFile, error) {
 	var max float64
 	if bitsPerSample == uint16(16) {
 		endianFunc = func(b []byte) float64 { return float64(int16(getUint16LittleEndian2Byte(b))) }
-		max = float64(math.MaxInt16)
+		max = float64(math.MaxInt16 + 1)
 	} else if bitsPerSample == uint16(32) {
 		endianFunc = func(b []byte) float64 { return float64(int32(getUint32LittleEndian4Byte(b))) }
-		max = float64(math.MaxInt32)
+		max = float64(math.MaxInt32 + 1)
 	} else {
 		return WavFile{}, fmt.Errorf("Unknown bitsPerSample: %d", bitsPerSample)
 	}
-
+	fmt.Printf("%f\n", max)
 	index := 0
 	data := make([]float64, lenData/2, lenData/2)
 	for b := beginData; b < beginData+lenData; b += 2 {
-		data[index] = endianFunc(content[b:b+2]) / max
+		// data[index] = endianFunc(content[b:b+2]) / max
+		data[index] = endianFunc(content[b : b+2])
 		index++
 	}
 
