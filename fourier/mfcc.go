@@ -44,7 +44,6 @@ func triangleBank(coefficients []Complex, s, e, center int) float64 {
 // MFCCS returns the mfcc coefficients for each bank
 // so an array of size (len(banks), C)
 // where C is the number of mffcs
-
 func MFCCS(banks [][]float64, C int) [][]float64 {
 	M := len(banks[0])
 	cosines := make([][]float64, C, C)
