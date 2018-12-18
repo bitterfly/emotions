@@ -1,25 +1,14 @@
 package fourier
 
 import (
-	"fmt"
 	"math"
 )
 
-// func melToIndex(M int, m int, sr int, samplesPerFrame int, maxMel float64) int {
-// 	return int(melToFreq(maxMel*float64(m)/float64(M+1)) * float64(samplesPerFrame) / float64(sr))
-// }
-
-// func IndToMel(M int, i int, sr int, samplesPerFrame int, maxMel float64) int {
-// 	return int(freqToMel(float64(sr*i)/float64(samplesPerFrame)) * float64(M+1) / maxMel)
-// }
-
 func melToIndex(M int, m float64, sr int, n int, maxMel float64) float64 {
-	// fmt.Printf("m2int %f\n", melToFreq(maxMel*float64(m)/float64(M+1))*float64((2*n))/float64(sr))
 	return melToFreq(maxMel*float64(m)/float64(M+1)) * float64((2 * n)) / float64(sr)
 }
 
-func IndToMel(M int, i float64, sr int, n int, maxMel float64) float64 {
-	// fmt.Printf("int2m %f\n", freqToMel(float64(sr*i)/float64(2*n))*float64(M+1)/maxMel)
+func indToMel(M int, i float64, sr int, n int, maxMel float64) float64 {
 	return freqToMel(float64(sr)*i/float64(2*n)) * float64(M+1) / maxMel
 }
 
@@ -34,43 +23,45 @@ func freqToMel(freq float64) float64 {
 func triangleBank(coefficients []Complex, s, e, center int) float64 {
 	sum := 0.0
 
-	fmt.Printf("%d %d %d\n", s, center, e)
+	// fmt.Printf("%d %d %d\n", s, center, e)
 
 	var power float64
 	for i := s; i <= e; i++ {
 		power = Power(coefficients[i])
 
 		if i < center {
-			fmt.Printf("%d %f %f %f\n", i, power, float64(i-s)/float64(center-s), power*float64(i-s)/float64(center-e))
-
+			// fmt.Printf("%d %f %f %f\n", i, power, float64(i-s)/float64(center-s), power*float64(i-s)/float64(center-e))
 			sum += power * float64(i-s) / float64(center-s)
 		} else {
 			sum += power * float64(e-i) / float64(e-center)
-			fmt.Printf("%d %f %f %f\n", i, power, float64(e-i)/float64(e-center), power*float64(e-i)/float64(e-center))
-
+			// fmt.Printf("%d %f %f %f\n", i, power, float64(e-i)/float64(e-center), power*float64(e-i)/float64(e-center))
 		}
 	}
 
 	return math.Log(sum)
 }
 
-func MFCCS(banks [][]float64) [][]float64 {
+// MFCCS returns the mfcc coefficients for each bank
+// so an array of size (len(banks), C)
+// where C is the number of mffcs
+
+func MFCCS(banks [][]float64, C int) [][]float64 {
 	M := len(banks[0])
-	cosines := make([][]float64, M, M)
-	for n := 0; n < M; n++ {
-		cosines[n] = make([]float64, M, M)
+	cosines := make([][]float64, C, C)
+	for c := 0; c < C; c++ {
+		cosines[c] = make([]float64, M, M)
 		for m := 0; m < M; m++ {
-			cosines[n][m] = math.Cos(math.Pi * float64(n) * (float64(m) + 0.5) / float64(M))
+			cosines[c][m] = math.Cos(math.Pi * float64(c) * (float64(m) + 0.5) / float64(M))
 		}
 	}
 
 	mfccs := make([][]float64, len(banks), len(banks))
 
 	for i, bank := range banks {
-		mfccs[i] = make([]float64, M, M)
-		for n := 0; n < M; n++ {
+		mfccs[i] = make([]float64, C, C)
+		for c := 0; c < C; c++ {
 			for m := 0; m < M; m++ {
-				mfccs[i][n] += bank[m] * cosines[n][m]
+				mfccs[i][c] += bank[m] * cosines[c][m]
 			}
 		}
 	}
@@ -78,18 +69,21 @@ func MFCCS(banks [][]float64) [][]float64 {
 	return mfccs
 }
 
-func MFCC(bank []float64) []float64 {
+// MFCC returns the mfcc coefficients for the given bank
+// so it's an array of size C
+// where C is the number of mffcs
+func MFCC(bank []float64, C int) []float64 {
 	M := len(bank)
-	cosines := make([][]float64, M, M)
-	for n := 0; n < M; n++ {
+	cosines := make([][]float64, C, C)
+	for n := 0; n < C; n++ {
 		cosines[n] = make([]float64, M, M)
 		for m := 0; m < M; m++ {
 			cosines[n][m] = math.Cos(math.Pi * float64(n) * (float64(m) + 0.5) / float64(M))
 		}
 	}
 
-	mfcc := make([]float64, M, M)
-	for n := 0; n < M; n++ {
+	mfcc := make([]float64, C, C)
+	for n := 0; n < C; n++ {
 		for m := 0; m < M; m++ {
 			mfcc[n] += bank[m] * cosines[n][m]
 		}
@@ -102,6 +96,8 @@ func Cepstrum(coefficients []Complex, samplerate int) []float64 {
 	return nil
 }
 
+// Bank takes the fourier coefficient for one frame
+// and puts it on the ~mel scale (actually puts it on a logarithmic scale with M banks)
 func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
 	maxMel := freqToMel(float64(sampleRate) / 2.0)
 
