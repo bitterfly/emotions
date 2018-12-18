@@ -1,6 +1,7 @@
 package fourier
 
 import (
+	"fmt"
 	"math"
 )
 
@@ -33,29 +34,24 @@ func freqToMel(freq float64) float64 {
 func triangleBank(coefficients []Complex, s, e, center int) float64 {
 	sum := 0.0
 
-	// fmt.Printf("%d %d %d\n", s, center, e)
-	j := 0
+	fmt.Printf("%d %d %d\n", s, center, e)
 
 	var power float64
 	for i := s; i <= e; i++ {
-
-		// if Power(coefficients[i]) < EPS && Power(coefficients[i]) > EPS {
-		// 	continue
-		// }
-		power = math.Log(Power(coefficients[i]))
+		power = Power(coefficients[i])
 
 		if i < center {
-			sum += power * float64(i-s) / float64(center-e)
+			fmt.Printf("%d %f %f %f\n", i, power, float64(i-s)/float64(center-s), power*float64(i-s)/float64(center-e))
+
+			sum += power * float64(i-s) / float64(center-s)
 		} else {
 			sum += power * float64(e-i) / float64(e-center)
-		}
-		j++
-		if math.IsInf(sum, 0) {
-			return math.Inf(-1)
+			fmt.Printf("%d %f %f %f\n", i, power, float64(e-i)/float64(e-center), power*float64(e-i)/float64(e-center))
+
 		}
 	}
 
-	return sum
+	return math.Log(sum)
 }
 
 func MFCCS(banks [][]float64) [][]float64 {
@@ -100,6 +96,10 @@ func MFCC(bank []float64) []float64 {
 	}
 
 	return mfcc
+}
+
+func Cepstrum(coefficients []Complex, samplerate int) []float64 {
+	return nil
 }
 
 func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
