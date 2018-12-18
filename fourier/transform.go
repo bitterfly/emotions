@@ -110,11 +110,8 @@ func Edot(k, s, n int) Complex {
 // a_k = (? 1/N) j=0^N-1 (b_j.e ^(-2πijk/N))
 func a(k int, b []Complex, n int) Complex {
 	sum := zeroComplex()
-	for j := 0; j <= n/2-1; j++ {
+	for j := 0; j < n; j++ {
 		d := dot(b[j], e(k, j, n))
-		sum.added(d)
-
-		d = dot(b[j+1].conjugate(), e(k, n-j-1, n))
 		sum.added(d)
 	}
 
@@ -167,7 +164,7 @@ func Magnitude(c Complex) float64 {
 
 // Idft returns the inverse descrete fourier transform
 func Idft(c []Complex) []Complex {
-	n := (len(c) - 1) * 2
+	n := len(c)
 	x := make([]Complex, n, n)
 
 	for k := 0; k < n; k++ {
