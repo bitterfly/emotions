@@ -3,7 +3,6 @@ package fourier
 import (
 	"fmt"
 	"image/color"
-	"math"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
@@ -46,11 +45,7 @@ func PlotSignal(data []float64, file string) {
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
 		s[i].X = float64(i)
-		if math.IsInf(data[i], 0) {
-			s[i].Y = -10
-		} else {
-			s[i].Y = data[i]
-		}
+		s[i].Y = data[i]
 	}
 
 	line, _ := plotter.NewLine(s)
@@ -125,7 +120,8 @@ func PrintFrameSlice(frames [][]float64) {
 	for i, frame := range frames {
 		fmt.Printf("%d\n", i)
 		PlotSignal(frame, fmt.Sprintf("signal/signal%d.png", i))
-		PlotCoefficients(FftReal(frame), fmt.Sprintf("spectrum/spectrum%d.png", i))
+		c, _ := FftReal(frame)
+		PlotCoefficients(c, fmt.Sprintf("spectrum/spectrum%d.png", i))
 
 	}
 }
