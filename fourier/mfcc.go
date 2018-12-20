@@ -5,11 +5,11 @@ import (
 )
 
 func melToIndex(M int, m float64, sr int, n int, maxMel float64) float64 {
-	return melToFreq(maxMel*float64(m)/float64(M+1)) * float64((2 * n)) / float64(sr)
+	return melToFreq(maxMel*float64(m)/float64(M+1)) * float64(2*(n-1)) / float64(sr)
 }
 
 func indToMel(M int, i float64, sr int, n int, maxMel float64) float64 {
-	return freqToMel(float64(sr)*i/float64(2*n)) * float64(M+1) / maxMel
+	return freqToMel(float64(sr)*i/float64(2*(n-1))) * float64(M+1) / maxMel
 }
 
 func melToFreq(mel float64) float64 {
@@ -20,21 +20,16 @@ func freqToMel(freq float64) float64 {
 	return 2595 * math.Log10(1+freq/700.0)
 }
 
-func triangleBank(coefficients []Complex, s, e, center int) float64 {
+func triangleBank(coefficients []Complex, s, e, center float64) float64 {
 	sum := 0.0
 
-	// fmt.Printf("%d %d %d\n", s, center, e)
-
 	var power float64
-	for i := s; i <= e; i++ {
+	for i := int(math.Ceil(s)); i <= int(math.Floor(e)); i++ {
 		power = Power(coefficients[i])
-
-		if i < center {
-			// fmt.Printf("%d %f %f %f\n", i, power, float64(i-s)/float64(center-s), power*float64(i-s)/float64(center-e))
-			sum += power * float64(i-s) / float64(center-s)
+		if float64(i) < center {
+			sum += power * (float64(i) - s) / (center - s)
 		} else {
-			sum += power * float64(e-i) / float64(e-center)
-			// fmt.Printf("%d %f %f %f\n", i, power, float64(e-i)/float64(e-center), power*float64(e-i)/float64(e-center))
+			sum += power * (e - float64(i)) / (e - center)
 		}
 	}
 
@@ -102,9 +97,9 @@ func Bank(coefficients []Complex, sampleRate int, M int) []float64 {
 
 	banks := make([]float64, M, M)
 	for m := 0; m < M; m++ {
-		s := int(melToIndex(M, float64(m), sampleRate, len(coefficients), maxMel))
-		center := int(melToIndex(M, float64(m+1), sampleRate, len(coefficients), maxMel))
-		e := int(melToIndex(M, float64(m+2), sampleRate, len(coefficients), maxMel))
+		s := melToIndex(M, float64(m), sampleRate, len(coefficients), maxMel)
+		center := melToIndex(M, float64(m+1), sampleRate, len(coefficients), maxMel)
+		e := melToIndex(M, float64(m+2), sampleRate, len(coefficients), maxMel)
 
 		banks[m] = triangleBank(coefficients, s, e, center)
 	}
