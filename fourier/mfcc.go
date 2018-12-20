@@ -58,18 +58,20 @@ func melScale(coefficients []Complex, sampleRate int, M int) []float64 {
 func MFCCs(wf WavFile, C int, M int) [][]float64 {
 	frames := CutWavFileIntoFrames(wf)
 	melScaleFrames := make([][]float64, len(frames), len(frames))
+	energies := make([]float64, len(frames), len(frames))
 
 	for i, frame := range frames {
 		melScaleFrames[i] = make([]float64, M, M)
-		frameCoefficients, _ := FftReal(frame)
+		frameCoefficients, energy := FftReal(frame)
+		energies[i] = math.Log(energy)
 		melScaleFrames[i] = melScale(frameCoefficients, int(wf.sampleRate), M)
 	}
 
-	return getCoeffiecientsForBanks(melScaleFrames, C)
+	return getCoeffiecientsForBanks(melScaleFrames, energies, C)
 }
 
 // getCoefficinetsForBanks takes all the banks (#frames)x(#banks) and returns C of the MFCC coefficients
-func getCoeffiecientsForBanks(melScaleFrames [][]float64, C int) [][]float64 {
+func getCoeffiecientsForBanks(melScaleFrames [][]float64, energies []float64, C int) [][]float64 {
 	M := len(melScaleFrames[0])
 	cosines := make([][]float64, C, C)
 	for c := 0; c < C; c++ {
@@ -83,7 +85,9 @@ func getCoeffiecientsForBanks(melScaleFrames [][]float64, C int) [][]float64 {
 
 	for i, melScaleFrame := range melScaleFrames {
 		mfccs[i] = make([]float64, C, C)
-		for c := 0; c < C; c++ {
+
+		mfccs[i][0] = energies[i]
+		for c := 1; c < C; c++ {
 			for m := 0; m < M; m++ {
 				mfccs[i][c] += melScaleFrame[m] * cosines[c][m]
 			}
@@ -112,6 +116,43 @@ func getCoeffiecientsForBank(melScaleFrame []float64, C int) []float64 {
 	}
 
 	return mfcc
+}
+
+// C is the number of mfcc coefficients
+// N is ...
+// f is the current frame
+//  offset is 0 for delta and C for delta delta (because one uses mfccs and the other its deltas)
+
+func getDelta(deltas *[][]float64, C int, N int, f int, offset int) {
+	for i := offset + 0; i < offset+C; i++ {
+		for j := 1; j <= N; j++ {
+			(*deltas)[f][i+C] += float64(j) * ((*deltas)[f+j][i] - (*deltas)[f-j][i])
+		}
+		(*deltas)[f][i+C] = 3.0 * (*deltas)[f][i+C] / float64(N*(N+1)*(2*N+1))
+	}
+}
+
+func MFCCcDouble(mfccs [][]float64) [][]float64 {
+	mfccDouble := make([][]float64, len(mfccs), len(mfccs))
+	C := len(mfccs[0])
+	for i := 0; i < len(mfccs); i++ {
+		mfccDouble[i] = make([]float64, 3*C, 3*C)
+		copy(mfccDouble[i][0:C], mfccs[i])
+	}
+
+	for i := 0; i < len(mfccs); i++ {
+		if i >= 2 && i <= len(mfccs)-1-2 {
+			getDelta(&mfccDouble, C, 2, i, 0)
+		}
+	}
+
+	for i := 0; i < len(mfccs); i++ {
+		if i >= 3 && i <= len(mfccs)-1-3 {
+			getDelta(&mfccDouble, C, 1, i, C)
+		}
+	}
+
+	return mfccDouble
 }
 
 func Cepstrum(coefficients []Complex, samplerate int) []float64 {
