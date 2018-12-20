@@ -11,10 +11,11 @@ func main() {
 	filename := os.Args[1]
 	wf, _ := fourier.Read(filename, 0, 0.97)
 
-	frames := fourier.CutWavFileIntoFrames(wf)
-	c, _ := fourier.FftReal(frames[0])
-	b := fourier.Bank(c, wf.GetSampleRate(), 23)
+	mfccs := fourier.MFCCs(wf, 13, 23)
+	doubles := fourier.MFCCcDouble(mfccs)
 
-	mfccs := fourier.MFCC(b, 13)
-	fmt.Printf("%.9f\n", mfccs)
+	for i, d := range doubles {
+		fmt.Printf("%d %v\n", i, d)
+		fmt.Printf("\n")
+	}
 }

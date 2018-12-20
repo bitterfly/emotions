@@ -123,12 +123,12 @@ func getCoeffiecientsForBank(melScaleFrame []float64, C int) []float64 {
 // f is the current frame
 //  offset is 0 for delta and C for delta delta (because one uses mfccs and the other its deltas)
 
-func getDelta(deltas *[][]float64, C int, N int, f int, offset int) {
+func getDelta(deltas *[][]float64, C int, N int, f int, offset int, normalisation float64) {
 	for i := offset + 0; i < offset+C; i++ {
 		for j := 1; j <= N; j++ {
 			(*deltas)[f][i+C] += float64(j) * ((*deltas)[f+j][i] - (*deltas)[f-j][i])
 		}
-		(*deltas)[f][i+C] = 3.0 * (*deltas)[f][i+C] / float64(N*(N+1)*(2*N+1))
+		(*deltas)[f][i+C] = (*deltas)[f][i+C] / normalisation
 	}
 }
 
@@ -142,13 +142,13 @@ func MFCCcDouble(mfccs [][]float64) [][]float64 {
 
 	for i := 0; i < len(mfccs); i++ {
 		if i >= 2 && i <= len(mfccs)-1-2 {
-			getDelta(&mfccDouble, C, 2, i, 0)
+			getDelta(&mfccDouble, C, 2, i, 0, 10.0)
 		}
 	}
 
 	for i := 0; i < len(mfccs); i++ {
 		if i >= 3 && i <= len(mfccs)-1-3 {
-			getDelta(&mfccDouble, C, 1, i, C)
+			getDelta(&mfccDouble, C, 1, i, C, 2.0)
 		}
 	}
 
