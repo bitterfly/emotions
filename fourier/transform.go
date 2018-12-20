@@ -243,7 +243,7 @@ func Ifft(x []Complex) []Complex {
 
 // FftReal returns the fourier coefficients for the given signal of len N
 // it returns N/2 + 1 coefficients and works only with powers of two
-func FftReal(x []float64) []Complex {
+func FftReal(x []float64) ([]Complex, float64) {
 	if !IsPowerOfTwo(len(x)) {
 		panic("FFT expects the len of the data to be a power of 2")
 	}
@@ -254,8 +254,10 @@ func FftReal(x []float64) []Complex {
 	odd := make([]float64, n/2, n/2)
 
 	X := make([]Complex, n/2+1, n/2+1)
+	var energy float64
 
 	for k := 0; k < n/2; k++ {
+		energy += x[2*k]*x[2*k] + x[2*k+1]*x[2*k+1]
 		// calculate the special N/2 coefficient
 		//since it's the sum of the signal with alternating signs
 		X[n/2].Re += x[2*k] - x[2*k+1]
@@ -273,12 +275,12 @@ func FftReal(x []float64) []Complex {
 	// X[0].divided(2.0)
 	// X[n/2].divided(float64(n))
 
-	return X
+	return X, energy
 }
 
 // FftWav returns the fourier coefficients for the given wav file of len N
 // It returns N/2 + 1 coefficients
-func FftWav(f WavFile) []Complex {
+func FftWav(f WavFile) ([]Complex, float64) {
 	if !IsPowerOfTwo(len(f.data)) {
 		panic("FFT expects the len of the data to be a power of 2")
 	}
