@@ -31,13 +31,13 @@ func (wf WavFile) GetData() []float64 {
 }
 
 // Read reads a wav file from a given filename into WavFile format
-func Read(filename string, ditherCoefficient float64) (WavFile, error) {
+func Read(filename string, ditherCoefficient float64, preemphasisCoefficient float64) (WavFile, error) {
 	reader, err := readFile(filename)
 	if err != nil {
 		return WavFile{}, err
 	}
 
-	wf, err := readContent(reader)
+	wf, err := readContent(reader, preemphasisCoefficient)
 
 	for i := 0; i < len(wf.data); i++ {
 		wf.data[i] += rand.NormFloat64() * ditherCoefficient
@@ -59,7 +59,7 @@ func readFile(filename string) (io.Reader, error) {
 	return file, nil
 }
 
-func readContent(reader io.Reader) (WavFile, error) {
+func readContent(reader io.Reader, preemphasisCoefficient float64) (WavFile, error) {
 	content, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return WavFile{}, err
@@ -111,8 +111,11 @@ func readContent(reader io.Reader) (WavFile, error) {
 	fmt.Printf("%f\n", max)
 	index := 0
 	data := make([]float64, lenData/2, lenData/2)
+	previous := 0.0
 	for b := beginData; b < beginData+lenData; b += 2 {
-		data[index] = endianFunc(content[b:b+2]) / max
+		current := endianFunc(content[b:b+2]) / max
+		data[index] = current - preemphasisCoefficient*previous
+		previous = current
 		index++
 	}
 
