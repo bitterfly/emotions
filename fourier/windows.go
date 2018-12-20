@@ -60,11 +60,13 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
 
 	fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
 
-	frames := make([][]float64, (len(data)+step-1)/step, (len(data)+step-1)/step)
+	numFrames := (len(data) - realSamplesPerFrame) / step
+	fmt.Printf("Num frames: %d\n", numFrames)
+	frames := make([][]float64, numFrames, numFrames)
 
 	frame := 0
-	for i := 0; i < len(data); i += step {
-
+	for i := 0; i < len(data)-realSamplesPerFrame-step; i += step {
+		fmt.Printf("frame: %d\n", frame)
 		frames[frame] = sliceCopyWithWindow(data, i, i+realSamplesPerFrame, samplesPerFrame)
 
 		frame++
