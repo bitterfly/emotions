@@ -15,14 +15,13 @@ func main() {
 	// }
 
 	points := [][]float64{
-		[]float64{1, 1},
-		[]float64{1.5, 2},
-		[]float64{3, 4},
-		[]float64{5, 7},
-		[]float64{3.5, 5},
-		[]float64{4.5, 5},
+		[]float64{1.0, 1.0},
+		[]float64{1.5, 2.0},
+		[]float64{3.0, 4.0},
+		[]float64{5.0, 7.0},
+		[]float64{3.5, 5.0},
+		[]float64{4.5, 5.0},
 		[]float64{3.5, 4.5},
 	}
-
 	fourier.Kmeans(points, 2)
 }

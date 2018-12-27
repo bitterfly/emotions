@@ -30,7 +30,7 @@ func Kmeans(mfccsFloats [][]float64, k int) [][]int {
 
 	centroidIndices := make(map[int32]struct{})
 
-	//First choose randomly the firts centroids
+	// First choose randomly the firts centroids
 	// Keep generating a new random number until there are k keys in centroidIndices
 	rand.Seed(time.Now().UTC().UnixNano())
 	for len(centroidIndices) < k {
@@ -45,13 +45,12 @@ func Kmeans(mfccsFloats [][]float64, k int) [][]int {
 		centroids = append(centroids, mfccs[i].coefficients)
 	}
 
-	iterations := 5
+	iterations := 100
 	// Group the documents in clusters and recalculate the new centroid of the cluster
 	for times := 0; times < iterations; times++ {
-		fmt.Printf("Iteration: %d\n", times)
+		// fmt.Printf("Iteration: %d\n", times)
 		for i := range mfccs {
 			mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
-			fmt.Printf("%d %v\n", mfccs[i].clusterID, mfccs[i].coefficients)
 		}
 
 		centroids = findNewCentroids(mfccs, k)
@@ -101,6 +100,7 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 
 	for i := range centroids {
 		divide(&centroids[i], mfccsInCluster[i])
+
 	}
 
 	return centroids
@@ -124,7 +124,8 @@ func findClosestCentroid(centroids [][]float64, mfcc []float64, variances []floa
 	argmin := int32(-1)
 
 	for i, centroid := range centroids {
-		currentDistance := mahalanobisDistance(centroid, mfcc, variances)
+		currentDistance := euclidianDistance(centroid, mfcc, variances)
+		// currentDistance := mahalanobisDistance(centroid, mfcc, variances)
 		if currentDistance < min {
 			min = currentDistance
 			argmin = int32(i)
@@ -137,6 +138,15 @@ func mahalanobisDistance(x []float64, y []float64, variances []float64) float64 
 	sum := 0.0
 	for i := 0; i < len(x); i++ {
 		sum += (x[i] - y[i]) * (x[i] - y[i]) / variances[i]
+	}
+
+	return sum
+}
+
+func euclidianDistance(x []float64, y []float64, variances []float64) float64 {
+	sum := 0.0
+	for i := 0; i < len(x); i++ {
+		sum += (x[i] - y[i]) * (x[i] - y[i])
 	}
 
 	return sum
