@@ -45,14 +45,21 @@ func Kmeans(mfccsFloats [][]float64, k int) [][]int {
 		centroids = append(centroids, mfccs[i].coefficients)
 	}
 
-	iterations := 100
+	iterations := 5
 	// Group the documents in clusters and recalculate the new centroid of the cluster
 	for times := 0; times < iterations; times++ {
-		for _, mfcc := range mfccs {
-			mfcc.clusterID = findClosestCentroid(centroids, mfcc.coefficients, variances)
+		fmt.Printf("Iteration: %d\n", times)
+		for i := range mfccs {
+			mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
+			fmt.Printf("%d %v\n", mfccs[i].clusterID, mfccs[i].coefficients)
 		}
 
 		centroids = findNewCentroids(mfccs, k)
+	}
+
+	fmt.Printf("Centroids:\n")
+	for i, c := range centroids {
+		fmt.Printf("%d %v\n", i, c)
 	}
 
 	return nil
@@ -82,6 +89,9 @@ func getCovarianceMatrixDiagonal(mfccs [][]float64) []float64 {
 
 func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	centroids := make([][]float64, k, k)
+	for i := range centroids {
+		centroids[i] = make([]float64, len(mfccs[0].coefficients), len(mfccs[0].coefficients))
+	}
 	mfccsInCluster := make([]int, k, k)
 
 	for _, mfcc := range mfccs {
@@ -89,7 +99,17 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 		add(&centroids[mfcc.clusterID], mfcc.coefficients)
 	}
 
+	for i := range centroids {
+		divide(&centroids[i], mfccsInCluster[i])
+	}
+
 	return centroids
+}
+
+func divide(x *[]float64, n int) {
+	for i := 0; i < len(*x); i++ {
+		(*x)[i] = (*x)[i] / float64(n)
+	}
 }
 
 func add(x *[]float64, y []float64) {
