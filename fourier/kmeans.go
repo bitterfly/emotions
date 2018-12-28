@@ -14,10 +14,14 @@ type MfccClusterisable struct {
 	clusterID    int32
 }
 
+func (m MfccClusterisable) GetCluster() int32 {
+	return m.clusterID
+}
+
 // Kmeans takes all the mfccs for several files
 // which are of size nx39 (where n is file_len / 10ms)
 // and returns k arrays of indices, where in array i we have the indices in the i-th cluster
-func Kmeans(mfccsFloats [][]float64, k int) [][]int {
+func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, []MfccClusterisable) {
 	variances := getCovarianceMatrixDiagonal(mfccsFloats)
 
 	mfccs := make([]MfccClusterisable, len(mfccsFloats), len(mfccsFloats))
@@ -46,22 +50,27 @@ func Kmeans(mfccsFloats [][]float64, k int) [][]int {
 	}
 
 	iterations := 100
+	rsss := make([]float64, 0, iterations)
 	// Group the documents in clusters and recalculate the new centroid of the cluster
 	for times := 0; times < iterations; times++ {
-		// fmt.Printf("Iteration: %d\n", times)
 		for i := range mfccs {
 			mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
 		}
 
 		centroids = findNewCentroids(mfccs, k)
+		rsss = append(rsss, getRss(mfccs, centroids, variances))
+
+		// break if there is no difference between new and old centroids
+		if times > 1 && math.Abs(rsss[times-1]-rsss[times]) < 0.0000001 {
+			fmt.Printf("Break on iteration %d\n", times)
+			break
+		}
 	}
 
-	fmt.Printf("Centroids:\n")
-	for i, c := range centroids {
-		fmt.Printf("%d %v\n", i, c)
+	for i := range mfccs {
+		mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
 	}
-
-	return nil
+	return centroids, mfccs
 }
 
 func getCovarianceMatrixDiagonal(mfccs [][]float64) []float64 {
@@ -86,8 +95,20 @@ func getCovarianceMatrixDiagonal(mfccs [][]float64) []float64 {
 	return variances
 }
 
+func getRss(mfccs []MfccClusterisable, centroids [][]float64, variances []float64) float64 {
+	var rss float64
+
+	for _, mfcc := range mfccs {
+		distance := mahalanobisDistance(mfcc.coefficients, centroids[mfcc.clusterID], variances)
+		rss += distance * distance
+	}
+
+	return rss
+}
+
 func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	centroids := make([][]float64, k, k)
+
 	for i := range centroids {
 		centroids[i] = make([]float64, len(mfccs[0].coefficients), len(mfccs[0].coefficients))
 	}
@@ -100,7 +121,6 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 
 	for i := range centroids {
 		divide(&centroids[i], mfccsInCluster[i])
-
 	}
 
 	return centroids
@@ -124,8 +144,7 @@ func findClosestCentroid(centroids [][]float64, mfcc []float64, variances []floa
 	argmin := int32(-1)
 
 	for i, centroid := range centroids {
-		currentDistance := euclidianDistance(centroid, mfcc, variances)
-		// currentDistance := mahalanobisDistance(centroid, mfcc, variances)
+		currentDistance := mahalanobisDistance(centroid, mfcc, variances)
 		if currentDistance < min {
 			min = currentDistance
 			argmin = int32(i)

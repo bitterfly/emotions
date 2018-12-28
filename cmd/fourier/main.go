@@ -1,27 +1,54 @@
 package main
 
-import "github.com/bitterfly/emotions/fourier"
+import (
+	"fmt"
+	"os"
+
+	"github.com/bitterfly/emotions/fourier"
+)
 
 func main() {
-	// filename := os.Args[1]
-	// wf, _ := fourier.Read(filename, 0, 0.97)
+	// dirname := os.Args[1]
+	// files, _ := ioutil.ReadDir(dirname)
 
-	// mfccs := fourier.MFCCs(wf, 13, 23)
-	// doubles := fourier.MFCCcDouble(mfccs)
-
-	// for i, d := range doubles {
-	// 	fmt.Printf("%d %v\n", i, d)
-	// 	fmt.Printf("\n")
+	// indices := make([]int, len(files), len(files))
+	// mfccs := make([][]float64, 0, len(files)*1000)
+	// names := make([]string, len(files), len(files))
+	// for i, f := range files {
+	// 	names[i] = f.Name()[0 : len(f.Name())-4]
+	// 	wf, err := fourier.Read(path.Join(dirname, f.Name()), 0, 0.97)
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	mfccs = append(mfccs, fourier.MFCCs(wf, 13, 23)...)
+	// 	indices[i] = len(mfccs) - 1
 	// }
 
+	// fmt.Printf("%d\n", len(mfccs))
+	// fmt.Printf("Kmeans: \n")
 	points := [][]float64{
-		[]float64{1.0, 1.0},
-		[]float64{1.5, 2.0},
-		[]float64{3.0, 4.0},
-		[]float64{5.0, 7.0},
-		[]float64{3.5, 5.0},
-		[]float64{4.5, 5.0},
-		[]float64{3.5, 4.5},
+		[]float64{151700, 351102},
+		[]float64{155799, 354358},
+		[]float64{142857, 352716},
+		[]float64{152726, 349144},
+		[]float64{151008, 349692},
 	}
-	fourier.Kmeans(points, 2)
+
+	c, ms := fourier.Kmeans(points, 1)
+
+	pf, _ := os.Create("/tmp/points.csv")
+	cf, _ := os.Create("/tmp/centroids.csv")
+	defer pf.Close()
+	defer cf.Close()
+
+	fmt.Fprintf(pf, "X, Y, Z\n")
+	fmt.Fprintf(cf, "X, Y, Z\n")
+
+	for i, ms := range ms {
+		fmt.Fprintf(pf, "%f, %f, %d\n", points[i][0], points[i][1], ms.GetCluster())
+	}
+
+	for i, cc := range c {
+		fmt.Fprintf(cf, "%f, %f, %d\n", cc[0], cc[1], i)
+	}
 }

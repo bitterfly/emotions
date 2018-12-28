@@ -55,6 +55,7 @@ func melScale(coefficients []Complex, sampleRate int, M int) []float64 {
 	return melScaleFrame
 }
 
+//MFCCs returns the mfcc coefficients, their first and second derivatives
 func MFCCs(wf WavFile, C int, M int) [][]float64 {
 	frames := CutWavFileIntoFrames(wf)
 	melScaleFrames := make([][]float64, len(frames), len(frames))
@@ -67,7 +68,7 @@ func MFCCs(wf WavFile, C int, M int) [][]float64 {
 		melScaleFrames[i] = melScale(frameCoefficients, int(wf.sampleRate), M)
 	}
 
-	return getCoeffiecientsForBanks(melScaleFrames, energies, C)
+	return MFCCcDouble(getCoeffiecientsForBanks(melScaleFrames, energies, C))
 }
 
 // getCoefficinetsForBanks takes all the banks (#frames)x(#banks) and returns C of the MFCC coefficients
