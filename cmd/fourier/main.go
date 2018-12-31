@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/bitterfly/emotions/fourier"
 )
 
@@ -34,21 +31,21 @@ func main() {
 		[]float64{151008, 349692},
 	}
 
-	c, ms := fourier.Kmeans(points, 1)
+	fourier.Kmeans(points, 2)
 
-	pf, _ := os.Create("/tmp/points.csv")
-	cf, _ := os.Create("/tmp/centroids.csv")
-	defer pf.Close()
-	defer cf.Close()
+	// pf, _ := os.Create("/tmp/points.csv")
+	// cf, _ := os.Create("/tmp/centroids.csv")
+	// defer pf.Close()
+	// defer cf.Close()
 
-	fmt.Fprintf(pf, "X, Y, Z\n")
-	fmt.Fprintf(cf, "X, Y, Z\n")
+	// fmt.Fprintf(pf, "X, Y, Z\n")
+	// fmt.Fprintf(cf, "X, Y, Z\n")
 
-	for i, ms := range ms {
-		fmt.Fprintf(pf, "%f, %f, %d\n", points[i][0], points[i][1], ms.GetCluster())
-	}
+	// for i, ms := range ms {
+	// 	fmt.Fprintf(pf, "%f, %f, %d\n", points[i][0], points[i][1], ms.GetCluster())
+	// }
 
-	for i, cc := range c {
-		fmt.Fprintf(cf, "%f, %f, %d\n", cc[0], cc[1], i)
-	}
+	// for i, cc := range c {
+	// 	fmt.Fprintf(cf, "%f, %f, %d\n", cc[0], cc[1], i)
+	// }
 }

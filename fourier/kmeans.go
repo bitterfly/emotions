@@ -14,15 +14,17 @@ type MfccClusterisable struct {
 	clusterID    int32
 }
 
+// GetCluster returns the cluster the mfcc vector was sorted into
 func (m MfccClusterisable) GetCluster() int32 {
 	return m.clusterID
 }
 
-// Kmeans takes all the mfccs for several files
+// Kmeans takes all the mfccs for a file
 // which are of size nx39 (where n is file_len / 10ms)
-// and returns k arrays of indices, where in array i we have the indices in the i-th cluster
-func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, []MfccClusterisable) {
-	variances := getCovarianceMatrixDiagonal(mfccsFloats)
+// and separates them into k clusters
+// then returns the means and variance of each cluster
+func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64) {
+	_, variances := getμAndσ(mfccsFloats)
 
 	mfccs := make([]MfccClusterisable, len(mfccsFloats), len(mfccsFloats))
 	for i, mfcc := range mfccsFloats {
@@ -70,10 +72,42 @@ func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, []MfccClusterisable) {
 	for i := range mfccs {
 		mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
 	}
-	return centroids, mfccs
+
+	return getClustersμAndσ(mfccs, k)
 }
 
-func getCovarianceMatrixDiagonal(mfccs [][]float64) []float64 {
+func getClustersμAndσ(mfccs []MfccClusterisable, k int) ([][]float64, [][]float64) {
+	expectations := make([][]float64, k, k)
+	expectationsSquared := make([][]float64, k, k)
+	variances := make([][]float64, k, k)
+	numInCluster := make([]int, k, k)
+
+	for i := 0; i < k; i++ {
+		expectations[i] = make([]float64, len(mfccs[0].coefficients))
+		expectationsSquared[i] = make([]float64, len(mfccs[0].coefficients))
+		variances[i] = make([]float64, len(mfccs[0].coefficients))
+	}
+
+	for _, mfcc := range mfccs {
+		numInCluster[mfcc.clusterID]++
+		for i, c := range mfcc.coefficients {
+			expectations[mfcc.clusterID][i] += c
+			expectationsSquared[mfcc.clusterID][i] += c * c
+		}
+	}
+
+	for i := 0; i < k; i++ {
+		for j := 0; j < len(mfccs[0].coefficients); j++ {
+			expectations[i][j] /= float64(numInCluster[i])
+			expectationsSquared[i][j] /= float64(numInCluster[i])
+			variances[i][j] = expectationsSquared[i][j] - expectations[i][j]*expectations[i][j]
+		}
+	}
+
+	return expectations, variances
+}
+
+func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
 	variances := make([]float64, len(mfccs[0]), len(mfccs[0]))
 
 	expectation := make([]float64, len(mfccs[0]), len(mfccs[0]))
@@ -86,13 +120,16 @@ func getCovarianceMatrixDiagonal(mfccs [][]float64) []float64 {
 	}
 
 	for j := 0; j < len(mfccs[0]); j++ {
-		variances[j] = expectationSquared[j]/float64(len(mfccs)) - expectation[j]*expectation[j]/float64(len(mfccs))
+		expectation[j] = expectation[j] / float64(len(mfccs))
+		expectationSquared[j] = expectationSquared[j] / float64(len(mfccs))
+
+		variances[j] = expectationSquared[j] - expectation[j]*expectation[j]
 		if variances[j] < EPS {
 			panic(fmt.Sprintf("%f", variances[j]))
 		}
 	}
 
-	return variances
+	return expectation, variances
 }
 
 func getRss(mfccs []MfccClusterisable, centroids [][]float64, variances []float64) float64 {
