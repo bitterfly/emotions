@@ -23,7 +23,7 @@ func (m MfccClusterisable) GetCluster() int32 {
 // which are of size nx39 (where n is file_len / 10ms)
 // and separates them into k clusters
 // then returns the means and variance of each cluster
-func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64) {
+func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64, []int) {
 	_, variances := getμAndσ(mfccsFloats)
 
 	mfccs := make([]MfccClusterisable, len(mfccsFloats), len(mfccsFloats))
@@ -73,10 +73,10 @@ func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64) {
 		mfccs[i].clusterID = findClosestCentroid(centroids, mfccs[i].coefficients, variances)
 	}
 
-	return getClustersμAndσ(mfccs, k)
+	return getClustersμσcount(mfccs, k)
 }
 
-func getClustersμAndσ(mfccs []MfccClusterisable, k int) ([][]float64, [][]float64) {
+func getClustersμσcount(mfccs []MfccClusterisable, k int) ([][]float64, [][]float64, []int) {
 	expectations := make([][]float64, k, k)
 	expectationsSquared := make([][]float64, k, k)
 	variances := make([][]float64, k, k)
@@ -104,7 +104,7 @@ func getClustersμAndσ(mfccs []MfccClusterisable, k int) ([][]float64, [][]floa
 		}
 	}
 
-	return expectations, variances
+	return expectations, variances, numInCluster
 }
 
 func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
@@ -161,18 +161,6 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	}
 
 	return centroids
-}
-
-func divide(x *[]float64, n int) {
-	for i := 0; i < len(*x); i++ {
-		(*x)[i] = (*x)[i] / float64(n)
-	}
-}
-
-func add(x *[]float64, y []float64) {
-	for i := 0; i < len(y); i++ {
-		(*x)[i] += y[i]
-	}
 }
 
 func findClosestCentroid(centroids [][]float64, mfcc []float64, variances []float64) int32 {
