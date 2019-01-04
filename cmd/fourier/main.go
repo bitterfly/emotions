@@ -23,15 +23,27 @@ func main() {
 
 	// fmt.Printf("%d\n", len(mfccs))
 	// fmt.Printf("Kmeans: \n")
+	// points := [][]float64{
+	// 	[]float64{1, 0, 1.002},
+	// 	[]float64{0, 1, 1.02},
+	// 	[]float64{5.23, 5.22, 5.10},
+	// 	[]float64{6.23, 6.4, 6.33},
+	// 	[]float64{7.11, 7.22, 7.13},
+	// }
+
 	points := [][]float64{
-		[]float64{151700, 351102},
-		[]float64{155799, 354358},
-		[]float64{142857, 352716},
-		[]float64{152726, 349144},
-		[]float64{151008, 349692},
+		[]float64{1.2},
+		[]float64{0.21},
+		[]float64{2.21},
+		[]float64{-3.21},
+		[]float64{-4.21},
+
+		[]float64{50.20},
+		[]float64{63.21},
+		[]float64{78.13},
 	}
 
-	fourier.Kmeans(points, 2)
+	fourier.GMM(points, 2)
 
 	// pf, _ := os.Create("/tmp/points.csv")
 	// cf, _ := os.Create("/tmp/centroids.csv")

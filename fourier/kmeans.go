@@ -19,11 +19,11 @@ func (m MfccClusterisable) GetCluster() int32 {
 	return m.clusterID
 }
 
-// Kmeans takes all the mfccs for a file
+// KMeans takes all the mfccs for a file
 // which are of size nx39 (where n is file_len / 10ms)
 // and separates them into k clusters
 // then returns the means and variance of each cluster
-func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64, []int) {
+func KMeans(mfccsFloats [][]float64, k int) ([]MfccClusterisable, [][]float64, [][]float64, []int) {
 	_, variances := getμAndσ(mfccsFloats)
 
 	mfccs := make([]MfccClusterisable, len(mfccsFloats), len(mfccsFloats))
@@ -33,6 +33,12 @@ func Kmeans(mfccsFloats [][]float64, k int) ([][]float64, [][]float64, []int) {
 			clusterID:    -1,
 		}
 	}
+
+	μ, σ, numInCluster := kMeans(mfccs, variances, k)
+	return mfccs, μ, σ, numInCluster
+}
+
+func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64, [][]float64, []int) {
 
 	centroidIndices := make(map[int32]struct{})
 
@@ -157,7 +163,7 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	}
 
 	for i := range centroids {
-		divide(&centroids[i], mfccsInCluster[i])
+		divide(&centroids[i], float64(mfccsInCluster[i]))
 	}
 
 	return centroids
