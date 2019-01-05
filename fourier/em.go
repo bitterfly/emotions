@@ -23,28 +23,35 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 
 	fmt.Printf("X: %v\n", X)
 
-	//compute the weights
-	for step := 0; step < 10; step++ {
-		fmt.Printf("Step: %d, Log likelihood: %f\n", step, logLikelihood(X, phi, expectations, variances, k))
-		fmt.Printf("phi: %v\n", phi)
-		fmt.Printf("expectations: %v\n", expectations)
-		fmt.Printf("variances: %v\n", variances)
+	prev_likelihood := 0.0
+	for step := 0; step < 100; step++ {
+		// fmt.Printf("phi: %v\n", phi)
+		// fmt.Printf("expectations: %v\n", expectations)
+		// fmt.Printf("variances: %v\n", variances)
 
-		fmt.Printf("len(X): %d\n", len(X))
+		// fmt.Printf("len(X): %d\n", len(X))
+
 		w := make([][]float64, len(X), len(X))
+		maximums := make([]float64, len(X), len(X))
 		for i := 0; i < len(X); i++ {
-			sum := 0.0
-
 			for j := 0; j < k; j++ {
 				w[i] = make([]float64, k, k)
-				w[i][j] = phi[j] * N(X[i].coefficients, expectations[j], variances[j])
-				fmt.Printf("w[%d][%d]= %f,phi: %f\n", i, j, w[i][j], phi[j])
-				fmt.Printf("N: %f,c: %v, exp: %v, var: %v\n", N(X[i].coefficients, expectations[j], variances[j]), X[i].coefficients, expectations[j], variances[j])
-				sum += w[i][j]
+				w[i][j] = math.Log(phi[j]) + N(X[i].coefficients, expectations[j], variances[j])
+				if maximums[i] < w[i][j] {
+					maximums[i] = w[i][j]
+				}
 			}
-			fmt.Printf("sum: %f\n", sum)
+
+			var sum float64
+			for j := 0; j < k; j++ {
+				if w[i][j] < maximums[i]-10 {
+					w[i][j] = 0
+				} else {
+					sum += math.Exp(w[i][j] - maximums[i])
+					w[i][j] = math.Exp(w[i][j] - maximums[i])
+				}
+			}
 			divide(&w[i], sum)
-			fmt.Printf("w[%d] = %v\n", i, w[i])
 		}
 
 		N := make([]float64, k, k)
@@ -54,8 +61,8 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
-		fmt.Printf("weights: %v\n", w)
-		fmt.Printf("Ns: %v\n", N)
+		// fmt.Printf("weights: %v\n", w)
+		// fmt.Printf("Ns: %v\n", N)
 		// compute the μ Σ ɸ
 		for j := 0; j < k; j++ {
 			zero(&(expectations[j]))
@@ -67,7 +74,7 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			for j := 0; j < k; j++ {
 				add(&expectations[j], multiplied(X[i].coefficients, w[i][j]))
 
-				fmt.Printf("Expectation[%d]: %f\n", j, expectations[j])
+				// fmt.Printf("Expectation[%d]: %f\n", j, expectations[j])
 				diagonal := minused(X[i].coefficients, expectations[j])
 				square(&diagonal)
 
@@ -80,8 +87,21 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			divide(&(variances[j]), N[j])
 			phi[j] = N[j] / float64(len(X))
 		}
+
+		likelihood := logLikelihood(X, phi, expectations, variances, k)
+		fmt.Printf("Step: %d, Log likelihood: %f\n", step, likelihood)
+
+		if epsDistance(likelihood, prev_likelihood, 0.00001) {
+			fmt.Printf("Break on step: %d\n", step)
+			break
+		}
+		prev_likelihood = likelihood
 	}
 
+}
+
+func epsDistance(a, b, e float64) bool {
+	return (a-b < e && a-b > -e)
 }
 
 func getDeterminant(variance []float64) float64 {
@@ -98,19 +118,16 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 		exp += (xi[i] - expectation[i]) * (xi[i] - expectation[i]) / variance[i]
 	}
 
-	fmt.Printf("exp: %f\n", exp)
-
-	//N: 0.000000,c: [6.21], exp: [0.705], var: [0.24502500000000005]
-
-	return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2.0*math.Pi, float64(len(xi)))*getDeterminant(variance))
+	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2.0*math.Pi, float64(len(xi)))*getDeterminant(variance))
+	// return log of this
+	return -0.5 * (exp - float64(len(xi))*math.Log(2*math.Pi) - math.Log(getDeterminant(variance)))
 }
 
 func logLikelihood(X []MfccClusterisable, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
 	sum := 0.0
 	for i := 0; i < len(X); i++ {
 		for j := 0; j < k; j++ {
-			fmt.Printf("%f N(%v, %v, %v) - %.8f\n", phi[j], X[i].coefficients, expectations[j], variances[j], phi[j]*N(X[i].coefficients, expectations[j], variances[j]))
-			sum += math.Log(phi[j] * N(X[i].coefficients, expectations[j], variances[j]))
+			sum += math.Log(phi[j] * math.Exp(N(X[i].coefficients, expectations[j], variances[j])))
 		}
 	}
 	return sum
