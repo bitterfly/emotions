@@ -1,13 +1,53 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/bitterfly/emotions/fourier"
 )
 
 func main() {
 	// dirname := os.Args[1]
 	// files, _ := ioutil.ReadDir(dirname)
+	wf1, _ := fourier.Read(os.Args[1], 0, 0.97)
+	// wf2, _ := fourier.Read(os.Args[2], 0, 0.97)
 
+	mfcc_happy := fourier.MFCCs(wf1, 13, 23)
+	// mfcc_sad := fourier.MFCCs(wf2, 13, 23)
+
+	k := 3
+
+	test_mfccs := make([][]float64, 40, 40)
+	for i := 0; i < 40; i++ {
+		test_mfccs[i] = make([]float64, 7, 7)
+		test_mfccs[i][0] = mfcc_happy[i][0]
+		test_mfccs[i][1] = mfcc_happy[i][1]
+		test_mfccs[i][2] = mfcc_happy[i][2]
+		test_mfccs[i][3] = mfcc_happy[i][3]
+		test_mfccs[i][4] = mfcc_happy[i][4]
+		test_mfccs[i][5] = mfcc_happy[i][5]
+		test_mfccs[i][6] = mfcc_happy[i][6]
+	}
+	fmt.Printf("Happy GMM\n")
+	_, _, _ = fourier.GMM(test_mfccs, k)
+
+	// happy_phi, happy_exp, happy_var := fourier.GMM(mfcc_happy, k)
+
+	// fmt.Printf("Sad GMM\n")
+	// sad_phi, sad_exp, sad_var := fourier.GMM(mfcc_sad, k)
+
+	// happy := 0
+	// sad := 0
+	// for _, m := range mfcc_happy {
+	// 	if fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k) > fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k) {
+	// 		happy += 1
+	// 	} else {
+	// 		sad += 1
+	// 	}
+	// }
+
+	// fmt.Printf("Happy: %d, Sad: %d\n", happy, sad)
 	// indices := make([]int, len(files), len(files))
 	// mfccs := make([][]float64, 0, len(files)*1000)
 	// names := make([]string, len(files), len(files))
@@ -30,20 +70,6 @@ func main() {
 	// 	[]float64{6.23, 6.4, 6.33},
 	// 	[]float64{7.11, 7.22, 7.13},
 	// }
-
-	points := [][]float64{
-		[]float64{1.2},
-		[]float64{0.21},
-		[]float64{2.21},
-		[]float64{-3.21},
-		[]float64{-4.21},
-
-		[]float64{50.20},
-		[]float64{63.21},
-		[]float64{78.13},
-	}
-
-	fourier.GMM(points, 2)
 
 	// pf, _ := os.Create("/tmp/points.csv")
 	// cf, _ := os.Create("/tmp/centroids.csv")
