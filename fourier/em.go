@@ -37,16 +37,11 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			maximums[i] = math.Inf(-1)
 		}
 
-		fmt.Fprintf(f, "Step %d\n", step)
-
 		for i := 0; i < len(X); i++ {
 			w[i] = make([]float64, k, k)
 
 			for j := 0; j < k; j++ {
 				w[i][j] = math.Log(phi[j]) + N(X[i].coefficients, expectations[j], variances[j])
-
-				fmt.Fprintf(f, "w[%d][%d] = %f, phi[%d]: %f, N: %f\n", i, j, w[i][j], j, phi[j], N(X[i].coefficients, expectations[j], variances[j]))
-				fmt.Fprintf(f, "X: %v\nexp: %v\nvar: %v\n\n", X[i].coefficients, expectations[j], variances[j])
 
 				if maximums[i] < w[i][j] {
 					maximums[i] = w[i][j]
@@ -64,8 +59,6 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 				}
 			}
 
-			fmt.Fprintf(f, "sum[%d]: %f\n", i, sum)
-
 			divide(&w[i], sum)
 		}
 
@@ -82,8 +75,6 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
-		fmt.Printf(fmt.Sprintf("Step[%d], w: %v\nNs: %v\nphi: %v\nexp: %v\nvar: %v\n\n", step, w, N, phi, expectations, variances))
-
 		for j := 0; j < k; j++ {
 			zero(&(expectations[j]))
 			zero(&(variances[j]))
@@ -99,6 +90,7 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 				square(&diagonal)
 
 				add(&variances[j], multiplied(diagonal, w[i][j]))
+				eps(&variances[j], epsilon)
 			}
 		}
 
@@ -115,6 +107,9 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			fmt.Printf("Break on step: %d\n", step)
 			break
 		}
+
+		fmt.Fprintf(f, "Step %d\n", step)
+		fmt.Fprintf(f, "Step[%d], w: %v\nNs: %v\nphi: %v\nexp: %v\nvar: %v\n\n", step, w, N, phi, expectations, variances)
 
 		prevLikelihood = likelihood
 	}

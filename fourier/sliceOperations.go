@@ -47,6 +47,14 @@ func square(x *[]float64) {
 	}
 }
 
+func eps(x *[]float64, epsilon float64) {
+	for i := 0; i < len(*x); i++ {
+		if (*x)[i] < epsilon {
+			(*x)[i] = epsilon
+		}
+	}
+}
+
 func minused(x []float64, y []float64) []float64 {
 	z := make([]float64, len(x), len(x))
 	for i := 0; i < len(x); i++ {
