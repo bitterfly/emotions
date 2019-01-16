@@ -19,6 +19,23 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 	// start with k-mean clusters expectations, variances and we use the number of points in a cluster for phi
 	// and choose
 
+	fmt.Printf("Expectations:\n%v\n\n", expectations)
+	fmt.Printf("Variances:\n%v\n\n", variances)
+
+	g, _ := os.Create("/tmp/vectors")
+	defer g.Close()
+	for i := 0; i < len(X); i++ {
+		fmt.Fprintf(g, "(%d, [", X[i].clusterID)
+
+		for i, x := range X[i].coefficients {
+			if i < len(X[i].coefficients)-1 {
+				fmt.Fprintf(g, "%f, ", x)
+			} else {
+				fmt.Fprintf(g, "%f]),\n", x)
+			}
+		}
+	}
+
 	phi := make([]float64, k, k)
 	for i := 0; i < k; i++ {
 		phi[i] = float64(numInCluster[i]) / float64(len(X))
@@ -27,6 +44,7 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 	// weights
 	epsilon := 0.000001
 	f, _ := os.Create("/tmp/ws")
+	defer f.Close()
 
 	prevLikelihood := 0.0
 	likelihood := 0.0
@@ -84,13 +102,15 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
 				add(&expectations[j], multiplied(X[i].coefficients, w[i][j]))
+			}
+		}
 
-				// fmt.Printf("Expectation[%d]: %f\n", j, expectations[j])
+		for i := 0; i < len(X); i++ {
+			for j := 0; j < k; j++ {
 				diagonal := minused(X[i].coefficients, expectations[j])
 				square(&diagonal)
 
 				add(&variances[j], multiplied(diagonal, w[i][j]))
-				eps(&variances[j], epsilon)
 			}
 		}
 
@@ -148,17 +168,17 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 func logLikelihoodFloat(X []float64, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
 	sum := 0.0
 	for j := 0; j < k; j++ {
-		sum += math.Log(phi[j] * math.Exp(N(X, expectations[j], variances[j])))
+		sum += phi[j] * math.Exp(N(X, expectations[j], variances[j]))
 	}
-	return sum
+	return math.Log(sum)
 }
+
+// sum_i log(sum_j phi_j * N(x[i], m[k], s[k]))
 
 func logLikelihood(X []MfccClusterisable, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
 	sum := 0.0
 	for i := 0; i < len(X); i++ {
-		for j := 0; j < k; j++ {
-			sum += math.Log(phi[j] * math.Exp(N(X[i].coefficients, expectations[j], variances[j])))
-		}
+		sum += logLikelihoodFloat(X[i].coefficients, phi, expectations, variances, k)
 	}
 	return sum
 }

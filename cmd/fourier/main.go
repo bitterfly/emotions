@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/bitterfly/emotions/fourier"
@@ -17,37 +16,34 @@ func main() {
 	// mfcc_sad := fourier.MFCCs(wf2, 13, 23)
 
 	k := 3
+	// test_happy := make([][]float64, 40, 40)
+	// // test_sad := make([][]float64, 40, 40)
+	// for i := 0; i < 40; i++ {
+	// 	test_happy[i] = mfcc_happy[i][0:6]
+	// 	// test_sad[i] = mfcc_sad[i][0:6]
+	// }
 
-	test_mfccs := make([][]float64, 40, 40)
-	for i := 0; i < 40; i++ {
-		test_mfccs[i] = make([]float64, 7, 7)
-		test_mfccs[i][0] = mfcc_happy[i][0]
-		test_mfccs[i][1] = mfcc_happy[i][1]
-		test_mfccs[i][2] = mfcc_happy[i][2]
-		test_mfccs[i][3] = mfcc_happy[i][3]
-		test_mfccs[i][4] = mfcc_happy[i][4]
-		test_mfccs[i][5] = mfcc_happy[i][5]
-		test_mfccs[i][6] = mfcc_happy[i][6]
-	}
-	fmt.Printf("Happy GMM\n")
-	_, _, _ = fourier.GMM(test_mfccs, k)
-
-	// happy_phi, happy_exp, happy_var := fourier.GMM(mfcc_happy, k)
+	_, _, _ = fourier.GMM(mfcc_happy, k)
+	// fmt.Printf("Happy GMM\n")
+	// happy_phi, happy_exp, happy_var := fourier.GMM(test_happy, k)
 
 	// fmt.Printf("Sad GMM\n")
-	// sad_phi, sad_exp, sad_var := fourier.GMM(mfcc_sad, k)
+	// sad_phi, sad_exp, sad_var := fourier.GMM(test_sad, k)
 
 	// happy := 0
 	// sad := 0
-	// for _, m := range mfcc_happy {
+	// for _, m := range test_sad {
+	// 	fmt.Printf("With happy: %f\n", fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k))
+	// 	fmt.Printf("With sad: %f\n", fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k))
 	// 	if fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k) > fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k) {
-	// 		happy += 1
+	// 		happy++
 	// 	} else {
-	// 		sad += 1
+	// 		sad++
 	// 	}
 	// }
 
 	// fmt.Printf("Happy: %d, Sad: %d\n", happy, sad)
+
 	// indices := make([]int, len(files), len(files))
 	// mfccs := make([][]float64, 0, len(files)*1000)
 	// names := make([]string, len(files), len(files))
