@@ -22,8 +22,9 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 	fmt.Printf("Expectations:\n%v\n\n", expectations)
 	fmt.Printf("Variances:\n%v\n\n", variances)
 
-	g, _ := os.Create("/tmp/vectors")
+	g, _ := os.Create("/home/do/geek/gits/emotions/data.py")
 	defer g.Close()
+	fmt.Fprintf(g, "data=[\n")
 	for i := 0; i < len(X); i++ {
 		fmt.Fprintf(g, "(%d, [", X[i].clusterID)
 
@@ -35,6 +36,7 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 	}
+	fmt.Fprintf(g, "]\n")
 
 	phi := make([]float64, k, k)
 	for i := 0; i < k; i++ {
@@ -42,51 +44,39 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 	}
 
 	// weights
-	epsilon := 0.000001
+	// epsilon := 0.000001
 	f, _ := os.Create("/tmp/ws")
 	defer f.Close()
 
 	prevLikelihood := 0.0
 	likelihood := 0.0
-	for step := 0; step < 10; step++ {
+	for step := 0; step < 100; step++ {
 		w := make([][]float64, len(X), len(X))
-		maximums := make([]float64, len(X), len(X))
-		for i := 0; i < len(maximums); i++ {
-			maximums[i] = math.Inf(-1)
-		}
+
+		var sum float64
 
 		for i := 0; i < len(X); i++ {
 			w[i] = make([]float64, k, k)
 
+			sum = 0
 			for j := 0; j < k; j++ {
-				w[i][j] = math.Log(phi[j]) + N(X[i].coefficients, expectations[j], variances[j])
-
-				if maximums[i] < w[i][j] {
-					maximums[i] = w[i][j]
-				}
-			}
-			var sum float64
-			for j := 0; j < k; j++ {
-				if i == 10 {
-				}
-				if w[i][j] < maximums[i]-10 {
-					w[i][j] = 0
-				} else {
-					w[i][j] = math.Exp(w[i][j] - maximums[i])
-					sum += w[i][j]
-				}
+				w[i][j] = phi[j] * N(X[i].coefficients, expectations[j], variances[j])
+				sum += w[i][j]
+				// fmt.Fprintf(f, "w[%d][%d] = %f, phi[%d]=%f, N(X[%d], exp[%d], var[%d]) = %f\n", i, j, w[i][j], j, phi[j], i, j, j, N(X[i].coefficients, expectations[j], variances[j]))
+				// fmt.Fprintf(f, "X[%d] = %v\n", i, X[i].coefficients)
+				// fmt.Fprintf(f, "exp[%d] = %v\n", j, expectations[j])
+				// fmt.Fprintf(f, "var[%d] = %v\n", j, variances[j])
+				// fmt.Fprint(f, "\n\n")
 			}
 
 			divide(&w[i], sum)
 		}
 
-		fmt.Printf("Step %d\n", step)
-		for i := 0; i < len(X); i++ {
-			for j := 0; j < k; j++ {
-				fmt.Printf("w[%d][%d] = %f ", i, j, w[i][j])
-			}
-			fmt.Printf("\n")
-		}
+		// for i := 0; i < len(X); i++ {
+		// 	for j := 0; j < k; j++ {
+		// 		fmt.Fprintf(f, "w[%d][%d] = %f\n", i, j, w[i][j])
+		// 	}
+		// }
 
 		N := make([]float64, k, k)
 		for i := 0; i < len(X); i++ {
@@ -95,10 +85,12 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
+		fmt.Fprintf(f, "Step %d\n", step)
 		for i := 0; i < k; i++ {
-			if N[i] < epsilon {
-				N[i] = epsilon
-			}
+			fmt.Fprintf(f, "phi[%d] = %f\n", i, phi[i])
+			// if N[i] < epsilon {
+			// N[i] = epsilon
+			// }
 		}
 
 		for j := 0; j < k; j++ {
@@ -139,8 +131,8 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			break
 		}
 
-		fmt.Fprintf(f, "Step %d\n", step)
-		fmt.Fprintf(f, "Step[%d], w: %v\nNs: %v\nphi: %v\nexp: %v\nvar: %v\n\n", step, w, N, phi, expectations, variances)
+		// fmt.Fprintf(f, "Step %d\n", step)
+		// fmt.Fprintf(f, "Step[%d], w: %v\nNs: %v\nphi: %v\nexp: %v\nvar: %v\n\n", step, w, N, phi, expectations, variances)
 
 		prevLikelihood = likelihood
 	}
@@ -173,13 +165,13 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 
 	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2.0*math.Pi, float64(len(xi)))*getDeterminant(variance))
 	// return log of this
-	return -0.5 * (exp + float64(len(xi))*math.Log(2*math.Pi) + math.Log(getDeterminant(variance)))
+	return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
 }
 
 func logLikelihoodFloat(X []float64, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
 	sum := 0.0
 	for j := 0; j < k; j++ {
-		sum += phi[j] * math.Exp(N(X, expectations[j], variances[j]))
+		sum += phi[j] * N(X, expectations[j], variances[j])
 	}
 	return math.Log(sum)
 }
