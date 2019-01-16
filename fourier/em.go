@@ -80,6 +80,14 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			divide(&w[i], sum)
 		}
 
+		fmt.Printf("Step %d\n", step)
+		for i := 0; i < len(X); i++ {
+			for j := 0; j < k; j++ {
+				fmt.Printf("w[%d][%d] = %f ", i, j, w[i][j])
+			}
+			fmt.Printf("\n")
+		}
+
 		N := make([]float64, k, k)
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
@@ -99,12 +107,14 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 		}
 		zero(&phi)
 
+		// Ecpectations
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
 				add(&expectations[j], multiplied(X[i].coefficients, w[i][j]))
 			}
 		}
 
+		// Variances
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
 				diagonal := minused(X[i].coefficients, expectations[j])
@@ -114,6 +124,7 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
+		// Phi and 1/Nk
 		for j := 0; j < k; j++ {
 			divide(&(expectations[j]), N[j])
 			divide(&(variances[j]), N[j])
@@ -162,7 +173,7 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 
 	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2.0*math.Pi, float64(len(xi)))*getDeterminant(variance))
 	// return log of this
-	return -0.5 * (exp - float64(len(xi))*math.Log(2*math.Pi) - math.Log(getDeterminant(variance)))
+	return -0.5 * (exp + float64(len(xi))*math.Log(2*math.Pi) + math.Log(getDeterminant(variance)))
 }
 
 func logLikelihoodFloat(X []float64, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
