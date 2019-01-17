@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/bitterfly/emotions/fourier"
 )
@@ -10,76 +13,89 @@ func main() {
 	// dirname := os.Args[1]
 	// files, _ := ioutil.ReadDir(dirname)
 	wf1, _ := fourier.Read(os.Args[1], 0, 0.97)
-	// wf2, _ := fourier.Read(os.Args[2], 0, 0.97)
+	wf2, _ := fourier.Read(os.Args[2], 0, 0.97)
 
 	mfcc_happy := fourier.MFCCs(wf1, 13, 23)
-	// mfcc_sad := fourier.MFCCs(wf2, 13, 23)
+	mfcc_sad := fourier.MFCCs(wf2, 13, 23)
 
-	k := 3
-	// test_happy := make([][]float64, 40, 40)
-	// // test_sad := make([][]float64, 40, 40)
-	// for i := 0; i < 40; i++ {
-	// 	test_happy[i] = mfcc_happy[i][0:6]
-	// 	// test_sad[i] = mfcc_sad[i][0:6]
-	// }
+	k := 5
 
-	_, _, _ = fourier.GMM(mfcc_happy, k)
-	// fmt.Printf("Happy GMM\n")
-	// happy_phi, happy_exp, happy_var := fourier.GMM(test_happy, k)
+	happy_indices := make(map[int]struct{})
+	sad_indices := make(map[int]struct{})
 
-	// fmt.Printf("Sad GMM\n")
-	// sad_phi, sad_exp, sad_var := fourier.GMM(test_sad, k)
+	rand.Seed(time.Now().UTC().UnixNano())
+	for len(happy_indices) < len(mfcc_happy)*20.0/100.0 {
+		ind := rand.Intn(len(mfcc_happy))
+		if _, ok := happy_indices[ind]; !ok {
+			happy_indices[ind] = struct{}{}
+		}
+	}
 
-	// happy := 0
-	// sad := 0
-	// for _, m := range test_sad {
-	// 	fmt.Printf("With happy: %f\n", fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k))
-	// 	fmt.Printf("With sad: %f\n", fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k))
-	// 	if fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k) > fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k) {
-	// 		happy++
-	// 	} else {
-	// 		sad++
-	// 	}
-	// }
+	rand.Seed(time.Now().UTC().UnixNano())
+	for len(sad_indices) < len(mfcc_sad)*20.0/100.0 {
+		ind := rand.Intn(len(mfcc_happy))
+		if _, ok := sad_indices[ind]; !ok {
+			sad_indices[ind] = struct{}{}
+		}
+	}
 
-	// fmt.Printf("Happy: %d, Sad: %d\n", happy, sad)
+	happy_test := make([][]float64, 0, len(happy_indices))
+	happy_train := make([][]float64, 0, len(mfcc_happy)-len(happy_indices))
 
-	// indices := make([]int, len(files), len(files))
-	// mfccs := make([][]float64, 0, len(files)*1000)
-	// names := make([]string, len(files), len(files))
-	// for i, f := range files {
-	// 	names[i] = f.Name()[0 : len(f.Name())-4]
-	// 	wf, err := fourier.Read(path.Join(dirname, f.Name()), 0, 0.97)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	mfccs = append(mfccs, fourier.MFCCs(wf, 13, 23)...)
-	// 	indices[i] = len(mfccs) - 1
-	// }
+	sad_test := make([][]float64, 0, len(sad_indices))
+	sad_train := make([][]float64, 0, len(mfcc_sad)-len(sad_indices))
 
-	// fmt.Printf("%d\n", len(mfccs))
-	// fmt.Printf("Kmeans: \n")
-	// points := [][]float64{
-	// 	[]float64{1, 0, 1.002},
-	// 	[]float64{0, 1, 1.02},
-	// 	[]float64{5.23, 5.22, 5.10},
-	// 	[]float64{6.23, 6.4, 6.33},
-	// 	[]float64{7.11, 7.22, 7.13},
-	// }
+	for i, m := range mfcc_happy {
+		if _, ok := happy_indices[i]; ok {
+			happy_test = append(happy_test, m)
+		} else {
+			happy_train = append(happy_train, m)
+		}
+	}
 
-	// pf, _ := os.Create("/tmp/points.csv")
-	// cf, _ := os.Create("/tmp/centroids.csv")
-	// defer pf.Close()
-	// defer cf.Close()
+	for i, m := range mfcc_sad {
+		if _, ok := sad_indices[i]; ok {
+			sad_test = append(sad_test, m)
+		} else {
+			sad_train = append(sad_train, m)
+		}
+	}
 
-	// fmt.Fprintf(pf, "X, Y, Z\n")
-	// fmt.Fprintf(cf, "X, Y, Z\n")
+	fmt.Printf("Happy_indices: %d\nHappy_test: %d\n", len(happy_indices), len(happy_test))
+	fmt.Printf("Sad_indices: %d\nSad_test: %d\n", len(sad_indices), len(sad_test))
 
-	// for i, ms := range ms {
-	// 	fmt.Fprintf(pf, "%f, %f, %d\n", points[i][0], points[i][1], ms.GetCluster())
-	// }
+	// _, _, _ = fourier.GMM(mfcc_happy, k)
+	fmt.Printf("Happy GMM train with %d\n", len(happy_train))
+	happy_phi, happy_exp, happy_var := fourier.GMM(happy_train, k)
 
-	// for i, cc := range c {
-	// 	fmt.Fprintf(cf, "%f, %f, %d\n", cc[0], cc[1], i)
-	// }
+	fmt.Printf("Sad GMM train with %d\n", len(sad_train))
+	sad_phi, sad_exp, sad_var := fourier.GMM(sad_train, k)
+
+	happy := 0
+	sad := 0
+	for _, m := range happy_test {
+		// fmt.Printf("With happy: %f\n", fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k))
+		// fmt.Printf("With sad: %f\n", fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k))
+		if fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k) > fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k) {
+			happy++
+		} else {
+			sad++
+		}
+	}
+
+	fmt.Printf("In happy(%d): Happy: %d, Fear: %d\n", len(happy_indices), happy, sad)
+
+	happy = 0
+	sad = 0
+	for _, m := range sad_test {
+		// fmt.Printf("With happy: %f\n", fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k))
+		// fmt.Printf("With sad: %f\n", fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k))
+		if fourier.EvaluateVector(m, happy_phi, happy_exp, happy_var, k) > fourier.EvaluateVector(m, sad_phi, sad_exp, sad_var, k) {
+			happy++
+		} else {
+			sad++
+		}
+	}
+
+	fmt.Printf("In sad(%d): Happy: %d, Fear: %d\n", len(sad_indices), happy, sad)
 }

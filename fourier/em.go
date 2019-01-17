@@ -19,24 +19,24 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 	// start with k-mean clusters expectations, variances and we use the number of points in a cluster for phi
 	// and choose
 
-	fmt.Printf("Expectations:\n%v\n\n", expectations)
-	fmt.Printf("Variances:\n%v\n\n", variances)
+	// fmt.Printf("Expectations:\n%v\n\n", expectations)
+	// fmt.Printf("Variances:\n%v\n\n", variances)
 
-	g, _ := os.Create("/home/do/geek/gits/emotions/data.py")
-	defer g.Close()
-	fmt.Fprintf(g, "data=[\n")
-	for i := 0; i < len(X); i++ {
-		fmt.Fprintf(g, "(%d, [", X[i].clusterID)
+	// g, _ := os.Create("/home/dodo/go/src/github.com/bitterfly/emotions/data.py")
+	// defer g.Close()
+	// fmt.Fprintf(g, "data=[\n")
+	// for i := 0; i < len(X); i++ {
+	// 	fmt.Fprintf(g, "(%d, [", X[i].clusterID)
 
-		for i, x := range X[i].coefficients {
-			if i < len(X[i].coefficients)-1 {
-				fmt.Fprintf(g, "%f, ", x)
-			} else {
-				fmt.Fprintf(g, "%f]),\n", x)
-			}
-		}
-	}
-	fmt.Fprintf(g, "]\n")
+	// 	for i, x := range X[i].coefficients {
+	// 		if i < len(X[i].coefficients)-1 {
+	// 			fmt.Fprintf(g, "%e, ", x)
+	// 		} else {
+	// 			fmt.Fprintf(g, "%e]),\n", x)
+	// 		}
+	// 	}
+	// }
+	// fmt.Fprintf(g, "]\n")
 
 	phi := make([]float64, k, k)
 	for i := 0; i < k; i++ {
@@ -62,19 +62,20 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			for j := 0; j < k; j++ {
 				w[i][j] = phi[j] * N(X[i].coefficients, expectations[j], variances[j])
 				sum += w[i][j]
-				// fmt.Fprintf(f, "w[%d][%d] = %f, phi[%d]=%f, N(X[%d], exp[%d], var[%d]) = %f\n", i, j, w[i][j], j, phi[j], i, j, j, N(X[i].coefficients, expectations[j], variances[j]))
-				// fmt.Fprintf(f, "X[%d] = %v\n", i, X[i].coefficients)
-				// fmt.Fprintf(f, "exp[%d] = %v\n", j, expectations[j])
-				// fmt.Fprintf(f, "var[%d] = %v\n", j, variances[j])
-				// fmt.Fprint(f, "\n\n")
 			}
 
 			divide(&w[i], sum)
 		}
 
+		// fmt.Fprintf(f, "Step %d\n", step)
 		// for i := 0; i < len(X); i++ {
 		// 	for j := 0; j < k; j++ {
-		// 		fmt.Fprintf(f, "w[%d][%d] = %f\n", i, j, w[i][j])
+		// 		fmt.Fprintf(f, "w[%d][%d] = %f, phi[%d]=%f, N(X[%d], exp[%d], var[%d]) = %e\n", i, j, w[i][j], j, phi[j], i, j, j, N(X[i].coefficients, expectations[j], variances[j]))
+		// 		fmt.Fprintf(f, "X[%d] = %v\n", i, X[i].coefficients)
+		// 		fmt.Fprintf(f, "exp[%d] = %v\n", j, expectations[j])
+		// 		fmt.Fprintf(f, "var[%d] = %v\n", j, variances[j])
+		// 		fmt.Fprint(f, "\n\n")
+		// 		// fmt.Fprintf(f, "w[%d][%d] = %.10f\n", i, j, w[i][j])
 		// 	}
 		// }
 
@@ -85,13 +86,9 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
-		fmt.Fprintf(f, "Step %d\n", step)
-		for i := 0; i < k; i++ {
-			fmt.Fprintf(f, "phi[%d] = %f\n", i, phi[i])
-			// if N[i] < epsilon {
-			// N[i] = epsilon
-			// }
-		}
+		// for i := 0; i < k; i++ {
+		// 	fmt.Fprintf(f, "N[%d] = %f\n", i, N[i])
+		// }
 
 		for j := 0; j < k; j++ {
 			zero(&(expectations[j]))
@@ -104,6 +101,9 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			for j := 0; j < k; j++ {
 				add(&expectations[j], multiplied(X[i].coefficients, w[i][j]))
 			}
+		}
+		for j := 0; j < k; j++ {
+			divide(&(expectations[j]), N[j])
 		}
 
 		// Variances
@@ -118,13 +118,11 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 
 		// Phi and 1/Nk
 		for j := 0; j < k; j++ {
-			divide(&(expectations[j]), N[j])
 			divide(&(variances[j]), N[j])
 			phi[j] = N[j] / float64(len(X))
 		}
 
 		likelihood = logLikelihood(X, phi, expectations, variances, k)
-		fmt.Printf("Log likelihood: %f\n", likelihood)
 
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
 			fmt.Printf("Break on step: %d\n", step)
