@@ -6,45 +6,46 @@ import (
 	"os"
 )
 
+// Gaussian represent a single gaussian
+type Gaussian struct {
+	Phi          float64
+	Expectations []float64
+	Variances    []float64
+}
+
+// GaussianMixture represent a mixture of gaussians
+type GaussianMixture = []Gaussian
+
+func zeroMixture(g GaussianMixture, K int) {
+	for k := 0; k < K; k++ {
+		zero(&g[k].Expectations)
+		zero(&g[k].Variances)
+		g[k].Phi = 0.0
+	}
+}
+
 // GMM returns the k gaussian mixures for the given data
-func GMM(mfccsFloats [][]float64, k int) ([]float64, [][]float64, [][]float64) {
+func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 	fmt.Printf("kMeans\n")
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
 	fmt.Printf("NumInClusters: %v\n", numInCluster)
 	fmt.Printf("EM\n")
-	return em(expectations, variances, numInCluster, X, k)
-}
 
-func em(expectations [][]float64, variances [][]float64, numInCluster []int, X []MfccClusterisable, k int) ([]float64, [][]float64, [][]float64) {
-	// start with k-mean clusters expectations, variances and we use the number of points in a cluster for phi
-	// and choose
+	gmixture := make(GaussianMixture, k, k)
 
-	// fmt.Printf("Expectations:\n%v\n\n", expectations)
-	// fmt.Printf("Variances:\n%v\n\n", variances)
-
-	// g, _ := os.Create("/home/dodo/go/src/github.com/bitterfly/emotions/data.py")
-	// defer g.Close()
-	// fmt.Fprintf(g, "data=[\n")
-	// for i := 0; i < len(X); i++ {
-	// 	fmt.Fprintf(g, "(%d, [", X[i].clusterID)
-
-	// 	for i, x := range X[i].coefficients {
-	// 		if i < len(X[i].coefficients)-1 {
-	// 			fmt.Fprintf(g, "%e, ", x)
-	// 		} else {
-	// 			fmt.Fprintf(g, "%e]),\n", x)
-	// 		}
-	// 	}
-	// }
-	// fmt.Fprintf(g, "]\n")
-
-	phi := make([]float64, k, k)
 	for i := 0; i < k; i++ {
-		phi[i] = float64(numInCluster[i]) / float64(len(X))
+		gmixture[i] = Gaussian{
+			Phi:          float64(numInCluster[i]) / float64(len(X)),
+			Expectations: expectations[i],
+			Variances:    variances[i],
+		}
 	}
 
-	// weights
-	// epsilon := 0.000001
+	return em(X, k, gmixture)
+}
+
+func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture {
+
 	f, _ := os.Create("/tmp/ws")
 	defer f.Close()
 
@@ -60,24 +61,12 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 
 			sum = 0
 			for j := 0; j < k; j++ {
-				w[i][j] = phi[j] * N(X[i].coefficients, expectations[j], variances[j])
+				w[i][j] = gMixture[j].Phi * N(X[i].coefficients, gMixture[j].Expectations, gMixture[j].Variances)
 				sum += w[i][j]
 			}
 
 			divide(&w[i], sum)
 		}
-
-		// fmt.Fprintf(f, "Step %d\n", step)
-		// for i := 0; i < len(X); i++ {
-		// 	for j := 0; j < k; j++ {
-		// 		fmt.Fprintf(f, "w[%d][%d] = %f, phi[%d]=%f, N(X[%d], exp[%d], var[%d]) = %e\n", i, j, w[i][j], j, phi[j], i, j, j, N(X[i].coefficients, expectations[j], variances[j]))
-		// 		fmt.Fprintf(f, "X[%d] = %v\n", i, X[i].coefficients)
-		// 		fmt.Fprintf(f, "exp[%d] = %v\n", j, expectations[j])
-		// 		fmt.Fprintf(f, "var[%d] = %v\n", j, variances[j])
-		// 		fmt.Fprint(f, "\n\n")
-		// 		// fmt.Fprintf(f, "w[%d][%d] = %.10f\n", i, j, w[i][j])
-		// 	}
-		// }
 
 		N := make([]float64, k, k)
 		for i := 0; i < len(X); i++ {
@@ -86,56 +75,45 @@ func em(expectations [][]float64, variances [][]float64, numInCluster []int, X [
 			}
 		}
 
-		// for i := 0; i < k; i++ {
-		// 	fmt.Fprintf(f, "N[%d] = %f\n", i, N[i])
-		// }
-
-		for j := 0; j < k; j++ {
-			zero(&(expectations[j]))
-			zero(&(variances[j]))
-		}
-		zero(&phi)
+		zeroMixture(gMixture, k)
 
 		// Ecpectations
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
-				add(&expectations[j], multiplied(X[i].coefficients, w[i][j]))
+				add(&gMixture[j].Expectations, multiplied(X[i].coefficients, w[i][j]))
 			}
 		}
 		for j := 0; j < k; j++ {
-			divide(&(expectations[j]), N[j])
+			divide(&(gMixture[j].Expectations), N[j])
 		}
 
 		// Variances
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
-				diagonal := minused(X[i].coefficients, expectations[j])
+				diagonal := minused(X[i].coefficients, gMixture[j].Expectations)
 				square(&diagonal)
 
-				add(&variances[j], multiplied(diagonal, w[i][j]))
+				add(&gMixture[j].Variances, multiplied(diagonal, w[i][j]))
 			}
 		}
 
 		// Phi and 1/Nk
 		for j := 0; j < k; j++ {
-			divide(&(variances[j]), N[j])
-			phi[j] = N[j] / float64(len(X))
+			divide(&(gMixture[j].Variances), N[j])
+			gMixture[j].Phi = N[j] / float64(len(X))
 		}
 
-		likelihood = logLikelihood(X, phi, expectations, variances, k)
+		likelihood = logLikelihood(X, k, gMixture)
 
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
-			fmt.Printf("Break on step: %d\n", step)
+			fmt.Printf("EM: Break on step: %d\n", step)
 			break
 		}
-
-		// fmt.Fprintf(f, "Step %d\n", step)
-		// fmt.Fprintf(f, "Step[%d], w: %v\nNs: %v\nphi: %v\nexp: %v\nvar: %v\n\n", step, w, N, phi, expectations, variances)
 
 		prevLikelihood = likelihood
 	}
 
-	return phi, expectations, variances
+	return gMixture
 }
 
 func epsDistance(a, b, e float64) bool {
@@ -151,8 +129,8 @@ func getDeterminant(variance []float64) float64 {
 }
 
 // EvaluateVector returns the likelihood a given vector
-func EvaluateVector(X []float64, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
-	return logLikelihoodFloat(X, phi, expectations, variances, k)
+func EvaluateVector(X []float64, k int, g GaussianMixture) float64 {
+	return logLikelihoodFloat(X, k, g)
 }
 
 func N(xi []float64, expectation []float64, variance []float64) float64 {
@@ -166,20 +144,20 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 	return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
 }
 
-func logLikelihoodFloat(X []float64, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
+func logLikelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
 	sum := 0.0
 	for j := 0; j < k; j++ {
-		sum += phi[j] * N(X, expectations[j], variances[j])
+		sum += g[j].Phi * N(X, g[j].Expectations, g[j].Variances)
 	}
 	return math.Log(sum)
 }
 
 // sum_i log(sum_j phi_j * N(x[i], m[k], s[k]))
 
-func logLikelihood(X []MfccClusterisable, phi []float64, expectations [][]float64, variances [][]float64, k int) float64 {
+func logLikelihood(X []MfccClusterisable, k int, g GaussianMixture) float64 {
 	sum := 0.0
 	for i := 0; i < len(X); i++ {
-		sum += logLikelihoodFloat(X[i].coefficients, phi, expectations, variances, k)
+		sum += logLikelihoodFloat(X[i].coefficients, k, g)
 	}
 	return sum
 }
