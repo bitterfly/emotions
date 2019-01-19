@@ -106,7 +106,7 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 		likelihood = logLikelihood(X, k, gMixture)
 
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
-			fmt.Printf("EM: Break on step: %d\n", step)
+			fmt.Printf("EM: Break on step: %d with likelihood: %f\n", step, likelihood)
 			break
 		}
 
