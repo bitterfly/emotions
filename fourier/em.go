@@ -53,16 +53,34 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 	likelihood := 0.0
 	for step := 0; step < 100; step++ {
 		w := make([][]float64, len(X), len(X))
-
 		var sum float64
+		maximums := make([]float64, len(X), len(X))
+
+		for i := 0; i < len(maximums); i++ {
+			maximums[i] = math.Inf(-1)
+		}
 
 		for i := 0; i < len(X); i++ {
 			w[i] = make([]float64, k, k)
 
+			for j := 0; j < k; j++ {
+				w[i][j] = math.Log(gMixture[j].Phi) + N(X[i].coefficients, gMixture[j].Expectations, gMixture[j].Variances)
+
+				if maximums[i] < w[i][j] {
+					maximums[i] = w[i][j]
+				}
+			}
+
 			sum = 0
 			for j := 0; j < k; j++ {
-				w[i][j] = gMixture[j].Phi * N(X[i].coefficients, gMixture[j].Expectations, gMixture[j].Variances)
-				sum += w[i][j]
+				if i == 10 {
+				}
+				if w[i][j] < maximums[i]-10 {
+					w[i][j] = 0
+				} else {
+					w[i][j] = math.Exp(w[i][j] - maximums[i])
+					sum += w[i][j]
+				}
 			}
 
 			divide(&w[i], sum)
@@ -105,6 +123,10 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 
 		likelihood = logLikelihood(X, k, gMixture)
 
+		if math.IsNaN(likelihood) {
+			panic("AAAA")
+		}
+
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
 			fmt.Printf("EM: Break on step: %d with likelihood: %f\n", step, likelihood)
 			break
@@ -139,15 +161,15 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 		exp += (xi[i] - expectation[i]) * (xi[i] - expectation[i]) / variance[i]
 	}
 
-	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2.0*math.Pi, float64(len(xi)))*getDeterminant(variance))
+	return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + math.Log(getDeterminant(variance)))
 	// return log of this
-	return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
+	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
 }
 
 func logLikelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
 	sum := 0.0
 	for j := 0; j < k; j++ {
-		sum += g[j].Phi * N(X, g[j].Expectations, g[j].Variances)
+		sum += g[j].Phi * math.Exp(N(X, g[j].Expectations, g[j].Variances))
 	}
 	return math.Log(sum)
 }
