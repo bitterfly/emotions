@@ -51,7 +51,8 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 
 	prevLikelihood := 0.0
 	likelihood := 0.0
-	for step := 0; step < 100; step++ {
+	step := 0
+	for step < 200 {
 		w := make([][]float64, len(X), len(X))
 		var sum float64
 		maximums := make([]float64, len(X), len(X))
@@ -128,13 +129,14 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 		}
 
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
-			fmt.Printf("EM: Break on step: %d with likelihood: %f\n", step, likelihood)
 			break
 		}
 
 		prevLikelihood = likelihood
+		step++
 	}
 
+	fmt.Printf("EM: Break on step: %d with likelihood: %f\n", step, likelihood)
 	return gMixture
 }
 
