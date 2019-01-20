@@ -34,12 +34,13 @@ func KMeans(mfccsFloats [][]float64, k int) ([]MfccClusterisable, [][]float64, [
 		}
 	}
 
+	fmt.Printf("\n================kMeans=================\n")
+
 	μ, σ, numInCluster := kMeans(mfccs, variances, k)
 	return mfccs, μ, σ, numInCluster
 }
 
-func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64, [][]float64, []int) {
-
+func initialiseRandom(mfccs []MfccClusterisable, k int, variances []float64) map[int32]struct{} {
 	centroidIndices := make(map[int32]struct{})
 
 	// First choose randomly the firts centroids
@@ -52,8 +53,44 @@ func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64,
 		}
 	}
 
+	return centroidIndices
+}
+
+func initialiseKPP(mfccs []MfccClusterisable, k int, variances []float64) map[int32]struct{} {
+	centroidIndices := make(map[int32]struct{})
+	rand.Seed(time.Now().UTC().UnixNano())
+	centroidIndices[rand.Int31n(int32(len(mfccs)))] = struct{}{}
+
+	for len(centroidIndices) < k {
+		probabilities := make([]float64, len(mfccs), len(mfccs))
+		sum := 0.0
+
+		for i, d := range mfccs {
+			probabilities[i] = findClosestCentroidFromPoints(mfccs, centroidIndices, d.coefficients, variances)
+			sum += probabilities[i]
+		}
+
+		divide(&probabilities, sum)
+
+		prob := rand.Float64()
+		newCentroidIndex := 0
+		currentSum := 0.0
+		for currentSum < prob {
+			currentSum += probabilities[newCentroidIndex]
+			newCentroidIndex++
+		}
+
+		if _, ok := centroidIndices[int32(newCentroidIndex)]; !ok {
+			centroidIndices[int32(newCentroidIndex)] = struct{}{}
+		}
+	}
+
+	return centroidIndices
+}
+
+func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64, [][]float64, []int) {
 	centroids := make([][]float64, 0, k)
-	for i := range centroidIndices {
+	for i := range initialiseRandom(mfccs, k, variances) {
 		centroids = append(centroids, mfccs[i].coefficients)
 	}
 
@@ -70,7 +107,7 @@ func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64,
 
 		// break if there is no difference between new and old centroids
 		if times > 1 && math.Abs(rsss[times-1]-rsss[times]) < 0.0000001 {
-			fmt.Printf("Break on iteration %d\n", times)
+			fmt.Printf("Break on iteration %d RSS: %f\n", times, rsss[times])
 			break
 		}
 	}
@@ -167,6 +204,19 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	}
 
 	return centroids
+}
+
+func findClosestCentroidFromPoints(mfccs []MfccClusterisable, centroidIds map[int32]struct{}, point []float64, variances []float64) float64 {
+	// Returns positive infty if argument is >=0
+	min := math.Inf(42)
+
+	for centroidID := range centroidIds {
+		currentDistance := mahalanobisDistance(mfccs[centroidID].coefficients, point, variances)
+		if currentDistance < min {
+			min = currentDistance
+		}
+	}
+	return min
 }
 
 func findClosestCentroid(centroids [][]float64, mfcc []float64, variances []float64) int32 {

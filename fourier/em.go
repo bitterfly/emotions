@@ -3,7 +3,6 @@ package fourier
 import (
 	"fmt"
 	"math"
-	"os"
 )
 
 // Gaussian represent a single gaussian
@@ -26,10 +25,8 @@ func zeroMixture(g GaussianMixture, K int) {
 
 // GMM returns the k gaussian mixures for the given data
 func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
-	fmt.Printf("kMeans\n")
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
-	fmt.Printf("NumInClusters: %v\n", numInCluster)
-	fmt.Printf("EM\n")
+	fmt.Printf("\n==============EM================\n")
 
 	gmixture := make(GaussianMixture, k, k)
 
@@ -45,10 +42,6 @@ func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 }
 
 func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture {
-
-	f, _ := os.Create("/tmp/ws")
-	defer f.Close()
-
 	prevLikelihood := 0.0
 	likelihood := 0.0
 	step := 0
@@ -136,7 +129,7 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 		step++
 	}
 
-	fmt.Printf("EM: Break on step: %d with likelihood: %f\n", step, likelihood)
+	fmt.Printf("EM: Break on step: %d with likelihood: %f\n===================================================\n", step, likelihood)
 	return gMixture
 }
 
