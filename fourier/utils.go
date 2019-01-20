@@ -5,8 +5,10 @@ import (
 	"image/color"
 
 	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/palette"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/vg"
+	"gonum.org/v1/plot/vg/draw"
 )
 
 // FindClosestPower finds the closest power of two above the given number
@@ -58,29 +60,34 @@ func PlotSignal(data []float64, file string) {
 	}
 }
 
-// func PlotSignals(data [][]float64, offsets []int, file string) {
-// 	plots, err := plot.New()
-// 	if err != nil {
-// 		panic(err)
-// 	}
+func PlotClusters(data []MfccClusterisable, k int, file string) {
+	plots, err := plot.New()
+	if err != nil {
+		panic(err)
+	}
 
-// 	for j, d := range data {
-// 		s := make(plotter.XYs, len(d))
-// 		for i := 0; i < len(d); i++ {
-// 			s[i].X = float64(i + offsets[j])
-// 			s[i].Y = d[i]
-// 		}
+	s := make(plotter.XYs, len(data))
+	clusters := make([]string, len(data))
 
-// 		line, _ := plotter.NewLine(s)
-// 		line.Color = color.RGBA{0, 232, 88, 255}
+	for i, d := range data {
+		s[i].X = d.coefficients[0]
+		s[i].Y = d.coefficients[1]
+		clusters[i] = fmt.Sprintf("%d", d.clusterID)
+	}
 
-// 		plots.Add(line)
-// 	}
+	scatter, _ := plotter.NewScatter(s)
+	palette := palette.Heat(k, 1)
 
-// 	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
-// 		panic(err)
-// 	}
-// }
+	scatter.GlyphStyleFunc = func(i int) draw.GlyphStyle {
+		return draw.GlyphStyle{Color: palette.Colors()[data[i].clusterID], Radius: vg.Points(3), Shape: draw.CircleGlyph{}}
+	}
+
+	plots.Add(scatter)
+
+	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
+		panic(err)
+	}
+}
 
 // PlotCoefficients draws a bar plot of the fourier coefficients and saves it into a file
 func PlotCoefficients(coefficients []Complex, file string) {
