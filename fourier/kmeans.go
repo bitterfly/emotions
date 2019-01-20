@@ -62,26 +62,18 @@ func initialiseKPP(mfccs []MfccClusterisable, k int, variances []float64) map[in
 	centroidIndices[rand.Int31n(int32(len(mfccs)))] = struct{}{}
 
 	for len(centroidIndices) < k {
-		probabilities := make([]float64, len(mfccs), len(mfccs))
-		sum := 0.0
-
+		max := math.Inf(-42)
+		argmax := -1
 		for i, d := range mfccs {
-			probabilities[i] = findClosestCentroidFromPoints(mfccs, centroidIndices, d.coefficients, variances)
-			sum += probabilities[i]
+			curr := findClosestCentroidFromPoints(mfccs, centroidIndices, d.coefficients, variances)
+			if curr > max {
+				max = curr
+				argmax = i
+			}
 		}
 
-		divide(&probabilities, sum)
-
-		prob := rand.Float64()
-		newCentroidIndex := 0
-		currentSum := 0.0
-		for currentSum < prob {
-			currentSum += probabilities[newCentroidIndex]
-			newCentroidIndex++
-		}
-
-		if _, ok := centroidIndices[int32(newCentroidIndex)]; !ok {
-			centroidIndices[int32(newCentroidIndex)] = struct{}{}
+		if _, ok := centroidIndices[int32(argmax)]; !ok {
+			centroidIndices[int32(argmax)] = struct{}{}
 		}
 	}
 
