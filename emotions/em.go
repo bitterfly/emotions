@@ -23,6 +23,11 @@ func zeroMixture(g GaussianMixture, K int) {
 	}
 }
 
+type EmotionGausianMixure struct {
+	Emotion string
+	GM      GaussianMixture
+}
+
 // GMM returns the k gaussian mixures for the given data
 func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
