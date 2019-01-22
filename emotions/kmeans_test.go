@@ -1,4 +1,4 @@
-package fourier
+package emotions
 
 import (
 	"bufio"
