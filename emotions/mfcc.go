@@ -21,6 +21,14 @@ func freqToMel(freq float64) float64 {
 	return 2595 * math.Log10(1+freq/700.0)
 }
 
+func IndToFreq(i int, sr int, n int) float64 {
+	return float64(sr) * float64(i) / float64(2*(n-1))
+}
+
+func freqToInd(f float64, sr int) float64 {
+	return float64(f) / float64(sr)
+}
+
 // returns the log of the sum of power*triangle in a single bank
 func triangleBank(coefficients []Complex, s, e, center float64) float64 {
 	sum := 0.0
