@@ -7,7 +7,9 @@ import (
 	"log"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/bitterfly/emotions/emotions"
 )
@@ -17,7 +19,9 @@ func readEmotion(filename string) [][]float64 {
 	return emotions.MFCCs(wf, 13, 23)
 }
 
-func testEmotion(k int, emotion string, coefficient [][]float64, egmms []emotions.EmotionGausianMixure) {
+func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.EmotionGausianMixure) bool {
+	k := len(egmms[0].GM)
+
 	counters := make([]int, len(egmms), len(egmms))
 	for _, m := range coefficient {
 		max := math.Inf(-42)
@@ -34,15 +38,16 @@ func testEmotion(k int, emotion string, coefficient [][]float64, egmms []emotion
 
 	max := -1
 	argmax := -1
-	fmt.Printf("======================\nEmotion: %s\n", emotion)
+	// fmt.Printf("======================\nEmotion: %s\n", emotion)
 	for i, c := range counters {
 		if c > max {
 			max = c
 			argmax = i
 		}
-		fmt.Printf("%s: %d ", egmms[i].Emotion, c)
+		// fmt.Fprintf(os.Stderr, "%s: %d ", egmms[i].Emotion, c)
 	}
-	fmt.Printf("\nMax: %s\n============================\n", egmms[argmax].Emotion)
+	fmt.Fprintf(os.Stderr, "\nEmotion: %s Max: %s\n============================\n", emotion, egmms[argmax].Emotion)
+	return strings.Contains(emotion, egmms[argmax].Emotion)
 }
 
 func getEGMs(dirname string) []emotions.EmotionGausianMixure {
@@ -64,18 +69,38 @@ func getEGMs(dirname string) []emotions.EmotionGausianMixure {
 }
 
 func main() {
-	k := 5
-
 	if len(os.Args) < 3 {
-		panic("go run main.go <gmm-dir> <emotion1.wav [emotion2.wav...]>")
+		panic("go run main.go <gmm-dir> <emotion_test_dir>")
 	}
 
 	gmmDir := os.Args[1]
 	egms := getEGMs(gmmDir)
 
-	for i := 2; i < len(os.Args); i++ {
-		filename := filepath.Base(os.Args[i])
-		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
-		testEmotion(k, name, readEmotion(os.Args[i]), egms)
+	name := os.Args[2]
+	if filepath.Ext(name) == ".wav" {
+		if testEmotion(name[0:len(name)-len(filepath.Ext(name))], readEmotion(name), egms) {
+			fmt.Printf("100%%\n")
+		} else {
+			fmt.Printf("0%%\n")
+		}
+		os.Exit(0)
 	}
+
+	emotionDir := os.Args[2]
+
+	files, err := ioutil.ReadDir(emotionDir)
+	if err != nil {
+		panic(err)
+	}
+
+	ctr := 0
+	for _, file := range files {
+		filename := file.Name()
+		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
+		if testEmotion(name, readEmotion(path.Join(emotionDir, filename)), egms) {
+			ctr++
+		}
+	}
+
+	fmt.Printf("%f%%\n", float64(ctr)*100.0/float64(len(files)))
 }

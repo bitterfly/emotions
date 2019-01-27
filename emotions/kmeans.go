@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -34,7 +35,7 @@ func KMeans(mfccsFloats [][]float64, k int) ([]MfccClusterisable, [][]float64, [
 		}
 	}
 
-	fmt.Printf("\n================kMeans=================\n")
+	fmt.Fprintf(os.Stderr, "\n================kMeans=================\n")
 
 	μ, σ, numInCluster := kMeans(mfccs, variances, k)
 	return mfccs, μ, σ, numInCluster
@@ -99,7 +100,7 @@ func kMeans(mfccs []MfccClusterisable, variances []float64, k int) ([][]float64,
 
 		// break if there is no difference between new and old centroids
 		if times > 1 && math.Abs(rsss[times-1]-rsss[times]) < 0.0000001 {
-			fmt.Printf("Break on iteration %d RSS: %f\n", times, rsss[times])
+			fmt.Fprintf(os.Stderr, "Break on iteration %d RSS: %f\n", times, rsss[times])
 			break
 		}
 	}

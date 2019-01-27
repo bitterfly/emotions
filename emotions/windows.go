@@ -3,6 +3,7 @@ package emotions
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 const FRAME_IN_MS = 25
@@ -54,14 +55,14 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32) [][]float64 {
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
 	step := int((STEP_IN_MS / 1000.0) * float64(sampleRate))
 
-	fmt.Printf("Slice len: %d\n", len(data))
-	fmt.Printf("Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
-	fmt.Printf("Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
+	fmt.Fprintf(os.Stderr, "Slice len: %d\n", len(data))
+	fmt.Fprintf(os.Stderr, "Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
+	fmt.Fprintf(os.Stderr, "Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
 
-	fmt.Printf("Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+	fmt.Fprintf(os.Stderr, "Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
 
 	numFrames := (len(data) - realSamplesPerFrame) / step
-	fmt.Printf("Num frames: %d\n", numFrames)
+	fmt.Fprintf(os.Stderr, "Num frames: %d\n", numFrames)
 	frames := make([][]float64, numFrames, numFrames)
 
 	frame := 0

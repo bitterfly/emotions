@@ -3,6 +3,7 @@ package emotions
 import (
 	"fmt"
 	"math"
+	"os"
 )
 
 // Gaussian represent a single gaussian
@@ -31,7 +32,7 @@ type EmotionGausianMixure struct {
 // GMM returns the k gaussian mixures for the given data
 func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
-	fmt.Printf("\n==============EM================\n")
+	fmt.Fprintf(os.Stderr, "\n==============EM================\n")
 
 	gmixture := make(GaussianMixture, k, k)
 
@@ -134,7 +135,7 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 		step++
 	}
 
-	fmt.Printf("EM: Break on step: %d with likelihood: %f\n===================================================\n", step, likelihood)
+	fmt.Fprintf(os.Stderr, "EM: Break on step: %d with likelihood: %f\n===================================================\n", step, likelihood)
 	return gMixture
 }
 
