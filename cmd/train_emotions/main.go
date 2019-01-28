@@ -56,5 +56,4 @@ func main() {
 		}
 		ioutil.WriteFile(filenames[i], bytes, 0644)
 	}
-
 }

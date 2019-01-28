@@ -2,11 +2,19 @@ package emotions
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"io"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
+
+type EegClusterable struct {
+	Class string      `json:"class"`
+	Data  [][]float64 `json:"data"` //19x4
+}
 
 var waveRanges = [][2]float64{
 	[2]float64{4.0, 8.0},   //Θ
@@ -124,4 +132,42 @@ func GetFeatureVector(filename string, elNum int) [][]float64 {
 	}
 
 	return features
+}
+
+func getFeaturesFromFiles(filenames []string) []EegClusterable {
+	trainingSet := make([]EegClusterable, len(filenames), len(filenames))
+
+	for i, file := range filenames {
+		filename := filepath.Base(file)
+		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
+		newFeatures := GetFeatureVector(file, 19)
+		trainingSet[i] = EegClusterable{
+			Class: name,
+			Data:  newFeatures,
+		}
+	}
+
+	return trainingSet
+}
+
+func SaveEegTrainingSet(filenames []string, outputFilename string) {
+	features := getFeaturesFromFiles(filenames)
+
+	bytes, err := json.Marshal(features)
+	if err != nil {
+		panic(err)
+	}
+
+	ioutil.WriteFile(outputFilename, bytes, 0644)
+}
+
+func getEegTrainingSet(filename string) []EegClusterable {
+	var clusterables []EegClusterable
+	bytes, _ := ioutil.ReadFile(filename)
+	err := json.Unmarshal(bytes, &clusterables)
+	if err != nil {
+		panic(err)
+	}
+
+	return clusterables
 }
