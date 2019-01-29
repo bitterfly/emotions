@@ -189,48 +189,41 @@ func plotEeg(data []EegClusterable, file string) {
 		}
 	}
 
+	fmt.Printf("len: %d\n", len(data))
+
 	for i := 0; i < len(data); i++ {
-		fmt.Printf("i: %d %v\n\n", i, data[i])
 		s := make(plotter.XYs, len(data[i].Data), len(data[i].Data))
 		for j := 0; j < len(data[i].Data); j++ {
 			s[j].X = float64(j)
 			s[j].Y = float64(i)
-
 		}
+
 		scatter, _ := plotter.NewScatter(s)
 		bla := data[i]
 		scatter.GlyphStyleFunc = func(k int) draw.GlyphStyle {
-			// fmt.Printf("i: %d, k: %d\n", i, k)
-
 			return draw.GlyphStyle{
 				Color:  getColour(bla.Data[k], maximums),
-				Radius: vg.Points(70),
+				Radius: vg.Points(50),
 				Shape:  draw.BoxGlyph{},
 			}
 		}
 		plots.Add(scatter)
 	}
 
-	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
+	err = plots.Save(vg.Length(2.0*50*float64(len(data[0].Data))), vg.Length(2*50*float64(len(data))), file)
+	if err != nil {
 		panic(err)
 	}
 }
 
 func PlotEmotion(filename string, output string) {
 	data := ReadXML(filename, 19)
-	cl := make([]EegClusterable, 117, 117)
 
-	for i := 0; i < len(cl); i++ {
-		cl[i] = EegClusterable{
-			Data:  make([][]float64, len(data), len(data)),
-			Class: "bla",
-		}
-	}
+	var cl []EegClusterable
 
 	for i, d := range data {
-		features := make([][]float64, len(data), len(data))
+		var features [][]float64
 		frames := cutElectrodeIntoFrames(d)
-
 		fouriers := fourierElectrode(frames)
 		for _, f := range fouriers {
 			v := make([]float64, 4, 4)
@@ -247,9 +240,12 @@ func PlotEmotion(filename string, output string) {
 		}
 
 		for j := 0; j < len(features); j++ {
-			fmt.Printf("Len cl: %d j: %d\n", len(cl), j)
-			fmt.Printf("Len Data: %d i: %d\n", len(cl[j].Data), i)
-			fmt.Printf("Len features: %d j: %d\n", len(features), j)
+			if j > len(cl)-1 {
+				cl = append(cl, EegClusterable{
+					Data: make([][]float64, len(data), len(data)),
+				})
+			}
+
 			cl[j].Data[i] = features[j]
 		}
 	}
