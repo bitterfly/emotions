@@ -161,6 +161,8 @@ func PlotEeg(filename string, output string) {
 }
 
 func plotEeg(data []EegClusterable, file string) {
+	fmt.Printf("data: %d %d %d\n", len(data), len(data[0].Data), len(data[0].Data[0]))
+
 	plots, err := plot.New()
 	if err != nil {
 		panic(err)
@@ -214,32 +216,45 @@ func plotEeg(data []EegClusterable, file string) {
 	}
 }
 
-func GetEmotion(filename string) {
+func PlotEmotion(filename string, output string) {
 	data := ReadXML(filename, 19)
+	cl := make([]EegClusterable, 117, 117)
 
-	// features := make([][]float64, len(data), len(data))
-	// for i, d := range data {
-	// 	frames := cutElectrodeIntoFrames(d)
+	for i := 0; i < len(cl); i++ {
+		cl[i] = EegClusterable{
+			Data:  make([][]float64, len(data), len(data)),
+			Class: "bla",
+		}
+	}
 
-	// 	// frames 1000x
-	// 	fouriers := fourierElectrode(frames)
-	// 	for _, f := range fouriers {
-	// 		v := make([]float64, len(fouriers[i]), len(fouriers[i]))
-	// 		for j, ff := range f {
-	// 			v[j] = Magnitude(ff)
-	// 		}
+	for i, d := range data {
+		features := make([][]float64, len(data), len(data))
+		frames := cutElectrodeIntoFrames(d)
 
-	// 		features = append(features, v)
-	// 	}
-	// }
+		fouriers := fourierElectrode(frames)
+		for _, f := range fouriers {
+			v := make([]float64, 4, 4)
+			for _, ff := range f {
+				magnitude := Magnitude(ff)
+				w := getRange(magnitude)
+				if w == -1 {
+					break
+				}
+				v[w] = magnitude
+			}
 
-	// eegD := make([]EegClusterable, len(features), len(features))
-	// for i := 0; i < len(features); i++ {
-	// 	eegD[i] = EegClusterable{
-	// 		Data:  features[i],
-	// 		class: "bla",
-	// 	}
-	// }
+			features = append(features, v)
+		}
+
+		for j := 0; j < len(features); j++ {
+			fmt.Printf("Len cl: %d j: %d\n", len(cl), j)
+			fmt.Printf("Len Data: %d i: %d\n", len(cl[j].Data), i)
+			fmt.Printf("Len features: %d j: %d\n", len(features), j)
+			cl[j].Data[i] = features[j]
+		}
+	}
+
+	plotEeg(cl, output)
 }
 
 func getColour(x []float64, maximums []float64) color.RGBA {
