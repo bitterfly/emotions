@@ -124,6 +124,7 @@ func getElectrodeWavesDistribution(electrodeData []float64) []float64 {
 }
 
 // GetFeatureVector returns the mean of Θ, α, β and γ waves for each of the given elNum electrodes
+// returns a vector 19x4
 func GetFeatureVector(filename string, elNum int) [][]float64 {
 	data := ReadXML(filename, elNum)
 	features := make([][]float64, len(data), len(data))

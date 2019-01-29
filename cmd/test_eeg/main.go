@@ -12,6 +12,7 @@ func main() {
 	}
 
 	trainSetFile := os.Args[1]
-	testVectorFile := os.Args[2]
-	emotions.KNN(trainSetFile, testVectorFile)
+	// testVectorFile := os.Args[2]
+	// emotions.KNN(trainSetFile, testVectorFile)
+	emotions.PlotEeg(trainSetFile, "/tmp/ts.png")
 }

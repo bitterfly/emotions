@@ -3,6 +3,7 @@ package emotions
 import (
 	"fmt"
 	"image/color"
+	"math"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/palette"
@@ -152,4 +153,109 @@ func sliceCopy(first []float64, from, to, length int) []float64 {
 	copy(second, first[from:Min(to, len(first))])
 	hanningWindow(second[0 : Min(to, len(first))-from])
 	return second
+}
+
+func PlotEeg(filename string, output string) {
+	ts := getEegTrainingSet(filename)
+	plotEeg(ts, output)
+}
+
+func plotEeg(data []EegClusterable, file string) {
+	plots, err := plot.New()
+	if err != nil {
+		panic(err)
+	}
+
+	maximums := make([]float64, len(data[0].Data), len(data[0].Data))
+	for i := 0; i < len(data); i++ {
+		for j := 0; j < len(data[i].Data); j++ {
+			if data[i].Data[j][0] > maximums[0] {
+				maximums[0] = data[i].Data[j][0]
+			}
+
+			if data[i].Data[j][1] > maximums[1] {
+				maximums[1] = data[i].Data[j][1]
+			}
+
+			if data[i].Data[j][2] > maximums[2] {
+				maximums[2] = data[i].Data[j][2]
+			}
+
+			if data[i].Data[j][3] > maximums[3] {
+				maximums[3] = data[i].Data[j][3]
+			}
+		}
+	}
+
+	for i := 0; i < len(data); i++ {
+		fmt.Printf("i: %d %v\n\n", i, data[i])
+		s := make(plotter.XYs, len(data[i].Data), len(data[i].Data))
+		for j := 0; j < len(data[i].Data); j++ {
+			s[j].X = float64(j)
+			s[j].Y = float64(i)
+
+		}
+		scatter, _ := plotter.NewScatter(s)
+		bla := data[i]
+		scatter.GlyphStyleFunc = func(k int) draw.GlyphStyle {
+			// fmt.Printf("i: %d, k: %d\n", i, k)
+
+			return draw.GlyphStyle{
+				Color:  getColour(bla.Data[k], maximums),
+				Radius: vg.Points(70),
+				Shape:  draw.BoxGlyph{},
+			}
+		}
+		plots.Add(scatter)
+	}
+
+	if err := plots.Save(32*vg.Inch, 16*vg.Inch, file); err != nil {
+		panic(err)
+	}
+}
+
+func GetEmotion(filename string) {
+	data := ReadXML(filename, 19)
+
+	// features := make([][]float64, len(data), len(data))
+	// for i, d := range data {
+	// 	frames := cutElectrodeIntoFrames(d)
+
+	// 	// frames 1000x
+	// 	fouriers := fourierElectrode(frames)
+	// 	for _, f := range fouriers {
+	// 		v := make([]float64, len(fouriers[i]), len(fouriers[i]))
+	// 		for j, ff := range f {
+	// 			v[j] = Magnitude(ff)
+	// 		}
+
+	// 		features = append(features, v)
+	// 	}
+	// }
+
+	// eegD := make([]EegClusterable, len(features), len(features))
+	// for i := 0; i < len(features); i++ {
+	// 	eegD[i] = EegClusterable{
+	// 		Data:  features[i],
+	// 		class: "bla",
+	// 	}
+	// }
+}
+
+func getColour(x []float64, maximums []float64) color.RGBA {
+	r := uint8(math.Min(math.Floor(x[0]*float64(255)/maximums[0]), 255))
+	g := uint8(math.Min(math.Floor(x[1]*float64(255)/maximums[1]), 255))
+	b := uint8(math.Min(math.Floor(x[2]*float64(255)/maximums[2]), 255))
+	a := uint8(math.Min(math.Floor(x[3]*float64(155)/maximums[3]+100), 255))
+
+	// if r == 255 || g == 255 || b == 255 || a == 255 {
+	// fmt.Printf("x: %v, r: %d g: %d b: %d a: %d\n", x, r, g, b, a)
+	// }
+
+	return color.RGBA{
+		R: r,
+		G: g,
+		B: b,
+		A: a,
+	}
 }
