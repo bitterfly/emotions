@@ -55,14 +55,14 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32, frameInMs int, stepIn
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
 	step := int((float64(stepInMs) / 1000.0) * float64(sampleRate))
 
-	fmt.Fprintf(os.Stderr, "Slice len: %d\n", len(data))
-	fmt.Fprintf(os.Stderr, "Real samples per frame for 25ms: %d\n", realSamplesPerFrame)
+	fmt.Fprintf(os.Stderr, "Samples: %d\n", len(data))
+	fmt.Fprintf(os.Stderr, "Real samples per frame for %dms: %d\n", frameInMs, realSamplesPerFrame)
 	fmt.Fprintf(os.Stderr, "Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
 
-	fmt.Fprintf(os.Stderr, "Which is %f ms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+	fmt.Fprintf(os.Stderr, "Which is %.3fms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
 
 	numFrames := (len(data) - realSamplesPerFrame) / step
-	fmt.Fprintf(os.Stderr, "Num frames: %d\n", numFrames)
+	fmt.Fprintf(os.Stderr, "Frames in file: %d\n====================\n", numFrames)
 	frames := make([][]float64, numFrames, numFrames)
 
 	frame := 0

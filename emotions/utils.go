@@ -270,3 +270,45 @@ func getColour(x []float64, maximums []float64) color.RGBA {
 		A: a,
 	}
 }
+
+func getName(s string) string {
+	if rune(s[1]) == '-' {
+		return s[2:]
+	}
+
+	switch rune(s[1]) {
+	case 'h':
+		return "happiness"
+	case 's':
+		return "sadness"
+	case 'a':
+		return "anger"
+	case 'n':
+		return "neutral"
+	default:
+		panic(s)
+	}
+}
+
+//ParseArguments receives command arguments and separates them on spaces
+func ParseArguments(args []string) map[string][]string {
+	var arguments []string
+	var emotion string
+	emotions := make(map[string][]string)
+
+	for i := 0; i < len(args); i++ {
+		if rune(args[i][0]) == '-' {
+			if len(arguments) != 0 {
+				emotions[emotion] = arguments
+				arguments = []string{}
+			}
+			emotion = getName(args[i])
+		} else {
+			arguments = append(arguments, args[i])
+		}
+	}
+
+	emotions[emotion] = arguments
+
+	return emotions
+}
