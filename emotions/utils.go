@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"image/color"
 	"math"
+	"math/rand"
+	"time"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/palette"
@@ -285,6 +287,25 @@ func getName(s string) string {
 		return "anger"
 	case 'n':
 		return "neutral"
+	default:
+		panic(s)
+	}
+}
+
+func GetValence(s string, dither float64) float64 {
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	d := (r1.Float64() - 0.5) * dither
+
+	switch s {
+	case "happiness":
+		return 1 + d
+	case "sadness":
+		return -1 + d
+	case "anger":
+		return -1 + d
+	case "neutral":
+		return 0 + d
 	default:
 		panic(s)
 	}

@@ -13,9 +13,13 @@ import (
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(filename string) [][]float64 {
+func readEmotion(emotion string, filename string) [][]float64 {
 	wf, _ := emotions.Read(filename, 0.01, 0.97)
-	return emotions.MFCCs(wf, 13, 23)
+	mfccs := emotions.MFCCs(wf, 13, 23)
+	for i := range mfccs {
+		mfccs[i] = append(mfccs[i], emotions.GetValence(emotion, 0))
+	}
+	return mfccs
 }
 
 func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.EmotionGausianMixure) bool {
@@ -26,6 +30,7 @@ func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.Emoti
 		max := math.Inf(-42)
 		argmax := -1
 		for i, egmm := range egmms {
+			fmt.Printf("%v\n", m)
 			currEmotion := emotions.EvaluateVector(m, k, egmm.GM)
 			if currEmotion > max {
 				max = currEmotion
@@ -81,7 +86,7 @@ func main() {
 		ctr := 0
 		allfiles += len(files)
 		for _, file := range files {
-			if testEmotion(emotion, readEmotion(file), egms) {
+			if testEmotion(emotion, readEmotion(emotion, file), egms) {
 				ctr++
 				allctr++
 			}

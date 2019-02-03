@@ -11,12 +11,15 @@ import (
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(filenames []string) [][]float64 {
+func readEmotion(emotion string, filenames []string) [][]float64 {
 	mfccs := make([][]float64, 0, len(filenames)*100)
 	for _, f := range filenames {
 		wf, _ := emotions.Read(f, 0.01, 0.97)
 
 		mfcc := emotions.MFCCs(wf, 13, 23)
+		for i := range mfcc {
+			mfcc[i] = append(mfcc[i], emotions.GetValence(emotion, 0.01))
+		}
 
 		mfccs = append(mfccs, mfcc...)
 	}
@@ -28,8 +31,8 @@ func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
 	return emotions.GMM(mfccs, k)
 }
 
-func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
-	return getGMM(readEmotion(filenames), k)
+func getGMMfromEmotion(emotion string, filenames []string, k int) emotions.GaussianMixture {
+	return getGMM(readEmotion(emotion, filenames), k)
 }
 
 func main() {
@@ -63,7 +66,7 @@ func main() {
 	}
 
 	for emotion, files := range emotionFiles {
-		mfccs := readEmotion(files)
+		mfccs := readEmotion(emotion, files)
 		for j := k; j <= maxK; j++ {
 			fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
 			egm := emotions.EmotionGausianMixure{

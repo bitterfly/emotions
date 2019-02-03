@@ -15,9 +15,9 @@ trainDir=$(echo ${outputDir}/train)
 testDir=$(echo ${outputDir}/test)
 
 echo "=====TRAIN ${k}======"
-train_emotions ${k} "${gmmDir}/gmm" -h ${trainDir}/happiness/* -s ${trainDir}/sadness/* -a ${trainDir}/anger/* -n ${trainDir}/neutral/* 
+train_emotions 5 14 "${gmmDir}/gmm" -h ${trainDir}/happiness/* -s ${trainDir}/sadness/* -a ${trainDir}/anger/* -n ${trainDir}/neutral/* 
 
-for k in `seq 2 12`; do
+for k in `seq 5 14`; do
    echo "=====TEST ${k}======"    
     test_emotion "${gmmDir}/gmm_k${k}" -h ${testDir}/happiness/* -s ${testDir}/sadness/* -a ${testDir}/anger/* -n ${testDir}/neutral/* > ${outputDir}/result_k${k}
 done
