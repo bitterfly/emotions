@@ -30,7 +30,6 @@ func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.Emoti
 		max := math.Inf(-42)
 		argmax := -1
 		for i, egmm := range egmms {
-			fmt.Printf("%v\n", m)
 			currEmotion := emotions.EvaluateVector(m, k, egmm.GM)
 			if currEmotion > max {
 				max = currEmotion
