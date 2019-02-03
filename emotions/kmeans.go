@@ -144,6 +144,7 @@ func getClustersμσcount(mfccs []MfccClusterisable, k int) ([][]float64, [][]fl
 }
 
 func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
+	fmt.Printf("Len mfccs: %d\n", len(mfccs))
 	variances := make([]float64, len(mfccs[0]), len(mfccs[0]))
 
 	expectation := make([]float64, len(mfccs[0]), len(mfccs[0]))
@@ -156,8 +157,8 @@ func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
 	}
 
 	for j := 0; j < len(mfccs[0]); j++ {
-		expectation[j] = expectation[j] / float64(len(mfccs))
-		expectationSquared[j] = expectationSquared[j] / float64(len(mfccs))
+		expectation[j] /= float64(len(mfccs))
+		expectationSquared[j] /= float64(len(mfccs))
 
 		variances[j] = expectationSquared[j] - expectation[j]*expectation[j]
 		if variances[j] < EPS {
@@ -188,6 +189,7 @@ func findNewCentroids(mfccs []MfccClusterisable, k int) [][]float64 {
 	mfccsInCluster := make([]int, k, k)
 
 	for _, mfcc := range mfccs {
+
 		mfccsInCluster[mfcc.clusterID]++
 		add(&centroids[mfcc.clusterID], mfcc.coefficients)
 	}
