@@ -7,7 +7,6 @@ import (
 	"log"
 	"math"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -15,7 +14,7 @@ import (
 )
 
 func readEmotion(filename string) [][]float64 {
-	wf, _ := emotions.Read(filename, 0, 0.97)
+	wf, _ := emotions.Read(filename, 0.01, 0.97)
 	return emotions.MFCCs(wf, 13, 23)
 }
 
@@ -38,13 +37,11 @@ func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.Emoti
 
 	max := -1
 	argmax := -1
-	// fmt.Printf("======================\nEmotion: %s\n", emotion)
 	for i, c := range counters {
 		if c > max {
 			max = c
 			argmax = i
 		}
-		// fmt.Fprintf(os.Stderr, "%s: %d ", egmms[i].Emotion, c)
 	}
 	fmt.Fprintf(os.Stderr, "\nEmotion: %s Max: %s\n============================\n", emotion, egmms[argmax].Emotion)
 	return strings.Contains(emotion, egmms[argmax].Emotion)
@@ -70,37 +67,26 @@ func getEGMs(dirname string) []emotions.EmotionGausianMixure {
 
 func main() {
 	if len(os.Args) < 3 {
-		panic("go run main.go <gmm-dir> <emotion_test_dir>")
+		panic("go run main.go <gmm-dir> <-emotion1> <emotion1.wav2 emotion1.wav2...> [<emotion2> <emotion2.wav1...] ")
 	}
 
 	gmmDir := os.Args[1]
 	egms := getEGMs(gmmDir)
 
-	name := os.Args[2]
-	if filepath.Ext(name) == ".wav" {
-		if testEmotion(name[0:len(name)-len(filepath.Ext(name))], readEmotion(name), egms) {
-			fmt.Printf("100%%\n")
-		} else {
-			fmt.Printf("0%%\n")
+	emotionFiles := emotions.ParseArguments(os.Args[2:])
+
+	allctr := 0
+	allfiles := 0
+	for emotion, files := range emotionFiles {
+		ctr := 0
+		allfiles += len(files)
+		for _, file := range files {
+			if testEmotion(emotion, readEmotion(file), egms) {
+				ctr++
+				allctr++
+			}
 		}
-		os.Exit(0)
+		fmt.Printf("%s %f%%\n", emotion, float64(ctr)*100.0/float64(len(files)))
 	}
-
-	emotionDir := os.Args[2]
-
-	files, err := ioutil.ReadDir(emotionDir)
-	if err != nil {
-		panic(err)
-	}
-
-	ctr := 0
-	for _, file := range files {
-		filename := file.Name()
-		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
-		if testEmotion(name, readEmotion(path.Join(emotionDir, filename)), egms) {
-			ctr++
-		}
-	}
-
-	fmt.Printf("%f%%\n", float64(ctr)*100.0/float64(len(files)))
+	fmt.Printf("All: %f%%\n", float64(allctr)*100.0/float64(allfiles))
 }

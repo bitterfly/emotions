@@ -5,55 +5,102 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path/filepath"
+	"path"
 	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(filename string, k int) emotions.GaussianMixture {
-	wf, _ := emotions.Read(filename, 0, 0.97)
+func readEmotion(filenames []string) [][]float64 {
+	mfccs := make([][]float64, 0, len(filenames)*100)
+	for _, f := range filenames {
+		wf, _ := emotions.Read(f, 0.01, 0.97)
 
-	mfccs := emotions.MFCCs(wf, 13, 23)
+		mfcc := emotions.MFCCs(wf, 13, 23)
+
+		mfccs = append(mfccs, mfcc...)
+	}
+
+	return mfccs
+}
+
+func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
 	return emotions.GMM(mfccs, k)
 }
 
-func main() {
+func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
+	return getGMM(readEmotion(filenames), k)
+}
 
+func main() {
 	if len(os.Args) < 3 {
-		panic("go run main.go <k> <outut_dir> <emotion1.wav [emotion2.wav...]>")
+		panic("go run main.go <k> <dir-template> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
 	}
 
+	testK := false
+	outputDirIndex := 2
 	k, err := strconv.Atoi(os.Args[1])
 	if err != nil {
-		panic(err)
+		testK = true
+		outputDirIndex = 1
+
 	}
 
-	outputDir := fmt.Sprintf("%s_k%d", os.Args[2], k)
-	if _, err := os.Stat(outputDir); os.IsNotExist(err) {
-		os.Mkdir(outputDir, 0775)
-	}
+	outputDir := os.Args[outputDirIndex]
 
-	filenames := make([]string, len(os.Args)-2, len(os.Args)-2)
-	egms := make([]emotions.EmotionGausianMixure, len(os.Args)-2, len(os.Args)-2)
+	emotionFiles := emotions.ParseArguments(os.Args[outputDirIndex+1:])
 
-	for i := 3; i < len(os.Args); i++ {
-
-		filename := filepath.Base(os.Args[i])
-		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
-		filenames[i-2] = filepath.Join(outputDir, name+".gmm")
-
-		egms[i-2] = emotions.EmotionGausianMixure{
-			Emotion: name,
-			GM:      readEmotion(os.Args[i], k),
+	if testK {
+		for j := 2; j < 12; j++ {
+			if _, err := os.Stat(fmt.Sprintf("%s_k%d", outputDir, j)); os.IsNotExist(err) {
+				os.Mkdir(fmt.Sprintf("%s_k%d", outputDir, j), 0775)
+			}
 		}
-	}
 
-	for i := 0; i < len(filenames); i++ {
-		bytes, err := json.Marshal(egms[i])
-		if err != nil {
-			panic(fmt.Sprintf("Error when marshaling %s\n", filenames[i]))
+		for emotion, files := range emotionFiles {
+			mfccs := readEmotion(files)
+			for j := 2; j < 12; j++ {
+				fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
+				egm := emotions.EmotionGausianMixure{
+					Emotion: emotion,
+					GM:      getGMM(mfccs, j),
+				}
+
+				bytes, err := json.Marshal(egm)
+				if err != nil {
+					panic(fmt.Sprintf("Error when marshaling %s with k %d\n", emotion, j))
+				}
+
+				filename := path.Join(fmt.Sprintf("%s_k%d", outputDir, j), fmt.Sprintf("%s.gmm", emotion))
+				fmt.Fprintf(os.Stderr, filename)
+				ioutil.WriteFile(filename, bytes, 0644)
+			}
 		}
-		ioutil.WriteFile(filenames[i], bytes, 0644)
+	} else {
+		outputDir = fmt.Sprintf("%s_k%d", outputDir, k)
+		if _, err := os.Stat(outputDir); os.IsNotExist(err) {
+			os.Mkdir(outputDir, 0775)
+		}
+
+		egms := make([]emotions.EmotionGausianMixure, len(emotionFiles), len(emotionFiles))
+		i := 0
+		for emotion, files := range emotionFiles {
+			egms[i] = emotions.EmotionGausianMixure{
+				Emotion: emotion,
+				GM:      getGMMfromEmotion(files, k),
+			}
+			i++
+		}
+
+		for i := 0; i < len(egms); i++ {
+			bytes, err := json.Marshal(egms[i])
+			if err != nil {
+				panic(fmt.Sprintf("Error when marshaling %s\n", egms[i].Emotion))
+			}
+			filename := path.Join(outputDir, fmt.Sprintf("%s.gmm", egms[i].Emotion))
+			fmt.Fprintf(os.Stderr, "Writing to %s\n", filename)
+			fmt.Fprintf(os.Stderr, filename)
+			ioutil.WriteFile(filename, bytes, 0644)
+		}
 	}
 }
