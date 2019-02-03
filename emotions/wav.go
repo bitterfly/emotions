@@ -108,7 +108,6 @@ func readContent(reader io.Reader, preemphasisCoefficient float64) (WavFile, err
 	} else {
 		return WavFile{}, fmt.Errorf("Unknown bitsPerSample: %d", bitsPerSample)
 	}
-	fmt.Fprintf(os.Stderr, "%f\n", max)
 	index := 0
 	data := make([]float64, lenData/2, lenData/2)
 	previous := 0.0
