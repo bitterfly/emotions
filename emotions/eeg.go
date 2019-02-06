@@ -3,6 +3,7 @@ package emotions
 import (
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -100,14 +101,32 @@ func fourierElectrode(frames [][]float64) [][]Complex {
 	return fouriers
 }
 
+func getSignificantFreq(coefficients [][]Complex) [][]float64 {
+	sFreq := make([][]float64, len(coefficients), len(coefficients))
+	for i := 0; i < len(coefficients); i++ {
+		sFreq[i] = make([]float64, 4, 4)
+		for j := 0; j < len(coefficients[0]); j++ {
+			magnitude := Magnitude(coefficients[i][j])
+			w := getRange(IndToFreq(j, 500, len(coefficients[0])))
+			if w == -1 {
+				continue
+			}
+			sFreq[i][w] += magnitude
+		}
+	}
+
+	return sFreq
+}
+
 func getWavesMean(coefficients [][]Complex) []float64 {
 	means := make([]float64, len(waveRanges), len(waveRanges))
 	for i := 0; i < len(coefficients); i++ {
 		for j := 0; j < len(coefficients[0]); j++ {
+
 			magnitude := Magnitude(coefficients[i][j])
-			w := getRange(magnitude)
+			w := getRange(IndToFreq(j, 500, len(coefficients[0])))
 			if w == -1 {
-				break
+				continue
 			}
 			means[w] += magnitude
 		}
@@ -171,4 +190,38 @@ func getEegTrainingSet(filename string) []EegClusterable {
 	}
 
 	return clusterables
+}
+
+func GetFourierForFile(filename string, elNum int) [][]float64 {
+	data := ReadXML(filename, elNum)
+	return getFourier(data)
+}
+
+func getFourier(data [][]float64) [][]float64 {
+	// data 19x1000
+	elFouriers := make([]([][]float64), len(data), len(data))
+
+	for i, d := range data {
+		// d 1000
+		frames := cutElectrodeIntoFrames(d)
+		fouriers := fourierElectrode(frames)
+		// fouriers = Complex[][]
+		elFouriers[i] = getSignificantFreq(fouriers)
+	}
+
+	fmt.Printf("%v\n", elFouriers[0])
+
+	//ellFouriers numEls x numFrames x 4
+	// fmt.Printf("El fouriers: %d x %d x %d\n", len(elFouriers), len(elFouriers[0]), len(elFouriers[0][0]))
+	fourierByFrame := make([][]float64, len(elFouriers[0]), len(elFouriers[0]))
+	for i := range elFouriers[0] {
+		fourierByFrame[i] = make([]float64, len(elFouriers), len(elFouriers))
+
+	}
+	for en := 0; en < len(elFouriers); en++ {
+		for f := 0; f < len(elFouriers[en]); f++ {
+			fourierByFrame[f] = append(fourierByFrame[f], elFouriers[en][f]...)
+		}
+	}
+	return fourierByFrame
 }
