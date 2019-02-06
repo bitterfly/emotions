@@ -11,8 +11,7 @@ func main() {
 		panic("go run main.go <eeg-train-file> <emotion1.csv [emotion2.csv...]>")
 	}
 
-	// testVectorFile := os.Args[2]
-	// emotions.KNN(trainSetFile, testVectorFile)
+	emotions.KNN(os.Args[1], os.Args[2])
 	// emotions.PlotEmotion(os.Args[1], os.Args[2])
-	emotions.PlotEeg(os.Args[1], os.Args[2])
+	// emotions.PlotEeg(os.Args[1], os.Args[2])
 }

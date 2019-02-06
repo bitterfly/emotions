@@ -3,7 +3,6 @@ package emotions
 import (
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -208,8 +207,6 @@ func getFourier(data [][]float64) [][]float64 {
 		// fouriers = Complex[][]
 		elFouriers[i] = getSignificantFreq(fouriers)
 	}
-
-	fmt.Printf("%v\n", elFouriers[0])
 
 	//ellFouriers numEls x numFrames x 4
 	// fmt.Printf("El fouriers: %d x %d x %d\n", len(elFouriers), len(elFouriers[0]), len(elFouriers[0][0]))
