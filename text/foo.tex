@@ -1,0 +1,87 @@
+% !TEX program = xelatex
+\documentclass[12pt]{report}
+\usepackage[T1]{fontenc}
+\usepackage{fontspec}
+
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{Roboto Light}
+\setsansfont{Roboto Light}
+\setmonofont{Roboto Mono Light}
+
+\usepackage[english, bulgarian]{babel}
+\usepackage{indentfirst}
+\usepackage[a4paper, portrait, margin = 2.5 cm]{geometry}
+\usepackage{url}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage{listings}
+\renewcommand{\baselinestretch}{1.1}
+\setlength{\emergencystretch}{3em}
+
+\usepackage{graphicx}
+\graphicspath{ {./pictures/} }
+
+\lstset{
+	backgroundcolor = \color{light-gray},
+    language = C,
+    xleftmargin = 1cm,
+    framexleftmargin = 1em,
+    basicstyle=\ttfamily,
+	moredelim=[is][\underbar]{_}{_},
+}
+
+\usepackage{color}
+\definecolor{Bluish}{rgb}{0.39,0.55,0.78}
+\definecolor{light-gray}{gray}{0.9}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\usepackage{tabularx}
+
+
+\title{Дипломна работа}
+\author{Диана Генева <dageneva@qtrp.org>}
+\date{2018}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\pagebreak
+
+\chapter{Нулева зона}
+Бла, бла, бла, аз съм толкова емоционална.
+
+\includegraphics[width=\textwidth]{pikachu}
+
+\chapter{Емоции в реч}
+    \section{Физика на тъгата}
+    \section{Загладено опростяване}    
+    \section{Характеристики}
+        \subsection{Избор}
+        \subsection{Извличане}
+    \section{Класификация}    
+    \section{Резултати}
+
+\chapter{Грубо в мозъка}
+    \section{Характеристики}
+        \subsection{Избор}
+        \subsection{Извличане}
+    \section{Класификация}    
+    \section{Резултати}
+\chapter{Двойната звезда}
+    \section{Резултати}
+\chapter{Големият портрет}
+
+
+\end{document}
