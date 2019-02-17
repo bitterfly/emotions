@@ -21,6 +21,7 @@ func main() {
 
 	for _, c := range cbf {
 		if !isZero(c) {
+			fmt.Printf("0 ")
 			for i, cc := range c {
 				fmt.Printf("%d:%f ", i+1, cc)
 			}
