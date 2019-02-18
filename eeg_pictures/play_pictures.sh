@@ -3,20 +3,20 @@
 photos=${1}
 system_pictures=${2}
 
-black=$(realpath "${system_pictures}/black2.png")
+black=$(realpath "${system_pictures}/black.png")
 
 ln -sf "${black}" "/tmp/feh.png"
 
 feh -Z -F -R 0.1 -Y "/tmp/feh.png" &
 pid=$!
 while read sp; do
+	sleep 0.5
+	ln -sf "${sp}" "/tmp/feh.png"
 	sleep 1
 	ln -sf "${black}" "/tmp/feh.png"
-	sleep 0.2
-	ln -sf "${sp}" "/tmp/feh.png"
 done < <(find "${system_pictures}/numbers" -type f -exec realpath {} \; | sort -r)
 
-sleep 1
+sleep 0.5
 
 while read p; do
 	ln -sf "${p}" "/tmp/feh.png"
