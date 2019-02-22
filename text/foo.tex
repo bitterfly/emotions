@@ -1,27 +1,31 @@
 % !TEX program = xelatex
 \documentclass[12pt]{report}
-\usepackage[T1]{fontenc}
 \usepackage{fontspec}
 
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont{Roboto Light}
-\setsansfont{Roboto Light}
-\setmonofont{Roboto Mono Light}
+\setmainfont{DejaVu Sans}
+\setsansfont{DejaVu Sans}
 
 \usepackage[english, bulgarian]{babel}
 \usepackage{indentfirst}
-\usepackage[a4paper, portrait, margin = 2.5 cm]{geometry}
+\usepackage[a4paper, portrait, margin = 2.0 cm]{geometry}
 \usepackage{url}
 \usepackage{color}
+\usepackage{float}
 \usepackage{xcolor}
 \usepackage{graphicx}
-\usepackage{adjustbox}
 \usepackage{listings}
+\usepackage{subfig}
+\usepackage[export]{adjustbox}
+
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
 \renewcommand{\baselinestretch}{1.1}
 \setlength{\emergencystretch}{3em}
 
 \usepackage{graphicx}
-\graphicspath{ {./pictures/} }
+\graphicspath{ {./resources/} }
 
 \lstset{
 	backgroundcolor = \color{light-gray},
@@ -62,14 +66,28 @@
 \chapter{Нулева зона}
 Бла, бла, бла, аз съм толкова емоционална.
 
-\includegraphics[width=\textwidth]{pikachu}
+\includegraphics[width=0.5\textwidth ]{pikachu}
 
 \chapter{Емоции в реч}
     \section{Физика на тъгата}
-    \includegraphics[width=\textwidth]{tubes}
     $https://www.clear.rice.edu/elec301/Projects01/speech_syn/sourcefilter.htm$
-    \includegraphics[width=\textwidth]{physics}
-    TODO remove Paul Taylor's picture and draw my own
+    \begin{figure}[ht]%
+        \centering
+        \begin{changemargin}{0cm}{0cm} 
+            \subfloat[Part 1]{%
+                \includegraphics[width=0.4\paperwidth,valign=t]{physics}%
+            } \hspace{2cm}
+            \subfloat[Part 2]{%
+                \includegraphics[width=0.305\paperwidth,valign=t]{tubes}%
+                \vphantom{\includegraphics[width=0.4\paperwidth,valign=t]{physics}}%
+            }
+        \end{changemargin} 
+
+        \caption{Гррррр}%
+        \label{fig:example}%
+    \end{figure}
+   
+   
     \section{Загладено опростяване}    
     \section{Характеристики}
         \subsection{Избор}
