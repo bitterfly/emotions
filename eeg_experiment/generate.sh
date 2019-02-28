@@ -14,7 +14,11 @@ function make_name {
     fi
 
     mkdir -p "${vid_dir}"
-    hash="$(echo "$(sha256sum "${2}" ; echo "${1}")" | sha256sum | cut -c1-8)"
+    if [[ -f "${3}" ]]; then
+        hash="$(echo "$(sha256sum "${2}" ; sha256sum "${3}"; echo "${1}")" | sha256sum | cut -c1-8)"
+    else
+        hash="$(echo "$(sha256sum "${2}" ; echo "${1}")" | sha256sum | cut -c1-8)"
+    fi
     echo "${vid_dir}/${hash}.mp4"
 }
 
@@ -27,6 +31,44 @@ function tag {
 
     ln -sf "${name}" "${tagged}"
     echo "${tagged}"
+}
+
+function audio {
+    # first argument is the image, second argument is the audio
+    name="$(make_name 42 "${1}" "${2}")"
+
+    if [[ -f "${name}" ]]; then
+        echo "${name}"
+        return 0    # already generated
+    fi
+
+    info "rendering audio with image"
+    info "    ${1}"
+    info "  , ${2}"
+    info " -> ${name}"
+    
+    ffmpeg \
+        -r 25 \
+        -stream_loop -1 \
+        -i "${1}" \
+        -i "${2}" \
+        -c:v libx264 \
+        -tune stillimage \
+        -c:a aac \
+        -b:a 192k \
+        -pix_fmt yuv420p \
+        -shortest \
+        -preset veryslow \
+        -t $(soxi -D "${2}") \
+        "${name}" 2>/tmp/ffmpeg_log
+
+    if [[ $? -ne 0 ]]; then
+        info "video creation failed for ${name} :("
+        rm -rf "${name}"
+        exit 1
+    fi
+
+    echo "${name}"
 }
 
 function video {
@@ -104,6 +146,9 @@ part1=$(realpath "${system_data}/part1.png")
 part2=$(realpath "${system_data}/part2.png")
 description1=$(realpath "${system_data}/description1.png")
 description2=$(realpath "${system_data}/description2.png")
+beep=$(realpath "${system_data}/beep.wav")
+
+audio "${green}" "${beep}" | tag start
 
 image 0.5 "${green}"
 image 2   "${part1}"
