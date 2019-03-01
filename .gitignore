@@ -1,5 +1,6 @@
 wavs/
 pictures/
+eeg_experiment/emotional_pictures/
 *.aux
 *.lof
 *.log
