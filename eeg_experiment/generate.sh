@@ -163,6 +163,9 @@ for p in $(find ${photos} -type f -exec realpath {} \; | shuf); do
     image 2 "${black}"
 done
 
+exit 1
+
+
 image 0.5 "${green}"
 image   2 "${part2}"
 image   1 "${green}"

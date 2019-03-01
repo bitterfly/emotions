@@ -20,4 +20,4 @@ function parse_tags {
     parse_log "${log}"
 }
 
-mpv --fs "${1}" | parse_tags
+mpv --video-unscaled --fs "${1}" | parse_tags
