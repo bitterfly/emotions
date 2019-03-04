@@ -2,10 +2,11 @@
 
 wavsDir=$1
 outputDir=$2
+k=$3
 
-./make_test_data.sh ${wavsDir} ${outputDir}
+#./make_test_data.sh ${wavsDir} ${outputDir}
 
-gmmDir=$(echo ${outputDir}/gmms)
+gmmDir="${outputDir}/gmms"
 
 if [[ ! -d ${gmmDir} ]]; then
     mkdir ${gmmDir}
@@ -15,10 +16,7 @@ trainDir=$(echo ${outputDir}/train)
 testDir=$(echo ${outputDir}/test)
 
 echo "=====TRAIN ${k}======"
-train_emotions ${k} "${gmmDir}/gmm" -h ${trainDir}/happiness/* -s ${trainDir}/sadness/* -a ${trainDir}/anger/* -n ${trainDir}/neutral/* 
+    go run cmd/train_emotions/main.go ${k} "${gmmDir}/gmm" -h ${trainDir}/happiness/* -s ${trainDir}/sadness/* -a ${trainDir}/anger/* -n ${trainDir}/neutral/* 
 
-for k in `seq 2 12`; do
-   echo "=====TEST ${k}======"    
-    test_emotion "${gmmDir}/gmm_k${k}" -h ${testDir}/happiness/* -s ${testDir}/sadness/* -a ${testDir}/anger/* -n ${testDir}/neutral/* > ${outputDir}/result_k${k}
-done
-
+echo "=====TEST ${k}======"    
+    go run cmd/test_emotion/main.go "${gmmDir}/gmm_k${k}" -h ${testDir}/happiness/* -s ${testDir}/sadness/* -a ${testDir}/anger/* -n ${testDir}/neutral/* > ${outputDir}/result_k${k}

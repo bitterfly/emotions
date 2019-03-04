@@ -24,9 +24,9 @@ function split {
     i=1
     while read file; do
         if [ ${i} -le ${eightyPercent} ]; then
-            cp ${file} "${eTrainDir}/"
+            cp -v ${file} "${eTrainDir}/"
         else
-            cp ${file} "${eTestDir}/"
+            cp -v ${file} "${eTestDir}/"
         fi
 
         i=$((i+=1))
@@ -41,8 +41,8 @@ if [[ ! -d ${outputDir} ]]; then
     mkdir ${outputDir}
 fi
 
-trainDir=$(echo ${outputDir}/train/)
-testDir=$(echo ${outputDir}/test/)
+trainDir="${outputDir}/train/"
+testDir="${outputDir}/test/"
 
 if [[ ! -d ${trainDir} ]]; then
     mkdir ${trainDir}
