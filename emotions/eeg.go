@@ -3,6 +3,7 @@ package emotions
 import (
 	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -68,6 +69,7 @@ func ReadXML(filename string, elNum int) [][]float64 {
 
 	electrodes := make([][]float64, elNum, elNum)
 	scanner := csv.NewReader(file)
+	scanner.Comma = ' '
 
 	for {
 		line, err := scanner.Read()
@@ -104,7 +106,7 @@ func getSignificantFreq(coefficients [][]Complex) [][]float64 {
 	sFreq := make([][]float64, len(coefficients), len(coefficients))
 	for i := 0; i < len(coefficients); i++ {
 		sFreq[i] = make([]float64, 4, 4)
-		for j := 0; j < len(coefficients[0]); j++ {
+		for j := 0; j < len(coefficients[i]); j++ {
 			magnitude := Magnitude(coefficients[i][j])
 			w := getRange(IndToFreq(j, 500, len(coefficients[0])))
 			if w == -1 {
@@ -202,6 +204,7 @@ func getFourier(data [][]float64) [][]float64 {
 
 	for i, d := range data {
 		// d 1000
+		fmt.Fprintf(os.Stderr, fmt.Sprintf("i: %d %d", i, len(d)))
 		frames := cutElectrodeIntoFrames(d)
 		fouriers := fourierElectrode(frames)
 		// fouriers = Complex[][]
