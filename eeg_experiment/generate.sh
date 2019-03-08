@@ -3,6 +3,8 @@
 cdir="$(dirname "$(readlink -f "${0}")")"
 vid_dir="/tmp/generated_videos"
 
+shell_pid=$$
+
 function info {
     echo "${@}" 1>&2
 }
@@ -10,7 +12,7 @@ function info {
 function make_name {
     if [[ ! -r "${2}" ]]; then
         info "${2} does not exist!"
-        exit 1
+        kill "${shell_pid}"
     fi
 
     mkdir -p "${vid_dir}"
@@ -65,7 +67,7 @@ function audio {
     if [[ $? -ne 0 ]]; then
         info "video creation failed for ${name} :("
         rm -rf "${name}"
-        exit 1
+        kill "${shell_pid}"
     fi
 
     echo "${name}"
@@ -83,7 +85,7 @@ function video {
     info "    ${1}"
     info " -> ${name}"
 
-    cp -rf "${1}" "${name}" || exit 1
+    cp -rf "${1}" "${name}" || kill "${shell_pid}"
 
     echo "${name}"
 }
@@ -112,7 +114,7 @@ function image {
     if [[ $? -ne 0 ]]; then
         info "video creation failed for ${name} :("
         rm -rf "${name}"
-        exit 1
+        kill "${shell_pid}"
     fi
 
     echo "${name}"
@@ -159,12 +161,10 @@ countdown
 
 IFS=$'\n'
 for p in $(find ${photos} -type f -exec realpath {} \; | shuf); do
+    info "p: ${p}"
     image 3 "${p}" | tag "picture $(basename ${p})"
     image 2 "${black}"
 done
-
-exit 1
-
 
 image 0.5 "${green}"
 image   2 "${part2}"
