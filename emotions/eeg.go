@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -193,9 +194,108 @@ func getEegTrainingSet(filename string) []EegClusterable {
 	return clusterables
 }
 
+// GetFourierForFile takes a filename and numbers of electrodes and returns the fourier transform of each electrode
 func GetFourierForFile(filename string, elNum int) [][]float64 {
 	data := ReadXML(filename, elNum)
 	return getFourier(data)
+}
+
+func putSign(sign string, content []string) []string {
+	newContent := make([]string, len(content), len(content))
+
+	for i := range content {
+		newContent[i] = fmt.Sprintf("%s %s", sign, content[i])
+	}
+
+	return newContent
+}
+
+func Classify
+
+func readEEGfiles(filenames []string) []string {
+	content := make([]string, 0, 1000)
+	for _, filename := range filenames {
+		cbf := GetFourierForFile(filename, 19)
+
+		for _, c := range cbf {
+			if !IsZero(c) {
+				current := ""
+				for i, cc := range c {
+					current += fmt.Sprintf("%d:%f ", i+1, cc)
+				}
+				content = append(content, fmt.Sprintf("%s\n", current))
+
+			}
+		}
+	}
+	return content
+}
+
+func writeToFile(filename string, content []string) error {
+	f, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	for _, l := range content {
+		fmt.Fprintf(f, l)
+	}
+	return nil
+}
+
+// TrainEeg takes positive, negative and neutral eeg files and trains the svm models for each against the other
+func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFiles []string, outputDir string) error {
+	positive := readEEGfiles(eegPositiveFiles)
+	negative := readEEGfiles(eegNegativeFiles)
+	neutral := readEEGfiles(eegNeutralFiles)
+
+	// +1 neutral -1 positive + negative
+	neutralNP := filepath.Join(outputDir, "neutral_np.txt")
+	neutralNPmodel := filepath.Join(outputDir, "neutral_np.model")
+	err := writeToFile(neutralNP, combineSlices(
+		putSign("-1", combineSlices(negative, positive)),
+		putSign("+1", neutral),
+	))
+	if err != nil {
+		return err
+	}
+
+	// +1 positive -1 (neutral + negative)
+	positiveNN := filepath.Join(outputDir, "positive_nn.txt")
+	positiveNNmodel := filepath.Join(outputDir, "positive_nn.model")
+	err = writeToFile(positiveNN, combineSlices(
+		putSign("-1", combineSlices(negative, neutral)),
+		putSign("+1", positive),
+	))
+	if err != nil {
+		return err
+	}
+
+	// +1 negative -1 (neutral + positive)
+	negativeNP := filepath.Join(outputDir, "negative_np.txt")
+	negativeNPmodel := filepath.Join(outputDir, "negative_np.model")
+
+	err = writeToFile(negativeNP, combineSlices(
+		putSign("-1", combineSlices(neutral, positive)),
+		putSign("+1", negative),
+	))
+	if err != nil {
+		return err
+	}
+
+	err = exec.Command("svm_learn", negativeNP, negativeNPmodel).Run()
+	if err != nil {
+		return fmt.Errorf("could not train svm for file %s: %s", negativeNP, err.Error())
+	}
+	err = exec.Command("svm_learn", positiveNN, positiveNNmodel).Run()
+	if err != nil {
+		return fmt.Errorf("could not train svm for file %s: %s", positiveNN, err.Error())
+	}
+	err = exec.Command("svm_learn", neutralNP, neutralNPmodel).Run()
+	if err != nil {
+		return fmt.Errorf("could not train svm for file %s: %s", neutralNP, err.Error())
+	}
+
+	return nil
 }
 
 func getFourier(data [][]float64) [][]float64 {

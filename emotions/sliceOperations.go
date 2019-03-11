@@ -68,3 +68,16 @@ func getSqrt(x *[]float64) {
 		(*x)[i] = math.Sqrt((*x)[i])
 	}
 }
+
+func combineSlices(a, b []string) []string {
+	c := make([]string, len(a)+len(b), len(a)+len(b))
+	for i := 0; i < len(a); i++ {
+		c[i] = a[i]
+	}
+
+	for j := 0; j < len(b); j++ {
+		c[j+len(a)] = b[j]
+	}
+
+	return c
+}

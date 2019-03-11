@@ -285,9 +285,23 @@ func getName(s string) string {
 		return "anger"
 	case 'n':
 		return "neutral"
+	case 'p':
+		return "positive"
+	case 'm':
+		return "negative"
 	default:
 		panic(s)
 	}
+}
+
+//IsZero checks if float is small enough
+func IsZero(x []float64) bool {
+	for _, xx := range x {
+		if xx > 0.00001 || xx > -0.00001 {
+			return false
+		}
+	}
+	return true
 }
 
 //ParseArguments receives command arguments and separates them on spaces
