@@ -5,6 +5,11 @@ import (
 	"math"
 )
 
+type Tagged struct {
+	Tag  string
+	Data [][]float64
+}
+
 func findDistance(x [][]float64, y [][]float64) float64 {
 	sum := 0.0
 	for i := 0; i < len(x); i++ {

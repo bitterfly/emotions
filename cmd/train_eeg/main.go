@@ -1,58 +1,60 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
-	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(filenames []string) [][]float64 {
-	mfccs := make([][]float64, 0, len(filenames)*100)
-	for _, f := range filenames {
-		wf, _ := emotions.Read(f, 0.01, 0.97)
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
+}
 
-		mfcc := emotions.MFCCs(wf, 13, 23)
-
-		mfccs = append(mfccs, mfcc...)
+func MarshallToFile(filename string, positiveFiles []string, negativeFiles []string, neutralFiles []string) error {
+	bytes, err := json.Marshal([]emotions.Tagged{
+		getData(positiveFiles, "positive"),
+		getData(negativeFiles, "negative"),
+		getData(neutralFiles, "neutral"),
+	})
+	if err != nil {
+		return fmt.Errorf("Could not marshal eeg data: %s\n", err.Error())
 	}
 
-	return mfccs
+	err = ioutil.WriteFile(filename, bytes, 0664)
+	return err
 }
 
-func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
-	return emotions.GMM(mfccs, k)
-}
+func getData(files []string, tag string) emotions.Tagged {
+	data := make([][]float64, 0, 100)
+	for i := range files {
+		data = append(data, emotions.GetFourierForFile(files[i], 19)...)
+	}
 
-func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
-	return getGMM(readEmotion(filenames), k)
+	return emotions.Tagged{
+		Tag:  tag,
+		Data: data,
+	}
 }
 
 func main() {
-	if len(os.Args) < 3 {
-		panic("go run main.go <k> <dir-template> --eeg-positive <...> --eeg-negative <...> --eeg_neutral <...> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
+	if len(os.Args) < 6 {
+		panic("go run main.go output_file --eeg-positive eeg_pos1.csv [eeg_pos2.csv...]  --eeg-negative eeg_neg1.csv [eeg_neg2.csv..] --eeg_neutral eeg_neu1.csv [eeg_neu2.csv...] ")
 	}
 
-	outputDirIndex := 2
-	maxK := -1
+	output_file := os.Args[1]
+	arguments := emotions.ParseArguments(os.Args[2:])
 
-	k, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		panic("Must provide k")
-	}
-	if _, err := strconv.Atoi(os.Args[2]); err != nil {
-		outputDirIndex = 2
-		maxK = k
-	} else {
-		maxK, _ = strconv.Atoi(os.Args[2])
-		outputDirIndex = 3
+	if fileExists(output_file) {
+		os.Remove(output_file)
 	}
 
-	outputDir := os.Args[outputDirIndex]
-	arguments := emotions.ParseArguments(os.Args[outputDirIndex+1:])
-
-	emotionFiles := make(map[string][]string)
 	eegPositive, ok := arguments["eeg-positive"]
 	if !ok {
 		panic("No eeg positive files were provided")
@@ -66,42 +68,13 @@ func main() {
 		panic("No eeg positive files were provided")
 	}
 
-	for e, f := range arguments {
-		if e[0:3] != "eeg" {
-			emotionFiles[e] = f
-		}
-	}
+	fmt.Printf("Output_file: %s\n", output_file)
+	fmt.Printf("eeg_pos: %s\n", eegPositive)
+	fmt.Printf("eeg_neg: %s\n", eegNegative)
+	fmt.Printf("eeg_neu: %s\n", eegNeutral)
 
-	err = emotions.TrainEeg(eegPositive, eegNegative, eegNeutral, outputDir)
+	err := MarshallToFile(output_file, eegPositive, eegNegative, eegNeutral)
 	if err != nil {
 		panic(err.Error())
 	}
-
-	fmt.Printf("MaxK: %d\n", maxK)
-
-	// for j := k; j <= maxK; j++ {
-	// 	if _, err := os.Stat(fmt.Sprintf("%s_k%d", outputDir, j)); os.IsNotExist(err) {
-	// 		os.Mkdir(fmt.Sprintf("%s_k%d", outputDir, j), 0775)
-	// 	}
-	// }
-
-	// for emotion, files := range emotionFiles {
-	// 	mfccs := readEmotion(files)
-	// 	for j := k; j <= maxK; j++ {
-	// 		fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
-	// 		egm := emotions.EmotionGausianMixure{
-	// 			Emotion: emotion,
-	// 			GM:      getGMM(mfccs, j),
-	// 		}
-
-	// 		bytes, err := json.Marshal(egm)
-	// 		if err != nil {
-	// 			panic(fmt.Sprintf("Error when marshaling %s with k %d\n", emotion, j))
-	// 		}
-
-	// 		filename := path.Join(fmt.Sprintf("%s_k%d", outputDir, j), fmt.Sprintf("%s.gmm", emotion))
-	// 		fmt.Fprintf(os.Stderr, filename)
-	// 		ioutil.WriteFile(filename, bytes, 0644)
-	// 	}
-	// }
 }
