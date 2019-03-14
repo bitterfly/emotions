@@ -19,9 +19,9 @@ func fileExists(filename string) bool {
 
 func MarshallToFile(filename string, positiveFiles []string, negativeFiles []string, neutralFiles []string) error {
 	bytes, err := json.Marshal([]emotions.Tagged{
-		getData(positiveFiles, "positive"),
-		getData(negativeFiles, "negative"),
-		getData(neutralFiles, "neutral"),
+		getData(positiveFiles, "eeg-positive"),
+		getData(negativeFiles, "eeg-negative"),
+		getData(neutralFiles, "eeg-neutral"),
 	})
 	if err != nil {
 		return fmt.Errorf("Could not marshal eeg data: %s\n", err.Error())
