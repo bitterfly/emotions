@@ -90,8 +90,8 @@ func ReadXML(filename string, elNum int) [][]float64 {
 	return electrodes
 }
 
-func cutElectrodeIntoFrames(electrode []float64) [][]float64 {
-	return CutSliceIntoFrames(electrode, 500, 200, 150)
+func cutElectrodeIntoFrames(electrode []float64, verbose bool) [][]float64 {
+	return CutSliceIntoFrames(electrode, 500, 200, 150, verbose)
 }
 
 func fourierElectrode(frames [][]float64) [][]Complex {
@@ -103,6 +103,8 @@ func fourierElectrode(frames [][]float64) [][]Complex {
 	return fouriers
 }
 
+// getSignificantFreq takes fourier coefficients for each frame for a electrode
+// and returns an array frameNum x 4 in which the alpha, beta, gamma, theta accumulated magnitudes are stored
 func getSignificantFreq(coefficients [][]Complex) [][]float64 {
 	sFreq := make([][]float64, len(coefficients), len(coefficients))
 	for i := 0; i < len(coefficients); i++ {
@@ -139,7 +141,7 @@ func getWavesMean(coefficients [][]Complex) []float64 {
 }
 
 func getElectrodeWavesDistribution(electrodeData []float64) []float64 {
-	frames := cutElectrodeIntoFrames(electrodeData)
+	frames := cutElectrodeIntoFrames(electrodeData, false)
 	fouriers := fourierElectrode(frames)
 	return getWavesMean(fouriers)
 }
@@ -209,8 +211,6 @@ func putSign(sign string, content []string) []string {
 
 	return newContent
 }
-
-func Classify
 
 func readEEGfiles(filenames []string) []string {
 	content := make([]string, 0, 1000)
@@ -298,30 +298,38 @@ func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFi
 	return nil
 }
 
+// getFouriers takes the inverted data (19xlen(eeg))
+// then cuts the data for each electrode into frames
+// For each frames we compute Fourier coefficients, then we accumulate these coefficients within the wave ranges
+// then we flip the result again, so we have the feature vectors which are numFrames x (numEl * 4)
+
 func getFourier(data [][]float64) [][]float64 {
-	// data 19x1000
+	fmt.Fprintf(os.Stderr, fmt.Sprintf("Data: %d x %d\n", len(data), len(data[0])))
+
+	// elFouriers is elNum x numFrames x 4(numWaves)
 	elFouriers := make([]([][]float64), len(data), len(data))
 
 	for i, d := range data {
-		// d 1000
-		fmt.Fprintf(os.Stderr, fmt.Sprintf("i: %d %d", i, len(d)))
-		frames := cutElectrodeIntoFrames(d)
+		frames := cutElectrodeIntoFrames(d, false)
 		fouriers := fourierElectrode(frames)
-		// fouriers = Complex[][]
 		elFouriers[i] = getSignificantFreq(fouriers)
 	}
 
-	//ellFouriers numEls x numFrames x 4
 	// fmt.Printf("El fouriers: %d x %d x %d\n", len(elFouriers), len(elFouriers[0]), len(elFouriers[0][0]))
+
+	// fourierByFrames stores for every frame the waves for each electrode
+	// dim: numFrames x (numEl * 4)
 	fourierByFrame := make([][]float64, len(elFouriers[0]), len(elFouriers[0]))
 	for i := range elFouriers[0] {
-		fourierByFrame[i] = make([]float64, len(elFouriers), len(elFouriers))
-
+		fourierByFrame[i] = make([]float64, 0, len(data)*len(elFouriers[0][0]))
 	}
+
 	for en := 0; en < len(elFouriers); en++ {
 		for f := 0; f < len(elFouriers[en]); f++ {
 			fourierByFrame[f] = append(fourierByFrame[f], elFouriers[en][f]...)
 		}
 	}
+
+	// fmt.Printf("FouriersByFrame: %d x %d\n", len(fourierByFrame), len(fourierByFrame[0]))
 	return fourierByFrame
 }

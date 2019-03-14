@@ -223,7 +223,7 @@ func PlotEmotion(filename string, output string) {
 
 	for i, d := range data {
 		var features [][]float64
-		frames := cutElectrodeIntoFrames(d)
+		frames := cutElectrodeIntoFrames(d, false)
 		fouriers := fourierElectrode(frames)
 		for _, f := range fouriers {
 			v := make([]float64, 4, 4)

@@ -49,20 +49,25 @@ func rectangularWindow(content []float64) {
 // CutSliceIntoFrames receives float array and cuts it into frames
 // It takes approximately 25mS of real data and then pads it with zeroes to the first power of two
 // It takes frames with len 25ms with step of 10ms and applies a window function to the frame (hamming)
-func CutSliceIntoFrames(data []float64, sampleRate uint32, frameInMs int, stepInMs int) [][]float64 {
+func CutSliceIntoFrames(data []float64, sampleRate uint32, frameInMs int, stepInMs int, verbose bool) [][]float64 {
 	realSamplesPerFrame := int((float64(frameInMs) / 1000.0) * float64(sampleRate))
 
 	samplesPerFrame := FindClosestPower(int(realSamplesPerFrame))
 	step := int((float64(stepInMs) / 1000.0) * float64(sampleRate))
 
-	fmt.Fprintf(os.Stderr, "Samples: %d\n", len(data))
-	fmt.Fprintf(os.Stderr, "Real samples per frame for %dms: %d\n", frameInMs, realSamplesPerFrame)
-	fmt.Fprintf(os.Stderr, "Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Samples: %d\n", len(data))
+		fmt.Fprintf(os.Stderr, "Real samples per frame for %dms: %d\n", frameInMs, realSamplesPerFrame)
+		fmt.Fprintf(os.Stderr, "Samples per frame: %d\nStep: %d\n", samplesPerFrame, step)
 
-	fmt.Fprintf(os.Stderr, "Which is %.3fms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+		fmt.Fprintf(os.Stderr, "Which is %.3fms long\n", 1000.0*float64(samplesPerFrame)/float64(sampleRate))
+	}
 
 	numFrames := (len(data) - realSamplesPerFrame) / step
-	fmt.Fprintf(os.Stderr, "Frames in file: %d\n====================\n", numFrames)
+
+	if verbose {
+		fmt.Fprintf(os.Stderr, "Frames in file: %d\n====================\n", numFrames)
+	}
 	frames := make([][]float64, numFrames, numFrames)
 
 	for frame := 0; frame < numFrames; frame++ {
@@ -70,7 +75,6 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32, frameInMs int, stepIn
 
 		frames[frame] = sliceCopyWithWindow(data, i, i+realSamplesPerFrame, samplesPerFrame)
 	}
-
 	return frames
 }
 
@@ -83,5 +87,5 @@ func sliceCopyWithWindow(first []float64, from, to, length int) []float64 {
 
 //CutWavFileIntoFrames takes a wavfiles and cuts it into frames
 func CutWavFileIntoFrames(wf WavFile) [][]float64 {
-	return CutSliceIntoFrames(wf.data, wf.sampleRate, FRAME_IN_MS, STEP_IN_MS)
+	return CutSliceIntoFrames(wf.data, wf.sampleRate, FRAME_IN_MS, STEP_IN_MS, false)
 }

@@ -11,6 +11,10 @@ import (
 // Second argument is the sign (+1, -1, 0)
 // returns in the svm-lifght format
 func main() {
+	if len(os.Args) < 3 {
+		panic("Usage: go run main eeg1 [eeg2...eegn] sign\n")
+	}
+
 	sign := os.Args[len(os.Args)-1]
 
 	for f := 1; f < len(os.Args)-1; f++ {
