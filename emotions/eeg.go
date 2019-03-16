@@ -90,8 +90,8 @@ func ReadXML(filename string, elNum int) [][]float64 {
 	return electrodes
 }
 
-func cutElectrodeIntoFrames(electrode []float64, verbose bool) [][]float64 {
-	return CutSliceIntoFrames(electrode, 500, 200, 150, verbose)
+func cutElectrodeIntoFrames(electrode []float64, frameLen int, frameStep int, verbose bool) [][]float64 {
+	return CutSliceIntoFrames(electrode, 500, frameLen, frameStep, verbose)
 }
 
 func fourierElectrode(frames [][]float64) [][]Complex {
@@ -140,31 +140,31 @@ func getWavesMean(coefficients [][]Complex) []float64 {
 	return means
 }
 
-func getElectrodeWavesDistribution(electrodeData []float64) []float64 {
-	frames := cutElectrodeIntoFrames(electrodeData, false)
+func getElectrodeWavesDistribution(electrodeData []float64, frameLen int, frameStep int) []float64 {
+	frames := cutElectrodeIntoFrames(electrodeData, frameLen, frameStep, false)
 	fouriers := fourierElectrode(frames)
 	return getWavesMean(fouriers)
 }
 
 // GetFeatureVector returns the mean of Θ, α, β and γ waves for each of the given elNum electrodes
 // returns a vector 19x4
-func GetFeatureVector(filename string, elNum int) [][]float64 {
+func GetFeatureVector(filename string, elNum int, frameLen int, frameStep int) [][]float64 {
 	data := ReadXML(filename, elNum)
 	features := make([][]float64, len(data), len(data))
 	for i, d := range data {
-		features[i] = getElectrodeWavesDistribution(d)
+		features[i] = getElectrodeWavesDistribution(d, frameLen, frameStep)
 	}
 
 	return features
 }
 
-func getFeaturesFromFiles(filenames []string) []EegClusterable {
+func getFeaturesFromFiles(filenames []string, frameLen int, frameStep int) []EegClusterable {
 	trainingSet := make([]EegClusterable, len(filenames), len(filenames))
 
 	for i, file := range filenames {
 		filename := filepath.Base(file)
 		name := filename[0 : len(filename)-len(filepath.Ext(filename))]
-		newFeatures := GetFeatureVector(file, 19)
+		newFeatures := GetFeatureVector(file, 19, frameLen, frameStep)
 		trainingSet[i] = EegClusterable{
 			Class: name,
 			Data:  newFeatures,
@@ -174,8 +174,8 @@ func getFeaturesFromFiles(filenames []string) []EegClusterable {
 	return trainingSet
 }
 
-func SaveEegTrainingSet(filenames []string, outputFilename string) {
-	features := getFeaturesFromFiles(filenames)
+func SaveEegTrainingSet(filenames []string, outputFilename string, frameLen int, frameStep int) {
+	features := getFeaturesFromFiles(filenames, frameLen, frameStep)
 
 	bytes, err := json.Marshal(features)
 	if err != nil {
@@ -197,9 +197,9 @@ func getEegTrainingSet(filename string) []EegClusterable {
 }
 
 // GetFourierForFile takes a filename and numbers of electrodes and returns the fourier transform of each electrode
-func GetFourierForFile(filename string, elNum int) [][]float64 {
+func GetFourierForFile(filename string, elNum int, frameLen int, frameStep int) [][]float64 {
 	data := ReadXML(filename, elNum)
-	return getFourier(data)
+	return getFourier(data, frameLen, frameStep)
 }
 
 func putSign(sign string, content []string) []string {
@@ -212,10 +212,10 @@ func putSign(sign string, content []string) []string {
 	return newContent
 }
 
-func readEEGfiles(filenames []string) []string {
+func readEEGfiles(filenames []string, frameLen int, frameStep int) []string {
 	content := make([]string, 0, 1000)
 	for _, filename := range filenames {
-		cbf := GetFourierForFile(filename, 19)
+		cbf := GetFourierForFile(filename, 19, frameLen, frameStep)
 
 		for _, c := range cbf {
 			if !IsZero(c) {
@@ -243,10 +243,10 @@ func writeToFile(filename string, content []string) error {
 }
 
 // TrainEeg takes positive, negative and neutral eeg files and trains the svm models for each against the other
-func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFiles []string, outputDir string) error {
-	positive := readEEGfiles(eegPositiveFiles)
-	negative := readEEGfiles(eegNegativeFiles)
-	neutral := readEEGfiles(eegNeutralFiles)
+func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFiles []string, outputDir string, frameLen int, frameStep int) error {
+	positive := readEEGfiles(eegPositiveFiles, frameLen, frameStep)
+	negative := readEEGfiles(eegNegativeFiles, frameLen, frameStep)
+	neutral := readEEGfiles(eegNeutralFiles, frameLen, frameStep)
 
 	// +1 neutral -1 positive + negative
 	neutralNP := filepath.Join(outputDir, "neutral_np.txt")
@@ -303,14 +303,14 @@ func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFi
 // For each frames we compute Fourier coefficients, then we accumulate these coefficients within the wave ranges
 // then we flip the result again, so we have the feature vectors which are numFrames x (numEl * 4)
 
-func getFourier(data [][]float64) [][]float64 {
+func getFourier(data [][]float64, frameLen int, frameStep int) [][]float64 {
 	fmt.Fprintf(os.Stderr, fmt.Sprintf("Data: %d x %d\n", len(data), len(data[0])))
 
 	// elFouriers is elNum x numFrames x 4(numWaves)
 	elFouriers := make([]([][]float64), len(data), len(data))
 
 	for i, d := range data {
-		frames := cutElectrodeIntoFrames(d, false)
+		frames := cutElectrodeIntoFrames(d, frameLen, frameStep, false)
 		fouriers := fourierElectrode(frames)
 		elFouriers[i] = getSignificantFreq(fouriers)
 	}

@@ -1,6 +1,9 @@
 package emotions
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func zero(x *[]float64) {
 	for i := 0; i < len(*x); i++ {
@@ -80,4 +83,27 @@ func combineSlices(a, b []string) []string {
 	}
 
 	return c
+}
+
+// AverageSlice accumulates every average elements of the array x
+func AverageSlice(x [][]float64, average int) [][]float64 {
+	averagedSlice := make([][]float64, 0, len(x)/average)
+	currentSlice := make([]float64, len(x[0]), len(x[0]))
+	for xi := range x {
+		if xi != 0 && xi%average == 0 {
+
+			averagedSlice = append(averagedSlice, multiplied(currentSlice, 1/float64(average)))
+			zero(&currentSlice)
+		}
+
+		add(&currentSlice, x[xi])
+	}
+
+	averagedSlice = append(averagedSlice, multiplied(currentSlice, 1/float64(average)))
+
+	if len(averagedSlice) != (len(x)+average-1)/average {
+		panic(fmt.Sprintf("Len: %d shoudl be: %d", len(averagedSlice), (len(x)+average)/average))
+	}
+
+	return averagedSlice
 }

@@ -18,7 +18,7 @@ func main() {
 	sign := os.Args[len(os.Args)-1]
 
 	for f := 1; f < len(os.Args)-1; f++ {
-		cbf := emotions.GetFourierForFile(os.Args[f], 19)
+		cbf := emotions.GetFourierForFile(os.Args[f], 19, 200, 150)
 
 		for _, c := range cbf {
 			if !emotions.IsZero(c) {

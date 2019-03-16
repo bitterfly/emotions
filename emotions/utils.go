@@ -223,7 +223,7 @@ func PlotEmotion(filename string, output string) {
 
 	for i, d := range data {
 		var features [][]float64
-		frames := cutElectrodeIntoFrames(d, false)
+		frames := cutElectrodeIntoFrames(d, 200, 150, false)
 		fouriers := fourierElectrode(frames)
 		for _, f := range fouriers {
 			v := make([]float64, 4, 4)
@@ -325,4 +325,16 @@ func ParseArguments(args []string) map[string][]string {
 	emotions[emotion] = arguments
 
 	return emotions
+}
+
+func GetAverage(bucketSize int, frameLen int, arrayLen int) int {
+	if bucketSize == 1 {
+		return arrayLen
+	}
+
+	if bucketSize == 0 || bucketSize <= frameLen {
+		return 1
+	}
+
+	return bucketSize / frameLen
 }

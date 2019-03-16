@@ -81,7 +81,7 @@ func findClosest(v []float64, trainSet []Tagged, trainVar []float64) string {
 	return minDistTag
 }
 
-func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float64) string {
+func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float64) (map[string]int, string) {
 	freqMap := make(map[string]int)
 	for t := range trainSet {
 		freqMap[trainSet[t].Tag] = 0
@@ -100,10 +100,10 @@ func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float6
 		}
 
 	}
-	return maxe
+	return freqMap, maxe
 }
 
-func KNN(trainSetFilename string, emotionFiles map[string][]string) error {
+func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, emotionFiles map[string][]string) error {
 	trainSet, err := unmarshallEeg(trainSetFilename)
 	if err != nil {
 		return err
@@ -119,9 +119,18 @@ func KNN(trainSetFilename string, emotionFiles map[string][]string) error {
 
 	for emotion, files := range emotionFiles {
 		counts[emotion] = 0
+		fmt.Printf("%s\n", emotion)
 		for f := range files {
-			vec := GetFourierForFile(files[f], 19)
-			mostCommonTag := findMostCommonTag(vec, trainSet, trainVar)
+			vec := GetFourierForFile(files[f], 19, frameLen, frameStep)
+			average := GetAverage(bucketSize, frameLen, len(vec))
+			foo := AverageSlice(vec, average)
+
+			dict, mostCommonTag := findMostCommonTag(foo, trainSet, trainVar)
+
+			for k, v := range dict {
+				fmt.Printf("%s: %d ", k, v)
+			}
+			fmt.Printf("Most common: %s\n", mostCommonTag)
 			if mostCommonTag == emotion {
 				counts[emotion]++
 			}
