@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"sort"
 )
 
 type Tagged struct {
@@ -115,36 +116,36 @@ func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, e
 
 	_, trainVar := getμAndσTagged(trainSet)
 
+	fileKeys := make([]string, 0, len(emotionFiles))
+	for k := range emotionFiles {
+		fileKeys = append(fileKeys, k)
+	}
+	sort.Strings(fileKeys)
+
 	counts := make(map[string]int)
 
-	for emotion, files := range emotionFiles {
+	for _, emotion := range fileKeys {
 		counts[emotion] = 0
-		fmt.Printf("%s\n", emotion)
-		for f := range files {
-			vec := GetFourierForFile(files[f], 19, frameLen, frameStep)
+		for _, f := range emotionFiles[emotion] {
+			fmt.Printf("%s\t", emotion)
+			vec := GetFourierForFile(f, 19, frameLen, frameStep)
 			average := GetAverage(bucketSize, frameLen, len(vec))
 			foo := AverageSlice(vec, average)
 
-			dict, mostCommonTag := findMostCommonTag(foo, trainSet, trainVar)
+			dict, _ := findMostCommonTag(foo, trainSet, trainVar)
+			keys := make([]string, 0, len(dict))
+			for k := range dict {
+				keys = append(keys, k)
+			}
 
-			for k, v := range dict {
-				fmt.Printf("%s: %d ", k, v)
+			sort.Strings(keys)
+
+			for _, k := range keys {
+				fmt.Printf("%d\t", dict[k])
 			}
-			fmt.Printf("Most common: %s\n", mostCommonTag)
-			if mostCommonTag == emotion {
-				counts[emotion]++
-			}
+			fmt.Printf("\n")
 		}
 	}
-
-	sum := 0
-	files := 0
-	for e, c := range counts {
-		fmt.Printf("%s: %.3f%%\n", e, float64(c)*100/float64(len(emotionFiles[e])))
-		sum += c
-		files += len(emotionFiles[e])
-	}
-	fmt.Printf("All: %.3f%%\n", float64(sum)*100/float64(files))
 
 	return nil
 }
