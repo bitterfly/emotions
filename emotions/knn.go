@@ -14,7 +14,7 @@ type Tagged struct {
 	Data [][]float64
 }
 
-func unmarshallEeg(filename string) ([]Tagged, error) {
+func UnmarshallEeg(filename string) ([]Tagged, error) {
 	var tagged []Tagged
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -29,7 +29,7 @@ func unmarshallEeg(filename string) ([]Tagged, error) {
 	return tagged, nil
 }
 
-func getμAndσTagged(tagged []Tagged) ([]float64, []float64) {
+func GetμAndσTagged(tagged []Tagged) ([]float64, []float64) {
 	featureVectorSize := len(tagged[0].Data[0])
 	fmt.Fprintf(os.Stderr, "FeatureVectorSize: %d\n", featureVectorSize)
 
@@ -104,8 +104,24 @@ func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float6
 	return freqMap, maxe
 }
 
+func KNNOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
+	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
+	average := GetAverage(bucketSize, frameLen, len(vec))
+	averaged := AverageSlice(vec, average)
+	_, mc := findMostCommonTag(averaged, trainSet, trainVar)
+	switch mc {
+	case "eeg-neutral":
+		return 0
+	case "eeg-positive":
+		return 1
+	case "eeg_negative":
+		return -1
+	}
+	return 0
+}
+
 func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, emotionFiles map[string][]string) error {
-	trainSet, err := unmarshallEeg(trainSetFilename)
+	trainSet, err := UnmarshallEeg(trainSetFilename)
 	if err != nil {
 		return err
 	}
@@ -114,7 +130,7 @@ func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, e
 		fmt.Fprintf(os.Stderr, "Tag: %s, len: %d x %d\n", trainSet[i].Tag, len(trainSet[i].Data), len(trainSet[i].Data[0]))
 	}
 
-	_, trainVar := getμAndσTagged(trainSet)
+	_, trainVar := GetμAndσTagged(trainSet)
 
 	fileKeys := make([]string, 0, len(emotionFiles))
 	for k := range emotionFiles {
@@ -130,9 +146,9 @@ func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, e
 			fmt.Printf("%s\t", emotion)
 			vec := GetFourierForFile(f, 19, frameLen, frameStep)
 			average := GetAverage(bucketSize, frameLen, len(vec))
-			foo := AverageSlice(vec, average)
+			averaged := AverageSlice(vec, average)
 
-			dict, _ := findMostCommonTag(foo, trainSet, trainVar)
+			dict, _ := findMostCommonTag(averaged, trainSet, trainVar)
 			keys := make([]string, 0, len(dict))
 			for k := range dict {
 				keys = append(keys, k)

@@ -143,6 +143,11 @@ func getClustersμσcount(mfccs []MfccClusterisable, k int) ([][]float64, [][]fl
 	return expectations, variances, numInCluster
 }
 
+func Getσ(mfccs [][]float64) []float64 {
+	_, variances := getμAndσ(mfccs)
+	return variances
+}
+
 func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
 	fmt.Printf("Len mfccs: %d\n", len(mfccs))
 	variances := make([]float64, len(mfccs[0]), len(mfccs[0]))

@@ -8,100 +8,73 @@ import (
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(filenames []string) [][]float64 {
-	mfccs := make([][]float64, 0, len(filenames)*100)
+func readEmotion(eegTrainSet []emotions.Tagged, eegTrainVars []float64, bucketSize int, frameLen int, frameStep int, emotion string, filenames []string) [][]float64 {
+	// mfccs := make([][]float64, 0, len(filenames)*100)
 	for _, f := range filenames {
-		wf, _ := emotions.Read(f, 0.01, 0.97)
+		// wf, _ := emotions.Read(f, 0.01, 0.97)
+		e := emotions.KNNOne(eegTrainSet, eegTrainVars, bucketSize, frameLen, frameStep, f)
+		fmt.Printf("%s %f\n", emotion, e)
+		// mfcc := emotions.MFCCs(wf, 13, 23)
 
-		mfcc := emotions.MFCCs(wf, 13, 23)
-
-		mfccs = append(mfccs, mfcc...)
+		// mfccs = append(mfccs, mfcc...)
 	}
 
-	return mfccs
+	// return mfccs
+	return nil
 }
 
 func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
 	return emotions.GMM(mfccs, k)
 }
 
-func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
-	return getGMM(readEmotion(filenames), k)
-}
+// func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
+// 	return getGMM(readEmotion(filenames), k)
+// }
 
 func main() {
-	if len(os.Args) < 3 {
-		panic("go run main.go <k> <dir-template> --eeg-positive <...> --eeg-negative <...> --eeg_neutral <...> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
+	if len(os.Args) < 5 {
+		panic("go run main.go <k> <bucket-size> <dir-template> <eeg-model> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
 	}
-
-	outputDirIndex := 2
-	maxK := -1
 
 	k, err := strconv.Atoi(os.Args[1])
 	if err != nil {
 		panic("Must provide k")
 	}
-	if _, err := strconv.Atoi(os.Args[2]); err != nil {
-		outputDirIndex = 2
-		maxK = k
-	} else {
-		maxK, _ = strconv.Atoi(os.Args[2])
-		outputDirIndex = 3
-	}
-
-	outputDir := os.Args[outputDirIndex]
-	arguments := emotions.ParseArguments(os.Args[outputDirIndex+1:])
-
-	emotionFiles := make(map[string][]string)
-	eegPositive, ok := arguments["eeg-positive"]
-	if !ok {
-		panic("No eeg positive files were provided")
-	}
-	eegNegative, ok := arguments["eeg-negative"]
-	if !ok {
-		panic("No eeg positive files were provided")
-	}
-	eegNeutral, ok := arguments["eeg-neutral"]
-	if !ok {
-		panic("No eeg positive files were provided")
-	}
-
-	for e, f := range arguments {
-		if e[0:3] != "eeg" {
-			emotionFiles[e] = f
-		}
-	}
-
-	err = emotions.TrainEeg(eegPositive, eegNegative, eegNeutral, outputDir)
+	bucketSize, err := strconv.Atoi(os.Args[2])
 	if err != nil {
-		panic(err.Error())
+		panic("Must provide bucketSize")
 	}
+	eegTrainSetFilename := os.Args[3]
 
-	fmt.Printf("MaxK: %d\n", maxK)
+	outputDir := os.Args[5]
 
-	// for j := k; j <= maxK; j++ {
-	// 	if _, err := os.Stat(fmt.Sprintf("%s_k%d", outputDir, j)); os.IsNotExist(err) {
-	// 		os.Mkdir(fmt.Sprintf("%s_k%d", outputDir, j), 0775)
-	// 	}
-	// }
+	emotionFiles := emotions.ParseArguments(os.Args[6:])
 
-	// for emotion, files := range emotionFiles {
-	// 	mfccs := readEmotion(files)
-	// 	for j := k; j <= maxK; j++ {
-	// 		fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
-	// 		egm := emotions.EmotionGausianMixure{
-	// 			Emotion: emotion,
-	// 			GM:      getGMM(mfccs, j),
-	// 		}
+	fmt.Printf("k: %d\nbucket: %d\noutput: %s\n", k, bucketSize, outputDir)
 
-	// 		bytes, err := json.Marshal(egm)
-	// 		if err != nil {
-	// 			panic(fmt.Sprintf("Error when marshaling %s with k %d\n", emotion, j))
-	// 		}
+	eegTrainSet, err := emotions.UnmarshallEeg(eegTrainSetFilename)
+	if err != nil {
+		panic(fmt.Sprintf("Could not unmarshall eeg train set file: %s", eegTrainSetFilename))
+	}
+	_, eegTrainVars := emotions.GetμAndσTagged(eegTrainSet)
 
-	// 		filename := path.Join(fmt.Sprintf("%s_k%d", outputDir, j), fmt.Sprintf("%s.gmm", emotion))
-	// 		fmt.Fprintf(os.Stderr, filename)
-	// 		ioutil.WriteFile(filename, bytes, 0644)
-	// 	}
-	// }
+	for emotion, files := range emotionFiles {
+		readEmotion(eegTrainSet, eegTrainVars, bucketSize, 200, 150, emotion, files)
+		// 	for j := k; j <= maxK; j++ {
+		// 		fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
+		// 		egm := emotions.EmotionGausianMixure{
+		// 			Emotion: emotion,
+		// 			GM:      getGMM(mfccs, j),
+		// 		}
+
+		// 		bytes, err := json.Marshal(egm)
+		// 		if err != nil {
+		// 			panic(fmt.Sprintf("Error when marshaling %s with k %d\n", emotion, j))
+		// 		}
+
+		// 		filename := path.Join(fmt.Sprintf("%s_k%d", outputDir, j), fmt.Sprintf("%s.gmm", emotion))
+		// 		fmt.Fprintf(os.Stderr, filename)
+		// 		ioutil.WriteFile(filename, bytes, 0644)
+		// 	}
+	}
 }
