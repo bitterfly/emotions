@@ -35,15 +35,14 @@ func marshallToFile(bucketSize int, frameLen int, frameStep int, filename string
 func getData(bucketSize int, frameLen int, frameStep int, files []string, tag string) emotions.Tagged {
 	data := make([][]float64, 0, 100)
 	for i := range files {
-		data = append(data, emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)...)
+		current := emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)
+		average := emotions.GetAverage(bucketSize, frameLen, len(current))
+		data = append(data, emotions.AverageSlice(current, average)...)
 	}
 
-	average := emotions.GetAverage(bucketSize, frameLen, len(data))
-
 	return emotions.Tagged{
-
 		Tag:  tag,
-		Data: emotions.AverageSlice(data, average),
+		Data: data,
 	}
 }
 
@@ -54,8 +53,8 @@ func main() {
 	// 1 take only one vector for the whole file
 	// n, n ≥ 2 take feature vector every n ms
 
-	if len(os.Args) < 5 {
-		panic("go run main.go bucket-size output-file --eeg-positive eeg-pos1.csv [eeg-pos2.csv...]  --eeg-negative eeg-neg1.csv [eeg-neg2.csv..] --eeg_neutral eeg-neu1.csv [eeg-neu2.csv...] ")
+	if len(os.Args) < 3 {
+		panic("go run main.go <bucket-size> <output-file> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	bucketSize, err := strconv.Atoi(os.Args[1])
@@ -64,7 +63,11 @@ func main() {
 	}
 
 	outputFile := os.Args[2]
-	arguments := emotions.ParseArguments(os.Args[3:])
+	arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[3], false)
+
+	if err != nil {
+		panic(err)
+	}
 
 	if fileExists(outputFile) {
 		os.Remove(outputFile)

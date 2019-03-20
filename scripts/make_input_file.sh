@@ -50,6 +50,18 @@ while [[ $# > 0 ]]; do
 			"--negative")
 	            lastTag="negative"
 	            ;;
+
+			"--eeg-neutral")
+	            lastTag="eeg-neutral"
+	            ;;
+
+			"--eeg-positive")
+	            lastTag="eeg-positive"
+	            ;;
+
+			"--eeg-negative")
+	            lastTag="eeg-negative"
+	            ;;
 	        *)	
 				format "${lastTag}" "${1}" "${eeg}"
 	esac
