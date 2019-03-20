@@ -3,16 +3,22 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func readEmotion(eegTrainSet []emotions.Tagged, eegTrainVars []float64, bucketSize int, frameLen int, frameStep int, emotion string, filenames []string) [][]float64 {
+func readEmotion(eegTrainSet []emotions.Tagged, eegTrainVars []float64, bucketSize int, frameLen int, frameStep int, emotion string, wav_filenames []string, eeg_filenames []string) [][]float64 {
+	sort.Strings(wav_filenames)
+	sort.Strings(eeg_filenames)
+
 	// mfccs := make([][]float64, 0, len(filenames)*100)
-	for _, f := range filenames {
+	for i := range wav_filenames {
 		// wf, _ := emotions.Read(f, 0.01, 0.97)
-		e := emotions.KNNOne(eegTrainSet, eegTrainVars, bucketSize, frameLen, frameStep, f)
+		fmt.Printf("wf: %s\nef: %s\n\n", wav_filenames[i], eeg_filenames[i])
+
+		e := emotions.KNNOne(eegTrainSet, eegTrainVars, bucketSize, frameLen, frameStep, eeg_filenames[i])
 		fmt.Printf("%s %f\n", emotion, e)
 		// mfcc := emotions.MFCCs(wf, 13, 23)
 
@@ -33,7 +39,7 @@ func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
 
 func main() {
 	if len(os.Args) < 5 {
-		panic("go run main.go <k> <bucket-size> <dir-template> <eeg-model> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
+		panic("go run main.go <k> <bucket-size> <dir-template> <eeg-model> <input-file>")
 	}
 
 	k, err := strconv.Atoi(os.Args[1])
@@ -46,9 +52,12 @@ func main() {
 	}
 	eegTrainSetFilename := os.Args[3]
 
-	outputDir := os.Args[5]
+	outputDir := os.Args[4]
 
-	emotionFiles := emotions.ParseArguments(os.Args[6:])
+	wav_files, eeg_files, err := emotions.ParseArgumentsFromFile(os.Args[5], true)
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Printf("k: %d\nbucket: %d\noutput: %s\n", k, bucketSize, outputDir)
 
@@ -58,8 +67,8 @@ func main() {
 	}
 	_, eegTrainVars := emotions.GetμAndσTagged(eegTrainSet)
 
-	for emotion, files := range emotionFiles {
-		readEmotion(eegTrainSet, eegTrainVars, bucketSize, 200, 150, emotion, files)
+	for emotion, wf := range wav_files {
+		readEmotion(eegTrainSet, eegTrainVars, bucketSize, 200, 150, emotion, wf, eeg_files[emotion])
 		// 	for j := k; j <= maxK; j++ {
 		// 		fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
 		// 		egm := emotions.EmotionGausianMixure{
