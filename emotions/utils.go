@@ -1,9 +1,12 @@
 package emotions
 
 import (
+	"bufio"
 	"fmt"
 	"image/color"
 	"math"
+	"os"
+	"strings"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/palette"
@@ -325,6 +328,32 @@ func ParseArguments(args []string) map[string][]string {
 	emotions[emotion] = arguments
 
 	return emotions
+}
+
+func ParseArgumentsFromFile(input_filename string, multiple bool) (map[string][]string, map[string][]string, error) {
+	first_files := make(map[string][]string)
+	second_files := make(map[string][]string)
+
+	file, err := os.Open(input_filename)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.Split(scanner.Text(), "\t")
+		first_files[line[0]] = append(first_files[line[0]], line[1])
+		if multiple {
+			second_files[line[0]] = append(second_files[line[0]], line[2])
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, nil, err
+	}
+
+	return first_files, second_files, nil
 }
 
 func GetAverage(bucketSize int, frameLen int, arrayLen int) int {

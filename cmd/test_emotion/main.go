@@ -67,13 +67,16 @@ func getEGMs(dirname string) []emotions.EmotionGausianMixure {
 
 func main() {
 	if len(os.Args) < 3 {
-		panic("go run main.go <gmm-dir> <-emotion1> <emotion1.wav2 emotion1.wav2...> [<emotion2> <emotion2.wav1...] ")
+		panic("go run main.go <gmm-dir> <input-file>\n<input-file>:<emotion> <wav-file>")
 	}
 
 	gmmDir := os.Args[1]
 	egms := getEGMs(gmmDir)
 
-	emotionFiles := emotions.ParseArguments(os.Args[2:])
+	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[2], false)
+	if err != nil {
+		panic(err)
+	}
 
 	allctr := 0
 	allfiles := 0

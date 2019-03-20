@@ -34,7 +34,8 @@ func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
 
 func main() {
 	if len(os.Args) < 3 {
-		panic("go run main.go <k> <dir-template> <--emotion1 emotion1.wav [emotion1.wav... --emotion2]>")
+
+		panic("go run main.go <k> <dir-template> <input_file>\n<input_file>: <emotion>	<wav_file>")
 	}
 
 	outputDirIndex := 2
@@ -53,10 +54,13 @@ func main() {
 	}
 
 	outputDir := os.Args[outputDirIndex]
-	emotionFiles := emotions.ParseArguments(os.Args[outputDirIndex+1:])
+	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[outputDirIndex+1], false)
+
+	if err != nil {
+		panic(err)
+	}
 
 	for j := k; j <= maxK; j++ {
-
 		if _, err := os.Stat(fmt.Sprintf("%s_k%d", outputDir, j)); os.IsNotExist(err) {
 			os.Mkdir(fmt.Sprintf("%s_k%d", outputDir, j), 0775)
 		}
