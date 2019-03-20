@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 6 {
-		panic("go run main.go <bucket-size> <eeg-train-file> --eeg-positive eeg_pos1.txt [eeg_pos2.txt...] --eeg-negative eeg_neg1.txt [eeg_neg2.txt...] --eeg-neutral eeg_neu1.txt [eeg_neu2.txt...]")
+	if len(os.Args) < 3 {
+		panic("go run main.go <bucket-size> <eeg-train-file> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	//if bucket size is:
@@ -24,7 +24,11 @@ func main() {
 	}
 
 	trainFile := os.Args[2]
-	emotionFiles := emotions.ParseArguments(os.Args[3:])
+	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[3], false)
+
+	if err != nil {
+		panic(err)
+	}
 
 	err = emotions.KNN(bucketSize, 200, 150, trainFile, emotionFiles)
 	if err != nil {
