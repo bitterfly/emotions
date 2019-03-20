@@ -237,7 +237,7 @@ func findClosestCentroid(centroids [][]float64, mfcc []float64, variances []floa
 func mahalanobisDistance(x []float64, y []float64, variances []float64) float64 {
 	sum := 0.0
 	for i := 0; i < len(x); i++ {
-		sum += (x[i] - y[i]) * (x[i] - y[i]) / variances[i]
+		sum += ((x[i] - y[i]) * (x[i] - y[i])) / variances[i]
 	}
 
 	return sum
