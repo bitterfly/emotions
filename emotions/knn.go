@@ -114,7 +114,7 @@ func KNNOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int,
 		return 0
 	case "eeg-positive":
 		return 1
-	case "eeg_negative":
+	case "eeg-negative":
 		return -1
 	}
 	return 0
