@@ -5,16 +5,28 @@ import (
 	"math"
 )
 
+func Zero(x *[]float64) {
+	zero(x)
+}
+
 func zero(x *[]float64) {
 	for i := 0; i < len(*x); i++ {
 		(*x)[i] = 0.0
 	}
 }
 
+func Divide(x *[]float64, n float64) {
+	divide(x, n)
+}
+
 func divide(x *[]float64, n float64) {
 	for i := 0; i < len(*x); i++ {
 		(*x)[i] /= n
 	}
+}
+
+func Add(x *[]float64, y []float64) {
+	add(x, y)
 }
 
 func add(x *[]float64, y []float64) {

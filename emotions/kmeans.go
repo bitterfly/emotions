@@ -149,6 +149,15 @@ func Getσ(mfccs [][]float64) []float64 {
 }
 
 func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
+	f, _ := os.Create("/tmp/bar")
+	defer f.Close()
+	for _, v := range mfccs {
+		for i, vv := range v {
+			fmt.Fprintf(f, "%d: %f ", i, vv)
+		}
+		fmt.Fprintf(f, "\n")
+	}
+
 	fmt.Printf("Len mfccs: %d\n", len(mfccs))
 	variances := make([]float64, len(mfccs[0]), len(mfccs[0]))
 
@@ -161,13 +170,14 @@ func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
 		}
 	}
 
+	fmt.Fprintf(f, "Variances\n")
 	for j := 0; j < len(mfccs[0]); j++ {
 		expectation[j] /= float64(len(mfccs))
 		expectationSquared[j] /= float64(len(mfccs))
-
+		fmt.Fprintf(f, "%d: %f", j, variances[j])
 		variances[j] = expectationSquared[j] - expectation[j]*expectation[j]
 		if variances[j] < EPS {
-			panic(fmt.Sprintf("%f", variances[j]))
+			panic(fmt.Sprintf("%d %f", j, variances[j]))
 		}
 	}
 

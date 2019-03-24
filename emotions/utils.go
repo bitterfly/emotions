@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"math"
 	"os"
+	"sort"
 	"strings"
 
 	"gonum.org/v1/plot"
@@ -366,4 +367,24 @@ func GetAverage(bucketSize int, frameLen int, arrayLen int) int {
 	}
 
 	return bucketSize / frameLen
+}
+
+func SortKeys(m map[string]int) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+	return keys
+}
+
+func SortKeysS(m map[string][]string) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+	return keys
 }
