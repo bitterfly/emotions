@@ -8,7 +8,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
-	"strings"
+	"sort"
 
 	"github.com/bitterfly/emotions/emotions"
 )
@@ -18,10 +18,10 @@ func readEmotion(filename string) [][]float64 {
 	return emotions.MFCCs(wf, 13, 23)
 }
 
-func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.EmotionGausianMixure) bool {
+func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.EmotionGausianMixure) {
 	k := len(egmms[0].GM)
 
-	counters := make([]int, len(egmms), len(egmms))
+	counters := make(map[string]int)
 	for _, m := range coefficient {
 		max := math.Inf(-42)
 		argmax := -1
@@ -32,19 +32,18 @@ func testEmotion(emotion string, coefficient [][]float64, egmms []emotions.Emoti
 				argmax = i
 			}
 		}
-		counters[argmax]++
+		counters[egmms[argmax].Emotion]++
 	}
 
-	max := -1
-	argmax := -1
-	for i, c := range counters {
-		if c > max {
-			max = c
-			argmax = i
-		}
+	fmt.Printf("%s\t", emotion)
+
+	keys := emotions.SortKeys(counters)
+
+	for _, k := range keys {
+		fmt.Printf("%d\t", counters[k])
 	}
-	fmt.Fprintf(os.Stderr, "\nEmotion: %s Max: %s\n============================\n", emotion, egmms[argmax].Emotion)
-	return strings.Contains(emotion, egmms[argmax].Emotion)
+	fmt.Printf("\n")
+
 }
 
 func getEGMs(dirname string) []emotions.EmotionGausianMixure {
@@ -78,18 +77,16 @@ func main() {
 		panic(err)
 	}
 
-	allctr := 0
-	allfiles := 0
-	for emotion, files := range emotionFiles {
-		ctr := 0
-		allfiles += len(files)
-		for _, file := range files {
-			if testEmotion(emotion, readEmotion(file), egms) {
-				ctr++
-				allctr++
-			}
-		}
-		fmt.Printf("%s %f%%\n", emotion, float64(ctr)*100.0/float64(len(files)))
+	emotions := make([]string, 0, len(emotionFiles))
+	for e := range emotionFiles {
+		emotions = append(emotions, e)
 	}
-	fmt.Printf("All: %f%%\n", float64(allctr)*100.0/float64(allfiles))
+
+	sort.Strings(emotions)
+
+	for _, emotion := range emotions {
+		for _, file := range emotionFiles[emotion] {
+			testEmotion(emotion, readEmotion(file), egms)
+		}
+	}
 }

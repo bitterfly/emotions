@@ -106,7 +106,7 @@ func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float6
 
 func KNNOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
 	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
-	average := GetAverage(bucketSize, frameLen, len(vec))
+	average := GetAverage(bucketSize, frameStep, len(vec))
 	averaged := AverageSlice(vec, average)
 	_, mc := findMostCommonTag(averaged, trainSet, trainVar)
 	switch mc {
@@ -145,16 +145,11 @@ func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, e
 		for _, f := range emotionFiles[emotion] {
 			fmt.Printf("%s\t", emotion)
 			vec := GetFourierForFile(f, 19, frameLen, frameStep)
-			average := GetAverage(bucketSize, frameLen, len(vec))
+			average := GetAverage(bucketSize, frameStep, len(vec))
 			averaged := AverageSlice(vec, average)
 
 			dict, _ := findMostCommonTag(averaged, trainSet, trainVar)
-			keys := make([]string, 0, len(dict))
-			for k := range dict {
-				keys = append(keys, k)
-			}
-
-			sort.Strings(keys)
+			keys := SortKeys(dict)
 
 			for _, k := range keys {
 				fmt.Printf("%d\t", dict[k])
