@@ -18,21 +18,31 @@ func main() {
 	// 1 take only one vector for the whole file
 	// n, n ≥ 2 take feature vector every n ms
 
-	bucketSize, err := strconv.Atoi(os.Args[1])
+	classifierType := os.Args[1]
+	bucketSize, err := strconv.Atoi(os.Args[2])
 	if err != nil {
 		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[1]))
 	}
 
-	trainFile := os.Args[2]
-	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[3], false)
+	trainFile := os.Args[3]
+	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[4], false)
+
+	frameLen := 200
+	frameStep := 150
 
 	if err != nil {
 		panic(err)
 	}
-
-	err = emotions.KNN(bucketSize, 200, 150, trainFile, emotionFiles)
-	if err != nil {
-		panic(err.Error())
+	switch classifierType {
+	case "knn":
+		err = emotions.ClassifyKNN(trainFile, bucketSize, frameLen, frameStep, emotionFiles)
+		if err != nil {
+			panic(err.Error())
+		}
+	case "gmm":
+		err = emotions.ClassifyGMM(trainFile, bucketSize, frameLen, frameStep, emotionFiles)
+	default:
+		panic(fmt.Sprintf("Unknown classifier %s", classifierType))
 	}
 
 }

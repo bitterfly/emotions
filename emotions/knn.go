@@ -14,7 +14,7 @@ type Tagged struct {
 	Data [][]float64
 }
 
-func UnmarshallEeg(filename string) ([]Tagged, error) {
+func UnmarshallKNNEeg(filename string) ([]Tagged, error) {
 	var tagged []Tagged
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -27,6 +27,10 @@ func UnmarshallEeg(filename string) ([]Tagged, error) {
 	}
 
 	return tagged, nil
+}
+
+func UnmarshallGMMEeg(filename string) ([]EmotionGausianMixure, error) {
+	return nil, nil
 }
 
 func GetμAndσTagged(tagged []Tagged) ([]float64, []float64) {
@@ -82,7 +86,7 @@ func findClosest(v []float64, trainSet []Tagged, trainVar []float64) string {
 	return minDistTag
 }
 
-func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float64) (map[string]int, string) {
+func KNN(vectors [][]float64, trainSet []Tagged, trainVar []float64) (map[string]int, string) {
 	freqMap := make(map[string]int)
 	for t := range trainSet {
 		freqMap[trainSet[t].Tag] = 0
@@ -104,11 +108,11 @@ func findMostCommonTag(vectors [][]float64, trainSet []Tagged, trainVar []float6
 	return freqMap, maxe
 }
 
-func KNNOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
+func ClassifyOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
 	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
 	average := GetAverage(bucketSize, frameStep, len(vec))
 	averaged := AverageSlice(vec, average)
-	_, mc := findMostCommonTag(averaged, trainSet, trainVar)
+	_, mc := KNN(averaged, trainSet, trainVar)
 	switch mc {
 	case "eeg-neutral":
 		return 0
@@ -120,8 +124,8 @@ func KNNOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int,
 	return 0
 }
 
-func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, emotionFiles map[string][]string) error {
-	trainSet, err := UnmarshallEeg(trainSetFilename)
+func ClassifyKNN(trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
+	trainSet, err := UnmarshallKNNEeg(trainSetFilename)
 	if err != nil {
 		return err
 	}
@@ -148,7 +152,38 @@ func KNN(bucketSize int, frameLen int, frameStep int, trainSetFilename string, e
 			average := GetAverage(bucketSize, frameStep, len(vec))
 			averaged := AverageSlice(vec, average)
 
-			dict, _ := findMostCommonTag(averaged, trainSet, trainVar)
+			dict, _ := KNN(averaged, trainSet, trainVar)
+			keys := SortKeys(dict)
+
+			for _, k := range keys {
+				fmt.Printf("%d\t", dict[k])
+			}
+			fmt.Printf("\n")
+		}
+	}
+
+	return nil
+}
+
+func ClassifyGMM(trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
+	trainSet, err := GetEGMs(trainSetFilename)
+	if err != nil {
+		return err
+	}
+
+	fileKeys := make([]string, 0, len(emotionFiles))
+	for k := range emotionFiles {
+		fileKeys = append(fileKeys, k)
+	}
+
+	for _, emotion := range fileKeys {
+		for _, f := range emotionFiles[emotion] {
+			fmt.Printf("%s\t", emotion)
+			vec := GetFourierForFile(f, 19, frameLen, frameStep)
+			average := GetAverage(bucketSize, frameStep, len(vec))
+			averaged := AverageSlice(vec, average)
+
+			dict := TestGMM(fileKeys, averaged, trainSet)
 			keys := SortKeys(dict)
 
 			for _, k := range keys {

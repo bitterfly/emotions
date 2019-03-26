@@ -2,10 +2,13 @@ package emotions
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"image/color"
+	"io/ioutil"
 	"math"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -387,4 +390,22 @@ func SortKeysS(m map[string][]string) []string {
 
 	sort.Strings(keys)
 	return keys
+}
+
+func GetEGMs(dirname string) ([]EmotionGausianMixure, error) {
+	files, err := ioutil.ReadDir(dirname)
+	if err != nil {
+		return nil, err
+	}
+
+	egms := make([]EmotionGausianMixure, len(files), len(files))
+	for i, f := range files {
+		bytes, _ := ioutil.ReadFile(filepath.Join(dirname, f.Name()))
+		err := json.Unmarshal(bytes, &egms[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return egms, nil
 }

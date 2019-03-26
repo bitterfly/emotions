@@ -107,6 +107,7 @@ func fourierElectrode(frames [][]float64) [][]Complex {
 // and returns an array frameNum x 4 in which the alpha, beta, gamma, theta accumulated magnitudes are stored
 func getSignificantFreq(coefficients [][]Complex) [][]float64 {
 	sFreq := make([][]float64, len(coefficients), len(coefficients))
+
 	for i := 0; i < len(coefficients); i++ {
 		sFreq[i] = make([]float64, 4, 4)
 		for j := 0; j < len(coefficients[i]); j++ {
@@ -312,6 +313,7 @@ func getFourier(data [][]float64, frameLen int, frameStep int) [][]float64 {
 	for i, d := range data {
 		frames := cutElectrodeIntoFrames(d, frameLen, frameStep, false)
 		fouriers := fourierElectrode(frames)
+
 		elFouriers[i] = getSignificantFreq(fouriers)
 	}
 

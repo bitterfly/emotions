@@ -51,7 +51,12 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 	prevLikelihood := 0.0
 	likelihood := 0.0
 	step := 0
+
+	f, _ := os.Create("/tmp/foo")
+	defer f.Close()
+
 	for step < 200 {
+		fmt.Fprintf(f, "================= %d =================\n", step)
 		w := make([][]float64, len(X), len(X))
 		var sum float64
 		maximums := make([]float64, len(X), len(X))
@@ -73,8 +78,6 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 
 			sum = 0
 			for j := 0; j < k; j++ {
-				if i == 10 {
-				}
 				if w[i][j] < maximums[i]-10 {
 					w[i][j] = 0
 				} else {
@@ -86,6 +89,11 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 			divide(&w[i], sum)
 		}
 
+		fmt.Fprintf(f, "W\n")
+		for i := range X {
+			fmt.Fprintf(f, "%d %v\n", i, w[i])
+		}
+
 		N := make([]float64, k, k)
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
@@ -93,14 +101,25 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 			}
 		}
 
+		fmt.Fprintf(f, "Expectation1\n")
+		for j := 0; j < k; j++ {
+			fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Expectations)
+		}
+
+		fmt.Fprintf(f, "Variance1\n")
+		for j := 0; j < k; j++ {
+			fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Variances)
+		}
+
 		zeroMixture(gMixture, k)
 
-		// Ecpectations
+		// Expectations
 		for i := 0; i < len(X); i++ {
 			for j := 0; j < k; j++ {
 				add(&gMixture[j].Expectations, multiplied(X[i].coefficients, w[i][j]))
 			}
 		}
+
 		for j := 0; j < k; j++ {
 			divide(&(gMixture[j].Expectations), N[j])
 		}
@@ -121,10 +140,21 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 			gMixture[j].Phi = N[j] / float64(len(X))
 		}
 
+		fmt.Fprintf(f, "Expectation2\n")
+		for j := 0; j < k; j++ {
+			fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Expectations)
+		}
+
+		fmt.Fprintf(f, "Variance2\n")
+		for j := 0; j < k; j++ {
+			fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Variances)
+		}
+
 		likelihood = logLikelihood(X, k, gMixture)
 
 		if math.IsNaN(likelihood) {
-			panic("AAAA")
+
+			panic(fmt.Sprintf("Likelihood is NAN, step: %d", step))
 		}
 
 		if epsDistance(likelihood, prevLikelihood, 0.00001) {
@@ -151,9 +181,45 @@ func getDeterminant(variance []float64) float64 {
 	return det
 }
 
+func getLogDeterminant(variance []float64) float64 {
+	det := 0.0
+	for i := 0; i < len(variance); i++ {
+		det += math.Log(variance[i])
+	}
+	return det
+}
+
+func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
+	max := math.Inf(-42)
+	argmax := -1
+	for i, g := range egmms {
+		currEmotion := EvaluateVector(X, k, g.GM)
+		if currEmotion > max {
+			max = currEmotion
+			argmax = i
+		}
+	}
+	return argmax
+}
+
 // EvaluateVector returns the likelihood a given vector
 func EvaluateVector(X []float64, k int, g GaussianMixture) float64 {
 	return logLikelihoodFloat(X, k, g)
+}
+
+func TestGMM(emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure) map[string]int {
+	k := len(egmms[0].GM)
+
+	counters := make(map[string]int)
+	for _, e := range emotions {
+		counters[e] = 0
+	}
+
+	for _, m := range coefficient {
+		best := FindBestGaussian(m, k, egmms)
+		counters[egmms[best].Emotion]++
+	}
+	return counters
 }
 
 func N(xi []float64, expectation []float64, variance []float64) float64 {
@@ -162,7 +228,8 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 		exp += (xi[i] - expectation[i]) * (xi[i] - expectation[i]) / variance[i]
 	}
 
-	return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + math.Log(getDeterminant(variance)))
+	// return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + math.Log(getDeterminant(variance)))
+	return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + getLogDeterminant(variance))
 	// return log of this
 	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
 }
