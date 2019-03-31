@@ -17,7 +17,6 @@ func readEmotion(filenames []string) [][]float64 {
 		wf, _ := emotions.Read(f, 0.01, 0.97)
 
 		mfcc := emotions.MFCCs(wf, 13, 23)
-
 		mfccs = append(mfccs, mfcc...)
 	}
 

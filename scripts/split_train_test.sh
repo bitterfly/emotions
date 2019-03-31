@@ -50,5 +50,5 @@ if [[ $(comm -12 <(echo "${neutral_train}" | sort) <(echo "${neutral_test}" | so
     exit
 fi
 
-./make_input_file.sh --eeg-positive $(echo ${positive_train}) --eeg-negative $(echo ${negative_train}) --eeg-neutral $(echo ${neutral_train}) > "${train_file}"
-./make_input_file.sh --eeg-positive $(echo ${positive_test}) --eeg-negative $(echo ${negative_test}) --eeg-neutral $(echo ${neutral_test}) > "${test_file}" 
+./make_input_file.sh --positive $(echo ${positive_train}) --negative $(echo ${negative_train}) --neutral $(echo ${neutral_train}) > "${train_file}"
+./make_input_file.sh --positive $(echo ${positive_test}) --negative $(echo ${negative_test}) --neutral $(echo ${neutral_test}) > "${test_file}" 

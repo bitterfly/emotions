@@ -13,21 +13,38 @@ func readEmotion(filename string) [][]float64 {
 	return emotions.MFCCs(wf, 13, 23)
 }
 
-func testEmotion(emotion string, data [][]float64, egms []emotions.EmotionGausianMixure) {
+func correct(emotion string, counters map[string]int) int {
+	maxV := 0
+	maxE := ""
+	for e, v := range counters {
+		if v > maxV {
+			maxV = v
+			maxE = e
+		}
+	}
+	if maxE == emotion {
+		return 1
+	}
+	return 0
+}
+
+func testEmotion(emotion string, data [][]float64, egms []emotions.EmotionGausianMixure) (int, int, int) {
 	fmt.Printf("%s\t", emotion)
 
-	emotions := make([]string, 0, len(egms))
+	emotionNames := make([]string, 0, len(egms))
 	for _, egm := range egms {
-		emotions = append(emotions, egm.Emotion)
+		emotionNames = append(emotionNames, egm.Emotion)
 	}
 
-	counters := emotions.TestGMM(emotions, data, egms)
-
+	counters := emotions.TestGMM(emotionNames, data, egms)
+	sum := 0
 	keys := emotions.SortKeys(counters)
 	for _, k := range keys {
 		fmt.Printf("%d\t", counters[k])
+		sum += counters[k]
 	}
 	fmt.Printf("\n")
+	return correct(emotion, counters), counters[emotion], sum
 }
 
 func main() {
@@ -52,10 +69,21 @@ func main() {
 	}
 
 	sort.Strings(emotions)
+	correctFiles := make(map[string]int, len(emotions))
+	correctVectors := make(map[string]int, len(emotions))
+	sumVectors := make(map[string]int, len(emotions))
 
 	for _, emotion := range emotions {
 		for _, file := range emotionFiles[emotion] {
-			testEmotion(emotion, readEmotion(file), egms)
+			boolCorrect, correctVector, sumVector := testEmotion(emotion, readEmotion(file), egms)
+			correctFiles[emotion] += boolCorrect
+			correctVectors[emotion] += correctVector
+			sumVectors[emotion] += sumVector
 		}
+	}
+
+	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	for _, emotion := range emotions {
+		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
 	}
 }
