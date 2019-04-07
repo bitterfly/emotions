@@ -1,11 +1,12 @@
 % !TEX program = xelatex
 \documentclass[12pt]{report}
-\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage{amsmath}
+\usepackage{xltxtra}
 
 \defaultfontfeatures{Ligatures=TeX}
-% \setmainfont{DidactGothic-Regular}
-% \setmainfont{NotoSans-Regular}
 \setmainfont{Comfortaa-Regular}
+\setmathfont{Neo Euler}
 
 \usepackage[english, bulgarian]{babel}
 \usepackage{indentfirst}
@@ -20,9 +21,11 @@
 \usepackage[export]{adjustbox}
 \usepackage{blindtext}
 \usepackage{scrextend}
-\usepackage{amsmath}
 \usepackage{amsfonts}
 
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
 \addtokomafont{labelinglabel}{\sffamily}
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
@@ -35,9 +38,11 @@
 \graphicspath{ {./resources/} }
 
 \DeclareFontFamily{OT1}{pzc}{}
+
 \DeclareFontShape{OT1}{pzc}{m}{it}{<-> s * [1.5] pzcmi7t}{}
 \DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
 \lstset{
 	backgroundcolor = \color{light-gray},
@@ -139,9 +144,9 @@
     фонема, която се изговаря. В такъв случай, можем да излседваме спектралните свойства в този отрязък от време и да извличаме информацията за подлежата емоция в него. 
 
     \section{Загладено опростяване}
-    За улеснение, нека разгледаме конкретна конфигурация, за да се опитаме да я моделираме математически. Например тази, при произнасянето на фонемата "ъ", тъй като е възможно най-проста.
+    За улеснение, нека разгледаме конкретна конфигурация. Например тази, при произнасянето на фонемата ``ъ'', тъй като е възможно най-проста.
     
-    В случая на гласната "ъ", глотиса трепти, а клапата към носната кухина е затворена и само устната кухина участва в образуването на звука. 
+    В случая на гласната ``ъ'' , глотиса трепти, а клапата към носната кухина е затворена и само устната кухина участва в образуването на звука. 
     Т.е. имаме някакъв източник на псевдо-периодично трептене $\mathpzc{U}$ - глотис, после вълната преминава и се променя от вокалния тракт $\mathpzc{V}$ и накрая излиза и се пречупва през
     устните $\mathpzc{R}$. Сигналът, който получаваме накрая е $\mathpzc{Y}(z) = \mathpzc{U}(z)\mathpzc{V}(z)\mathpzc{R}(z)$
     и това, от което се интересуваме е $\mathpzc{V}$.
@@ -154,39 +159,35 @@
 
     Нека въведем следните стандартни означения:
     \begin{enumerate}
-        \item{$\mathpzc{c}$} - скорост на звука , т.е. това е разстоянието, което пропътува вълната за единица време
+        \item{$\mathcal{c}$} - скорост на звука , т.е. това е разстоянието, което пропътува вълната за единица време
         \item{$\rho$} - плътност на въздуха
         \item{$\mathcal{A}$} - напречно сечение
         \item{$u$} - обемна скорост
-        \item{$p$} -  налягане - можем да си мислим за него като "колко сила е нужна, за да се преместят частитиците"
+        \item{$p$} -  налягане - можем да си мислим за него като ``колко сила е нужна, за да се преместят частитицит''
     \end{enumerate}
     
     Тъй като въздухът е течна среда, как пътува вълна през него се определя от свойствата на въздуха и от ограниченията на тръбата като дължина и ширина. Звуковите вълни, преминаващи през
     тръба изпълняват уравнения [Rabiner and Schafer, pg 59, (3.2a) (3.2b)]:
     
-    \begin{equation}
-       -\frac{\partial\rho}{\partial x} = \frac{\rho}{\mathcal{A}} \frac{\partial u}{\partial t}
-        \label{eq:litdiff}
-    \end{equation}
-        
-    \begin{equation}
-        -\frac{\partial u}{\partial x} = \frac{\mathcal{A}}{\rho \mathpzc{c}^2} \frac{\partial \rho}{\partial t}
-         \label{eq:litdiff}
-     \end{equation}
-    
-    при преминава от една тръба в друга, част от вълните ще преминат към следващата тръба, а част от тях ще се отразят в наобратно. В такъв случай във всеки момент от време
-    $t$ и във всяка точка $x$ на всяка тръба обемната скорост $u$ ще зависи от обемната скорост на вълните, които вървят "напред" и тази на вълните, които вървят "назад". Затова може да се покаже,
-    че уравненията (2) имат решение във следния вид:
+    \begin{subequations}
+        \begin{align}\label{eq:2:1:01}
+            \frac{\partial\rho}{\partial x} & = \frac{\rho}{\mathcal{A}} \frac{\partial u}{\partial t}\\
+            \frac{\partial u}{\partial x} & = \frac{\mathcal{A}}{\rho \mathcal{c}^2} \frac{\partial \rho}{\partial t}
+        \end{align}
+    \end{subequations}
 
-    \begin{equation}
-        u_{k}(x, t) = [u_{k}^{+}(t - \frac{x}{\mathpzc{c}}) - u_{k}^{-}(t + \frac{x}{\mathpzc{c}})]
-        \label{eq:litdiff}
-    \end{equation}
+    При преминава от една тръба в друга, част от вълните ще преминат към следващата тръба, а част от тях ще се отразят в наобратно.
+    В такъв случай във всеки момент от време $t$ и във всяка точка $x$ на всяка тръба,
+    обемната скорост $u$ ще зависи от обемната скорост на вълните,
+    които вървят ``напред'' и тази на вълните, които вървят ``назад''.
+    Затова може да се покаже, че уравненията $\ref{eq:2:1:01}$ имат решение във следния вид:
 
-    \begin{equation}
-        p_{k}(x, t) = \frac{\rho \mathpzc{c}}{\mathcal{A_{k}}} [u_{k}^{+}(t - \frac{x}{\mathpzc{c}}) + u_{k}^{-}(t + \frac{x}{\mathpzc{c}})]
-        \label{eq:litdiff}
-    \end{equation}
+    \begin{subequations}
+        \begin{align}\label{eq:2:1:02}
+            u_{k}(x, t) & = [u_{k}^{+}(t - \frac{x}{\mathcal{c}}) - u_{k}^{-}(t + \frac{x}{\mathcal{c}})]\\
+            p_{k}(x, t) & = \frac{\rho \mathcal{c}}{\mathcal{A}_{k}} [u_{k}^{+}(t - \frac{x}{\mathcal{c}}) + u_{k}^{-}(t + \frac{x}{\mathcal{c}})]
+        \end{align}
+    \end{subequations}
 
     където 
     \begin{enumerate}
@@ -196,13 +197,117 @@
         \item{$u^{+}$ и $u^{-}$} са съответно вълните, които вървят "напред" и тези, които вървят "назад"
     \end{enumerate}
 
-    \section{Характеристики}
-        \subsection{Избор}
-        \subsection{Извличане}
+    Освен това, при преминаването от една тръба в друга са изпълнени следните равенства:
+    \begin{subequations}
+        \begin{align}\label{eq:2:1:03}
+            u_k(l_k, t) & = u_{k+1}(0, t)\\
+            p_k(l_k, t) & = p_{k+1}(0, t)
+        \end{align}
+    \end{subequations}
 
-        Първо се изчита wav файла, като данни се запазват в масив от float числа. Базирайки се на идеята, че
-        че вокалния тракт е статичен за много къс период от време, накъсваме масива с данните на
-        отделни застъпващи се фреймове, в рамките на които сигналът е статичен ("представяме си, че е статичен"). За да получим добра
+    Когато заместим уравнения $\ref{eq:2:1:03}$ в $\ref{eq:2:1:02}$, получаваме:
+    \begin{align*}
+        & u_k^+(t - \frac{l_k}{\mathcal{c}}) - u_k^{-}(t + \frac{l_k}{\mathcal{c}}) = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)\\
+        & \intertext{и}\\
+        & \frac{\rho \mathcal{c}}{\mathcal{A}_{k}} [u_{k}^{+}(t - \frac{l_k}{\mathcal{c}}) + u_{k}^{-}(t + \frac{x}{\mathcal{c}})] = \frac{\rho \mathcal{c}}{\mathcal{A}_{k+1}} [u_{k+1}^{+}(t) + u_{k+1}^{-}(t)]\\
+        & \iff\\
+        & \frac{A_{k+1}}{A_{k}}[u_{k}^{+}(t - \frac{l_k}{\mathcal{c}}) + u_{k}^{-}(t + \frac{x}{\mathcal{c}})] = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)
+    \end{align*}
+
+
+    Нека означим с $\tau_{k}$ времето, за което вълна пропътува дължината на $k$-тата тръба, тоест $\tau_{k}= \frac{l_k}{\mathcal{c}}$. Тогава имаме:
+
+    \begin{align}
+        \label{eq:2:1:04}
+        & u_k^+(t - \tau_k) - u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)\\
+        \label{eq:2:1:05}
+        & \frac{A_{k+1}}{A_{k}}[u_{k}^{+}(t - \tau_k) + u_{k}^{-}(t + \tau_k)] = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)
+    \end{align}
+    Първо, нека да изразим скоростта на вълните, които вървят "напред"
+    в $(k+1)$-та тръба ($u_{k+1}^{+}$), чрез тези, които са преминали от предната тръба ($u_k^{+}$)
+    и тези, които се отразяват от текущата ($u_{k+1}^{-}$).
+    \begin{align}
+        & \nonumber \intertext{От $\ref{eq:2:1:04}$ получаваме}
+        & \label{eq:2:1:06} u_{k}^{-}(t + \tau_{k}) = u_{k}^{+}(t - \tau_k) - u_{k+1}^{+}(t)  + u_{k+1}^{-}(t)\\
+        & \nonumber \intertext{Заместваме $\ref{eq:2:1:06}$ в $\ref{eq:2:1:05}$}
+        & \nonumber u_{k+1}^{+}(t) = \frac{A_{k+1}}{A_k} u_{k}^{+}(t - \tau_k) + \frac{A_{k+1}}{A_k}[u_{k}^{+}(t - \tau_k) - u_{k+1}^{+}(t)  + u_{k+1}^{-}(t)] - u_{k+1}^{-}(t) \\
+        & \nonumber u_{k+1}^{+}(t)[1 + \frac{A_{k+1}}{A_k}] = u_{k}^{+}(t - \tau_k)\frac{2A_{k+1}}{A_k} + u_{k+1}^{-}(t)[\frac{A_{k+1}}{A_k} - 1] \\
+        & \nonumber u_{k+1}^{+}(t)[\frac{A_k + A_{k+1}}{A_k}] = u_{k}^{+}(t - \tau_k)\frac{2A_{k+1}}{A_k} + u_{k+1}^{-}(t)[\frac{A_{k+1} - A_k}{A_k}]\\
+        & \label{eq:2:1:07} u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)[\frac{2A_{k+1}}{A_k + A_{k+1}}] + u_{k+1}^{-}(t)[\frac{A_{k+1} - A_k}{A_k + A_{k+1}}]
+    \end{align}
+        
+
+    Коефициентът, който стои пред $u_k^{+}(t - \tau_k)$ в уравнение $\ref{eq:2:1:07}$,
+    представлява количеството енергия, която преминава от тръба $k$ в тръба $k+1$,
+    идваща от вълните, които се движат "напред" в $k$-тата тръба. Затова
+    \begin{equation}
+        \label{eq:2:1:08}
+        t_k = \frac{2A_{k+1}}{A_k + A_{k+1}}
+    \end{equation}
+    се нарича \textbf{коефициент на преминаване} за $k$-тия преход (преходът между тръби $k$ и $k+1$).
+    Коефициентът пред $u_{k+1}^{-}(t)$ представлява количестото енергия, получена от вълните,
+    които вървят "назад" в тръба $k+1$. Затова 
+    \begin{equation}
+        \label{eq:2:1:09}
+        r_k = \frac{A_{k+1} - A_k}{A_k + A_{k+1}}
+    \end{equation}
+    се нарича \textbf{коефициент на отрязяване} за $k$-тия преход. 
+    
+    Можем да забележим, че в специалния случай, в който напречните сечения на
+    две съседни тръби са равни ($A_k = A_{k+1}$), би следвало всички
+    вълни да преминават свободно. Наистина, ако заместим в уравнение $\ref{eq:2:1:09}$,
+    $r_k = 0$, a от $\ref{eq:2:1:08}$ се вижда, че $t_k = 1$
+
+    Нека изразим скоростта на вълните в тръба $k$ чрез скоростта на вълните в $(k+1)$-вата тръба. 
+    
+
+    \begin{subequations}
+        \label{eq:2:1:10}
+        \begin{align}
+            & \nonumber \intertext{Първо разместваме уравнение $\ref{eq:2:1:07}$}
+            & \label{eq:2:1:10:a} u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)[\frac{A_k + A_{k+1}}{2A_{k+1}}] + u_{k+1}^{-}(t)[\frac{A_k - A_{k+1}}{2A_{k+1}}]\\
+            & \nonumber \intertext{Заместваме $\ref{eq:2:1:10:a}$ в $\ref{eq:2:1:04}$}
+            & \nonumber u_k^{-}(t + \tau_k) = u_k^{+}(t - \tau_k) - u_{k+1}^{+}(t) + u_{k+1}^{-}(t)\\
+            & \nonumber u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)[\frac{A_k + A_{k+1}}{2A_{k+1}}] + u_{k+1}^{-}(t)[\frac{A_k - A_{k+1}}{2A_{k+1}}] - u_{k+1}^{+}(t) + u_{k+1}^{-}(t)\\
+            & \nonumber u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)[\frac{A_k + A_{k+1} - 2A_{k+1}}{2A_{k+1}}] + u_{k+1}^{-}(t)[\frac{A_k - A_{k+1} + 2A_{k+1}}{2A_{k+1}}]\\
+            & \label{eq:2:1:10:b} u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)[\frac{A_k - A_{k+1}}{2A_{k+1}}] + u_{k+1}^{-}(t)[\frac{A_k + A_{k+1}}{2A_{k+1}}]
+        \end{align}
+    \end{subequations}
+
+    Използвайки, че
+    \begin{align*}
+        \frac{1}{1 + r_k} & = \frac{A_k + A_{k+1}}{A_{k+1} - A_k + A_{k+1} + A_k} = \frac{A_k + A_{k+1}}{2A_{k+1}}\\
+        \\
+        \frac{r_k}{1 + r_k} & = \frac{(A_{k+1} - A_k)}{(A_k + A_{k+1})} \frac{(A_k + A_{k+1})}{2A_{k+1}} = \frac{A_{k+1} - A_k}{2A_{k+1}}
+    \end{align*}
+    можем да запишем уравненията $\ref{eq:2:1:10}$ във вида:
+
+    \begin{subequations}
+        \label{eq:2:1:11}
+        \begin{align}
+           & u_k^{+}(t - \tau_k) = \frac{1}{1 + r_k} u_{k+1}^{+}(t) - \frac{r_k}{1+r_k} u_{k+1}^{-}(t)\\
+           & u_k^{-}(t + \tau_k) = - \frac{r_k}{1+r_k} u_{k+1}^{-}(t) + u_{k+1}^{+}(t) + \frac{1}{1 + r_k} u_{k+1}^{-}(t)
+        \end{align}
+    \end{subequations}
+
+    Сега да разгледаме уравнения $\ref{eq:2:1:11}$ в $\mathcal{z}$-домейна:
+    \begin{subequations}
+        \label{eq:2:1:12}
+        \begin{align}
+           & \nonumber \mathcal{z}^{-\tau_k}U_k^{+}(\mathcal{z}) = \frac{1}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \frac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z})\\
+           & \nonumber \mathcal{z}^{\tau_k} U_k^{-}(\mathcal{z}) = - \frac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \frac{1}{1 + r_k} U_{k+1}^{-}(\mathcal{z})\\
+           & \nonumber \iff\\
+           & U_k^{+}(\mathcal{z}) = \frac{\mathcal{z}^{\tau_k}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \frac{r_k\mathcal{z}^{\tau_k}}{1+r_k} U_{k+1}^{-}(\mathcal{z})\\
+           & U_k^{-}(\mathcal{z}) = - \frac{r_k\mathcal{z}^{-\tau_k} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \frac{\mathcal{z}^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(\mathcal{z})
+        \end{align}
+    \end{subequations}
+
+    \section{Характеристики}
+    \subsection{Избор}
+    \subsection{Извличане}
+        Първо се изчита wav файла, като данни се запазват в масив от float числа.
+        Базирайки се на идеята, че вокалния тракт е статичен за много къс период от време,
+        накъсваме масива с данните на отделни застъпващи се фреймове, в рамките на които сигналът е статичен ("представяме си, че е статичен"). За да получим добра
         добра честотна резолюция, трябва да се включат голям брой samples от файла, но колкото по-голяма е дължината
         на фрейма, толкова по-голям е шансът да включим данни за различни конфигурации на глотиса.
         За да се постигне някакъв trade-off между двете, обикновено стойностите, които се избират, са 
@@ -210,11 +315,6 @@
         
         Тъй като алгоритъмът за извличане на mfcc коефициенти, изисква броя на самплите да е степен на 2,
         допълваме последните фреймове с 0, ако това е нужно, тъй като това не влияе на точността. [мжое би онази статия за fourier]
-
-        
-
-
-
 
     \section{Класификация}    
     \section{Резултати}
