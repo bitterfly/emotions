@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="175.9103"
-     inkscape:cy="736.75455"
+     inkscape:zoom="0.7"
+     inkscape:cx="583.41173"
+     inkscape:cy="770.39572"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g1612"
      showgrid="true"
      inkscape:snap-global="true"
      inkscape:window-width="1920"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,54 +58,91 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       id="g840"
-       style="stroke-width:1.5;stroke-miterlimit:4;stroke-dasharray:none"
-       transform="translate(9.9999999e-7,-1.3229133)"
-       inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
-       inkscape:export-xdpi="401.20001"
-       inkscape:export-ydpi="401.20001">
-      <path
-         inkscape:connector-curvature="0"
-         id="path821"
-         d="M 21.166666,101.20833 H 47.624999 V 85.333334 H 68.791666 V 74.75 h 10.583333 v 10.583334 h 15.875 v -5.291667 h 21.166671 v 5.291667 H 127 V 90.625 h 10.58333 v 5.291667 h 15.875 V 85.333334 H 158.75 v 10.583333 h 15.875"
-         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path821-5"
-         d="m 21.166666,111.79167 h 26.458333 v 15.875 H 68.791666 V 138.25 h 10.583337 v -10.58333 h 15.875 v 5.29166 h 21.166667 v -5.29166 H 127 V 122.375 h 10.58332 v -5.29167 h 15.87501 v 10.58334 H 158.75 v -10.58334 h 15.875"
-         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       id="g1612">
+      <g
+         transform="translate(10.58333)"
+         id="g1597"
+         style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+         inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
+         inkscape:export-xdpi="401.20001"
+         inkscape:export-ydpi="401.20001">
+        <path
+           style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:connector-curvature="0"
+           d="m 188.99785,82.339562 c -0.35092,0.294663 -0.43039,0.928651 -0.16995,1.245356 0.0905,0.102088 0.7471,0.633989 1.46055,1.16647 5.83177,4.382237 9.6473,11.074792 10.4292,18.287642 0.15836,1.41531 0.15836,4.31437 0,5.72969 -0.80394,7.42805 -4.982,14.52779 -11.02897,18.72847 -0.91705,0.63399 -1.17749,1.05279 -0.97389,1.57367 0.13573,0.37355 0.37355,0.5551 0.82656,0.62296 0.31729,0.0569 0.50986,-0.0336 1.33643,-0.61136 5.43502,-3.81612 9.54579,-9.85148 11.15367,-16.39612 1.80046,-7.32597 0.60035,-15.093924 -3.36309,-21.650169 -1.87935,-3.12528 -5.07307,-6.488379 -8.08467,-8.526656 -0.74825,-0.509279 -1.14442,-0.554522 -1.58584,-0.169953 z"
+           id="path1006" />
+        <path
+           style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:connector-curvature="0"
+           d="m 184.49091,89.099982 c -0.26044,0.203596 -0.30569,0.305684 -0.27147,0.758698 0.0342,0.50928 0.0568,0.532481 1.00754,1.267978 1.26798,0.951273 1.91357,1.540019 2.85324,2.5928 2.40081,2.683866 3.95185,6.012742 4.49535,9.636282 0.15835,1.10962 0.16995,3.78189 0,4.9936 -0.28306,2.02668 -1.12123,4.62006 -2.0609,6.30741 -1.20011,2.15138 -3.00057,4.2349 -5.07307,5.84279 -1.14385,0.89443 -1.18909,0.95127 -1.22274,1.40428 -0.0336,0.38515 0.0226,0.53249 0.24884,0.7587 0.40778,0.40777 0.82657,0.36253 1.60789,-0.15835 1.6305,-1.087 3.55567,-3.00057 4.85787,-4.82365 5.31147,-7.42863 4.98258,-17.54055 -0.80336,-24.640294 -0.84919,-1.041761 -2.52493,-2.638044 -3.65776,-3.476208 -1.05278,-0.78132 -1.46055,-0.871807 -1.98143,-0.464036 z"
+           id="path1010" />
+        <path
+           style="stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none"
+           inkscape:connector-curvature="0"
+           d="m 179.91667,95.916667 c -0.16995,0.169953 -0.24883,0.407771 -0.24883,0.690833 0,0.464036 0.10208,0.577724 1.22273,1.460552 0.78132,0.600346 1.68735,1.653127 2.26449,2.604398 1.90255,3.1479 1.90255,7.31494 0.0116,10.45125 -0.61137,0.99651 -1.58526,2.09512 -2.51391,2.80857 -0.47564,0.36253 -0.88341,0.72448 -0.91705,0.82657 -0.26044,0.66821 0.19257,1.39268 0.8718,1.39268 1.03074,0 3.5667,-2.5928 4.6653,-4.75578 1.65313,-3.28364 1.72099,-7.30334 0.18098,-10.59858 -0.86079,-1.823078 -2.08352,-3.363096 -3.54408,-4.472722 -1.03074,-0.770299 -1.55162,-0.883408 -1.99303,-0.407771 z"
+           id="path1014" />
+      </g>
+      <g
+         inkscape:export-ydpi="401.20001"
+         inkscape:export-xdpi="401.20001"
+         inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
+         id="g1450">
+        <g
+           id="g840"
+           style="stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+           transform="translate(9.9999999e-7,-1.3229133)"
+           inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
+           inkscape:export-xdpi="401.20001"
+           inkscape:export-ydpi="401.20001">
+          <path
+             inkscape:connector-curvature="0"
+             id="path821"
+             d="M 21.166666,101.20833 H 47.624999 V 85.333334 H 68.791666 V 74.75 h 10.583333 v 10.583334 h 15.875 v -5.291667 h 21.166671 v 5.291667 H 127 V 90.625 h 10.58333 v 5.291667 h 15.875 V 85.333334 H 158.75 v 10.583333 h 15.875 l 0,-56.88542"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path821-5"
+             d="m 21.166666,111.79167 h 26.458333 v 15.875 H 68.791666 V 138.25 h 10.583337 v -10.58333 h 15.875 v 5.29166 h 21.166667 v -5.29166 H 127 V 122.375 h 10.58332 v -5.29167 h 15.87501 v 10.58334 H 158.75 v -10.58334 h 15.875 l 0,48.94792"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+          <path
+             style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="M 174.625,118.40625 Z"
+             id="path1440"
+             inkscape:connector-curvature="0" />
+        </g>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+           x="-11.49259"
+           y="108.1217"
+           id="text844"
+           inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
+           inkscape:export-xdpi="401.20001"
+           inkscape:export-ydpi="401.20001"><tspan
+             sodipodi:role="line"
+             id="tspan842"
+             x="-11.49259"
+             y="108.1217"
+             style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.58333302px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">глотис</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+           x="159.95877"
+           y="107.04424"
+           id="text844-0"
+           inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
+           inkscape:export-xdpi="401.20001"
+           inkscape:export-ydpi="401.20001"><tspan
+             sodipodi:role="line"
+             id="tspan842-6"
+             x="159.95877"
+             y="107.04424"
+             style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.58333302px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">устни</tspan></text>
+      </g>
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto,  weight=250';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="-11.49259"
-       y="108.1217"
-       id="text844"
-       inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
-       inkscape:export-xdpi="401.20001"
-       inkscape:export-ydpi="401.20001"><tspan
-         sodipodi:role="line"
-         id="tspan842"
-         x="-11.49259"
-         y="108.1217"
-         style="font-style:normal;font-variant:normal;font-stretch:normal;font-size:10.58333302px;font-family:Roboto;-inkscape-font-specification:'Roboto,  weight=250';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332">глотис</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto,  weight=250';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="175.86131"
-       y="107.04424"
-       id="text844-0"
-       inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
-       inkscape:export-xdpi="401.20001"
-       inkscape:export-ydpi="401.20001"><tspan
-         sodipodi:role="line"
-         id="tspan842-6"
-         x="175.86131"
-         y="107.04424"
-         style="font-style:normal;font-variant:normal;font-stretch:normal;font-size:10.58333302px;font-family:Roboto;-inkscape-font-specification:'Roboto,  weight=250';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332">устни</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:300;font-size:10.11308049px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
        x="30.642933"
        y="95.916664"
        id="text885"
@@ -116,21 +153,23 @@
          id="tspan883"
          x="30.642933"
          y="95.916664"
-         style="stroke-width:0.26458332">t₁</tspan></text>
+         style="stroke-width:0.26458332;-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:10.11308049px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;">t₁</tspan></text>
     <flowRoot
        xml:space="preserve"
        id="flowRoot887"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
        transform="matrix(0.26458333,0,0,0.26458333,2.213656,4.8729204)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
-         id="flowRegion889"><rect
+         id="flowRegion889"
+         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
            id="rect891"
            width="50.714287"
            height="87.85714"
            x="190"
-           y="248.94826" /></flowRegion><flowPara
+           y="248.94826"
+           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
          id="flowPara893">t₂</flowPara></flowRoot>    <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -144,48 +183,65 @@
          id="tspan895"
          x="58.208332"
          y="81.467934"
-         style="stroke-width:0.26458332"></tspan></text>
+         style="stroke-width:0.26458332" /></text>
     <flowRoot
        xml:space="preserve"
        id="flowRoot899"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
        transform="matrix(0.26458333,0,0,0.26458333,2.0788691,3.3072917)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
-         id="flowRegion901"><rect
+         id="flowRegion901"
+         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
            id="rect903"
            width="45.714287"
            height="52.857143"
            x="256.42856"
-           y="214.66254" /></flowRegion><flowPara
+           y="214.66254"
+           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
          id="flowPara905">t₃</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot907"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
        transform="matrix(0.26458333,0,0,0.26458333,5.0750019,2.3346745)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
-         id="flowRegion909"><rect
+         id="flowRegion909"
+         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
            id="rect911"
            width="62.857143"
            height="45.714287"
            x="362.85715"
-           y="238.23396" /></flowRegion><flowPara
+           y="238.23396"
+           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
          id="flowPara913">...</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot915"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(0.26458333,0,0,0.26458333,1.0356694,3.8419995)"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,1.0356694,3.8078248)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
-         id="flowRegion917"><rect
+         id="flowRegion917"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
            id="rect919"
            width="46.42857"
            height="54.285713"
            x="610.71429"
-           y="292.51968" /></flowRegion><flowPara
-         id="flowPara921">tₖ</flowPara></flowRoot>  </g>
+           y="292.51968"
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
+         id="flowPara921">t</flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444444px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       x="166.6875"
+       y="90.601562"
+       id="text1438"><tspan
+         sodipodi:role="line"
+         id="tspan1436"
+         x="166.6875"
+         y="90.601562"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444444px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr;text-anchor:start;stroke-width:0.26458332;">N</tspan></text>
+  </g>
 </svg>
