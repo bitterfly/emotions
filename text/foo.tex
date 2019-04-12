@@ -2,15 +2,24 @@
 \documentclass[12pt]{report}
 \usepackage{unicode-math}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{xltxtra}
+\usepackage{appendix}
+
+
+\usepackage{polyglossia}
+\setmainlanguage{bulgarian}
+\setotherlanguage{english}
+
 
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont{Comfortaa-Regular}
 %setmathfont{Neo Euler}
+\newfontfamily\cyrillicfont{Comfortaa-Regular}
 
-\usepackage[english, bulgarian]{babel}
-\usepackage{indentfirst}
-\usepackage[a4paper, portrait, margin = 2.0 cm]{geometry}
+% \usepackage[english, bulgarian]{babel}
+% \usepackage{indentfirst}
+\usepackage[a4paper, portrait, margin = 1.5 cm]{geometry}
 \usepackage{url}
 \usepackage{color}
 \usepackage{float}
@@ -25,6 +34,9 @@
 \usepackage[parfill]{parskip}
 \usepackage{multicol}
 
+
+\newtheorem{theorem}{Пример}
+
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
 \addtokomafont{labelinglabel}{\sffamily}
@@ -37,13 +49,6 @@
 \usepackage{graphicx}
 \graphicspath{ {./resources/} }
 
-\DeclareFontFamily{OT1}{pzc}{}
-
-\DeclareFontShape{OT1}{pzc}{m}{it}{<-> s * [1.5] pzcmi7t}{}
-\DeclareMathAlphabet{\mathcal}{OT1}{pzc}{m}{it}
-
-\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
-
 \lstset{
 	backgroundcolor = \color{light-gray},
     language = C,
@@ -52,6 +57,7 @@
     basicstyle=\ttfamily,
 	moredelim=[is][\underbar]{_}{_},
 }
+
 
 \usepackage{color}
 \definecolor{Bluish}{rgb}{0.39,0.55,0.78}
@@ -66,11 +72,37 @@
     linkcolor=black,
     urlcolor=black
 }
+\makeatletter
+\ifdefined\HyLang@bulgarian\else
+\appto\blockextras@bulgarian{%
+  \def\equationautorefname{\text{Уравнение}}%
+  \def\footnoteautorefname{\text{Бележка}}%
+  \def\itemautorefname{item}%
+  \def\figureautorefname{\text{Фигура}}%
+  \def\tableautorefname{\text{Таблица}}%
+  \def\partautorefname{Part}%
+  \def\appendixautorefname{Appendix}%
+  \def\chapterautorefname{chapter}%
+  \def\sectionautorefname{section}%
+  \def\subsectionautorefname{subsection}%
+  \def\subsubsectionautorefname{subsubsection}%
+  \def\paragraphautorefname{paragraph}%
+  \def\subparagraphautorefname{subparagraph}%
+  \def\FancyVerbLineautorefname{line}%
+  \def\theoremautorefname{\text{Пример}}%
+  \def\pageautorefname{page}%
+}
+% \inlineextras@bulgarian is empty, so we simply set it
+% equal to \blockextras@bulgarian
+\let\inlineextras@bulgarian\blockextras@bulgarian
+\fi
+\makeatother
 
 \usepackage{tabularx}
 
 \newcommand{\B}[1]{\left(#1\right)}
 \newcommand{\Q}[1]{\left[#1\right]}
+
 
 \title{Дипломна работа}
 \author{Диана Генева <dageneva@qtrp.org>}
@@ -88,6 +120,8 @@
 
 \includegraphics[width=0.5\textwidth ]{pikachu}
 \chapter{Емоции в реч}
+\label{chap:speech}
+
     \section{Физика на тъгата}
     Вокален тракт е общото название на кухините над ларингса (гръкляна), през които минава въздуха при генериране на реч.
     При хората той се състои от ларингеална кухина, фарингс, устна кухина и носна кухина, които могат да се видят на Фиг. 1.
@@ -113,7 +147,7 @@
         \label{fig:example}%
     \end{figure}
     
-    Да разгледаме по-подробно Фиг.1 и цялостна система за производство на реч.
+    Да разгледаме по-подробно $\autoref{fig:example}$ и цялостна система за производство на реч.
     Речта, всъщност, представлява просто акустичната вълна, получена на края на системата - устни и ноздри - в следствие на изкарания от белия дроб въздух.
 
     Белият дроб работи като енергиен източник за тази системата - въздушният поток, получен при свиването му от междуребрените мускули и диафрагмата,
@@ -167,7 +201,7 @@
         \label{fig:2:2:1}
     \end{figure}
 
-    Нека устната кухина е приближена с $N$ на брой тръби с постоянно напречно сечение, както е показано на $\eqref{fig:2:2:1}$
+    Нека устната кухина е приближена с $N$ на брой тръби с постоянно напречно сечение, както е показано на $\autoref{fig:2:2:1}$
     За още по-голямо опростяване нека няма и загуба на енергия, каквата би се получила попринцип.
 
     Нека въведем следните стандартни означения:
@@ -210,7 +244,8 @@
     Затова може да се покаже, че уравненията $\eqref{eq:2:2:01}$ имат решение във следния вид:
 
     \begin{subequations}
-        \begin{align}\label{eq:2:2:02}
+        \label{eq:2:2:02}
+        \begin{align}
             u_{k}(x, t) & = \Q{u_{k}^{+}\B{t - \frac{x}{\mathcal{c}}} - u_{k}^{-}\B{t + \frac{x}{\mathcal{c}}}}\\
             p_{k}(x, t) & = \frac{\rho \mathcal{c}}{A_{k}} \Q{u_{k}^{+}\B{t - \frac{x}{\mathcal{c}}} + u_{k}^{-}\B{t + \frac{x}{\mathcal{c}}}}
         \end{align}
@@ -226,7 +261,8 @@
 
     Освен това, при преминаването от една тръба в друга са изпълнени следните равенства:
     \begin{subequations}
-        \begin{align}\label{eq:2:2:03}
+        \label{eq:2:2:03}
+        \begin{align}
             u_k(l_k, t) & = u_{k+1}(0, t)\\
             p_k(l_k, t) & = p_{k+1}(0, t)
         \end{align}
@@ -329,7 +365,7 @@
     \end{subequations}
 
     \subsection{Ограничения при устните}
-    Както се вижда от фигура \eqref{fig:2:2:1}, изходът при устните представлява отвор, който
+    Както се вижда от фигура \autoref{fig:2:2:1}, изходът при устните представлява отвор, който
     пречупва радииращите звуковите вълни.
     За да се опишат ефектите от това пречупване, е нужно да знаем връзката между
     налягането и обемната скорост. В реалния случай това би било трудно, затова за улеснение
@@ -539,16 +575,18 @@
             \end{array}\right] &&
     \end{flalign}
             
-    За $N=2$, $\eqref{eq:2:2:21}$ има вида:
+    Нека изразим общия вид на $\mathcal{V}(\mathcal{z})$. За $N=2$, например, $\eqref{eq:2:2:21}$ има вида:
 
-    \begin{flalign*}
-    & \mathcal{V}(\mathcal{z}) = \frac{0.5(1 + r_G)(1 + r_1)(1 + r_2)\mathcal{z}^{-1}}{1 + (r_1r_2 + r_1r_G)\mathcal{z}^{-1} + r_2r_G\mathcal{z}^{-2}} &&
-    \end{flalign*}
+    \begin{flalign}
+    \label{eq:2:2:22}
+    & \mathcal{V}(\mathcal{z}) = \frac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}}, &&
+    \end{flalign}
+    както е показано в $\autoref{appendix:01}$
 
-    Може да се покаже, че за всяка стойност на $N$, уравнението $\eqref{eq:2:2:21}$ ще има решения от вида:
+    За всяка стойност на $N$ в числител се получава произведение $(1 + r_G)\prod\limits_{i=1}^{N}(1 + r_i)$,a в знаменател се получава полином на $\mathcal{z}$ и от основната теорема на алгебрата следва, че уравнението $\eqref{eq:2:2:21}$ ще има решения от вида:
 
     \begin{align}
-        \label{eq:2:2:22}
+        \label{eq:2:2:23}
         \mathcal{V}(\mathcal{z}) = \frac{0.5(1+r_G)\prod\limits_{i=1}^{N}{(1 + r_i)} \mathcal{z}^{-N/2}}{1 - \sum\limits_{i=1}^{N}{\alpha_i \mathcal{z}^{-i}}}
     \end{align}
 
@@ -579,5 +617,93 @@
     \section{Резултати}
 \chapter{Големият портрет}
 
+\begin{appendices}
+    \chapter{Приложение към \nameref{chap:speech}}
+    
+    \begin{theorem}
+    \label{appendix:01}
+        $\mathcal{V}(\mathcal{z})$ за $N=2$
+    \end{theorem}
+    
+    \begin{proof}[\unskip\nopunct]
+        \begin{flalign}
+            \tag{\ref{eq:2:2:22}}
+            & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \mathcal{z}^{N/2}\left[
+                \begin{array}{cc}
+                    \frac{2}{1+r_G}, & -\frac{2r_G}{1 + r_G} \\
+                \end{array}
+                \right] \prod_{i=1}^{N} {\hat{Q}_i} \left[ \begin{array}{cc}
+                    1 \\
+                    0
+                \end{array}\right] = &&
+            \end{flalign}
+            \begin{flalign*}
+                & = \mathcal{z}\left[
+                    \begin{array}{cc}
+                        \frac{2}{1+r_G}, & -\frac{2r_G}{1 + r_G} \\
+                    \end{array}
+                    \right] {\hat{Q}_1}{\hat{Q}_2} \left[ \begin{array}{cc}
+                        1 \\
+                        0
+                    \end{array}\right] = && \\
+                & \\
+                & = \mathcal{z}\left[
+                    \begin{array}{cc}
+                        \frac{2}{1+r_G}, & -\frac{2r_G}{1 + r_G} \\
+                    \end{array}
+                    \right]
+                    \left[\begin{array}{cc}
+                        \frac{1}{1 + r_1} & \frac{-r_1}{1 + r_1} \\
+                        & \\
+                        \frac{-r_1 \mathcal{z}^{-1}}{1 + r_1} & \frac{\mathcal{z}^{-1}}{1 + r_1} \\
+                    \end{array}\right]
+                    \left[\begin{array}{cc}
+                        \frac{1}{1 + r_2} & \frac{-r_2}{1 + r_2} \\
+                        & \\
+                        \frac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \frac{\mathcal{z}^{-1}}{1 + r_2} \\
+                    \end{array}\right]
+                    \left[ \begin{array}{cc}
+                        1 \\
+                        0
+                    \end{array}\right] = && \\
+                &\\
+                & = 2\mathcal{z}
+                \left[
+                    \begin{array}{cc}
+                        \frac{1 + r_G r_1\mathcal{z}^{-1}}{(1+r_G)(1 + r_1)}, & -\frac{r_1 + r_G\mathcal{z}^{-1}}{(1 + r_G)(1 + r_1)} \\
+                    \end{array}
+                \right]
+                \left[\begin{array}{cc}
+                    \frac{1}{1 + r_2} & \frac{-r_2}{1 + r_2} \\
+                    & \\
+                    \frac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \frac{\mathcal{z}^{-1}}{1 + r_2} \\
+                \end{array}\right]
+                \left[ \begin{array}{cc}
+                    1 \\
+                    0
+                \end{array}\right] = && \\
+                &\\
+                & = 2\mathcal{z}
+                \left[
+                    \begin{array}{cc}
+                        \frac{1 + r_Gr_1\mathcal{z}^{-1} + r_1r_2\mathcal{z}^{-1} + r_Gr_2\mathcal{z}^{-2}}{(1+r_G)(1 + r_1)(1 + r_2)}, & -\frac{r_2 + r_Gr_1r_2\mathcal{z}^{-1} + r_1\mathcal{z}^{-1} + r_G\mathcal{z}^{-2}}{(1 + r_G)(1 + r_1)(1 + r_2)} \\
+                    \end{array}
+                \right]
+                \left[ \begin{array}{cc}
+                    1 \\
+                    0
+                \end{array}\right]&& \\
+            \end{flalign*}
+        \begin{flalign*}
+            & \iff && \\
+            & \mathcal{V}(\mathcal{z}) = \frac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}} &&
+        \end{flalign*}
+        
+        
+        \end{proof}
 
-\end{document}
+
+
+\end{appendices}
+        
+        \end{document}
