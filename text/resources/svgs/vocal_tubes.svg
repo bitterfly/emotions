@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="224.08183mm"
+   height="127mm"
+   viewBox="0 0 224.08183 127"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
    sodipodi:docname="vocal_tubes.svg">
   <defs
      id="defs2" />
@@ -26,20 +26,26 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="583.41173"
-     inkscape:cy="770.39572"
+     inkscape:cx="365.09327"
+     inkscape:cy="270.39573"
      inkscape:document-units="mm"
      inkscape:current-layer="g1612"
      showgrid="true"
      inkscape:snap-global="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1032"
+     inkscape:window-height="1024"
      inkscape:window-x="0"
-     inkscape:window-y="24"
-     inkscape:window-maximized="1">
+     inkscape:window-y="30"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
     <inkscape:grid
        type="xygrid"
-       id="grid819" />
+       id="grid819"
+       originx="10.650264"
+       originy="-132.29166" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -49,14 +55,15 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(10.650264,-37.708334)">
     <g
        id="g1612">
       <g
@@ -97,12 +104,12 @@
           <path
              inkscape:connector-curvature="0"
              id="path821"
-             d="M 21.166666,101.20833 H 47.624999 V 85.333334 H 68.791666 V 74.75 h 10.583333 v 10.583334 h 15.875 v -5.291667 h 21.166671 v 5.291667 H 127 V 90.625 h 10.58333 v 5.291667 h 15.875 V 85.333334 H 158.75 v 10.583333 h 15.875 l 0,-56.88542"
+             d="M 21.166666,101.20833 H 47.624999 V 85.333334 H 68.791666 V 74.75 h 10.583333 v 10.583334 h 15.875 v -5.291667 h 21.166671 v 5.291667 H 127 V 90.625 h 10.58333 v 5.291667 h 15.875 V 85.333334 H 158.75 v 10.583333 h 15.875 v -56.88542"
              style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              inkscape:connector-curvature="0"
              id="path821-5"
-             d="m 21.166666,111.79167 h 26.458333 v 15.875 H 68.791666 V 138.25 h 10.583337 v -10.58333 h 15.875 v 5.29166 h 21.166667 v -5.29166 H 127 V 122.375 h 10.58332 v -5.29167 h 15.87501 v 10.58334 H 158.75 v -10.58334 h 15.875 l 0,48.94792"
+             d="m 21.166666,111.79167 h 26.458333 v 15.875 H 68.791666 V 138.25 h 10.583337 v -10.58333 h 15.875 v 5.29166 h 21.166667 v -5.29166 H 127 V 122.375 h 10.58332 v -5.29167 h 15.87501 v 10.58334 H 158.75 v -10.58334 h 15.875 v 48.94792"
              style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
           <path
              style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -142,7 +149,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:300;font-size:10.11308049px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.11308002px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="30.642933"
        y="95.916664"
        id="text885"
@@ -153,23 +160,23 @@
          id="tspan883"
          x="30.642933"
          y="95.916664"
-         style="stroke-width:0.26458332;-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:10.11308049px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;">t₁</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:10.11308002px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332">t₁</tspan></text>
     <flowRoot
        xml:space="preserve"
        id="flowRoot887"
-       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        transform="matrix(0.26458333,0,0,0.26458333,2.213656,4.8729204)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
          id="flowRegion889"
-         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
            id="rect891"
            width="50.714287"
            height="87.85714"
            x="190"
            y="248.94826"
-           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
          id="flowPara893">t₂</flowPara></flowRoot>    <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
@@ -187,35 +194,35 @@
     <flowRoot
        xml:space="preserve"
        id="flowRoot899"
-       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        transform="matrix(0.26458333,0,0,0.26458333,2.0788691,3.3072917)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
          id="flowRegion901"
-         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
            id="rect903"
            width="45.714287"
            height="52.857143"
            x="256.42856"
            y="214.66254"
-           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
          id="flowPara905">t₃</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot907"
-       style="font-style:normal;font-weight:300;font-size:38.2226669px;line-height:1.25;font-family:Roboto;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;-inkscape-font-specification:'Roboto, Light';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        transform="matrix(0.26458333,0,0,0.26458333,5.0750019,2.3346745)"
        inkscape:export-filename="/home/dodo/gits/emotions/text/resources/vocal_tubes.png"
        inkscape:export-xdpi="401.20001"
        inkscape:export-ydpi="401.20001"><flowRegion
          id="flowRegion909"
-         style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"><rect
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start"><rect
            id="rect911"
            width="62.857143"
            height="45.714287"
            x="362.85715"
            y="238.23396"
-           style="-inkscape-font-specification:'Roboto, Light';font-family:Roboto;font-weight:300;font-style:normal;font-stretch:normal;font-variant:normal;font-size:38.2226669px;text-anchor:start;text-align:start;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
          id="flowPara913">...</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot915"
@@ -234,7 +241,7 @@
            style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:38.22266769px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start" /></flowRegion><flowPara
          id="flowPara921">t</flowPara></flowRoot>    <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444444px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444447px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="166.6875"
        y="90.601562"
        id="text1438"><tspan
@@ -242,6 +249,6 @@
          id="tspan1436"
          x="166.6875"
          y="90.601562"
-         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444444px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr;text-anchor:start;stroke-width:0.26458332;">N</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:5.64444447px;font-family:Roboto;-inkscape-font-specification:'Roboto, Light';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332">N</tspan></text>
   </g>
 </svg>
