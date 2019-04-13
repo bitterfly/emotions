@@ -602,7 +602,7 @@
 
     \begin{flalign}
         \label{eq:2:2:24}
-        & \mathcal{R}(\mathcal{z}) = (1 - \alpha\mathcal{z} ^ {-1}) &&
+        & \mathcal{R}(\mathcal{z}) = (1 - \gamma\mathcal{z} ^ {-1}) &&
     \end{flalign}
 
     \subsection{Общ вид на $\mathcal{G}$}
@@ -618,8 +618,41 @@
         \label{fig:2:2:2}
     \end{figure}
     
-    Нека разгледаме 
+    На $\autoref{fig:2:2:2}$ се вижда, че импулсът от глотиса може да се раздели на три фази:
+    \begin{enumerate}
+        \item Отворена фаза с край $F_1$
+        \item Фаза на затваряне с начало $F_1$ и край $F_2$
+        \item Затворена фаза с начало $F_2$
+    \end{enumerate}
 
+    Съответно ще моделираме функцията $\mathcal{G}$ в зависимост от фазата. По-лесно ще е
+    да се направи във времевия домейн. Едно добро приближение е:
+
+    \begin{flalign*}
+        & g(t) = 
+        \begin{cases}
+            \frac{1}{2}( 1 - \cos{(\pi n / F1)}), & 0\leq t \leq F_1\\
+            \cos{(\pi(n - N_1)/2N_2)}, & F_1 \leq t \leq F_2\\
+            0, & \text{иначе}   
+        \end{cases}   &&     
+    \end{flalign*}
+
+    Тъй като функцията $g$ има краен брой точки, в които не е нула, $\mathcal{z}$-трансформацията ѝ
+    ще има две нули. Тоест може да се моделира като:
+
+    \begin{flalign}
+        \label{eq:2:2:25}
+        & \mathcal{G}(\mathcal{z}) = (1 - \beta_1 \mathcal{z}^{-1})(1 - \beta_2 \mathcal{z}^{-1}) &&
+    \end{flalign}
+    
+
+    \section{Общ вид на $\mathcal{H}$}
+    От уравнения $\ref{eq:2:2:22}, \ref{eq:2:2:24}, \ref{eq:2:2:25}$ следва, че видът на  $\mathcal{H}$ е
+
+    \begin{flalign}
+        \label{eq:2:2:26}
+        & \mathcal{H}(\mathcal{z}) = \mathcal{G}(\mathcal{z})\mathcal{V}(\mathcal{z})\mathcal{R}(\mathcal{z}) = (1 - \beta_1 \mathcal{z}^{-1})(1 - \beta_2 \mathcal{z}^{-1})(1 - \gamma\mathcal{z} ^ {-1})\frac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}} &&
+    \end{flalign}
 
     \section{Представяне със системи}
 
