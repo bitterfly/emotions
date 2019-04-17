@@ -741,6 +741,7 @@
         & \nonumber \mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z})\mathcal{H}(\mathcal{z}) &&\\
         & \mathcal{H}(\mathcal{z}) = \cfrac{\mathcal{Y}(\mathcal{z})}{\mathcal{G}(\mathcal{z})} &&
     \end{flalign}
+    $\mathcal{H}$ се нарича предавателна функция за системата.
 
     Да разгледаме $\autoref{eq:systems:1}$ в $\mathcal{z}$-домейна.
     \begin{flalign}
@@ -754,7 +755,6 @@
         \label{eq:systems:6}
         & \mathcal{H}(\mathcal{z}) =  \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}{\sum\limits_{k=0}^{N} a_k \mathcal{z}^{-k}} &&
     \end{flalign}
-
 
     \section{Характеристики}
     \subsection{Избор}
@@ -787,6 +787,26 @@
 
     \chapter{Приложение за полюси и нули}
 
+    Нека $\mathcal{z} \in \mathbb{C}$. Видяхме,че предавателната функция $\mathcal{H}$ има вида
+    \begin{flalign}
+        \tag{\ref{eq:systems:6}}
+        & \mathcal{H}(\mathcal{z}) =  \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}{\sum\limits_{k=0}^{N} a_k \mathcal{z}^{-k}} = && \\
+        \nonumber & \mathcal{H}(\mathcal{z}) = \cfrac{N(\mathcal{z})}{D(\mathcal{z})} = B \cfrac{(\mathcal{z} - \beta_1)(\mathcal{z} - \beta_2)...(\mathcal{z} - \beta_M)}{(\mathcal{z} - \alpha_1)(\mathcal{z} - \alpha_2)...(\mathcal{z} - \alpha_N)}, &&
+    \end{flalign}
+
+    където $B = b_M/a_N$.
+
+    С $\beta_i$ означаваме корените на уравнението $N(\mathcal{z}) = 0$. Те се наричат нули на системата и 
+    $\lim\limits_{\mathcal{z} \rightarrow \beta_i} \mathcal{H}(\mathcal{z}) = 0$
+
+    С $\alpha_i$ означаваме корените на уравнението $D(\mathcal{z}) = 0$. Те се наричат полюси на системата и 
+    $\lim\limits_{\mathcal{z} \rightarrow \alpha_i} \mathcal{H}(\mathcal{z}) = \infty$
+
+    Тъй като коефициентите на $N(\mathcal{z})$ и $D(\mathcal{z})$ са реални, нулите (и съответно полюсите) ще са
+    са или реални, или са част от двойка комплексно спрегнати. Тоест, няма нула (или полюс), която да е комплексна, но
+    да няма комплексно спрегнато из останалите нули (полюси).
+
+    
 
     \chapter{Приложение към \nameref{chap:speech}}
     
