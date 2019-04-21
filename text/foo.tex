@@ -911,10 +911,9 @@
                 \draw[black,thick,dashed] (axis cs:0,0) circle [radius=100];
                 \end{axis}
             \end{tikzpicture}
-
             } 
             \hfill
-            \subfloat[Графика на амплитудата на $\mathcal{H}$ в честотния домейн]{%
+            \subfloat[Графика на амплитудата на $\mathcal{H}$ в честотния домейн за $a=0.7, a=0.5, a=0.35$]{%
             \begin{tikzpicture}[baseline]
                 \begin{axis}[
                     xlabel={Ъглова честота},
@@ -931,11 +930,31 @@
                     \addplot [domain=-pi:pi, samples=500, dotted, thick]{(1/(1 - 2*0.35*cos(deg(x)) + (0.35)^2))^1/2};
                     \end{axis}
             \end{tikzpicture}
+            }\vfill
+            \subfloat[Графика на амплитудата на $\mathcal{H}$ за различни стойност на $a$ и $b$]{%
+            \begin{tikzpicture}[baseline]
+                \begin{axis}[
+                    xlabel={Ъглова честота},
+                    ylabel={Амплитуда},
+                    xmin=0, xmax=pi,
+                    ymin=0, ymax=5.5,
+                    xtick={0,2.5, 5},
+                    ytick={1, 2, 3, 4, 5, 6},
+                    ymajorgrids=true,
+                    xmajorgrids=true,
+                    grid style=dashed,]
+                    \addplot [domain=-pi:pi, samples=500, thick, blue]{(1/(1 - 2*-0.7*cos(deg(x)) + (-0.7)^2))^1/2};
+                    \addplot [domain=-pi:pi, samples=500, thick]{(1/(1 - 2*0.7*cos(deg(x)) + (0.7)^2))^1/2};
+                    \addplot [domain=-pi:pi, samples=500, thick, dotted]{(2.8/(1 - 2*0.5*cos(deg(x)) + (0.5)^2))^1/2};
+                    \addplot [domain=-pi:pi, samples=500, thick, dotted]{(0.2/(1 - 2*0.86*cos(deg(x)) + (0.86)^2))^1/2};
+                    \end{axis}
+            \end{tikzpicture}
             }
+            \hfill
+            \subfloat{}
         \label{fig:appendix:1:2}
     \end{figure}
-
-   
+       
     \chapter{Приложение към \nameref{chap:speech}}
     
     \begin{theorem}
@@ -1024,4 +1043,4 @@
 
 \end{appendices}
         
-        \end{document}
+\end{document}
