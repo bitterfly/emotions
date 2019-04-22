@@ -865,10 +865,10 @@
         \end{axis}
 
         \end{tikzpicture}
-        \caption{Полюс-нула графика} \label{fig:appendix:1:1}
+        \caption{Полюс-нула графика} \label{fig:appendix:2:1}
     \end{figure}
 
-    \autoref{fig:appendix:1:1} изобразява трансферна функция с три нули и четири полюса, 
+    \autoref{fig:appendix:2:1} изобразява трансферна функция с три нули и четири полюса, 
     от които една реална нула и два реални полюса. Нулите и полюсите, които не са реални, са
     комплесно спрегнати.
 
@@ -913,7 +913,7 @@
             \end{tikzpicture}
             } 
             \hfill
-            \subfloat[Графика на амплитудата на $\mathcal{H}$ в честотния домейн за $a=0.7, a=0.5, a=0.35$]{%
+            \subfloat[Графика на $g(\omega)$ за $a=0.7, a=0.5, a=0.35$]{%
             \begin{tikzpicture}[baseline]
                 \begin{axis}[
                     xlabel={Ъглова честота},
@@ -931,7 +931,7 @@
                     \end{axis}
             \end{tikzpicture}
             }\vfill
-            \subfloat[Графика на амплитудата на $\mathcal{H}$ за различни стойност на $a$ и $b$]{%
+            \subfloat[Графика на $g(\omega)$ за различни стойност на $a$ и $b$]{%
             \begin{tikzpicture}[baseline]
                 \begin{axis}[
                     xlabel={Ъглова честота},
@@ -946,15 +946,38 @@
                     \addplot [domain=-pi:pi, samples=500, thick, blue]{(1/(1 - 2*-0.7*cos(deg(x)) + (-0.7)^2))^1/2};
                     \addplot [domain=-pi:pi, samples=500, thick]{(1/(1 - 2*0.7*cos(deg(x)) + (0.7)^2))^1/2};
                     \addplot [domain=-pi:pi, samples=500, thick, dotted]{(2.8/(1 - 2*0.5*cos(deg(x)) + (0.5)^2))^1/2};
-                    \addplot [domain=-pi:pi, samples=500, thick, dotted]{(0.2/(1 - 2*0.86*cos(deg(x)) + (0.86)^2))^1/2};
-                    \end{axis}
+                    \addplot [domain=-pi:pi, samples=500, thick, dotted]{(0.2/(1 - 2*0.865*cos(deg(x)) + (0.865)^2))^1/2};
+                \end{axis}
             \end{tikzpicture}
             }
-            \hfill
-            \subfloat{}
-        \label{fig:appendix:1:2}
-    \end{figure}
-       
+            \caption{Действие IIR филтър от първи ред}
+            \label{fig:appendix:2:2}
+    \end{figure}   
+    
+    Понеже $a_1$ е реално число, винаги ще лежи на реалната ос, както е показано на полюс-нула графиката на $\autoref{fig:appendix:2:2}$
+    
+    Нека разгледаме $\mathcal{H}$ в честотния домейн:
+    $\mathcal{H}(e^{\mathcal{i}\omega}) = \cfrac{b_0}{1 - a_1e^{-\mathcal{i}\omega}},$ където $\omega$ е ъглова честота, измерена в радиани.
+    Можем изразим $\mathcal{H}$ като функция на $\omega$:
+
+    \begin{flalign*}
+        & \mathcal{H}(e^{\mathcal{i}\omega}) = \cfrac{b_0}{1 - a_1e^{-\mathcal{i}\omega}} = \cfrac{b_0}{1 - a_1 \cos{\omega} + \mathcal{i} a_1 \sin{\omega}} 
+        = \cfrac{b_0(1 - a_1\cos{\omega} - \mathcal{i}a_1 \sin{\omega} )}{1 - 2 a_1 \cos{\omega} + a_1 ^ 2} && \\ 
+        & = \frac{b_0(1 - a_1 \cos{\omega})}{{1 - 2 a_1 \cos{\omega} + a_1 ^ 2}} + \mathcal{i}\cfrac{- b_0 a_1 \sin{\omega}}{{1 - 2 a_1 \cos{\omega} + a_1 ^ 2}}&&
+    \end{flalign*}
+    Нека с $g(\omega)$ означим модула на $\mathcal{H}$
+    \begin{flalign*}
+        & g(\omega) = \cfrac{b_0^2(1 - 2 a_1 \cos{\omega} + a_1^2)}{(1 - 2 a_1 \cos{\omega} + a_1 ^ 2)^2} = \cfrac{b_0^2}{1 - 2 a_1 \cos{\omega} + a_1 ^ 2} &&
+    \end{flalign*}
+    На $\autoref{fig:appendix:2:2}$ се вижда графиката на $g(\omega)$ за различни стойности на $a_1$ и $b_0$
+    Такива филтри се наричат \textbf{резонатори}, тъй като честотите във върха на графиката ще се усилят.
+    Резонаторите се описват главно чрез своята \textbf{амплитуда} - височината на максимума, \textbf{честота} - къде е върхът върху честотната ос, 
+    \textbf{честотна лента} - колко е широка графиката, което определя колко честоти ще се усилят.
+
+    В случая на IIR филтътр от първи ред, амплитудата и честотаната лента се определят от $a_1$ и $b_0$,
+    а върха на графиката винаги ще е в 0. Тоест, този вид филтри могат да усилват само честотите около 0.
+
+    
     \chapter{Приложение към \nameref{chap:speech}}
     
     \begin{theorem}
