@@ -950,7 +950,7 @@
                 \end{axis}
             \end{tikzpicture}
             }
-            \caption{Действие IIR филтър от първи ред}
+            \caption{Действие на IIR филтър от първи ред}
             \label{fig:appendix:2:2}
     \end{figure}   
     
@@ -984,6 +984,53 @@
         &\mathcal{H}(\mathcal{z}) = \cfrac{b_0}{1 - a_1\mathcal{z}^{-1} - a_2\mathcal{z}^{-2}} && \\
         &\mathcal{H}(\mathcal{z}) = G \cfrac{1}{(1 - \alpha_1 {z}^{-1})(1 - \alpha_2 {z}^{-1})} &&
     \end{flalign*}
+
+    \begin{figure}[H]%
+            \subfloat[Полюс-нула графика за $\mathcal{H}$]{%
+            \begin{tikzpicture}[baseline]
+                \begin{axis}[
+                    xlabel={реална ос},
+                    ylabel={имагинерна ос},
+                    xmin=-1.2, xmax=1.2,
+                    ymin=-1.2, ymax=1.2,
+                    xtick={-1, -0.5, 0, 0.5, 1},
+                    ytick={-1, -0.5, 0, 0.5, 1},
+                    ymajorgrids=true,
+                    xmajorgrids=true,
+                    grid style=dashed,
+                    axis equal image, 
+                ]
+                \draw [red, thick] (axis cs:0.20, 0.45) rectangle (axis cs:0.30, 0.55);
+                \draw [red, thick] (axis cs:0.20, -0.45) rectangle (axis cs:0.30, -0.55);
+                \draw [red, thick] (axis cs:0.45, 0.70) rectangle (axis cs:0.55, 0.80);
+                \draw [red, thick] (axis cs:0.45, -0.70) rectangle (axis cs:0.55, -0.80);
+                \draw [red, thick] (axis cs:0.325, 0.575) rectangle (axis cs:0.425, 0.675);
+                \draw [red, thick] (axis cs:0.325, -0.575) rectangle (axis cs:0.425, -0.675);
+                \draw[black,thick,dashed] (axis cs:0,0) circle [radius=100];
+                \end{axis}
+            \end{tikzpicture}
+            }\hfill
+            \subfloat[Графика на $g(\omega)$ в ]{%
+            \begin{tikzpicture}[baseline]
+                \begin{axis}[
+                    xlabel={Ъглова честота},
+                    ylabel={Амплитуда},
+                    xmin=-4, xmax=4,
+                    ymin=0, ymax=5.5,
+                    xtick={-4, -3, -2, -1, 0, 1, 2, 3, 5.5},
+                    ytick={0, 1, 2, 3, 4, 5, 6},
+                    ymajorgrids=true,
+                    xmajorgrids=true,
+                    grid style=dashed,]
+                    \addplot [domain=-pi:pi, samples=500,]{( (1 - (1.6)*cos(deg(x)) - (-3.2)*cos(deg(2*x)))^2 + ((1.6)*sin(deg(x)) + (-3.2)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500,dotted, thick]{( (1 - (1.23077)*cos(deg(x)) - (-1.23077)*cos(deg(2*x)))^2 + ((1.23077)*sin(deg(x)) + (-1.23077)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500,dotted, thick]{( (1 - (1.41176)*cos(deg(x)) - (-1.88235)*cos(deg(2*x)))^2 + ((1.41176)*sin(deg(x)) + (-1.88235)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \end{axis}
+            \end{tikzpicture}
+            }
+            \caption{Действие на IIR филтър от втори ред за $\alpha_1 \in \{(0.25 + 0.5i), (0.5 + 0.75i), (0.375 + 0.625)\}$}
+            \label{fig:appendix:2:3}
+    \end{figure}  
 
     
     \chapter{Приложение към \nameref{chap:speech}}
