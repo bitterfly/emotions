@@ -1043,25 +1043,55 @@
         \subfloat{%
             \begin{tikzpicture}[baseline]
                 \begin{axis}[
-                    xlabel={Ъглова честота},
+                    xlabel={Графика на $g$ с отдалечаващи се от реалната ос полюси},
                     ylabel={Амплитуда},
                     xmin=0, xmax=4,
-                    ymin=0, ymax=5.5,
+                    ymin=0, ymax=5,
                     xtick={0, 2.5, 5},
-                    ytick={0, 1, 2, 3, 4, 5, 6},
+                    ytick={0, 1, 2, 3, 4},
                     ymajorgrids=true,
                     xmajorgrids=true,
                     grid style=dashed,]
-                    \addplot [domain=0:pi, samples=500,]{2*( (1 - (1.6)*cos(deg(x)) - (-3.2)*cos(deg(2*x)))^2 + ((1.6)*sin(deg(x)) + (-3.2)*sin(deg(2*x)) )^2  )^(-1/2)};
-                    \addplot [domain=0:pi, samples=500,dotted, thick]{( (1 - (2.23077)*cos(deg(x)) - (-1.23077)*cos(deg(2*x)))^2 + ((1.23077)*sin(deg(x)) + (-1.23077)*sin(deg(2*x)) )^2  )^(-1/2)};
-                    \addplot [domain=0:pi, samples=500,dotted, thick]{( (1 - (1.41176)*cos(deg(x)) - (-1.88235)*cos(deg(2*x)))^2 + ((1.41176)*sin(deg(x)) + (-1.88235)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500, thick]{( (1 - (1.17)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500, thick, red]{( (1 - (0.86)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.86)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500, thick, blue]{( (1 - (0.50)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.50)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                    \addplot [domain=-pi:pi, samples=500, thick, green]{( (1 - (0.11)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.11)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
                     \end{axis}
             \end{tikzpicture}
         }
-        \caption{Действие на IIR филтър от първи ред за различни стойности на $a$ и $b$}
+        \caption{Действие на IIR филтър от втори ред за различни стойности на $a$ и $b$}
         \label{fig:appendix:2:3}
     \end{figure} 
+
+    Местенето на полюсите по-далеч от реалната ос, раздалечава върховете по честотната лента.
+    Видът на резонатора (тоест честотна ента, честота и амплитуда), се определят главно от полюсите.
+    Нулите могат да влияят на графиката между двата върха на полюсите.
     
+    Използвайки вида на IIR филтрите от първи и втори ред, можем да разложим даден сложен филтър
+    $\mathcal{H}$ на произвдение на по-прости филтри от първи и втори ред, чиито вид може
+    по-лесно да се моделира чрез промяна на коефициентите. След това съчетаването им е просто произведение.
+    % \begin{figure}[H]
+    %     \centering
+    %     \subfloat[Графика на $g(\omega)$ в $-\pi, \pi$]{%
+    %     \begin{tikzpicture}[baseline]
+    %         \begin{axis}[
+    %             xlabel={Ъглова честота},
+    %             ylabel={Амплитуда},
+    %             xmin=-4, xmax=4,
+    %             ymin=0, ymax=5.5,
+    %             xtick={-4, -3, -2, -1, 0, 1, 2, 3, 5.5},
+    %             ytick={0, 1, 2, 3, 4, 5, 6},
+    %             ymajorgrids=true,
+    %             xmajorgrids=true,
+    %             grid style=dashed,]
+    %             \addplot [domain=-pi:pi, samples=500, thick]{( (1 - (1.17)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+    %             \addplot [domain=-pi:pi, samples=500, thick]{(i)* ( (1 - (1.17)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+    %             \end{axis}
+    %     \end{tikzpicture}
+    %     }
+    % \end{figure}
+
+
     \chapter{Приложение към \nameref{chap:speech}}
     
     \begin{theorem}
