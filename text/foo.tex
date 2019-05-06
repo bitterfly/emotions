@@ -787,7 +787,143 @@
 \chapter{Големият портрет}
 
 \begin{appendices}
+    \chapter{Фурие приложение}
+    \section{Дефиниция}
 
+    Понякога е по-лесно да се моделира поведението на система, ако можем да кажем как ще се държи системата за
+    всяка честота поотделно. Например, по този начин можем да нулираме всички честоти под или над дадена
+    или да усилим определена честоти.
+    За тази цел ни трябва еквивалентно представяне на даден сигнал във времето като съвкупност от синусоиди с различни честоти.
+    Нека имаме дискретен във времето сигнал $x$, който е периодичен с фундаментален период T, измерен в секунди. Тоест, 
+    \begin{flalign*}
+        & x(t) = x(t + T) &&
+    \end{flalign*}
+
+    Честотата, изразена в херци (периоди в секунда), се означава с $f_0 = \frac{1}{T}$ и означава "брой периоди в секунда". Нарича се фундаментална честота.
+    Честотата, изразена в радиани в секунда, се означава с $\omega_0 = f_0 2\pi$ и се нарича фундаментална ъглова честота.
+
+    Тогава представянето, което търсим има вида:
+
+    \begin{flalign}
+        \label{eq:appendix:0:1}
+        & x(t) = \sum\limits_{k=-\infty}^{\infty} a_k e^{\frac{2k\pi i t}{T}}, &&
+    \end{flalign}
+    
+    където $e^{\frac{2k\pi i t}{T}}$ е сигнал с честота $\cfrac{k}{T}$
+    Представянето от $\autoref{eq:appendix:0:1}$ се нарича развиване в ред на Фурие за сигнала $x(t)$
+    
+    Нека намерим вида на коефициентите $a_k$
+
+    Умножаваме \autoref{eq:appendix:0:1} с $e^{-\frac{2n\pi i t}{T}}$, тоест
+    \begin{flalign*}
+        & x(t)e^{-\frac{2n\pi i t}{T}} = \sum\limits_{k=-\infty}^{\infty} a_k e^{\frac{2k\pi i t}{T}} e^{-\frac{2n\pi i t}{T}} &&
+    \end{flalign*}
+    Ако интегрираме двете страни от 0 до фундаменталния период T, получаваме
+
+    \begin{flalign*}
+        & \int\limits_{0}^{T} x(t)e^{-\frac{2n\pi i t}{T}} = \int\limits_{0}^{T} \sum\limits_{k=-\infty}^{\infty} a_k e^{\frac{2k\pi i t}{T}} e^{-\frac{2n\pi i t}{T}} &&\\
+        & \int\limits_{0}^{T} x(t)e^{-\frac{2n\pi i t}{T}} =  \sum\limits_{k=-\infty}^{\infty} a_k \Q{\int\limits_{0}^{T} e^{\frac{2(k - n)\pi i t}{T}}} &&
+    \end{flalign*}
+
+    Да разгледаме $\int\limits_{0}^{T} e^{\frac{2(k - n)\pi i t}{T}}$
+    \begin{flalign*}
+        & \int\limits_{0}^{T}e^{\frac{2(k - n)\pi i t}{T}} = \int\limits_{0}^{T} \cos(\frac{2(k - n)\pi t}{T}) dt + i \int\limits_{0}^{T} \sin(\frac{2(k - n)\pi t}{T}) dt = && \\
+        & =  \begin{cases}
+            1\Big|_0^T + 0, & n = k\\
+            0 + 0, & \text{иначе}   
+        \end{cases} && \\
+        & = \begin{cases}
+            T, & n = k \\
+            0, & \text{иначе}
+        \end{cases} && 
+    \end{flalign*}
+
+    Което означава, че
+
+    \begin{flalign*}
+        & a_n = \cfrac{1}{T} \int\limits_{0}^{T} x(t)e^{-\frac{2n\pi i t}{T}} &&
+    \end{flalign*}
+    Това е вярно и за всеки друг интервал с дължина T:
+
+    \begin{flalign}
+        \label{eq:appendix:0:2}
+        & a_n = \cfrac{1}{T} \int\limits_{T} x(t)e^{-\frac{2n\pi i t}{T}} &&
+    \end{flalign}
+
+    Обикновено с $X(e^{i\omega})$ означаваме $\cfrac{1}{T} \int\limits_{T} x(t)e^{-i\omega}$,
+    където $\omega$ е ъглова честота.
+
+    Може да се покаже, че редът на Фурие за някакъв сигнал $x(t)$ е сходящ и съответно коефициентите от \autoref{eq:appendix:0:2} са крайни, ако е изпълнено, че
+
+    \begin{flalign*}
+        & \int\limits_{T} |x(t)|^2 < \infty, &&
+    \end{flalign*}
+
+    например в Oppenheim 96. 
+
+    Още повече, ако сигналът $x$ е дискретен и периодичен (какъвто е случаят, когато семплираме речеви сигнал) и периодичен $x[n] = x[n + N]$,
+    имаме само N различни стойности.
+
+    $e^{\frac{2 (k + N) \pi i n}{N}} = e^{\frac{2 k \pi i n}{N}} e^{\frac{2 N \pi i n}{N}} = e^{\frac{2 k \pi i n}{N}}$, тъй като
+    $e^{2\pi i n} = \cos(2\pi n) + \sin(2\pi n) = 1$
+    
+    следователно са ни достатъчни само кои да е N последователни стойности:
+    \begin{flalign}
+        \label{eq:appendix:0:3}
+        & \nonumber x[n] =  \sum\limits_{k=-\infty}^{\infty} \hat{a_k} e^{\frac{2 k \pi i n}{N}} && \\
+        & x[n] = \sum\limits_{k=0}^{N-1} a_k e^{\frac{2 k \pi i n}{N}} &&  
+    \end{flalign}
+
+    \autoref{eq:appendix:0:3} се нарича ред на Фурие за дискретен във времето сигнал.
+
+    Коефициентите можем да намерим по същия начин като в непрекъснатия случай, но използвайки сума, вместо интеграл:
+
+    \begin{flalign*}
+        & \sum\limits_{n=0}^{N-1} x[n] e^{\frac{-2\pi i r n}{N}} = \sum\limits_{n=0}^{N-1} \sum\limits_{k=0}^{N-1} a_k e^{\frac{2\pi i k n}{N}} e^{\frac{-2\pi i r n}{N}}  = && \\
+        & \sum\limits_{n=0}^{N-1} x[n] e^{\frac{-2\pi i r n}{N}} = \sum\limits_{k=0}^{N-1} a_k \sum\limits_{n=0}^{N-1} e^{\frac{2\pi i (k-r) n}{N}} &&
+    \end{flalign*}
+
+    и отново използваме, че 
+
+    \begin{flalign}
+        \label{eq:appendix:0:4}
+        & \nonumber \sum\limits_{n=0}^{N-1} e^{\frac{2\pi i (k-r) n}{N}} = \begin{cases}
+            N, & k-r \equiv 0 (mod N) \\
+            0, & \text{иначе}
+        \end{cases} && \\
+        & \Rightarrow a_r = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} x[n] e^{-\frac{2\pi i r n}{N}} &&
+    \end{flalign}
+
+    което е изпълнено и за всеки друг интервал с дължина N.
+    Ще използваме означенията $x(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} a_k$
+
+    \section{Свойства}
+
+    \begin{itemize}
+        \item Изместване във времето
+
+        Ако $x[n] \xleftrightarrow{\mathcal{F}\mathcal{S}} a_k$, то $x[n-n_0] \xleftrightarrow{\mathcal{F}\mathcal{S}} b_k = a_k e^{-\frac{2\pi i n_0}{N}}$
+       
+        Тъй като \autoref{eq:appendix:0:4} е изпълнено за всеки интервал, то можем да изберем интервала $[n_0, T-1+n_0]$
+        \begin{flalign*}
+            & b_k = \cfrac{1}{N} \sum\limits_{n = n_0}^{N-1 + n_0} x[n - n_0] e^{-\frac{2\pi i k n}{N}} = \sum\limits_{n=n_0}^{N-1+n_0} x[n - n_0] e^{-\frac{2\pi i k (n - n_0)}{N}} e^{-\frac{2\pi i k n_0}{N}} = &&\\
+            & e^{-\frac{2\pi i k n_0}{N}} \sum\limits_{\tau=0}^{T} x[\tau] e^{-\frac{2\pi i k \tau}{N}} = e^{-\frac{2\pi i k n_0}{N}} a_k&&
+        \end{flalign*}
+        \item Симетричност на комплексно спрегнатите за реален сигнал
+        
+        Ако $x[n] = \bar{x}[n]$ е реален сигнал, за който $x(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} a_k$, то $\overline{a}_k = a_{-k}$
+        
+        От уравнение \autoref{eq:appendix:0:4} следва, че:
+        \begin{flalign*}
+            & a_k = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} x[n] e^{-\frac{2\pi i k n}{N}} && \\
+            & \overline{a_k} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n] e^{-\frac{2\pi i k n}{N}}} = \sum\limits_{n=0}^{N-1} \overline{x[n]} e^{\frac{2\pi i k n}{N}} =  \sum\limits_{n=0}^{N-1}  x[n] e^{\frac{2\pi i k n}{N}} && \\
+            & \Rightarrow \overline{a_k} = a_{-k}
+        \end{flalign*}
+    \end{itemize}
+
+
+
+    % ==========================================================================================================================================================
     \chapter{Приложение за полюси и нули}
 
     \section{Дефиниция}
