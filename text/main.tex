@@ -1,0 +1,116 @@
+% !TEX program = xelatex
+\documentclass[12pt]{report}
+\usepackage{unicode-math}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{xltxtra}
+\usepackage{appendix}
+
+
+\usepackage{polyglossia}
+\setmainlanguage{bulgarian}
+\setotherlanguage{english}
+
+
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont{Comfortaa-Regular}
+%setmathfont{Neo Euler}
+\newfontfamily\cyrillicfont{Comfortaa-Regular}
+
+\usepackage[a4paper, portrait, margin = 1.5 cm]{geometry}
+\usepackage{url}
+\usepackage{color}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage[export]{adjustbox}
+\usepackage{blindtext}
+\usepackage{scrextend}
+\usepackage{amsfonts}
+\usepackage[parfill]{parskip}
+\usepackage{multicol}
+\usepackage{mathtools}
+\usepackage{subfiles}
+\usepackage{pgfplots}
+
+\newtheorem{theorem}{Пример}
+\newtheorem*{definition*}{Дефиниция}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\addtokomafont{labelinglabel}{\sffamily}
+
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+\renewcommand{\baselinestretch}{1.1}
+\setlength{\emergencystretch}{3em}
+
+\usepackage{graphicx}
+\graphicspath{ {./resources/} }
+
+\lstset{
+	backgroundcolor = \color{light-gray},
+    language = C,
+    xleftmargin = 1cm,
+    framexleftmargin = 1em,
+    basicstyle=\ttfamily,
+	moredelim=[is][\underbar]{_}{_},
+}
+
+
+\usepackage{color}
+\definecolor{Bluish}{rgb}{0.39,0.55,0.78}
+\definecolor{light-gray}{gray}{0.9}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\makeatletter
+\ifdefined\HyLang@bulgarian\else
+\appto\blockextras@bulgarian{%
+  \def\equationautorefname{\text{Уравнение}}%
+  \def\footnoteautorefname{\text{Бележка}}%
+  \def\itemautorefname{item}%
+  \def\figureautorefname{\text{Фигура}}%
+  \def\tableautorefname{\text{Таблица}}%
+  \def\partautorefname{Part}%
+  \def\appendixautorefname{Appendix}%
+  \def\chapterautorefname{chapter}%
+  \def\sectionautorefname{section}%
+  \def\subsectionautorefname{subsection}%
+  \def\subsubsectionautorefname{subsubsection}%
+  \def\paragraphautorefname{paragraph}%
+  \def\subparagraphautorefname{subparagraph}%
+  \def\FancyVerbLineautorefname{line}%
+  \def\theoremautorefname{\text{Пример}}%
+  \def\pageautorefname{page}%
+}
+\let\inlineextras@bulgarian\blockextras@bulgarian
+\fi
+\makeatother
+
+\usepackage{tabularx}
+
+\newcommand{\B}[1]{\left(#1\right)}
+\newcommand{\Q}[1]{\left[#1\right]}
+
+
+\title{Дипломна работа}
+\author{Диана Генева <dageneva@qtrp.org>}
+\date{2019}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\tableofcontents
+\pagebreak
+\input{./structure.tex}
+\end{document}

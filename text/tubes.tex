@@ -1,0 +1,476 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\section{Приближаване с тръби}
+За улеснение, нека разгледаме конкретна конфигурация. Например тази, при произнасянето на фонемата ``ъ'',тъй като е възможно най-проста.
+
+В случая на гласната ``ъ'' , глотисът трепти, а клапата към носната кухина е затворена и само устната кухина участва в образуването на звука. 
+Т.е. имаме някакъв източник на псевдо-периодично трептене $g$ - глотис, после вълната преминава и се променя от вокалния тракт $v$ и накрая излиза и се пречупва през
+устните $r$. Сигналът, който получаваме накрая, е резултат от прилагането на филтъра на вокалния тракт и устните върху сигнала от глотиса.
+Това може да се запише като конволюция във времевия домейн. $y(t) = g(t)\ast v(t)\ast r(t)$ или произведение в
+честотния $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \mathcal{R}(\mathcal{z})$, където
+\begin{flalign*}
+& \mathcal{G}(\mathcal{z}) = \mathcal{Z}\{g(t)\} && \\
+& \mathcal{V}(\mathcal{z}) = \mathcal{Z}\{v(t)\} && \\
+& \mathcal{R}(\mathcal{z}) = \mathcal{Z}\{r(t)\} && \\
+& \mathcal{Y}(\mathcal{z}) = \mathcal{Z}\{y(t)\} &&
+\end{flalign*}
+
+Това, от което се интересуваме, е $\mathcal{V}$.
+\begin{figure}[ht]%
+    \includegraphics[width=\textwidth]{vocal_tubes}%
+    \caption{Приближение на вокалния тракт с $N$ тръби}%
+    \label{fig:2:2:1}
+\end{figure}
+
+Нека устната кухина е приближена с $N$ на брой тръби с постоянно напречно сечение, както е показано на $\autoref{fig:2:2:1}$
+За още по-голямо опростяване, нека няма и загуба на енергия, каквата би се получила попринцип.
+
+Нека въведем следните стандартни означения:
+\begin{enumerate}
+    \item{$\mathcal{c}$} - скорост на звука , т.е. това е разстоянието, което пропътува вълната за единица време
+    \item{$\rho$} - плътност на въздуха
+    \item{$A$} - напречно сечение
+    \item{$u$} - обемна скорост
+    \item{$p$} -  налягане - можем да си мислим за него като ``колко сила е нужна, за да се преместят частитицитe`'
+\end{enumerate}
+
+Нека означим с $u_L$ обемната скорост в последната точка на последната тръба $t_N$, тоест $u_L(t) = u_N(l_N, t)$, тъй като тя отговаря за изхода при усните, 
+а с $u_G$ обемната скорост съответстваща първата точка на $t_1$, тоест $u_G(t) = u_1(0, t)$, макар това да е изпълнено само в идеалния случай.
+Тогава можем да опишем отношението на $u_L$ и $u_G$ по следния начин: обемната скорост при усните е резултат от прилагането на филтъра на вокалния тракт върху сигнала
+от глотиса  $u_L(t) = u_G(t)\ast v(t) \longleftrightarrow v(t) = \cfrac{u_L}{u_G}$.
+Или изразено в честотния домейн като:
+\[
+    \mathcal{V} = \cfrac{\mathcal{U}_L}{\mathcal{U}_G}
+\]
+
+Първо да разгледаме връзката между две съседни тръби.
+
+\subsection{Преминаване от една тръба в друга}
+
+Тъй като въздухът е течна среда, как пътува вълна през него се определя от свойствата на въздуха и от ограниченията на тръбата като дължина и ширина. Звуковите вълни, преминаващи през
+тръба, изпълняват уравнения [Rabiner and Schafer, pg 59, (3.2a) (3.2b)]:
+
+\begin{subequations}
+    \label{eq:tubes:01}
+    \begin{align}
+        \label{eq:tubes:01:a} \frac{\partial\rho}{\partial x} & = \frac{\rho}{A} \frac{\partial u}{\partial t}\\
+        \label{eq:tubes:01:b} \frac{\partial u}{\partial x} & = \frac{A}{\rho \mathcal{c}^2} \frac{\partial \rho}{\partial t}
+    \end{align}
+\end{subequations}
+
+При преминаване от една тръба в друга, част от вълните ще преминат към следващата тръба, а част от тях ще се отразят в наобратно.
+В такъв случай във всеки момент от време $t$ и във всяка точка $x$ на всяка тръба,
+обемната скорост $u$ ще зависи от обемната скорост на вълните,
+които вървят ``напред'' и тази на вълните, които вървят ``назад''.
+Затова може да се покаже, че уравненията $\eqref{eq:tubes:01}$ имат решение във следния вид:
+
+\begin{subequations}
+    \label{eq:tubes:02}
+    \begin{align}
+        u_{k}(x, t) & = \Q{u_{k}^{+}\B{t - \cfrac{x}{\mathcal{c}}} - u_{k}^{-}\B{t + \cfrac{x}{\mathcal{c}}}}\\
+        p_{k}(x, t) & = \cfrac{\rho \mathcal{c}}{A_{k}} \Q{u_{k}^{+}\B{t - \cfrac{x}{\mathcal{c}}} + u_{k}^{-}\B{t + \cfrac{x}{\mathcal{c}}}}
+    \end{align}
+\end{subequations}
+
+където 
+\begin{enumerate}
+    \item{$t_{k}$} е $k$-тата тръба, която има дължина $l_k$ и лице на напречното сечение $A_k$
+    \item{$x$} е разстояние в $t_k$ ($0\leq x \leq l_k$)
+    \item{$t$} е момент от време
+    \item{$u^{+}$ и $u^{-}$} са съответно вълните, които вървят "напред" и тези, които вървят "назад"
+\end{enumerate}
+
+Освен това, при преминаването от една тръба в друга са изпълнени следните равенства:
+\begin{subequations}
+    \label{eq:tubes:03}
+    \begin{align}
+        u_k(l_k, t) & = u_{k+1}(0, t)\\
+        p_k(l_k, t) & = p_{k+1}(0, t)
+    \end{align}
+\end{subequations}
+
+Когато заместим уравнения $\eqref{eq:tubes:03}$ в $\eqref{eq:tubes:02}$, получаваме:
+\begin{flalign*}
+    & u_k^+\B{t - \cfrac{l_k}{\mathcal{c}}} - u_k^{-}\B{t + \cfrac{l_k}{\mathcal{c}}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&
+    & \intertext{и}
+    & \cfrac{\rho \mathcal{c}}{A_{k}} \Q{u_{k}^{+}\B{t - \cfrac{l_k}{\mathcal{c}}} + u_{k}^{-}\B{t + \cfrac{x}{\mathcal{c}}}} = \cfrac{\rho \mathcal{c}}{A_{k+1}} \Q{u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} && \\
+    & \iff && \\
+    & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \cfrac{l_k}{\mathcal{c}}} + u_{k}^{-}\B{t + \cfrac{x}{\mathcal{c}}}} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
+\end{flalign*}
+
+
+Нека означим с $\tau_{k}$ времето, за което вълна пропътува дължината на $k$-тата тръба, тоест $\tau_{k}= \cfrac{l_k}{\mathcal{c}}$. Тогава имаме:
+
+\begin{align}
+    \label{eq:tubes:04}
+    & u_k^+(t - \tau_k) - u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)\\
+    \label{eq:tubes:05}
+    & \frac{A_{k+1}}{A_{k}}[u_{k}^{+}(t - \tau_k) + u_{k}^{-}(t + \tau_k)] = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)
+\end{align}
+
+Първо, нека да изразим скоростта на вълните, които вървят "напред"
+в $(k+1)$-та тръба ($u_{k+1}^{+}$), чрез тези, които са преминали от предната тръба ($u_k^{+}$)
+и тези, които се отразяват от текущата ($u_{k+1}^{-}$).
+\begin{flalign}
+    & \nonumber \intertext{От $\eqref{eq:tubes:04}$ получаваме}
+    & \label{eq:tubes:06} u_{k}^{-}(t + \tau_{k}) = u_{k}^{+}(t - \tau_k) - u_{k+1}^{+}(t)  + u_{k+1}^{-}(t) && \\
+    & \nonumber \intertext{Заместваме $\eqref{eq:tubes:06}$ в $\eqref{eq:tubes:05}$}
+    & \nonumber u_{k+1}^{+}(t) = \frac{A_{k+1}}{A_k} u_{k}^{+}(t - \tau_k) + \frac{A_{k+1}}{A_k}[u_{k}^{+}(t - \tau_k) - u_{k+1}^{+}(t)  + u_{k+1}^{-}(t)] - u_{k+1}^{-}(t)  && \\
+    & \nonumber u_{k+1}^{+}(t)\Q{1 + \frac{A_{k+1}}{A_k}} = u_{k}^{+}(t - \tau_k)\frac{2A_{k+1}}{A_k} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1}}{A_k} - 1}  && \\
+    & \nonumber u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{A_k}} = u_{k}^{+}(t - \tau_k)\frac{2A_{k+1}}{A_k} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k}} && \\
+    & \label{eq:tubes:07} u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
+\end{flalign}
+
+Коефициентът, който стои пред $u_k^{+}(t - \tau_k)$ в уравнение $\eqref{eq:tubes:07}$,
+представлява количеството енергия, която преминава от тръба $k$ в тръба $k+1$,
+идваща от вълните, които се движат "напред" в $k$-тата тръба. Затова
+\begin{equation}
+    \label{eq:tubes:08}
+    t_k = \frac{2A_{k+1}}{A_k + A_{k+1}}
+\end{equation}
+
+се нарича \textbf{коефициент на преминаване} за $k$-тия преход (преходът между тръби $k$ и $k+1$).
+Коефициентът пред $u_{k+1}^{-}(t)$ представлява количестото енергия, получена от вълните,
+които вървят "назад" в тръба $k+1$. Затова 
+\begin{equation}
+    \label{eq:tubes:09}
+    r_k = \frac{A_{k+1} - A_k}{A_k + A_{k+1}}
+\end{equation}
+се нарича \textbf{коефициент на отрязяване} за $k$-тия преход. 
+
+Можем да забележим, че в специалния случай, в който напречните сечения на
+две съседни тръби са равни ($A_k = A_{k+1}$), би следвало всички
+вълни да преминават свободно. Наистина, ако заместим в уравнение $\eqref{eq:tubes:09}$,
+$r_k = 0$, a от $\eqref{eq:tubes:08}$ се вижда, че $t_k = 1$
+
+Нека изразим скоростта на вълните в тръба $k$ чрез скоростта на вълните в $(k+1)$-вата тръба. 
+
+
+\begin{subequations}
+    \label{eq:tubes:10}
+    \begin{flalign}
+        & \nonumber \intertext{Първо разместваме уравнение $\eqref{eq:tubes:07}$}
+        &  u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} \label{eq:tubes:10:a} && \\
+        & \nonumber \intertext{Заместваме $\eqref{eq:tubes:10:a}$ в $\eqref{eq:tubes:04}$}
+        & \nonumber u_k^{-}(t + \tau_k) = u_k^{+}(t - \tau_k) - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) && \\
+        & \nonumber u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) && \\
+        & \nonumber u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1} - 2A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1} + 2A_{k+1}}{2A_{k+1}}} && \\
+        & \label{eq:tubes:10:b} u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign}
+\end{subequations}
+
+Използвайки, че
+\begin{flalign*}
+    \cfrac{1}{1 + r_k} & = \cfrac{A_k + A_{k+1}}{A_{k+1} - A_k + A_{k+1} + A_k} = \cfrac{A_k + A_{k+1}}{2A_{k+1}} && \\
+    \\
+    \cfrac{r_k}{1 + r_k} & = \cfrac{(A_{k+1} - A_k)}{(A_k + A_{k+1})} \cfrac{(A_k + A_{k+1})}{2A_{k+1}} = \cfrac{A_{k+1} - A_k}{2A_{k+1}}, &&
+\end{flalign*}
+можем да запишем уравненията $\eqref{eq:tubes:10}$ във вида:
+
+\begin{subequations}
+    \label{eq:tubes:11}
+    \begin{align}
+       & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t)\\
+       & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) + u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t)
+    \end{align}
+\end{subequations}
+
+Сега да разгледаме уравнения $\eqref{eq:tubes:11}$ в $\mathcal{z}$-домейна:
+\begin{subequations}
+    \label{eq:tubes:12}
+    \begin{align}
+        & \nonumber \mathcal{z}^{-\tau_k}U_k^{+}(\mathcal{z}) = \cfrac{1}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) \\
+        & \nonumber \mathcal{z}^{\tau_k} U_k^{-}(\mathcal{z}) = - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{1}{1 + r_k} U_{k+1}^{-}(\mathcal{z}) \\
+        & U_k^{+}(\mathcal{z}) = \cfrac{\mathcal{z}^{\tau_k}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k\mathcal{z}^{\tau_k}}{1+r_k} U_{k+1}^{-}(\mathcal{z})\\
+        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-\tau_k} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(\mathcal{z})
+    \end{align}
+\end{subequations}
+
+\subsection{Ограничения при устните}
+Както се вижда от фигура \autoref{fig:2:2:1}, изходът при устните представлява отвор, който
+пречупва радииращите звуковите вълни.
+За да се опишат ефектите от това пречупване, е нужно да знаем връзката между
+налягането и обемната скорост. В реалния случай това би било трудно, затова за улеснение
+ще приемем, че изходът при устните е преграден от безкрайна равнина. В такъв случай може
+да се покаже, че е изпълнено:
+\begin{equation}
+    \label{eq:tubes:13}
+    \mathcal{P}_L(\mathcal{z}) = Z_L(\mathcal{z}) \mathcal{U}_L(\mathcal{z}),
+\end{equation}
+където 
+$Z_L(\mathcal{z})$ се нарича радиационен импеданс (пълно съпротивление), описва загубите, които се получават на изхода, и има вида:
+\[
+    Z_L(\mathcal{z}) = \cfrac{j\mathcal{z} L_r R_r}{R_r + j\mathcal{z} L_r},    
+\]
+Където $\mathcal{z}$ е честота, $L_r$ и $R_r$ са константи, определени от размера на отвора на устата. За практически цели се избират:
+
+\begin{multicols}{2}
+    \begin{equation*}
+      R_r = \cfrac{128}{9\pi^2} > 1
+    \end{equation*}\break
+    \begin{equation*}
+      L_r = \cfrac{8a}{3\pi \mathcal{c}}
+    \end{equation*}
+  \end{multicols}
+$a$ - радиус на отвора, $\mathcal{c}$ - скоростта на звука.
+
+При много ниски честоти $Z_L(\mathcal{z}) \approx 0$, което значи, че съпротивлението на устните е почти нулево.
+При средни честоти ($\mathcal{z}L_r \ll R_r$), $Z_L(\mathcal{z}) \approx j\mathcal{z}L_r$, а високи честоти, ($\mathcal{z}L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
+Това значи, че загубите при устните са най-големи при големи честоти, тъй като тогава импедансът е най-голям.
+
+В случая, в който честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$. Тогава можем да разгледаме уравнението $\eqref{eq:tubes:13}$ във
+времевия домейн, ще получим:
+\begin{flalign*}
+    & p_L(t) = Z_L u_L(t) && \\
+    & \cfrac{\rho\mathcal{c}}{A_L}\Q{u_N^{+}(t - \tau_N) + u_N^{-}(t + \tau_N)} = Z_L\Q{u_N^{+}(t - \tau_N) - u_N^{-}(t + \tau_N)} &&\\
+    & u_N^{-}(t + \tau_N) \cfrac{(\rho\mathcal{c} + A_L Z_L)}{A_L} = u_N^{+}(t - \tau_N) \cfrac{(A_L Z_L - \rho\mathcal{c})}{A_L} &&\\
+    & u_N^{-}(t + \tau_N) = -r_L u_N^{+}(t - \tau_N), \text{ където}&&
+\end{flalign*}
+\begin{equation}
+    \label{eq:tubes:14}
+    r_L = \B{\frac{\rho\mathcal{c} - A_L Z_L}{\rho\mathcal{c} + A_L Z_L}}
+\end{equation}
+
+Като заместим в уравнение $\eqref{eq:tubes:01:b}$, получаваме
+\begin{flalign}
+   \label{eq:tubes:15}
+   \nonumber u_N(l_N, t) = u_N^{+}(t - \tau_N) - u_N^{-}(t + \tau_N) & =  &&\\
+   & = (1 + r_L) u_N^{+}(t - \tau_N) &&
+\end{flalign}
+
+В случая, в който $Z_L \approx j\mathcal{z}L_r$ е комплексно, може да се покаже, че уравнение \eqref{eq:tubes:14} остава в сила,
+но в този случай и $r_L$ също ще бъде комплексно.
+
+\subsection{Ограничения при глотиса}
+
+Както при устните, така и при глотиса, трябва да се отчете импедансът. Например, трябва да се отчете фактът,
+че когато глотисът е затворен, импедансът е безкраен, а обемната скорост нулева.
+Връзката $U_1(0, \mathcal{z}) = U_G(\mathcal{z})$, която използвахме досега,
+е твърде наивна, затова едно по-добро приближение би било:
+\begin{align}
+\label{eq:tubes:16}
+    U(0, \mathcal{z}) =  U_G(\mathcal{z}) - \frac{P(0, \mathcal{z})}{Z_G(\mathcal{z})},
+\end{align}
+където $Z_G$ описва импеднса на глотиса и $Z_G(\mathcal{z}) = R_G + j \mathcal{z} L_G,$
+
+$L_G, R_G - $константи
+Отново предполагайки, че $Z_G$ е реално, тоест честотата $\mathcal{z}$ е много ниска, можем да разгледаме
+уравнение $\eqref{eq:tubes:16}$ във времевия домейн:
+\begin{flalign}
+    \label{eq:tubes:17}
+    & \nonumber u_1^{+}(t) - u_1^{-}(t) = u_G(t) - \frac{\rho \mathcal{c}}{A_1}\Q{\frac{u_1^{+}(t) + u_1^{-}(t)}{Z_G}} && \\
+    & \nonumber u_1^{+}(t)\Q{1 + \frac{\rho\mathcal{c}}{A_1 Z_G}}  = u_G(t) + u_1^{-}(t)\Q{1 - \frac{\rho\mathcal{c}}{A_1 Z_G}} && \\
+    & \nonumber u_1^{+}(t) = u_G(t)\Q{\frac{A_1 Z_G}{A_1 Z_G + \rho \mathcal{c}}} + u_1^{-}(t)\Q{\frac{A_1 Z_G - \rho \mathcal{c}}{A_1 Z_G + \rho \mathcal{c}}} &&\\
+    & \nonumber u_1^{+}(t) = u_G(t) \Q{\frac{1 + r_G}{2}} + r_G u_1^{-}(t)&& \\
+    & U_G(\mathcal{z}) = \Q{\frac{2}{1 + r_G}}U_1^{+}(\mathcal{z}) - \Q{\frac{2r_G}{1 + r_G}}U_1^{-}(\mathcal{z}), \text{където} &&
+\end{flalign}
+\begin{equation*}
+    r_G = \B{\cfrac{A_1 Z_G - \rho\mathcal{c}}{A_1 Z_G + \rho\mathcal{c}}}
+\end{equation*}
+и използвайки, че
+\begin{flalign*}
+    \cfrac{1 + r_G}{2} & = \cfrac{A_1Z_G + \rho\mathcal{c} + A_1Z_G - \rho\mathcal{c}}{2(A_1Z_G + \rho\mathcal{c})} = \cfrac{A_1Z_G}{A_1Z_G + \rho\mathcal{c}} && \\
+\end{flalign*}
+
+Отново може да се покаже, че ако $Z_G$ е комплексно, уравнението $\eqref{eq:tubes:18}$ е в сила и
+в този случай $r_G$ също е комплексно.
+За улеснение обикновено $Z_L$ и $Z_G$ се взимат реални. 
+
+\subsection{Общ вид на $\mathcal{V}$}
+За да видим общия вид на $\mathcal{V}$, нека всички тръби имат равна дължина и $\tau_i = \frac{1}{2}, i \in[1...N]$
+Тогава уравнения $\eqref{eq:tubes:12}$ имат вида:
+
+\begin{subequations}
+    \label{eq:tubes:18}
+    \begin{align}
+        & U_k^{+}(\mathcal{z}) = \cfrac{\mathcal{z}^{1/2}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k\mathcal{z}^{1/2}}{1+r_k} U_{k+1}^{-}(\mathcal{z})\\
+        & \nonumber \\
+        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-1/2} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-1/2} }{1 + r_k} U_{k+1}^{-}(\mathcal{z})
+    \end{align}
+\end{subequations}
+
+За да опишем граничните условия при устните, ще приемем, че $U_{N+1}(\mathcal{z})$ е $\mathcal{z}$-трансформацията
+на входа на $(N+1)$-та тръба, която е безкрайно дълга, и заради това скоростта на вървящите ``назад'' вълни трябва да бъде 0
+Тоест,
+\begin{align}
+    \label{eq:tubes:19}
+    & U_{N+1}^{+} (\mathcal{z}) = U_L(\mathcal{z})\\
+    & \nonumber U_{N+1}^{-}(\mathcal{z}) = 0
+\end{align}
+
+Ако представим уравнения $\eqref{eq:tubes:18}$ в матричен вид, получаваме:
+
+$U_k = Q_k U_{k+1}$ за
+
+\begin{multicols}{2}
+    $U_k = 
+        \begin{bmatrix}
+            U_k^{+}(\mathcal{z}) \\
+            U_k^{-}(\mathcal{z}) \\
+        \end{bmatrix}$
+    \vfill
+    \columnbreak
+    $Q_k = 
+        \begin{bmatrix}
+            \cfrac{\mathcal{z}^{1/2}}{1 + r_k} & \cfrac{-r_k \mathcal{z}^{1/2}}{1 + r_k} \\
+            & \\
+            \cfrac{-r_k \mathcal{z}^{-1/2}}{1 + r_k} & \cfrac{\mathcal{z}^{-1/2}}{1 + r_k} \\
+        \end{bmatrix}$
+\end{multicols}
+
+\begin{flalign*}
+    & U_1 = Q_1 U_2 = Q_1 Q_2 U_3 = \cdots = Q_1 ... Q_N U_{N+1} = \Q{\prod_{i=1}^{N} {Q_i}}U_{N+1}
+\end{flalign*}
+
+Сега представяме уравнение $\eqref{eq:tubes:17}$ като
+\begin{flalign*}
+    & U_G(\mathcal{z}) = \left[
+        \begin{array}{cc}
+            \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+        \end{array}
+    \right] U_1 &&\\
+\end{flalign*}
+
+Ограниченията за $\eqref{eq:tubes:19}$ за $U_L$ ни дават, че
+
+\begin{flalign*}
+    & U_{N+1} = 
+    \left[ \begin{array}{cc}
+            U_{N+1}^{+}(\mathcal{z}) \\
+            U_{N+1} ^{-}(\mathcal{z})
+        \end{array}\right] = 
+    \left[ \begin{array}{cc}
+        U_L(\mathcal{z}) \\
+        0
+    \end{array}\right]= 
+    \left[ \begin{array}{cc}
+        1 \\
+        0
+    \end{array}\right] U_L(\mathcal{z}) && \\ 
+\end{flalign*}
+
+Тогава 
+
+\begin{flalign}
+    \label{eq:tubes:20}
+    & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \left[
+        \begin{array}{cc}
+            \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+        \end{array}
+        \right] \prod_{i=1}^{N} {Q_i} \left[ \begin{array}{cc}
+            1 \\
+            0
+        \end{array}\right] &&
+\end{flalign}
+        
+
+Нека изразим $Q_k$ по следния начин:
+
+\begin{flalign*}
+    & Q_k = \left[\begin{array}{cc}
+            \cfrac{\mathcal{z}^{1/2}}{1 + r_k} & \cfrac{-r_k \mathcal{z}^{1/2}}{1 + r_k} \\
+            & \\
+            \cfrac{-r_k \mathcal{z}^{-1/2}}{1 + r_k} & \cfrac{\mathcal{z}^{-1/2}}{1 + r_k} \\
+        \end{array}\right] = 
+        z^{1/2}\left[\begin{array}{cc}
+            \cfrac{1}{1 + r_k} & \cfrac{-r_k}{1 + r_k} \\
+            & \\
+            \cfrac{-r_k \mathcal{z}^{-1}}{1 + r_k} & \cfrac{\mathcal{z}^{-1}}{1 + r_k} \\
+        \end{array}\right] = 
+        \mathcal{z}^{1/2} \hat{Q}_k && 
+\end{flalign*}
+
+Тогава уравнение $\eqref{eq:tubes:20}$ има вида
+
+
+\begin{flalign}
+    \label{eq:tubes:21}
+    & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \mathcal{z}^{N/2}\left[
+        \begin{array}{cc}
+            \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+        \end{array}
+        \right] \prod_{i=1}^{N} {\hat{Q}_i} \left[ \begin{array}{cc}
+            1 \\
+            0
+        \end{array}\right] &&
+\end{flalign}
+        
+Нека изразим общия вид на $\mathcal{V}(\mathcal{z})$. За $N=2$, например, $\eqref{eq:tubes:21}$ има вида:
+
+\begin{flalign}
+\label{eq:tubes:22}
+& \mathcal{V}(\mathcal{z}) = \frac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}}, &&
+\end{flalign}
+както е показано в $\autoref{appendix:2:01}$
+
+За всяка стойност на $N$ в числител се получава произведение $(1 + r_G)\prod\limits_{i=1}^{N}(1 + r_i)$,a в знаменател се получава полином на $\mathcal{z}$ и от основната теорема на алгебрата следва, че уравнението $\eqref{eq:tubes:21}$ ще има решения от вида:
+
+\begin{align}
+    \label{eq:tubes:23}
+    \mathcal{V}(\mathcal{z}) = \frac{0.5(1+r_G)\prod\limits_{i=1}^{N}{(1 + r_i)} \mathcal{z}^{-N/2}}{1 - \sum\limits_{i=1}^{N}{\alpha_i \mathcal{z}^{-i}}}
+\end{align}
+
+\subsection{Общ вид на $\mathcal{R}$}
+
+За да моделираме устните, трябва да се отрази радиацията. Искаме за радиацията да е изпълнено $\autoref{eq:tubes:12}$, като
+\begin{flalign*}
+    & \mathcal{R}(\mathcal{z}) = P_L(\mathcal{z}) U_L(\mathcal{z}) &&
+\end{flalign*}
+
+Също така видяхме, че налягането и скоростта са свързани с високочестотен филтър, следователно
+може да се опише от КИХ филтър, тоест:
+
+\begin{flalign}
+    \label{eq:tubes:24}
+    & \mathcal{R}(\mathcal{z}) = (1 - \gamma\mathcal{z} ^ {-1}) &&
+\end{flalign}
+
+\subsection{Общ вид на $\mathcal{G}$}
+
+За да се симулира действието на глотиса, трябва да отчетем как се държи той при
+изговаряне на различни видове звуци. При звучните, както описахме по-горе, глотисът
+произвежда квази-периодичен сигнал, а при беззвучните се получава случаен шум.
+
+Да разгледаме вида на $\mathcal{G}$ в случая на озвучен звук.
+\begin{figure}[ht]%
+    \includegraphics[width=\textwidth]{glotal_pulse}%
+    \caption{Пример за импулс от глотиса}%
+    \label{fig:2:2:2}
+\end{figure}
+
+На $\autoref{fig:2:2:2}$ се вижда, че импулсът от глотиса може да се раздели на три фази:
+\begin{enumerate}
+    \item Отворена фаза с край $F_1$
+    \item Фаза на затваряне с начало $F_1$ и край $F_2$
+    \item Затворена фаза с начало $F_2$
+\end{enumerate}
+
+Съответно ще моделираме функцията $\mathcal{G}$ в зависимост от фазата. По-лесно ще е
+да се направи във времевия домейн. Едно добро приближение е:
+
+\begin{flalign*}
+    & g(t) = 
+    \begin{cases}
+        \cfrac{1}{2}( 1 - \cos{(\pi n / F1)}), & 0\leq t \leq F_1\\
+        \cos{(\pi(n - N_1)/2N_2)}, & F_1 \leq t \leq F_2\\
+        0, & \text{иначе}   
+    \end{cases}   &&     
+\end{flalign*}
+
+Тъй като функцията $g$ има краен брой точки, в които не е нула, $\mathcal{z}$-трансформацията ѝ ще има две нули. Тоест може да се моделира като:
+
+\begin{flalign}
+    \label{eq:tubes:25}
+    & \mathcal{G}(\mathcal{z}) = (1 - \beta_1 \mathcal{z}^{-1})(1 - \beta_2 \mathcal{z}^{-1}) &&
+\end{flalign}
+
+В случая на беззвучие за $\mathcal{G}$ се използва някакъв генератор на случайни числа, за да се симулира шум.
+
+\subsection{Общ вид на $\mathcal{H}$}
+От уравнения $\ref{eq:tubes:22}, \ref{eq:tubes:24}, \ref{eq:tubes:25}$ следва, че видът на  $\mathcal{H}$ е
+\begin{flalign}
+    \label{eq:tubes:26}
+    & \mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z})\mathcal{V}(\mathcal{z})\mathcal{R}(\mathcal{z}) = (1 - \beta_1 \mathcal{z}^{-1})(1 - \beta_2 \mathcal{z}^{-1})(1 - \gamma\mathcal{z} ^ {-1})\cfrac{0.5(1+r_G)\prod\limits_{i=1}^{N}{(1 + r_i)} \mathcal{z}^{-N/2}}{1 - \sum\limits_{i=1}^{N}{\alpha_i \mathcal{z}^{-i}}} &&
+\end{flalign}
+
+\end{document}

@@ -1,0 +1,85 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Приложение към \nameref{chap:speech}}
+\begin{theorem}
+\label{appendix:2:01}
+    $\mathcal{V}(\mathcal{z})$ за $N=2$
+\end{theorem}
+
+\begin{proof}[\unskip\nopunct]
+    \begin{flalign}
+        \tag{\ref{eq:tubes:22}}
+        & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \mathcal{z}^{N/2}\left[
+            \begin{array}{cc}
+                \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+            \end{array}
+            \right] \prod_{i=1}^{N} {\hat{Q}_i} \left[ \begin{array}{cc}
+                1 \\
+                0
+            \end{array}\right] = &&
+        \end{flalign}
+        \begin{flalign*}
+            & = \mathcal{z}\left[
+                \begin{array}{cc}
+                    \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+                \end{array}
+                \right] {\hat{Q}_1}{\hat{Q}_2} \left[ \begin{array}{cc}
+                    1 \\
+                    0
+                \end{array}\right] = && \\
+            & \\
+            & = \mathcal{z}\left[
+                \begin{array}{cc}
+                    \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
+                \end{array}
+                \right]
+                \left[\begin{array}{cc}
+                    \cfrac{1}{1 + r_1} & \cfrac{-r_1}{1 + r_1} \\
+                    & \\
+                    \cfrac{-r_1 \mathcal{z}^{-1}}{1 + r_1} & \cfrac{\mathcal{z}^{-1}}{1 + r_1} \\
+                \end{array}\right]
+                \left[\begin{array}{cc}
+                    \cfrac{1}{1 + r_2} & \cfrac{-r_2}{1 + r_2} \\
+                    & \\
+                    \cfrac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \cfrac{\mathcal{z}^{-1}}{1 + r_2} \\
+                \end{array}\right]
+                \left[ \begin{array}{cc}
+                    1 \\
+                    0
+                \end{array}\right] = && \\
+            &\\
+            & = 2\mathcal{z}
+            \left[
+                \begin{array}{cc}
+                    \cfrac{1 + r_G r_1\mathcal{z}^{-1}}{(1+r_G)(1 + r_1)}, & -\cfrac{r_1 + r_G\mathcal{z}^{-1}}{(1 + r_G)(1 + r_1)} \\
+                \end{array}
+            \right]
+            \left[\begin{array}{cc}
+                \cfrac{1}{1 + r_2} & \cfrac{-r_2}{1 + r_2} \\
+                & \\
+                \cfrac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \cfrac{\mathcal{z}^{-1}}{1 + r_2} \\
+            \end{array}\right]
+            \left[ \begin{array}{cc}
+                1 \\
+                0
+            \end{array}\right] = && \\
+            &\\
+            & = 2\mathcal{z}
+            \left[
+                \begin{array}{cc}
+                    \cfrac{1 + r_Gr_1\mathcal{z}^{-1} + r_1r_2\mathcal{z}^{-1} + r_Gr_2\mathcal{z}^{-2}}{(1+r_G)(1 + r_1)(1 + r_2)}, & -\cfrac{r_2 + r_Gr_1r_2\mathcal{z}^{-1} + r_1\mathcal{z}^{-1} + r_G\mathcal{z}^{-2}}{(1 + r_G)(1 + r_1)(1 + r_2)} \\
+                \end{array}
+            \right]
+            \left[ \begin{array}{cc}
+                1 \\
+                0
+            \end{array}\right]&& \\
+        \end{flalign*}
+    \begin{flalign*}
+        & \iff && \\
+        & \mathcal{V}(\mathcal{z}) = \cfrac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}} &&
+    \end{flalign*}
+    
+    
+    \end{proof}
+\end{document}

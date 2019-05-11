@@ -1,0 +1,106 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+\section{Представяне със системи}
+Нека имаме чистия сигнал от глотиса $g[t]$. При преминаването му през вокалния тракт и устните, той
+се променя, в следствие на различни фактори като турболенция, поглъщане, отрязяване, в следствие на което 
+на изхода (устните), получаваме сигналът $y[n]$.
+
+\begin{definition*}{Система}\\
+Механизъм, който манипулира един или повече сигнали с някаква цел до
+получаване на нов сигнал, се нарича система
+
+Обикновено в практическия свят се използват системи, чието действие е предварително известно (и желано). Такива системи
+наричаме \textbf{филтри}. Филтрите обикновено изпълняват някаква точно определена манипулация върху сигнала, например
+да премахват всички честоти под или над определа честота.
+\end{definition*}
+
+С $g[n] \mapsto y[n]$ ще бележим, че $y$ е отговорът на системата за вход $g$. В такъв случай, системата, която ще разгледаме, е тази на вокалния тракт. Ще ни интересуват
+няколко класа системи.
+
+\begin{definition*}{Линейна система}\\
+    Ако $x_1[n] \mapsto y_1[n]$ и $x_2[n] \mapsto y_2[n]$, то системата е линейна $\longleftrightarrow$
+
+    $ax_1[n] + bx_2[n] \mapsto ay_1[n] + by_2[n]$ 
+\end{definition*}
+
+
+\begin{definition*}{Времево-независима система}\\
+    Нека $x[n] \mapsto y[n]$. Тогава, ако за всяко $n_0: x[n - n_0] \mapsto y[n - n_0]$, то
+    системата е времево-независима.
+\end{definition*}
+
+Специален подклас на линейните, времево-независими системи, е класът на системите, удовлетворяващи диференчното уравнение от ред $N$ с константни коефициенти:
+\begin{flalign}
+    \label{eq:systems:1}
+    & \sum\limits_{k=0}^{N} a_k y [n-k] = \sum\limits_{m=0}^{M}b_k x[n-m] &&
+\end{flalign}
+
+
+Вокалният тракт е времето независима система, защото изходът $y[n]$ не зависи от момента
+от време, а само от специфичната му конфигурация в текущия момент, т.е. положението на езика, устните,
+зъбите. 
+Нека предположим, че вокалния тракт е линейна, времево-независима система, която удовлетворява уравнение $\autoref{eq:systems:1}$, и да разгледаме свойствата.
+
+Искаме да опишем как работи тази система. За момента знаем как ще реагира тя, ако ѝ подадем входен сигнал $g[n]$.  
+Но вместо да разглеждаме отговора на системата за широк спектър от входни функции, ще е полезно да имаме характеризация,
+която не зависи от входа.
+
+Пъро да разгледаме входа по различен начин. Ако за всеки момент от време $n_0$ имаме импулси със сила $g[n_0]$, то можем да мислим за входния сигнал $g[n]$
+като за сума от тези импулси. Тоест, нека имаме дискретният единичен импулс:
+
+\begin{flalign*}
+    &\delta[n] = \begin{cases}
+    1, & n = 0\\
+    0, & \text{иначе}\\
+    \end{cases} &&
+\end{flalign*}
+
+Тогава можем да представим входния сигнал $g[n]$ като
+\begin{flalign*}
+    & g[n] = \sum\limits_{k=-\infty}^{\infty} g[k]\delta[n-k] &&
+\end{flalign*}
+
+Нека $\delta[n-k] \mapsto h_k[n]$. Тъй като системата е линейна, е изпълнено че:
+\begin{flalign}
+    \label{eq:systems:2}
+    & g[n] = \sum\limits_{k=-\infty}^{\infty}g[k]\delta[n-k] \mapsto \sum\limits_{k = -\infty}^{\infty}g[k]h_k[n] = y[n] &&, 
+\end{flalign}
+
+Времевата инвариантност ни казва, че ако $\delta[n] \mapsto h[n]$, то $\delta[n -k] \mapsto h[n-k]$, следователно
+в случая на вокалния тракт $\autoref{eq:systems:2}$ има вида:
+
+\begin{flalign}
+    \label{eq:systems:3}
+    &  y[n] = \sum\limits_{k = -\infty}^{\infty}g[k]h_k[n] = \sum\limits_{k = -\infty}^{\infty}g[k]h[n-k] &&, 
+\end{flalign}
+
+\begin{definition*}{Дискретна конволюция}\\
+    Ако $f, g: \mathbb{N} \mapsto \mathbb{Z}$,
+    дискретна конволюция (конволюционна сума) на $f$ и $g$, наричаме
+
+    $(f\ast g)[n] = \sum\limits_{k=-\infty}^{\infty} f[k]g[n-k]$
+\end{definition*}
+
+Тоест $y[n] = (g \ast h)[n]$
+Ако запишем това равенство в $\mathcal{z}$-домейна, получаваме
+\begin{flalign}
+    \label{eq:systems:4}
+    & \nonumber \mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z})\mathcal{H}(\mathcal{z}) &&\\
+    & \mathcal{H}(\mathcal{z}) = \cfrac{\mathcal{Y}(\mathcal{z})}{\mathcal{G}(\mathcal{z})} &&
+\end{flalign}
+$\mathcal{H}$ се нарича предавателна функция за системата.
+
+Да разгледаме $\autoref{eq:systems:1}$ в $\mathcal{z}$-домейна.
+\begin{flalign}
+    \label{eq:systems:5}
+    & \nonumber\Q{\sum\limits_{k=0}^{N}a_k\mathcal{z}^{-k}}\mathcal{Y}(\mathcal{z}) = \Q{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}\mathcal{G}(\mathcal{z}) &&\\
+    & \cfrac{\mathcal{Y}(\mathcal{z})}{\mathcal{G}(\mathcal{z})} = \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}{\sum\limits_{k=0}^{N} a_k \mathcal{z}^{-k}} &&
+\end{flalign}
+
+Когато заместим $\autoref{eq:systems:5}$ в $\autoref{eq:systems:4}$, получаваме
+\begin{flalign}
+    \label{eq:systems:6}
+    & \mathcal{H}(\mathcal{z}) =  \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}{\sum\limits_{k=0}^{N} a_k \mathcal{z}^{-k}} &&
+\end{flalign}
+\end{document}

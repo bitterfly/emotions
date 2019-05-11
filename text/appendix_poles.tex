@@ -1,0 +1,372 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Приложение за полюси и нули}
+\section{Дефиниция}
+
+Нека $\mathcal{z} \in \mathbb{C}$. Видяхме,че предавателната функция $\mathcal{H}$ на определени системи (и в частност филтри) има вида
+\begin{flalign}
+    \tag{\ref{eq:systems:6}}
+    & \mathcal{H}(\mathcal{z}) =  \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m}}{\sum\limits_{k=0}^{N} a_k \mathcal{z}^{-k}} = && \\
+    \nonumber & = \cfrac{N(\mathcal{z})}{D(\mathcal{z})} = G \cfrac{(\mathcal{z} - \beta_1)(\mathcal{z} - \beta_2)...(\mathcal{z} - \beta_M)}{(\mathcal{z} - \alpha_1)(\mathcal{z} - \alpha_2)...(\mathcal{z} - \alpha_N)}, &&
+\end{flalign}
+
+където $G = b_M/a_N$ и се нарича усилващ коефициент.
+
+С $\beta_i$ означаваме корените на уравнението $N(\mathcal{z}) = 0$. Те се наричат нули на системата и 
+$\lim\limits_{\mathcal{z} \rightarrow \beta_i} \mathcal{H}(\mathcal{z}) = 0$
+
+С $\alpha_i$ означаваме корените на уравнението $D(\mathcal{z}) = 0$. Те се наричат полюси на системата и 
+$\lim\limits_{\mathcal{z} \rightarrow \alpha_i} \mathcal{H}(\mathcal{z}) = \infty$
+
+Тъй като коефициентите на $N(\mathcal{z})$ и $D(\mathcal{z})$ са реални, нулите (и съответно полюсите) ще са
+са или реални, или са част от двойка комплексно спрегнати. Тоест, няма нула (или полюс), която да е комплексна, но
+да няма комплексно спрегнато из останалите нули (полюси).
+
+Това представяне е удобно, защото ни позволява да разбием $\mathcal{H}$ на произведение от по-прости предавателни функции:
+
+\begin{flalign*}
+    & \mathcal{H} = 
+        \underbrace{G \frac{(\mathcal{z} - \beta_1)}{(\mathcal{z} - \alpha_1)}}_{} 
+        \underbrace{\frac{(\mathcal{z} - \beta_2)}{(\mathcal{z} - \alpha_2)}}_{} 
+        \dots
+        \underbrace{\frac{(\mathcal{z} - \beta_M)}{(\mathcal{z} - \alpha_N)}}_{} &&\\
+    & \mathcal{H} = \mathcal{H}_1(\mathcal{z})\mathcal{H}_2(\mathcal{z})\dots\mathcal{H}_K(\mathcal{z}),&&
+\end{flalign*}
+където $\mathcal{H}_i$ е произведение на няколко полюса и нули.
+
+Тоест, достатъчно е да видим какви филтри се описват от трансферни функции, съдържащи една или две нули и полюси, за да можем
+направи извод за целия филтър $\mathcal{H}$
+
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel={реална ос},
+        ylabel={имагинерна ос},
+        xmin=-1.2, xmax=1.2,
+        ymin=-1.2, ymax=1.2,
+        xtick={-1, -0.5, 0, 0.5, 1},
+        ytick={-1, -0.5, 0, 0.5, 1},
+        ymajorgrids=true,
+        xmajorgrids=true,
+        grid style=dashed,
+        axis equal image, 
+        legend pos=outer north east,
+        legend cell align={left},
+        legend entries={
+            полюс,
+            нула
+        },
+    ]
+
+    \addlegendimage{only marks, mark=square,color=red, thick}
+    \addlegendimage{only marks,mark=o, color=blue, thick}
+
+    \draw [red, thick] (axis cs:0.75, -0.05) rectangle (axis cs:0.85, 0.05);
+    \draw [red, thick] (axis cs:0.41, -0.05) rectangle (axis cs:0.51, 0.05);
+    \draw [red, thick] (axis cs:0.70, 0.95) rectangle (axis cs:0.80, 1.05);
+    \draw [red, thick] (axis cs:0.70, -0.95) rectangle (axis cs:0.80, -1.05);
+    \draw [blue, thick] (axis cs:-0.5, 0) circle [radius=6];
+    \draw [blue, thick] (axis cs:-1, -0.7) circle [radius=6];
+    \draw [blue, thick] (axis cs:-1, 0.7) circle [radius=6];
+    \draw[black,thick,dashed] (axis cs:0,0) circle [radius=100];
+    \end{axis}
+
+    \end{tikzpicture}
+    \caption{Полюс-нула графика} \label{fig:appendix:1:1:1}
+\end{figure}
+
+\autoref{fig:appendix:1:1:1} изобразява трансферна функция с три нули и четири полюса, 
+от които една реална нула и два реални полюса. Нулите и полюсите, които не са реални, са
+комплесно спрегнати.
+
+\section{Характеризация на филтри}
+
+Една система се описва изцяло от трансферната си функция, а всяка трансферна функция може да се представи като произведение
+на нули полюси. Следователно, анализирайки тези нули и полюси, можем да направим извод за действието на филтъра.
+
+Нека имаме IIR филтър от първи ред:
+
+\begin{flalign*}
+    & y[n] = b_0 x[n] + a_1 y[n-1] && \\
+    & \mathcal{H} = G \frac{1}{1 - a_1\mathcal{z}^{-1}}, && \\
+    & G = b_0 &&
+\end{flalign*}
+
+Тъй като имаме само един полюс, то следва, че $a_1$ е реално, тъй като няма как да е част от
+комплексно спрегната двойка. Това означава, че $a_1$ напълно описва вида на $\mathcal{H}$, а
+$b_0$ играе ролята на усилващ коефициент.
+
+\begin{figure}[H]%
+    \centering
+        \subfloat[Полюс-нула графика за $\mathcal{H}$]{%
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={реална ос},
+                ylabel={имагинерна ос},
+                xmin=-1.2, xmax=1.2,
+                ymin=-1.2, ymax=1.2,
+                xtick={-1, -0.5, 0, 0.5, 1},
+                ytick={-1, -0.5, 0, 0.5, 1},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,
+                axis equal image, 
+            ]
+            \draw [red, thick] (axis cs:0.75, -0.05) rectangle (axis cs:0.85, 0.05);
+            \draw [red, thick] (axis cs:0.45, -0.05) rectangle (axis cs:0.55, 0.05);
+            \draw [red, thick] (axis cs:0.30, -0.05) rectangle (axis cs:0.40, 0.05);
+            \draw[black,thick,dashed] (axis cs:0,0) circle [radius=100];
+            \end{axis}
+        \end{tikzpicture}
+        } 
+        \hfill
+        \subfloat[Графика на $g(\omega)$ за $a=0.7, a=0.5, a=0.35$]{%
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={Ъглова честота},
+                ylabel={Амплитуда},
+                xmin=-4, xmax=4,
+                ymin=0, ymax=5.5,
+                xtick={-4, -3, -2, -1, 0, 1, 2, 3, 5.5},
+                ytick={0, 1, 2, 3, 4, 5, 6},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,]
+                \addplot [domain=-pi:pi, samples=500,]{(1/(1 - 2*0.7*cos(deg(x)) + (0.7)^2))^1/2};
+                \addplot [domain=-pi:pi, samples=500, dotted, thick]{(1/(1 - 2*0.5*cos(deg(x)) + (0.5)^2))^1/2};
+                \addplot [domain=-pi:pi, samples=500, dotted, thick]{(1/(1 - 2*0.35*cos(deg(x)) + (0.35)^2))^1/2};
+                \end{axis}
+        \end{tikzpicture}
+        }
+        \caption{Действие на IIR филтър от първи ред за $a=0.35, a = 0.5, a = 0.7$}
+        \label{fig:appendix:1:2:1}
+\end{figure}   
+\begin{figure}[H]%
+    \centering
+    \subfloat{
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={Ъглова честота},
+                ylabel={Амплитуда},
+                xmin=0, xmax=pi,
+                ymin=0, ymax=5.5,
+                xtick={0,2.5, 5},
+                ytick={1, 2, 3, 4, 5, 6},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,]
+                \addplot [domain=-pi:pi, samples=500, thick, blue]{(1/(1 - 2*-0.7*cos(deg(x)) + (-0.7)^2))^1/2};
+                \addplot [domain=-pi:pi, samples=500, thick]{(1/(1 - 2*0.7*cos(deg(x)) + (0.7)^2))^1/2};
+                \addplot [domain=-pi:pi, samples=500, thick, dotted]{(2.8/(1 - 2*0.5*cos(deg(x)) + (0.5)^2))^1/2};
+                \addplot [domain=-pi:pi, samples=500, thick, dotted]{(0.2/(1 - 2*0.865*cos(deg(x)) + (0.865)^2))^1/2};
+            \end{axis}
+        \end{tikzpicture}
+        }
+        \caption{Действие на IIR филтър от първи ред за различни стойности на $a$ и $b$}
+        \label{fig:appendix:1:2:2}
+\end{figure}   
+
+Понеже $a_1$ е реално число, винаги ще лежи на реалната ос, както е показано на полюс-нула графиката на $\autoref{fig:appendix:1:2:2}$
+
+Нека разгледаме $\mathcal{H}$ в честотния домейн:
+$\mathcal{H}(e^{\mathcal{i}\omega}) = \cfrac{b_0}{1 - a_1e^{-\mathcal{i}\omega}},$ където $\omega$ е ъглова честота, измерена в радиани.
+Можем изразим $\mathcal{H}$ като функция на $\omega$:
+
+\begin{flalign*}
+    & \mathcal{H}(e^{\mathcal{i}\omega}) = \cfrac{b_0}{1 - a_1e^{-\mathcal{i}\omega}} = \cfrac{b_0}{1 - a_1 \cos{\omega} + \mathcal{i} a_1 \sin{\omega}} 
+    = \cfrac{b_0(1 - a_1\cos{\omega} - \mathcal{i}a_1 \sin{\omega} )}{1 - 2 a_1 \cos{\omega} + a_1 ^ 2} && \\ 
+    & = \frac{b_0(1 - a_1 \cos{\omega})}{{1 - 2 a_1 \cos{\omega} + a_1 ^ 2}} + \mathcal{i}\cfrac{- b_0 a_1 \sin{\omega}}{{1 - 2 a_1 \cos{\omega} + a_1 ^ 2}}&&
+\end{flalign*}
+Нека с $g(\omega)$ означим модула на $\mathcal{H}$
+\begin{flalign*}
+    & g(\omega) = \cfrac{b_0^2(1 - 2 a_1 \cos{\omega} + a_1^2)}{(1 - 2 a_1 \cos{\omega} + a_1 ^ 2)^2} = \cfrac{b_0^2}{1 - 2 a_1 \cos{\omega} + a_1 ^ 2} &&
+\end{flalign*}
+На $\autoref{fig:appendix:1:2:2}$ се вижда графиката на $g(\omega)$ за различни стойности на $a_1$ и $b_0$
+Такива филтри се наричат \textbf{резонатори}, тъй като честотите във върха на графиката ще се усилят.
+Резонаторите се описват главно чрез своята \textbf{амплитуда} - височината на максимума, \textbf{честота} - къде е върхът върху честотната ос, 
+\textbf{честотна лента} - колко е широка графиката, което определя колко честоти ще се усилят.
+
+В случая на IIR филтътр от първи ред, амплитудата и честотаната лента се определят от $a_1$ и $b_0$,
+а върха на графиката винаги ще е в 0. Тоест, този вид филтри могат да усилват само честотите около 0. За да се преместим
+нанякъде по честотната ос, трябва $a_1$ да е комплексно. Ако трансферната функция има само един полюс, $a_1$ винаги е реално,
+затова ни трябва поне една комплексно спрегната двойка. Нека разгледаме филтър от втори ред.
+
+\begin{flalign*}
+    &y[n] = b_0x[n] + a_1 y[n-1] + a_2 y[n-2] && \\
+    &\mathcal{H}(\mathcal{z}) = \cfrac{b_0}{1 - a_1\mathcal{z}^{-1} - a_2\mathcal{z}^{-2}} && \\
+    &\mathcal{H}(\mathcal{z}) = G \cfrac{1}{(1 - \alpha_1 {z}^{-1})(1 - \alpha_2 {z}^{-1})} &&
+\end{flalign*}
+
+\begin{figure}[H]%
+    \centering
+        \subfloat[Полюс-нула графика за $\mathcal{H}$]{%
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={реална ос},
+                ylabel={имагинерна ос},
+                xmin=-1.2, xmax=1.2,
+                ymin=-1.2, ymax=1.2,
+                xtick={-1, -0.5, 0, 0.5, 1},
+                ytick={-1, -0.5, 0, 0.5, 1},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,
+                axis equal image, 
+            ]
+            \draw [red, thick] (axis cs:0.20, 0.45) rectangle (axis cs:0.30, 0.55);
+            \draw [red, thick] (axis cs:0.20, -0.45) rectangle (axis cs:0.30, -0.55);
+            \draw [red, thick] (axis cs:0.45, 0.70) rectangle (axis cs:0.55, 0.80);
+            \draw [red, thick] (axis cs:0.45, -0.70) rectangle (axis cs:0.55, -0.80);
+            \draw [red, thick] (axis cs:0.325, 0.575) rectangle (axis cs:0.425, 0.675);
+            \draw [red, thick] (axis cs:0.325, -0.575) rectangle (axis cs:0.425, -0.675);
+            \draw[black,thick,dashed] (axis cs:0,0) circle [radius=100];
+            \end{axis}
+        \end{tikzpicture}
+        }\hfill
+        \subfloat[Графика на $g(\omega)$ в $-\pi, \pi$]{%
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={Ъглова честота},
+                ylabel={Амплитуда},
+                xmin=-4, xmax=4,
+                ymin=0, ymax=5.5,
+                xtick={-4, -3, -2, -1, 0, 1, 2, 3, 5.5},
+                ytick={0, 1, 2, 3, 4, 5, 6},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,]
+                \addplot [domain=-pi:pi, samples=500,]{( (1 - (1.6)*cos(deg(x)) - (-3.2)*cos(deg(2*x)))^2 + ((1.6)*sin(deg(x)) + (-3.2)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \addplot [domain=-pi:pi, samples=500,dotted, thick]{( (1 - (1.23077)*cos(deg(x)) - (-1.23077)*cos(deg(2*x)))^2 + ((1.23077)*sin(deg(x)) + (-1.23077)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \addplot [domain=-pi:pi, samples=500,dotted, thick]{( (1 - (1.41176)*cos(deg(x)) - (-1.88235)*cos(deg(2*x)))^2 + ((1.41176)*sin(deg(x)) + (-1.88235)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \end{axis}
+        \end{tikzpicture}
+        }
+        \caption{Действие на IIR филтър от втори ред за $\alpha_1 = (0.25 + 0.5i), (0.5 + 0.75i), (0.375 + 0.625)$}
+        \label{fig:appendix:1:2:3}
+\end{figure}  
+
+\begin{figure}[H]%
+    \centering
+    \subfloat{%
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={Ъглова честота},
+                ylabel={Амплитуда},
+                xmin=0, xmax=4,
+                ymin=0, ymax=5,
+                xtick={0, 2.5, 5},
+                ytick={0, 1, 2, 3, 4},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,]
+                \addplot [domain=-pi:pi, samples=500, thick]{( (1 - (1.17)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \addplot [domain=-pi:pi, samples=500, thick, red]{( (1 - (0.86)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.86)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \addplot [domain=-pi:pi, samples=500, thick, blue]{( (1 - (0.50)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.50)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \addplot [domain=-pi:pi, samples=500, thick, green]{( (1 - (0.11)*cos(deg(x)) - (-0.64)*cos(deg(2*x)))^2 + ((0.11)*sin(deg(x)) + (-0.64)*sin(deg(2*x)) )^2  )^(-1/2)};
+                \end{axis}
+        \end{tikzpicture}
+    }
+    \caption{Графика на $g$ с отдалечаващи се от реалната ос полюси}
+    \label{fig:appendix:1:2:4}
+\end{figure} 
+
+Местенето на полюсите по-далеч от реалната ос, раздалечава върховете по честотната лента, както се вижда на \autoref{fig:appendix:1:2:4}
+\begin{figure}[H]
+    \centering
+    \subfloat[$b_0 = 1, b_1 = 0$]{%
+    \begin{tikzpicture}[baseline]
+        \begin{axis}[
+            xlabel={Ъглова честота},
+            ylabel={Амплитуда},
+            xmin=-4, xmax=4,
+            ymin=0, ymax=4.5,
+            xtick={-4, -3, -2, -1, 0, 1, 2, 3, 4},
+            ytick={0, 1, 2, 3, 4},
+            ymajorgrids=true,
+            xmajorgrids=true,
+            grid style=dashed,]
+            \addplot [domain=-pi:pi, samples=500, thick]{((1/( ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)))^2 + (-(1.17)*cos(deg(x)) -(-0.64)*cos(deg(2*x)) + 1)^2 ))^(1/2)};
+        \end{axis}
+    \end{tikzpicture}
+    }\vfill
+    \subfloat[$b_0 = 1, b_1 = 1$]{%
+        \begin{tikzpicture}[baseline]
+        \begin{axis}[
+            xlabel={Ъглова честота},
+            ylabel={Амплитуда},
+            xmin=-4, xmax=4,
+            ymin=0, ymax=3.5,
+            xtick={-4, -3, -2, -1, 0, 1, 2, 3, 4},
+            ytick={0, 1, 2, 3, 3.5},
+            ymajorgrids=true,
+            xmajorgrids=true,
+            grid style=dashed,]
+            \addplot [domain=-pi:pi, samples=500, thick]{(( (1 - 1*cos(deg(x)))^2 + 1^2*(sin(deg(x)))^2 )/( ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)))^2 + (-(1.17)*cos(deg(x)) -(-0.64)*cos(deg(2*x)) + 1)^2 ))^(1/2)};
+        \end{axis}
+        \end{tikzpicture}
+        }\hfill
+        \subfloat[$b_0 = 1, b_1 = -1$]{%
+        \begin{tikzpicture}[baseline]    
+        \begin{axis}[
+            xlabel={Ъглова честота},
+            ylabel={Амплитуда},
+            xmin=-4, xmax=4,
+            ymin=0, ymax=8.8,
+            xtick={-4, -3, -2, -1, 0, 1, 2, 3, 4},
+            ytick={0, 2, 4, 6, 7.6, 8.8},
+            ymajorgrids=true,
+            xmajorgrids=true,
+            grid style=dashed,]
+            \addplot [domain=-pi:pi, samples=500, thick]{(( (1 - (-1)*cos(deg(x)))^2 + (-1)^2*(sin(deg(x)))^2 )/( ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)))^2 + (-(1.17)*cos(deg(x)) -(-0.64)*cos(deg(2*x)) + 1)^2 ))^(1/2)};
+        \end{axis}
+        \end{tikzpicture}
+        }
+        \caption{Действие на IIR филтър от втори ред за различни стойности на $b$ и $a_1 = 1.17, a_2 = -0.64$}
+        \label{fig:appendix:1:2:5}
+\end{figure}
+
+Видът на резонатора (тоест честотна ента, честота и амплитуда), се определят главно от полюсите.
+Добавянето на нули също влияе на вида на филтъра, както може да се види от $\autoref{fig:appendix:1:2:5}$
+В единият случай се добавя нула в нулата, в другия - в края на спектъра. 
+
+\begin{figure}[H]
+    \centering
+    \subfloat{%
+    \begin{tikzpicture}[baseline]
+        \begin{axis}[
+            xlabel={Ъглова честота},
+            ylabel={Амплитуда},
+            xmin=-4, xmax=4,
+            ymin=0, ymax=5.5,
+            xtick={-4, -3, -2, -1, 0, 1, 2, 3, 4},
+            ytick={0, 1, 2, 3, 4, 5},
+            ymajorgrids=true,
+            xmajorgrids=true,
+            grid style=dashed,
+            legend cell align={left},
+            legend entries={$b_0 = 1;b_1 = 1;b_2 = -1; b_3 = 0$,
+            $b_0 = 1;b_1 = 1;b_2 = -1; b_3 = 1$,},
+            legend pos=outer north east,]
+
+            \addlegendimage{no markers,red}
+            \addlegendimage{no markers,black}
+        
+            \addplot [domain=-pi:pi, samples=500, thick]{((( ((1)*sin(deg(x)) + (-1)*sin(deg(2*x)))^2 + (-(1)*cos(deg(x)) - (-1)*cos(deg(2*x)) + 1)^2 )/( ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)))^2 + (-(1.17)*cos(deg(x)) -(-0.64)*cos(deg(2*x)) + 1)^2 ))^(1/2)};
+            \addplot [domain=-pi:pi, samples=500, thick, red]{((( ((1)*sin(deg(x)) + (-1)*sin(deg(2*x))  -(1)*sin(deg(3*x)))^2 + (-(1)*cos(deg(x)) - (-1)*cos(deg(2*x)) + (1)*cos(deg(3*x)) + 1)^2 )/( ((1.17)*sin(deg(x)) + (-0.64)*sin(deg(2*x)))^2 + (-(1.17)*cos(deg(x)) -(-0.64)*cos(deg(2*x)) + 1)^2 ))^(1/2)};
+        \end{axis}
+    \end{tikzpicture}
+    }
+    \caption{Действие на IIR филтър от вида $\mathcal{H}(e^{i \omega}) = \frac{b_0 - b_1 e^{-i \omega} -b_2 e^{-2 i \omega} -b_3 e^{-3 i \omega}}{1 - a_1e^{-i \omega} - a_2e^{-2i \omega}}$ за $a_1 = 1.17, a_2 = -0.64$}
+    \label{fig:appendix:1:2:6}
+\end{figure}
+
+Добавянето на допълнителни нули може да се види на \autoref{fig:appendix:1:2:6}. Тези нули се наричат \textbf{антирезонанси}.
+
+
+Използвайки вида на IIR филтрите от първи и втори ред, можем да разложим даден сложен филтър
+$\mathcal{H}$ на произвдение на по-прости филтри от първи и втори ред, чиито вид може
+по-лесно да се моделира чрез промяна на коефициентите. След това съчетаването им е просто произведение в честотния домейн и свойствата на Фурие
+преобразуванията ни дават вида и във времевия домейн.
+\end{document}
