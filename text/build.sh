@@ -6,7 +6,7 @@ cd "$(dirname "$(readlink -f "${0}")")"
 
 case "${1}" in
     "")
-        latexmk -halt-on-error -xelatex main.tex
+        latexmk -latexoption="-shell-escape" -halt-on-error -xelatex main.tex
         ;;
     clean)
         latexmk -C

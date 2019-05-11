@@ -16,6 +16,7 @@
 \setmainfont{Comfortaa-Regular}
 %setmathfont{Neo Euler}
 \newfontfamily\cyrillicfont{Comfortaa-Regular}
+\newfontfamily\cyrillicfonttt{Comfortaa-Regular}
 
 \usepackage[a4paper, portrait, margin = 1.5 cm]{geometry}
 \usepackage{url}
@@ -34,6 +35,16 @@
 \usepackage{mathtools}
 \usepackage{subfiles}
 \usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{external}
+\tikzset{
+    external/system call={%
+    xelatex \tikzexternalcheckshellescape
+    -halt-on-error -interaction=batchmode -shell-escape
+    -jobname "\image" "\texsource"}
+}
+\tikzexternalize
+\usepackage[style=alphabetic]{biblatex}
 
 \newtheorem{theorem}{Пример}
 \newtheorem*{definition*}{Дефиниция}
@@ -82,7 +93,7 @@
   \def\figureautorefname{\text{Фигура}}%
   \def\tableautorefname{\text{Таблица}}%
   \def\partautorefname{Part}%
-  \def\appendixautorefname{Appendix}%
+  \def\appendixautorefname{\text{Приложение}}%
   \def\chapterautorefname{chapter}%
   \def\sectionautorefname{section}%
   \def\subsectionautorefname{subsection}%
@@ -102,6 +113,7 @@
 \newcommand{\B}[1]{\left(#1\right)}
 \newcommand{\Q}[1]{\left[#1\right]}
 
+\addbibresource{./references.bib}
 
 \title{Дипломна работа}
 \author{Диана Генева <dageneva@qtrp.org>}
