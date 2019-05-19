@@ -1,25 +1,52 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
 \chapter{Приложение към \nameref{chap:speech}}
+
 \begin{theorem}
 \label{appendix:2:01}
-    $\mathcal{V}(\mathcal{z})$ за $N=2$
+$\mathcal{V}(\mathcal{z})$ за $N=2$ и произволно $\tau_i$
 \end{theorem}
 
+Имаме:
+
+$U_k = Q_k U_{k+1}$ за
+
+\begin{multicols}{2}
+    $U_k = 
+    \begin{bmatrix}
+        U_k^{+}(\mathcal{z}) \\
+        U_k^{-}(\mathcal{z}) \\
+    \end{bmatrix}$
+    \begin{flalign*}
+        & Q_k = \left[\begin{array}{cc}
+                \cfrac{\mathcal{z}^{\tau_k}}{1 + r_k} & \cfrac{-r_k \mathcal{z}^{\tau_k}}{1 + r_k} \\
+                & \\
+                \cfrac{-r_k \mathcal{z}^{-\tau_k}}{1 + r_k} & \cfrac{\mathcal{z}^{-\tau_k}}{1 + r_k} \\
+            \end{array}\right] = 
+            z^{\tau_k}\left[\begin{array}{cc}
+                \cfrac{1}{1 + r_k} & \cfrac{-r_k}{1 + r_k} \\
+                & \\
+                \cfrac{-r_k \mathcal{z}^{-2\tau_k}}{1 + r_k} & \cfrac{\mathcal{z}^{-2\tau_k}}{1 + r_k} \\
+            \end{array}\right] = 
+            \mathcal{z}^{\tau_k} \hat{Q}_k && 
+    \end{flalign*}
+\end{multicols}
+
+Търсим: $V(\mathcal{z})$
 \begin{proof}[\unskip\nopunct]
     \begin{flalign}
         \tag{\ref{eq:tubes:22}}
-        & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \mathcal{z}^{N/2}\left[
+        & \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \left[
             \begin{array}{cc}
                 \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
             \end{array}
-            \right] \prod_{i=1}^{N} {\hat{Q}_i} \left[ \begin{array}{cc}
+            \right] \prod_{i=1}^{N} {Q_i} \left[ \begin{array}{cc}
                 1 \\
                 0
             \end{array}\right] = &&
         \end{flalign}
         \begin{flalign*}
-            & = \mathcal{z}\left[
+            & = \mathcal{z}^{(\tau_1 + \tau_2)}\left[
                 \begin{array}{cc}
                     \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
                 \end{array}
@@ -28,7 +55,7 @@
                     0
                 \end{array}\right] = && \\
             & \\
-            & = \mathcal{z}\left[
+            & = \mathcal{z}^{(\tau_1 + \tau_2)}\left[
                 \begin{array}{cc}
                     \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
                 \end{array}
@@ -36,38 +63,39 @@
                 \left[\begin{array}{cc}
                     \cfrac{1}{1 + r_1} & \cfrac{-r_1}{1 + r_1} \\
                     & \\
-                    \cfrac{-r_1 \mathcal{z}^{-1}}{1 + r_1} & \cfrac{\mathcal{z}^{-1}}{1 + r_1} \\
+                    \cfrac{-r_1 \mathcal{z}^{-
+                    2\tau_1}}{1 + r_1} & \cfrac{\mathcal{z}^{-2\tau_1}}{1 + r_1} \\
                 \end{array}\right]
                 \left[\begin{array}{cc}
                     \cfrac{1}{1 + r_2} & \cfrac{-r_2}{1 + r_2} \\
                     & \\
-                    \cfrac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \cfrac{\mathcal{z}^{-1}}{1 + r_2} \\
+                    \cfrac{-r_2 \mathcal{z}^{-2\tau_2}}{1 + r_2} & \cfrac{\mathcal{z}^{-2\tau_2}}{1 + r_2} \\
                 \end{array}\right]
                 \left[ \begin{array}{cc}
                     1 \\
                     0
                 \end{array}\right] = && \\
             &\\
-            & = 2\mathcal{z}
+            & = 2\mathcal{z}^{(\tau_1 + \tau_2)}
             \left[
                 \begin{array}{cc}
-                    \cfrac{1 + r_G r_1\mathcal{z}^{-1}}{(1+r_G)(1 + r_1)}, & -\cfrac{r_1 + r_G\mathcal{z}^{-1}}{(1 + r_G)(1 + r_1)} \\
+                    \cfrac{1 + r_G r_1\mathcal{z}^{-2\tau_1}}{(1+r_G)(1 + r_1)}, & -\cfrac{r_1 + r_G\mathcal{z}^{-2\tau_1}}{(1 + r_G)(1 + r_1)} \\
                 \end{array}
             \right]
             \left[\begin{array}{cc}
                 \cfrac{1}{1 + r_2} & \cfrac{-r_2}{1 + r_2} \\
                 & \\
-                \cfrac{-r_2 \mathcal{z}^{-1}}{1 + r_2} & \cfrac{\mathcal{z}^{-1}}{1 + r_2} \\
+                \cfrac{-r_2 \mathcal{z}^{-2\tau_2}}{1 + r_2} & \cfrac{\mathcal{z}^{-2\tau_2}}{1 + r_2} \\
             \end{array}\right]
             \left[ \begin{array}{cc}
                 1 \\
                 0
             \end{array}\right] = && \\
             &\\
-            & = 2\mathcal{z}
+            & = 2\mathcal{z}^{(\tau_1 + \tau_2)}
             \left[
                 \begin{array}{cc}
-                    \cfrac{1 + r_Gr_1\mathcal{z}^{-1} + r_1r_2\mathcal{z}^{-1} + r_Gr_2\mathcal{z}^{-2}}{(1+r_G)(1 + r_1)(1 + r_2)}, & -\cfrac{r_2 + r_Gr_1r_2\mathcal{z}^{-1} + r_1\mathcal{z}^{-1} + r_G\mathcal{z}^{-2}}{(1 + r_G)(1 + r_1)(1 + r_2)} \\
+                    \cfrac{1 + r_Gr_1\mathcal{z}^{-2\tau_1} + r_1r_2\mathcal{z}^{-2\tau_2} + r_Gr_2\mathcal{z}^{-2(\tau_1 + \tau_2)}}{(1+r_G)(1 + r_1)(1 + r_2)},& -\cfrac{r_2 + r_Gr_1r_2\mathcal{z}^{-2\tau_1} + r_1\mathcal{z}^{-2\tau_2} + r_G\mathcal{z}^{-2(\tau_1 + \tau_2)}}{(1 + r_G)(1 + r_1)(1 + r_2)} \\
                 \end{array}
             \right]
             \left[ \begin{array}{cc}
@@ -77,9 +105,40 @@
         \end{flalign*}
     \begin{flalign*}
         & \iff && \\
-        & \mathcal{V}(\mathcal{z}) = \cfrac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}} &&
+        & \mathcal{V}(\mathcal{z}) = \cfrac{0.5\mathcal{z}^{-(\tau_1 + \tau_2)}(1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)}{1 + r_Gr_1\mathcal{z}^{-2\tau_1} + r_1r_2\mathcal{z}^{-2\tau_2} + r_Gr_2\mathcal{z}^{-2(\tau_1 + \tau_2)}} &&
     \end{flalign*}
+\end{proof}
+
+\hrulefill
+
+\begin{footnotesize} \textbf{Бележка:}
+\label{can:i}
+Тък като $r_G, r_1, r_2$ са ненулеви, то за да получим максимална степен, без да имаме нулеви коефициенти, трябва:
+
+\begin{flalign}
+  & \begin{array}{|l@{}}
+    2 \tau_1 = 1\\
+    2 \tau_2 = 1\\
+    2(\tau_1 + \tau_2) = 2
+  \end{array} &&
+\end{flalign}
+
+Тоест $\tau_1 = \tau_2 = \frac{1}{2}$
+\end{footnotesize}
+
+\hrulefill
+
+\begin{theorem}
+    \label{appendix:2:02}
+    $\mathcal{V}(\mathcal{z})$ за $N=2$ и произволно $\tau_1 = \tau_2 = \frac{1}{2}$
+\end{theorem}
+
+\begin{proof}[\unskip\nopunct]
+Заместваме $\tau_i = \frac{1}{2}$ в \autoref{appendix:2:01}
+\begin{flalign*}
+    & \mathcal{V}(\mathcal{z}) = \cfrac{0.5\mathcal{z}^{-1}(1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + r_Gr_2\mathcal{z}^{-2}} &&
+\end{flalign*}
+\end{proof}
     
-    
-    \end{proof}
+
 \end{document}
