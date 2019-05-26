@@ -117,7 +117,6 @@
     където
     $a_k = X(e^{\frac{2\pi i k}{N}}) = X(e^{i\omega_k})$ за $\omega_k = \frac{2\pi k}{N}$
 
-
     \section{Свойства}
 
     \begin{itemize}
@@ -142,7 +141,43 @@
         \end{flalign*}
     \end{itemize}
 
-    \begin{theorem}[Теорема за конволюцията]
+    \section{Конволюция}
+
+    Често ще се налага да използваме връзката между умножение, Фурие трансформация и операцията конволюция.
+    
+    \begin{definition*}{(Дискретна конволюция)}\\
+        \label{appendix:fourier:conv}
+        Ако $f, g: \mathbb{N} \mapsto \mathbb{Z}$, дискретна конволюция (конволюционна сума) на $f$ и $g$, наричаме
+        $(f\ast g)[n] = \sum\limits_{k=-\infty}^{\infty} f[k]g[n-k]$
+
+        Ако $f$ и $g$ са периодични с период $N$, то
+        $(f\ast g)[n] = \sum\limits_{k=0}^{N-1} f[k]g[n-k]$
+    \end{definition*}
+        
+    \begin{theorem}[Теорема за конволюцията за периодични дискретни сигнали]
+    Ако $f[n] \xleftrightarrow{\mathcal{F}\mathcal{S}} F(e^{i\omega_k})$ и $g[n] \xleftrightarrow{\mathcal{F}\mathcal{S}} G(e^{i\omega_k})$ и $f, g$ са периодини с период $N$
+
+    $(f\ast g)[n] \xleftrightarrow{\mathcal{F}\mathcal{S}} F(e^{i\omega_k})\cdot G(e^{i\omega_k})$
+    Дуалното твърдение също е вярно за непрекъснатия вариант на конволюция.
+
+    $F(e^{i\omega_k}) = a_k = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} f[n]e^{-\frac{2 \pi i k n}{N}}$
+
+    $G(e^{i\omega_k}) = b_k = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} g[n]e^{-\frac{2 \pi i k n}{N}}$
+    
+    Нека $h[n] = (f\ast g)[n]$ и $(f\ast g)[n] \xleftrightarrow{\mathcal{F}\mathcal{S}} H(e^{i\omega_k})$. 
+    
+    Тогава:
+    \begin{flalign*}
+        & H(e^{i\omega_k}) = c_k = \frac{1}{N} \sum\limits_{n=0}^{N-1} h[n]e^{-\frac{2 \pi i k n}{N}} && \\
+        & = \frac{1}{N} \sum\limits_{n=0}^{N-1} (f\ast g)[n] e^{-\frac{2 \pi i k n}{N}} = \frac{1}{N} \sum\limits_{n=0}^{N-1} \sum\limits_{r=0}^{N-1}f[r]g[n-r] e^{-\frac{2 \pi i k n}{N}} && \\
+        & = \frac{1}{N} \sum\limits_{r=0}^{N-1} f[r] \sum\limits_{n=0}^{N-1}g[n-r] e^{-\frac{2 \pi i k n}{N}} && \\
+        & = \frac{1}{N} \sum\limits_{r=0}^{N-1} f[r] \Q{\sum\limits_{n=0}^{N-1}g[n-r] e^{-\frac{2 \pi i k n}{N}}} &&
+        & \intertext{Нека положим y=n-r} &&\\
+        & = \frac{1}{N} \sum\limits_{r=0}^{N-1} f[r] \Q{\sum\limits_{y=-r}^{N-1-r}g[y] e^{-\frac{2 \pi i k (y + r)}{N}}} = \frac{1}{N} \sum\limits_{r=0}^{N-1} f[r] \Q{\sum\limits_{y=-r}^{N-1-r}g[y] e^{-\frac{2 \pi i k y}{N}}}e^{-\frac{2 \pi i k r}{N}} &&
+        &\intertext{Понеже $[-r, N-1-r]$ е интервал с дължина $N$ е изпълнено:} &&\\
+        & = \frac{1}{N} \sum\limits_{r=0}^{N-1} f[r] e^{-\frac{2 \pi i k r}{N}} N G(e^{i\omega_k}) = N F(e^{i\omega_k})\cdot G(e^{i\omega_k})&&
+    \end{flalign*}
+        
     \label{th:appendix:fourier:convolution}
     \end{theorem}
 \end{document}

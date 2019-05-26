@@ -48,6 +48,7 @@
 
 \newtheorem{theorem}{Пример}
 \newtheorem*{definition*}{Дефиниция}
+\newtheorem{property}{Свойство}
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
@@ -74,15 +75,16 @@
 \usepackage{color}
 \definecolor{Bluish}{rgb}{0.39,0.55,0.78}
 \definecolor{light-gray}{gray}{0.9}
+\definecolor{Greenish}{HTML}{66772d}
 
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     linktoc=all,
-    citecolor=black,
+    citecolor=Greenish,
     filecolor=black,
-    linkcolor=black,
-    urlcolor=black
+    linkcolor=Bluish,
+    urlcolor=Greenish
 }
 \makeatletter
 \ifdefined\HyLang@bulgarian\else
@@ -94,14 +96,15 @@
   \def\tableautorefname{\text{Таблица}}%
   \def\partautorefname{Part}%
   \def\appendixautorefname{\text{Приложение}}%
-  \def\chapterautorefname{chapter}%
-  \def\sectionautorefname{section}%
-  \def\subsectionautorefname{subsection}%
+  \def\chapterautorefname{\text{Глава}}%
+  \def\sectionautorefname{\text{Раздел}}%
+  \def\subsectionautorefname{\text{Подраздел}}%
   \def\subsubsectionautorefname{subsubsection}%
   \def\paragraphautorefname{paragraph}%
   \def\subparagraphautorefname{subparagraph}%
   \def\FancyVerbLineautorefname{line}%
   \def\theoremautorefname{\text{Пример}}%
+  \def\propertyautorefname{\text{Свойство}}%
   \def\pageautorefname{page}%
 }
 \let\inlineextras@bulgarian\blockextras@bulgarian
