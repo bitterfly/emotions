@@ -15,7 +15,7 @@
         & x(t) = x(t + T) &&
     \end{flalign*}
 
-    Честотата, изразена в херци (периоди в секунда), се означава с $f_0 = \frac{1}{T}$ и означава "брой периоди в секунда". Нарича се фундаментална честота.
+    Честотата, изразена в херци (периоди в секунда), се означава с $f_0 = \frac{1}{T}$ и означава "брой периоди в секунда". Нарича се фундаментална честота.\\
     Честотата, изразена в радиани в секунда, се означава с $\omega_0 = f_0 2\pi$ и се нарича фундаментална ъглова честота.
 
     Тогава представянето, което търсим има вида:
@@ -25,12 +25,11 @@
         & x(t) = \sum\limits_{k=-\infty}^{\infty} a_k e^{\frac{2k\pi i t}{T}}, &&
     \end{flalign}
     
-    където $e^{\frac{2k\pi i t}{T}}$ е сигнал с честота $\cfrac{k}{T}$
-    Представянето от $\autoref{eq:appendix:0:1}$ се нарича развиване в ред на Фурие за сигнала $x(t)$
-    
-    Нека намерим вида на коефициентите $a_k$
+    където $e^{2k\pi i t/T}$ е сигнал с честота $\cfrac{k}{T}$.
 
-    Умножаваме \autoref{eq:appendix:0:1} с $e^{-\frac{2n\pi i t}{T}}$, тоест
+    Представянето от \autoref{eq:appendix:0:1} се нарича развиване в ред на Фурие за сигнала $x(t)$. Нека намерим вида на коефициентите $a_k$.
+    
+    Умножаваме \autoref{eq:appendix:0:1} с $e^{2n\pi i t/T}$, тоест:
     \begin{flalign*}
         & x(t)e^{-\frac{2n\pi i t}{T}} = \sum\limits_{k=-\infty}^{\infty} a_k e^{\frac{2k\pi i t}{T}} e^{-\frac{2n\pi i t}{T}} &&
     \end{flalign*}
@@ -43,7 +42,7 @@
 
     Да разгледаме $\int\limits_{0}^{T} e^{\frac{2(k - n)\pi i t}{T}}$
     \begin{flalign*}
-        & \int\limits_{0}^{T}e^{\frac{2(k - n)\pi i t}{T}} = \int\limits_{0}^{T} \cos(\frac{2(k - n)\pi t}{T}) dt + i \int\limits_{0}^{T} \sin(\frac{2(k - n)\pi t}{T}) dt = && \\
+        & \int\limits_{0}^{T}e^{\frac{2(k - n)\pi i t}{T}} = \int\limits_{0}^{T} \cos\B{\frac{2(k - n)\pi t}{T}} dt + i \int\limits_{0}^{T} \sin\B{\frac{2(k - n)\pi t}{T}} dt = && \\
         & =  \begin{cases}
             1\Big|_0^T + 0, & n = k\\
             0 + 0, & \text{иначе}   
@@ -66,19 +65,13 @@
         & a_n = \cfrac{1}{T} \int\limits_{T} x(t)e^{-\frac{2n\pi i t}{T}} &&
     \end{flalign}
 
-    Обикновено с $X(e^{i\omega})$ означаваме $\cfrac{1}{T} \int\limits_{T} x(t)e^{-i\omega}$,
-    където $\omega$ е ъглова честота.
-
-    Може да се покаже, че редът на Фурие за някакъв сигнал $x(t)$ е сходящ и съответно коефициентите от \autoref{eq:appendix:0:2} са крайни, ако е изпълнено, че
-
+    Може да се покаже \cite{oppenheim}, че редът на Фурие за сигнал $x(t)$ е сходящ и съответно коефициентите от \autoref{eq:appendix:0:2} са крайни, ако е изпълнено че:
     \begin{flalign*}
         & \int\limits_{T} |x(t)|^2 < \infty, &&
     \end{flalign*}
 
-    например в Oppenheim 96. 
-
     Още повече, ако сигналът $x$ е дискретен и периодичен (какъвто е случаят, когато семплираме речеви сигнал) и периодичен $x[n] = x[n + N]$,
-    имаме само N различни стойности.
+    имаме само N различни стойности:
 
     $e^{\frac{2 (k + N) \pi i n}{N}} = e^{\frac{2 k \pi i n}{N}} e^{\frac{2 N \pi i n}{N}} = e^{\frac{2 k \pi i n}{N}}$, тъй като
     $e^{2\pi i n} = \cos(2\pi n) + \sin(2\pi n) = 1$
@@ -136,7 +129,7 @@
         От уравнение \autoref{eq:appendix:0:4} следва, че:
         \begin{flalign*}
             & a_k = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} x[n] e^{-\frac{2\pi i k n}{N}} && \\
-            & \overline{a_k} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n] e^{-\frac{2\pi i k n}{N}}} = \sum\limits_{n=0}^{N-1} \overline{x[n]} e^{\frac{2\pi i k n}{N}} =  \sum\limits_{n=0}^{N-1}  x[n] e^{\frac{2\pi i k n}{N}} && \\
+            & \overline{a_k} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n] e^{-\frac{2\pi i k n}{N}}} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n]} e^{\frac{2\pi i k n}{N}} =  \cfrac{1}{N} \sum\limits_{n=0}^{N-1}  x[n] e^{\frac{2\pi i k n}{N}} && \\
             & \Rightarrow \overline{a_k} = a_{-k}
         \end{flalign*}
     \end{itemize}

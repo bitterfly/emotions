@@ -4,7 +4,7 @@
 \label{tubes}
 В тази глава ще разгледаме в неголяма дълбочина построяване на модел с тръби. За повече подробности, може да се проследи подробното изложение в \cite{rabiner_schafer78} или по-сбитото в \cite{taylor:2009}.
 
-За да извлечем спектралните свойства на вокалния тракт\footnote{както се зарекохме в предния раздел}, трябва да моделираме системата за производство на реч. Освен това искаме да можем да отделим характеристиките на вокалния тракт от тези на останалите части на системата. Един такъв модел се получава с модела на тръбите, който ще разглеждаме в този раздел.
+За да извлечем спектралните свойства на вокалния тракт\footnote{както се зарекохме в предния раздел}, трябва да моделираме системата за производство на реч. Освен това искаме да можем да отделим характеристиките на вокалния тракт от тези на останалите части на системата. Един такъв модел се получава с модела на тръбите, който ще бъде описан в този раздел.
 
 За улеснение, нека разгледаме конкретна конфигурация. Например тази, при произнасянето на фонемата ,,ъ'',тъй като е възможно най-проста. В този случай глотисът трепти, устата е отворена, а клапата към носната кухина е затворена.
 
@@ -21,7 +21,7 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
 Тъй като в крайна сметка получаваме нов сигнал при усните, това, от което се интересуваме, са спектралните особености на $\mathcal{V}(\mathcal{z})\mathcal{R}(\mathcal{z})$, за които можем да си мислим като един общ филтър, описващ вокалния тракт. За да говорим за крайния сигнал $\mathcal{Y}$, трябва да знаем какво е действието на входния сигнал $\mathcal{G}$, който ще бъде променян от филтъра на вокалния тракт. 
 
 \begin{footnotesize}
-    \textbf{Бележка:} Дефиницията за Фурие преобразувание изисква сингалът да е периодичен. В случая $g$ е такъв, защото конфигурацията на вокалния тракт е статична. Нека засега приемем, че сигналите $v$ и $r$ също са периодични. Това, а също и че периодът им съвпада с този на $g$, е показано в $\autoref{systems:periodicity}$.
+    \textbf{Бележка:} Дефиницията за Фурие преобразувание изисква сингалът да е периодичен. В случая сме взели $g$ да е такъв. Нека засега приемем, че сигналите $v$ и $r$ също са периодични. Това, а също и че периодът им съвпада с този на $g$, е показано в $\autoref{systems:periodicity}$.
 \end{footnotesize}
 
 \begin{figure}[ht]%
@@ -93,7 +93,7 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
     \end{flalign}
 \end{subequations}
 
-Когато заместим уравнения $\eqref{eq:tubes:04}$ в $\eqref{eq:tubes:03}$, получаваме:
+Когато заместим Уравнения $\eqref{eq:tubes:04}$ в $\eqref{eq:tubes:03}$, получаваме:
 \begin{flalign*}
     & u_k^+\B{t - \cfrac{l_k}{\mathcal{c}}} - u_k^{-}\B{t + \cfrac{l_k}{\mathcal{c}}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&
     & \intertext{и}
@@ -168,7 +168,7 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$
     \\
     \cfrac{r_k}{1 + r_k} & = \cfrac{(A_{k+1} - A_k)}{(A_k + A_{k+1})} \cfrac{(A_k + A_{k+1})}{2A_{k+1}} = \cfrac{A_{k+1} - A_k}{2A_{k+1}}, &&
 \end{flalign*}
-можем да запишем уравненията $\eqref{eq:tubes:11}$ във вида:
+можем да запишем Уравнения $\eqref{eq:tubes:11}$ във вида:
 
 \begin{subequations}
     \label{eq:tubes:12}
@@ -178,16 +178,19 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$
     \end{flalign}
 \end{subequations}
 
-Сега да разгледаме уравнения $\eqref{eq:tubes:12}$ в честотния домейн. Избираме $\mathcal{z} = e^{i\omega_k}$ и използваме свойствата, описани в \autoref{appendix:fourier}. Тоест, че $u_k[t - \tau_k] \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{z}^{-\tau_k}U_k(\mathcal{z})$
+Сега да разгледаме Уравнения $\eqref{eq:tubes:12}$ в честотния домейн. Избираме $\mathcal{z} = e^{i\omega_k}$ и използваме свойствата, описани в \autoref{appendix:fourier}. Тоест, че $u_k[t - \tau_k] \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{z}^{-\tau_k}U_k(\mathcal{z})$
 \begin{subequations}
     \label{eq:tubes:13}
     \begin{flalign}
         & \nonumber \mathcal{z}^{-\tau_k}U_k^{+}(\mathcal{z}) = \cfrac{1}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) && \\
         & \nonumber \mathcal{z}^{\tau_k} U_k^{-}(\mathcal{z}) = - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{1}{1 + r_k} U_{k+1}^{-}(\mathcal{z}) && \\
+        & \iff && \\
         & U_k^{+}(\mathcal{z}) = \cfrac{\mathcal{z}^{\tau_k}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k\mathcal{z}^{\tau_k}}{1+r_k} U_{k+1}^{-}(\mathcal{z}) && \\
         & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-\tau_k} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(\mathcal{z}) &&
     \end{flalign}
 \end{subequations}
+
+По този начин получихме връзката между две съседни тръби. За да получим общия модел, трябва да отчетем двете специални ситуации - при първата и при последната тръба.
 
 \subsection{Ограничения при устните}\label{tubes:lips}
 %why you do this%
@@ -220,10 +223,10 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$
 Ако отворът на устните е много малък спрямо размера на сферата, то можем да 
 си мислим за преградата като за безкрайна равнина, както е показано на Фигура \autoref{fig:tubes:3:b}
 
-В такъв случай може да се покаже, че е съществува следната връзка между налягането и обемната скорост:
+В такъв случай може да се покаже, че съществува следната връзка между налягането и обемната скорост:
 \begin{equation}
     \label{eq:tubes:14}
-    \mathcal{P}_L(\mathcal{z}) = Z_L(\mathcal{z}) \mathcal{U}_L(\mathcal{z}),
+    \mathcal{P}_N(l_N, \mathcal{z}) = Z_L(\mathcal{z}) \mathcal{U}_N(l_N, \mathcal{z}),
 \end{equation}
 където 
 $Z_L(\mathcal{z})$ се нарича радиационен импеданс (пълно съпротивление), описва загубите, които се получават на изхода, и има вида:
@@ -247,24 +250,23 @@ $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на з
 При средни честоти ($\mathcal{z}L_r \ll R_r$), $Z_L(\mathcal{z}) \approx i\mathcal{z}L_r$, а високи честоти, ($\mathcal{z}L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
 Това значи, че загубите при устните са най-големи при големи честоти, тъй като тогава импедансът е най-голям.
 
-В случая, в който честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$, тоест е константата $Z_L$. 
+В случая, в който честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$, тоест $Z_L(\mathcal{z}) = Z_L$. 
 
-Тогава, ако $p_L  \xleftrightarrow{\mathcal{F}\mathcal{S}}  P_L(\mathcal{z}), u_L \xleftrightarrow{\mathcal{F}\mathcal{S}} U_L(\mathcal{z}) \text{ и съответно } Z_L \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_L$ можем да разгледаме уравнението $\eqref{eq:tubes:14}$ във
+Тогава, ако $p_N(l_N, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}}  P_N(l_N, \mathcal{z}), u_N(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_N(l_N, \mathcal{z}) \text{ и съответно } Z_L \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_L$, можем да разгледаме уравнението $\eqref{eq:tubes:14}$ във
 времевия домейн:
 \begin{flalign*}
-    & p_L(t) = Z_L u_L(t) &&
+    & p_N(l_N, t) = Z_L u_N(l_N, t), &&
 \end{flalign*}
-където $u_L(t) = u_N(l_N, t)$ и $p_L(t) = p_N(l_N, t)$, а $N$ е последната тръба.
 
 Ако използваме Уравнения \eqref{eq:tubes:03} и заместим с $\tau_N = \frac{l_N}{\mathcal{c}}$, получаваме:
 \begin{flalign}
-    & \nonumber \cfrac{\rho\mathcal{c}}{A_L}\Q{u_N^{+}(t - \tau_N) + u_N^{-}(t + \tau_N)} = Z_L\Q{u_N^{+}(t - \tau_N) - u_N^{-}(t + \tau_N)} &&\\
-    & \nonumber u_N^{-}(t + \tau_N) \cfrac{(\rho\mathcal{c} + A_L Z_L)}{A_L} = u_N^{+}(t - \tau_N) \cfrac{(A_L Z_L - \rho\mathcal{c})}{A_L} &&\\
+    & \nonumber \cfrac{\rho\mathcal{c}}{A_N}\Q{u_N^{+}(t - \tau_N) + u_N^{-}(t + \tau_N)} = Z_L\Q{u_N^{+}(t - \tau_N) - u_N^{-}(t + \tau_N)} &&\\
+    & \nonumber u_N^{-}(t + \tau_N) \cfrac{(\rho\mathcal{c} + A_N Z_L)}{A_N} = u_N^{+}(t - \tau_N) \cfrac{(A_N Z_L - \rho\mathcal{c})}{A_N} &&\\
     & \label{eq:tubes:15} u_N^{-}(t + \tau_N) = -r_L u_N^{+}(t - \tau_N), \text{ където}&&
 \end{flalign}
 
 \begin{align*}
-    r_L = \B{\frac{\rho\mathcal{c} - A_L Z_L}{\rho\mathcal{c} + A_L Z_L}}
+    r_L = \B{\frac{\frac{\rho\mathcal{c}}{Z_L} - A_N}{\frac{\rho\mathcal{c}}{Z_L} + A_N}}
 \end{align*}
 
 В случая, в който $Z_L \approx i\mathcal{z}L_r$ е комплексно, може да се покаже, че уравнение \eqref{eq:tubes:15} остава в сила,
@@ -333,15 +335,22 @@ $L_G, R_G$ - константи
     \end{flalign}
 \end{subequations}
 
-За да опишем граничните условия при устните, дефинираме $U_{N+1}(\mathcal{z})$ е Фурие трансформацията
+За да опишем граничните условия при устните, дефинираме $U_{N+1}(\mathcal{z})$ да е Фурие трансформацията
 на входа на несъществуваща $(N+1)$ тръба. Тази тръба е безкрайно дълга и заради това скоростта на вървящите ,,назад'' вълни трябва да бъде 0
 
 Тоест дефинираме:
 \begin{flalign}
     \label{eq:tubes:20}
-    & U_{N+1}^{+} (\mathcal{z}) = U_L(\mathcal{z}) = (1 + r_L)U_N^{+}(\mathcal{z}) &&\\
+    & U_{N+1}^{+} (\mathcal{z}) = U_L(\mathcal{z}) &&\\
     & \nonumber U_{N+1}^{-}(\mathcal{z}) = 0 &&
 \end{flalign}
+
+Също така искаме коефициентът на отражение на последната истинска тръба да е равен на коефициент на отражение при устните, а именно $r_N = r_L$
+\begin{flalign*}
+    & \B{\frac{A_{N+1} - A_N}{A_{N+1} + A_N}} = \B{\frac{\frac{\rho\mathcal{c}}{Z_L} - A_N}{\frac{\rho\mathcal{c}}{Z_L} + A_N}} &&
+\end{flalign*}
+
+Това ни дава, че $A_{N+1} = \frac{\rho\mathcal{c}}{Z_L}$
 
 Ако представим Уравнения $\eqref{eq:tubes:19}$ в матричен вид, получаваме:
 
@@ -398,7 +407,7 @@ $U_k = Q_k U_{k+1}$ за
 
 \begin{flalign}
     \label{eq:tubes:21}
-    & \nonumber \frac{1}{\mathcal{V}(\mathcal{z})} = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \cfrac{\left[
+    \nonumber \frac{1}{\mathcal{V}(\mathcal{z})} & = \frac{U_G(\mathcal{z})}{U_L(\mathcal{z})}  = \cfrac{\left[
         \begin{array}{cc}
             \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
         \end{array}
@@ -407,7 +416,7 @@ $U_k = Q_k U_{k+1}$ за
             0
         \end{array}\right]U_L(\mathcal{z})}{U_L(\mathcal{z})} = && \\
         \nonumber \\
-        & \left[
+        & = \left[
             \begin{array}{cc}
                 \cfrac{2}{1+r_G}, & -\cfrac{2r_G}{1 + r_G} \\
             \end{array}
@@ -520,7 +529,7 @@ $U_k = Q_k U_{k+1}$ за
     & \mathcal{G}(\mathcal{z}) = \frac{1}{(1 - \beta\mathcal{z})^2}&&
 \end{flalign*}
 
-Сигналът, показан на \autoref{fig:tubes:2}, е почти идеален. В действителност е почти невъзможно да се поддържа сигнал на идеално равни разстояния между
+Сигналът, показан на \autoref{fig:tubes:2}, е почти идеален. В действителност е почти невъзможно да се поддържа тон, който има еднакви разстояния между
 пиковете и еднаква амплитуда. Отклонението от истинския период се нарича джитер\footnote{На английски jitter, думата е заемка, тъй като няма друг възприет български термин. Руският термин е джиттер}. Другият ефект, който е важен за истинския човешки глас, е трептенето\footnote{На английски shimmer. Тук също не мога да намеря подходящ български термин, но в случая и единственият руски, който открих, е шиммер}, тоест разликата в амплитудите. Освен за естествеността на гласа, тези характеристики могат да носят информация и за емоционалното състояние. Висок джитер може да означава дрезгав глас, но също може да се предизвика при чувство на стрес или страх.
 Включването им в модела се постига с допълнителни нули, което ни дава и крайния видна $\mathcal{G}$ в случая на озвучен звук:
 
@@ -529,7 +538,7 @@ $U_k = Q_k U_{k+1}$ за
     \mathcal{G}(\mathcal{z}) = \frac{\prod\limits_{i=0}^K (1 - \beta_i \mathcal{z}^{-1})}{(1 - \beta\mathcal{z})^2}
 \end{align}
 
-В случая на беззвучни вече нямаме периодичен сигнал. При съгласните, например, сигналът от глотиса е случайна редица с плосък спектър (тоест има почти еднаква мощност в целия спектър). Добър начин да се моделира е чрез генератор на бял шум.
+Да разгледаме случая с беззвучен звук. При съгласните, например, сигналът от глотиса е случайна редица с плосък спектър (тоест има почти еднаква мощност в целия спектър). Добър начин да се моделира е чрез генератор на бял шум.
 
 \subsection{Общ вид на $\mathcal{Y}$}
 От уравнения $\ref{eq:tubes:24}, \ref{eq:tubes:25}, \ref{eq:tubes:26}$ следва, че видът на  $\mathcal{H}$ е
@@ -541,7 +550,7 @@ $U_k = Q_k U_{k+1}$ за
 
 \begin{flalign}
     \label{eq:tubes:27}
-    & \mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m} }{\sum\limits_{k=0}^{K} a_k \mathcal{z}^{-k}} &&
+    & \mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \cfrac{\sum\limits_{m=0}^{M} b_m \mathcal{z}^{-m} }{\sum\limits_{k=0}^{K} a_k \mathcal{z}^{-k}}, &&
 \end{flalign}
 
 от което ще се възползваме в следващия раздел.
