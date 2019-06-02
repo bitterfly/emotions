@@ -111,6 +111,7 @@
     $a_k = X(e^{\frac{2\pi i k}{N}}) = X(e^{i\omega_k})$ за $\omega_k = \frac{2\pi k}{N}$
 
     \section{Свойства}
+    \label{appendix:fourier:property}
 
     \begin{itemize}
         \item Изместване във времето
@@ -130,9 +131,12 @@
         \begin{flalign*}
             & a_k = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} x[n] e^{-\frac{2\pi i k n}{N}} && \\
             & \overline{a_k} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n] e^{-\frac{2\pi i k n}{N}}} = \cfrac{1}{N} \sum\limits_{n=0}^{N-1} \overline{x[n]} e^{\frac{2\pi i k n}{N}} =  \cfrac{1}{N} \sum\limits_{n=0}^{N-1}  x[n] e^{\frac{2\pi i k n}{N}} && \\
-            & \Rightarrow \overline{a_k} = a_{-k}
+            & \Rightarrow \overline{a_k} = a_{-k} = a_{N-k}
         \end{flalign*}
     \end{itemize}
+    Това означава, че за реални сигнали са достатъчни първите $\frac{N}{2} + 1$ коефициенти, тъй като останалите са им комплексно спрегнати. Честотата, която отговаря на $a_{\frac{N}{2}}$
+    се нарича Найкуист честота.
+
 
     \section{Конволюция}
 

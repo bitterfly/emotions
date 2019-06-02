@@ -10,7 +10,7 @@ case "${1}" in
         ;;
     clean)
         latexmk -C
-	for f in *.bbl *.run.xml *.auxlock *-figure*.{pdf,log,dpth,md5}; do
+	for f in *.aux *.bbl *.run.xml *.auxlock *-figure*.{pdf,log,dpth,md5}; do
             rm -rvf "${f}"
         done
         ;;
