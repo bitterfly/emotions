@@ -54,13 +54,12 @@ func PlotSignal(data []float64, file string) {
 
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
-		// s[i].X = float64(math.Log(float64(i) + 0.1))
-		s[i].X = math.Log(float64(i) + 1)
+		s[i].X = float64(i)
+		// s[i].X = math.Log(float64(i) + 1)
 		s[i].Y = data[i]
 	}
 
 	line, _ := plotter.NewLine(s)
-	// line.Color = color.RGBA{0, 232, 88, 255}
 	line.Color = color.RGBA{0, 100, 88, 255}
 
 	plots.Add(line)
