@@ -14,12 +14,12 @@ func rectangular(x int, n int) float64 {
 }
 
 func hanning(x int, n int) float64 {
-	return 0.5 - 0.5*math.Cos(float64(x*2)*math.Pi/float64(n-1))
+	return 0.5 - 0.5*math.Cos(float64(x*2)*math.Pi/float64(n))
 }
 
 // so when x == n-1 -> 2pi
 func hamming(x int, n int) float64 {
-	return 0.54 - 0.46*math.Cos(float64(x*2)*math.Pi/float64(n-1))
+	return 0.54 - 0.46*math.Cos(float64(x*2)*math.Pi/float64(n))
 }
 
 func window(content []float64, windowFunction func(int, int) float64) {
