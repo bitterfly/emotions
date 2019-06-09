@@ -54,13 +54,42 @@ func PlotSignal(data []float64, file string) {
 
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
-		// s[i].X = float64(math.Log(float64(i) + 0.1))
-		s[i].X = math.Log(float64(i) + 1)
-		s[i].Y = data[i]
+		s[i].X = float64(i)
+		// s[i].X = math.Log(float64(i) + 1)
+		// s[i].Y = data[i]
+		s[i].Y = math.Log(data[i])
 	}
 
 	line, _ := plotter.NewLine(s)
-	// line.Color = color.RGBA{0, 232, 88, 255}
+	line.Color = color.RGBA{0, 100, 88, 255}
+
+	plots.Add(line)
+
+	if err := plots.Save(64*vg.Inch, 32*vg.Inch, file); err != nil {
+		panic(err)
+	}
+}
+
+// PlotSignal draws a graph of the given signal and saves it into a file
+func PlotSignal2(data []Complex, file string) {
+	plots, err := plot.New()
+	if err != nil {
+		panic(err)
+	}
+
+	s := make(plotter.XYs, len(data))
+	for i := 0; i < len(data); i++ {
+		if i == 0 {
+			s[i].X = 0
+		} else {
+			s[i].X = float64(i)
+			// s[i].X = math.Log(float64(i))
+		}
+		s[i].Y = math.Log(Power(data[i]))
+		// s[i].Y = Power(data[i])
+	}
+
+	line, _ := plotter.NewLine(s)
 	line.Color = color.RGBA{0, 100, 88, 255}
 
 	plots.Add(line)
