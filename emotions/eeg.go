@@ -19,7 +19,7 @@ type EegClusterable struct {
 }
 
 var waveRanges = [][2]float64{
-	[2]float64{4.0, 8.0},   //Θ
+	[2]float64{4.0, 8.0},   // δ
 	[2]float64{8.0, 12.0},  // α
 	[2]float64{12.0, 30.0}, // β
 	[2]float64{30.0, 50.0}, // γ
