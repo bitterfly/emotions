@@ -71,28 +71,36 @@ func PlotSignal(data []float64, file string) {
 }
 
 // PlotSignal draws a graph of the given signal and saves it into a file
-func PlotSignal2(data []Complex, file string) {
+func PlotSignal2(c []Complex, data []float64, file string) {
 	plots, err := plot.New()
 	if err != nil {
 		panic(err)
 	}
 
-	s := make(plotter.XYs, len(data))
-	for i := 0; i < len(data); i++ {
-		if i == 0 {
-			s[i].X = 0
-		} else {
-			s[i].X = float64(i)
-			// s[i].X = math.Log(float64(i))
-		}
-		s[i].Y = math.Log(Power(data[i]))
-		// s[i].Y = Power(data[i])
+	s := make(plotter.XYs, len(c))
+	for i := 0; i < len(c); i++ {
+		s[i].X = float64(i)
+		// s[i].Y = math.Log(Power(c[i]))
+		s[i].Y = Power(c[i])
 	}
 
 	line, _ := plotter.NewLine(s)
 	line.Color = color.RGBA{0, 100, 88, 255}
+	line.Width = vg.Points(20)
 
 	plots.Add(line)
+
+	s = make(plotter.XYs, len(data))
+	for i := 0; i < len(data); i++ {
+		s[i].X = float64(i)
+		s[i].Y = data[i]
+	}
+	line2, _ := plotter.NewLine(s)
+	// exp.Width = vg.Points(2)
+	line2.Width = vg.Points(40)
+	line2.Color = color.RGBA{255, 60, 88, 255}
+
+	plots.Add(line2)
 
 	if err := plots.Save(64*vg.Inch, 32*vg.Inch, file); err != nil {
 		panic(err)
