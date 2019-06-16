@@ -228,7 +228,6 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 		exp += (xi[i] - expectation[i]) * (xi[i] - expectation[i]) / variance[i]
 	}
 
-	// return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + math.Log(getDeterminant(variance)))
 	return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + getLogDeterminant(variance))
 	// return log of this
 	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
