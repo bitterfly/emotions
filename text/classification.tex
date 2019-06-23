@@ -2,6 +2,7 @@
 
 \begin{document}
 \section{Класификация}
+\label{chap:em}
 
 След като сме избрали характеристичните вектори, които ще извличаме по подаден файл, трябва да можем да ги класифицираме по някакъв начин.
 В \cite{survey} са разгледани и сравнени различни методи за класификация. Макар че невронните мрежи са по-често използвани в последните публикации в областта,
@@ -25,28 +26,41 @@ $p(x) = \sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x\mid \mu_k^e, \Sigma_k^e)$,
 
 Алгоритъмът за получаване на въпросните $\pi, \mu, \Sigma$ е следният.
 
-Нека$X=(x_1,...x_n)$ са всички характеристични вектори с етикет $e$. Искаме правдоподобието на тези вектори, спрямо $(\pi^e, \mu^e, \Sigma^e)$ да е възможно най-голямо.
-
-Тоест искаме да оптимизираме
+Нека $X=(x_1,...x_n)$ са всички характеристични вектори с етикет $e$. Искаме правдоподобието на тези вектори, спрямо $(\pi^e, \mu^e, \Sigma^e)$ да е възможно най-голямо. Тоест искаме да оптимизираме
 
 $p(X|(\pi^e, \mu^e, \Sigma^e)) = \prod\limits_{i=1}^{n} \sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x_i\mid \mu_k^e, \Sigma_k^e)$,
 
 За по-голямо удобство, нека разглеждаме $\log(p(X|(\pi^e, \mu^e, \Sigma^e)))$. Тоест имаме
-$\log(p(X|(\pi^e, \mu^e, \Sigma^e))) = log(\prod\limits_{i=1}^{n} \sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x_i\mid \mu_k^e, \Sigma_k^e)) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x_i\mid \mu_k^e, \Sigma_k^e)))$,
+$\log(p(X|(\pi^e, \mu^e, \Sigma^e))) = log(\prod\limits_{i=1}^{n} \sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x_i\mid \mu_k^e, \Sigma_k^e)) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k^e \mathcal{N}(x_i\mid \mu_k^e, \Sigma_k^e)))$, 
 
 Нека сме фиксирали някаква емоция. Оптимизационната задача трябва да отчита ограниченията за $\pi$, затова има вида:
 
 $L(\pi, \mu, \Sigma) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k \mathcal{N}(x_i\mid \mu_k, \Sigma_k))) + \lambda(\sum\limits_{k=1}^K \pi_k - 1)$
 
-$\cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}}$ 
-
-Тъй като $\mathcal{N}(x_i, \mu_j, \Sigma_j) = \exp\B{\frac{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}{\sqrt{(2\pi)^{39}|\Sigma_j|}}}$, производната по $\mu_j$ ще е равна на:
-
-$\cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j}= \exp\B{\frac{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}{\sqrt{(2\pi)^{39}|\Sigma_j|}}} \frac{-\frac{1}{2}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}$
-
-Използваме, че $\Sigma_j$ е диагонална матрица, а
-
-$\frac{\partial x^T A x}{\partial x} = 2Ax$, ако $x \in \mathbb{R}^M, A\in \mathbb{R}^M\times\mathbb{R}^M$
-
-
+За да максимизираме очакването, търсим решения съответно на \\$\cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j}, \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \Sigma_j}$ и $\cfrac{L(\pi, \mu, \Sigma)}{\partial \pi_j}$, нека ги кръстим съответно $\mu_j^{new}, \Sigma_j^{new}, \pi_j^{new}$. В \autoref{appendix:em} е показано, че 
+\begin{flalign*}
+    & \mu_j^{new} = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}} & \\
+    & \Sigma_j^{new} = \begin{cases}
+        \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{it} - \mu_{js})^2}{\sum\limits_{i=1}^N \gamma_{ij}}, & t==s \\
+        0, & \text{иначе}
+    \end{cases} & \\
+    & \pi_j^{new} = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}}{N}, &\text{където } \gamma_{ij} = \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} &
+\end{flalign*}
+Алгоритъмът за максимизиране на очакването е следният:
+\begin{exampleenv}
+    \begin{enumerate}
+        \item Разделяме $X=(x_1,...,x_n)$ на $K$ клъстера и смятаме първоначалните $\mu_j, \Sigma_k$, а $\pi_j = \cfrac{\#_j}{|X|}$, където $\#_j = $ броят на векторите в $j-$тия клъстер 
+        \item Пресмятаме $\gamma_{ij} = \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}$ с текущите стойности на модела. $\gamma_{ij}$ казва каква ,,тежест'' пада върху $j-$тата Гаусиана
+        \item Пресмятаме 
+        \begin{flalign*}
+            & \mu_j^{new} = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}} & \Sigma_j^{new} = \begin{cases}
+                \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{it} - \mu_{js}^new)^2}{\sum\limits_{i=1}^N \gamma_{ij}}, & t==s \\
+                0, & \text{иначе}
+            \end{cases} & \\
+            & \pi_j^{new} = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}}{N}&
+        \end{flalign*}
+        \item Пресмятаме правдоподобието $\log(p(X|(\pi^e, \mu^e, \Sigma^e)))$
+        \item Ако условието за терминиране е изпълнено, то приключваме изпълнението с изход $(\pi, \mu, \Sigma)$, иначе се връщаме на $2.$
+    \end{enumerate}
+\end{exampleenv}
 \end{document}

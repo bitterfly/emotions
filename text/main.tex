@@ -35,6 +35,7 @@
 \usepackage{multicol}
 \usepackage{mathtools}
 \usepackage{subfiles}
+\usepackage{cancel}
 \usepackage{pgfplots}
 \usepackage{tikz}
 \usetikzlibrary{external}
@@ -113,6 +114,23 @@
 \makeatother
 
 \usepackage{tabularx}
+
+\usepackage[framemethod=tikz]{mdframed}
+\newenvironment{exampleenv}
+    {
+        \begin{samepage}
+        \tikzexternaldisable
+        \begin{mdframed}[%
+            backgroundcolor=Greenish!10,
+            linecolor=Greenish,
+            roundcorner=1mm,
+        ]
+    }
+    {
+        \end{mdframed}
+        \tikzexternalenable
+        \end{samepage}
+    }
 
 \newcommand{\B}[1]{\left(#1\right)}
 \newcommand{\Q}[1]{\left[#1\right]}

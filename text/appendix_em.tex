@@ -1,0 +1,156 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Приложение към \nameref{chap:em}}
+\label{appendix:em}
+
+$0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}}$ 
+
+Тъй като $\mathcal{N}(x_i, \mu_j, \Sigma_j) = \frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}$, производната по $\mu_j$ ще е равна на:
+
+\begin{flalign*}
+    \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} & = \partial\Q{\frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}}/\partial \mu_j & \\
+    & = \frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}} \B{-\frac{1}{2}  2 \Sigma_j^{-1} (x_i - \mu_j)(-1)} & \\
+    & = \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j) &
+\end{flalign*}
+
+Следователно:
+\begin{flalign*}
+    & 0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} = \sum\limits_{i=1}^{n} \Q{\cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
+    & \longleftrightarrow & \\
+    & \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}x_i}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} } = \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}\mu_j}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} }& 
+\end{flalign*}
+
+Нека означим $\gamma_{ij} = \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}$. Тогава имаме:
+
+\begin{flalign*}
+    & \sum\limits_{i=1}^N \gamma_{ij}x_i = \mu_j \sum\limits_{i=1}^N \gamma_{ij}& \\
+    & \mu_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}}  &
+\end{flalign*}
+
+================================================
+
+$L(\pi, \mu, \Sigma) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k \mathcal{N}(x_i\mid \mu_k, \Sigma_k))) + \lambda(\sum\limits_{k=1}^K \pi_k - 1)$
+
+\begin{flalign*}
+    & 0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \Sigma_{j}} = \sum\limits_{i=1}^n \Q{ \cfrac{\pi_j \cfrac{\partial\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \Sigma_j}}{ \sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k) }} & 
+\end{flalign*}
+
+$\Sigma_j = (\sigma_{ij})_{m\times m}$ и $\sigma_{ij} = 0$, ако $i\neq j$. Да разгледаме производната по произволен елемент $\sigma_{ts}$:
+
+\begin{flalign*}
+    & \cfrac{\partial\Q{(x_i - \mu_j)^T\Sigma_j^{-1}(x_i - \mu_j)}}{\partial \sigma_{ts}} = & \\
+    & = \cfrac{\partial\B{\B{(x_{i1} - \mu_{j1}), (x_{i2} - \mu_{j2}), \dotso (x_{im} - \mu_{jm})}
+    \begin{pmatrix}
+        \cfrac{1}{\sigma_{11}} & 0 & \dots & 0 \\
+        0 & \cfrac{1}{\sigma_{22}} & \dots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \dots & \cfrac{1}{\sigma_{mm}}
+    \end{pmatrix}
+    \begin{pmatrix}
+        (x_{i1} - \mu_{j1}) \\
+        (x_{i2} - \mu_{j2}) \\
+        \vdots\\
+        (x_{im} - \mu_{jm})
+    \end{pmatrix} }}{\partial \sigma_{ts}} = & \\
+    & = \cfrac{\partial\B{\cfrac{(x_{i1} - \mu_{j1})^2}{\sigma_{11}} + \cfrac{(x_{i2} - \mu_{j2})^2}{\sigma_{22}} + \dotso + \cfrac{(x_{im} - \mu_{jm})^2}{\sigma_{mm}} }}{\partial \sigma_{ts}} = & \\
+    & = \begin{cases}
+        0, & t \neq s \\
+        \cfrac{-(x_{it} - \mu_{jt})^2}{\sigma_{tt}^2}, & t = s
+    \end{cases} &
+\end{flalign*}
+
+\begin{flalign*}
+    & \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \sigma_{ts}} = \cfrac{\partial \Q{\cfrac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_t)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}}}{\partial \sigma_{ts}} & \\
+    & = \cfrac{\cfrac{\delta\Q{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_t)}} }{\partial \sigma_{ts}}\sqrt{(2\pi)^{39}|\Sigma_j|} - \exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_t)} \cfrac{\delta\Q{ \sqrt{(2\pi)^{39}|\Sigma_j|} } }{\partial \sigma_{ts}}}{\B{\sqrt{(2\pi)^{39}|\Sigma_j|}}^2} & \\
+    & = \quad\cfrac{ \exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_t)}\frac{1}{2}\cfrac{(x_{it} - \mu_{jt})^2}{\sigma_{tt}^2} \sqrt{(2\pi)^{39}|\Sigma_j|} }{\B{\sqrt{(2\pi)^{39}|\Sigma_j|}}^2} & \\\\
+    & \quad -\cfrac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_t)}\frac{1}{2}\cfrac{(2\pi)^{39}|\Sigma_j|}{ \sqrt{(2\pi)^{39}|\Sigma_j|} \sigma_{ts} }}{\B{\sqrt{(2\pi)^{39}|\Sigma_j|}}^2} = & \\\\
+    & \cfrac{\mathcal{N}(x_i, \mu_j, \Sigma_j)(x_{it} - \mu_{jt})^2}{2\sigma_{tt}^2} - \cfrac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{2\sigma_{tt}} = \cfrac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{2\sigma_{tt}^2}\Q{(x_{it} - \mu_{jt})^2 - \sigma_{tt}}  &
+\end{flalign*}
+
+\begin{flalign*}
+    & 0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \sigma^j_{tt}} = \sum\limits_{i=1}^n \Q{ \cfrac{\pi_j \cfrac{\partial\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \sigma^j_{tt}}}{ \sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k) }} & \\\\
+    & = \sum\limits_{i=1}^N \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j) \Q{(x_{it} - \mu_{jt})^2 - \sigma_{tt}}}{2\sigma_{tt}^2 \sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}  & \\\\
+    & \longleftrightarrow & \\\\
+    & \sum\limits_{i=1}^N \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)(x_{it} - \mu_{jt})^2}{\cancel{2\sigma_{tt}^2} \sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} = \sum\limits_{i=1}^N \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j) \sigma_{tt}}{\cancel{2\sigma_{tt}^2} \sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} & \\\\
+    & \sum\limits_{i=1}^N \gamma_{ij} (x_{it} - \mu_{jt})^2 = \sigma_{tt}\sum\limits_{i=1}^N \gamma_{ij} & \\\\
+    & \sigma_{tt} = \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{it} - \mu_{jt})^2}{\sum\limits_{i=1}^N \gamma_{ij}} & \\\\
+    & \Sigma_j = 
+    \begin{pmatrix}
+        \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{i1} - \mu_{j1})^2}{\sum\limits_{i=1}^N \gamma_{ij}} & 0 & \dots & 0 \\
+        0 & \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{i2} - \mu_{j2})^2}{\sum\limits_{i=1}^N \gamma_{ij}} & \dots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \dots & \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{im} - \mu_{jm})^2}{\sum\limits_{i=1}^N \gamma_{ij}}
+    \end{pmatrix} & \\\\
+    & = \begin{cases}
+        \cfrac{\sum\limits_{i=1}^N \gamma_{ij} (x_{it} - \mu_{js})^2}{\sum\limits_{i=1}^N \gamma_{ij}}, & t==s \\
+        0, & \text{иначе}
+    \end{cases} &
+\end{flalign*}
+
+================================================
+
+\begin{flalign*}
+    0 & = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \pi_j} = \cfrac{\partial \Q{\sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k \mathcal{N}(x_i\mid \mu_k, \Sigma_k))) + \lambda(\sum\limits_{k=1}^K \pi_k - 1)}}{\partial \pi_j} = & \\
+    & = \sum\limits_{i=1}^N  \Q{\frac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} + \lambda = \pi_j \B{\sum\limits_{i=1}^N  \Q{\frac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} + \lambda} &\\
+    & \longleftrightarrow & \\
+    & -\lambda\pi_j = \pi_j \sum\limits_{i=1}^N  \Q{\frac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
+    & -\lambda\sum_{j=1}^K \pi_j = \sum\limits_{j=1}^K \pi_j \sum\limits_{i=1}^N  \Q{\frac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} &
+\end{flalign*}
+Използваме, че $\sum\limits_{j=1}^K \pi_j = 1$ и разменяме местата на сумите вдясно:
+
+\begin{flalign*}
+    & - \lambda = \sum\limits_{i=1}^N\Q{\cfrac{\sum\limits_{j=1}^K \pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} } = \sum\limits_{i=1}^N 1& \\
+    & \lambda = -N &
+\end{flalign*}
+
+
+Заместваме $\lambda = -N$ в 
+
+\begin{flalign*}
+    & -\lambda\pi_j = \pi_j \sum\limits_{i=1}^N  \Q{\frac{\mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
+    & N\pi_j = \sum\limits_{i=1}^N  \Q{\frac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
+    & N\pi_j = \sum\limits_{i=1}^N \gamma_{ij} & \\
+    & \longleftrightarrow &\\ 
+    & \pi_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}}{N} &\\ 
+\end{flalign*}
+
+
+================================================
+
+Използваме, че $\Sigma_j$ е диагонална матрица, а
+
+$\frac{\partial x^T A x}{\partial x} = 2Ax$, ако $x \in \mathbb{R}^m, A\in \mathbb{R}^m\times\mathbb{R}^m$
+
+Да разгледаме производната по някоя от координатите - $x_k$
+\begin{flalign*}
+    \frac{\partial x^T A x}{\partial x_k}  & = \frac{
+        \partial \B{x_1, x_2, \dotso x_m}
+        \begin{pmatrix}
+            a_{11} & 0 & \dots & 0 \\
+            0 & a_{22} & \dots & 0 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \dots & a_{mm}
+        \end{pmatrix}
+        \begin{pmatrix}
+            x_{1} \\
+            x_{2} \\
+            \vdots \\
+            x_{m}
+        \end{pmatrix}}{\partial x_k} & \\
+        & = \frac{\partial\B{x_1 a_{11}, x_2 a_{22}, \dotso x_m a_{mm}}
+        \begin{pmatrix}
+            x_{1}\\
+            x_{2}\\
+            \vdots \\
+            x_{m}
+        \end{pmatrix}}{\partial x_k} & \\
+        & = \frac{\partial \B{x_1^2 a_{11} + x_2^2 a_{22} + \dotso + x_m ^ 2 a_{mm} }}{\partial x_k} = 2x_k a_{kk}
+\end{flalign*} 
+
+Това означава, че:
+\begin{flalign*}
+    & \frac{\partial x^T A x}{\partial x} = \B{2x_1 a_{11}, 2x_2 a_{22} \dotso 2x_m a_{mm}} = 2 A x &
+\end{flalign*}
+
+
+\end{document}
