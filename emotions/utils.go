@@ -56,8 +56,8 @@ func PlotSignal(data []float64, file string) {
 	for i := 0; i < len(data); i++ {
 		s[i].X = float64(i)
 		// s[i].X = math.Log(float64(i) + 1)
-		// s[i].Y = data[i]
-		s[i].Y = math.Log(data[i])
+		s[i].Y = data[i]
+		// s[i].Y = math.Log(data[i])
 	}
 
 	line, _ := plotter.NewLine(s)

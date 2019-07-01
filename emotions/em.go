@@ -32,6 +32,14 @@ type EmotionGausianMixure struct {
 // GMM returns the k gaussian mixures for the given data
 func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
+
+	// f, _ := os.Create("/tmp/danni")
+	// defer f.Close()
+	// fmt.Fprintf(f, "[%d][%d]\n", len(mfccsFloats), len(mfccsFloats[0]))
+	// for i, m := range mfccsFloats {
+	// 	fmt.Fprintf(f, "[%d] %v\n", i, m)
+	// }
+
 	fmt.Fprintf(os.Stderr, "\n==============EM================\n")
 
 	gmixture := make(GaussianMixture, k, k)
@@ -54,6 +62,16 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 
 	f, _ := os.Create("/tmp/foo")
 	defer f.Close()
+
+	fmt.Fprintf(f, "Expectation0\n")
+	for j := 0; j < k; j++ {
+		fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Expectations)
+	}
+
+	fmt.Fprintf(f, "Variance0\n")
+	for j := 0; j < k; j++ {
+		fmt.Fprintf(f, "%d %v\n", j, gMixture[j].Variances)
+	}
 
 	for step < 200 {
 		fmt.Fprintf(f, "================= %d =================\n", step)
@@ -207,7 +225,9 @@ func EvaluateVector(X []float64, k int, g GaussianMixture) float64 {
 	return logLikelihoodFloat(X, k, g)
 }
 
-func TestGMM(emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure) map[string]int {
+func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure) (int, int, int) {
+	fmt.Printf("%s\t", emotion)
+
 	k := len(egmms[0].GM)
 
 	counters := make(map[string]int)
@@ -219,7 +239,30 @@ func TestGMM(emotions []string, coefficient [][]float64, egmms []EmotionGausianM
 		best := FindBestGaussian(m, k, egmms)
 		counters[egmms[best].Emotion]++
 	}
-	return counters
+
+	sum := 0
+	for _, e := range emotions {
+		fmt.Printf("%d\t", counters[e])
+		sum += counters[e]
+	}
+	fmt.Printf("\n")
+
+	return correct(emotion, counters), counters[emotion], sum
+}
+
+func correct(emotion string, counters map[string]int) int {
+	maxV := 0
+	maxE := ""
+	for e, v := range counters {
+		if v > maxV {
+			maxV = v
+			maxE = e
+		}
+	}
+	if maxE == emotion {
+		return 1
+	}
+	return 0
 }
 
 func N(xi []float64, expectation []float64, variance []float64) float64 {

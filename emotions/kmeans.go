@@ -25,7 +25,18 @@ func (m MfccClusterisable) GetCluster() int32 {
 // and separates them into k clusters
 // then returns the means and variance of each cluster
 func KMeans(mfccsFloats [][]float64, k int) ([]MfccClusterisable, [][]float64, [][]float64, []int) {
-	_, variances := getμAndσ(mfccsFloats)
+	e, variances := getμAndσ(mfccsFloats)
+	f, _ := os.Create("/tmp/danni")
+	defer f.Close()
+
+	fmt.Fprintf(f, "===EXP=====\n")
+	for i, ee := range e {
+		fmt.Fprintf(f, "i: %d e: %v\n", i, ee)
+	}
+	fmt.Fprintf(f, "===VAR=====\n")
+	for i, vv := range variances {
+		fmt.Fprintf(f, "i: %d v: %v\n", i, vv)
+	}
 
 	mfccs := make([]MfccClusterisable, len(mfccsFloats), len(mfccsFloats))
 	for i, mfcc := range mfccsFloats {
@@ -137,6 +148,20 @@ func getClustersμσcount(mfccs []MfccClusterisable, k int) ([][]float64, [][]fl
 			expectations[i][j] /= float64(numInCluster[i])
 			expectationsSquared[i][j] /= float64(numInCluster[i])
 			variances[i][j] = expectationsSquared[i][j] - expectations[i][j]*expectations[i][j]
+		}
+	}
+
+	fmt.Printf("numInCluster: %v\n", numInCluster)
+	var c int32
+	for i := 0; i < len(numInCluster); i++ {
+		if numInCluster[i] == 1 {
+			c = int32(i)
+			fmt.Printf("%d\n", i)
+		}
+	}
+	for _, m := range mfccs {
+		if m.clusterID == c {
+			fmt.Printf("%v\n", m)
 		}
 	}
 

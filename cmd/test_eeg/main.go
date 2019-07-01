@@ -24,7 +24,7 @@ func main() {
 		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[1]))
 	}
 
-	trainFile := os.Args[3]
+	trainDir := os.Args[3]
 	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[4], false)
 
 	frameLen := 200
@@ -35,12 +35,12 @@ func main() {
 	}
 	switch classifierType {
 	case "knn":
-		err = emotions.ClassifyKNN(trainFile, bucketSize, frameLen, frameStep, emotionFiles)
+		err = emotions.ClassifyKNN(trainDir, bucketSize, frameLen, frameStep, emotionFiles)
 		if err != nil {
 			panic(err.Error())
 		}
 	case "gmm":
-		err = emotions.ClassifyGMM(trainFile, bucketSize, frameLen, frameStep, emotionFiles)
+		err = emotions.ClassifyGMM(trainDir, bucketSize, frameLen, frameStep, emotionFiles)
 	default:
 		panic(fmt.Sprintf("Unknown classifier %s", classifierType))
 	}

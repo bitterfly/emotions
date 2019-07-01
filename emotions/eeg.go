@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -103,20 +104,26 @@ func fourierElectrode(frames [][]float64) [][]Complex {
 	return fouriers
 }
 
-// getSignificantFreq takes fourier coefficients for each frame for a electrode
-// and returns an array frameNum x 4 in which the alpha, beta, gamma, theta accumulated magnitudes are stored
+// getSignificantFreq takes fourier coefficients for each frame for an electrode
+// and returns an array frameNum x 4 in which the alpha, beta, gamma, theta accumulated powers are stored
 func getSignificantFreq(coefficients [][]Complex) [][]float64 {
 	sFreq := make([][]float64, len(coefficients), len(coefficients))
 
 	for i := 0; i < len(coefficients); i++ {
 		sFreq[i] = make([]float64, 4, 4)
 		for j := 0; j < len(coefficients[i]); j++ {
-			magnitude := Magnitude(coefficients[i][j])
+			power := Power(coefficients[i][j])
 			w := getRange(IndToFreq(j, 500, len(coefficients[0])))
 			if w == -1 {
 				continue
 			}
-			sFreq[i][w] += magnitude
+			sFreq[i][w] += power
+		}
+	}
+
+	for _, s := range sFreq {
+		for j := 0; j < len(s); j++ {
+			s[j] = math.Log(s[j])
 		}
 	}
 
@@ -128,12 +135,12 @@ func getWavesMean(coefficients [][]Complex) []float64 {
 	for i := 0; i < len(coefficients); i++ {
 		for j := 0; j < len(coefficients[0]); j++ {
 
-			magnitude := Magnitude(coefficients[i][j])
+			power := Power(coefficients[i][j])
 			w := getRange(IndToFreq(j, 500, len(coefficients[0])))
 			if w == -1 {
 				continue
 			}
-			means[w] += magnitude
+			means[w] += power
 		}
 	}
 
@@ -303,7 +310,6 @@ func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFi
 // then cuts the data for each electrode into frames
 // For each frames we compute Fourier coefficients, then we accumulate these coefficients within the wave ranges
 // then we flip the result again, so we have the feature vectors which are numFrames x (numEl * 4)
-
 func getFourier(data [][]float64, frameLen int, frameStep int) [][]float64 {
 	fmt.Fprintf(os.Stderr, fmt.Sprintf("Data: %d x %d\n", len(data), len(data[0])))
 
@@ -312,8 +318,8 @@ func getFourier(data [][]float64, frameLen int, frameStep int) [][]float64 {
 
 	for i, d := range data {
 		frames := cutElectrodeIntoFrames(d, frameLen, frameStep, false)
-		fouriers := fourierElectrode(frames)
 
+		fouriers := fourierElectrode(frames)
 		elFouriers[i] = getSignificantFreq(fouriers)
 	}
 

@@ -20,6 +20,7 @@ func getData(bucketSize int, frameLen int, frameStep int, files []string, tag st
 	data := make([][]float64, 0, 100)
 	for i := range files {
 		current := emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)
+		// fmt.Printf("File: %s current: %v\n", files[i], current)
 		average := emotions.GetAverage(bucketSize, frameLen, len(current))
 		data = append(data, emotions.AverageSlice(current, average)...)
 	}
@@ -113,7 +114,7 @@ func main() {
 	}
 
 	frameLen := 200
-	frameStep := 150
+	frameStep := 200
 	k := 3
 
 	eegPositive, ok := arguments["eeg-positive"]

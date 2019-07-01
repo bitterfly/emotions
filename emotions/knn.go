@@ -176,21 +176,26 @@ func ClassifyGMM(trainSetFilename string, bucketSize int, frameLen int, frameSte
 		fileKeys = append(fileKeys, k)
 	}
 
+	correctFiles := make(map[string]int, len(fileKeys))
+	correctVectors := make(map[string]int, len(fileKeys))
+	sumVectors := make(map[string]int, len(fileKeys))
+
 	for _, emotion := range fileKeys {
 		for _, f := range emotionFiles[emotion] {
-			fmt.Printf("%s\t", emotion)
 			vec := GetFourierForFile(f, 19, frameLen, frameStep)
 			average := GetAverage(bucketSize, frameStep, len(vec))
 			averaged := AverageSlice(vec, average)
 
-			dict := TestGMM(fileKeys, averaged, trainSet)
-			keys := SortKeys(dict)
-
-			for _, k := range keys {
-				fmt.Printf("%d\t", dict[k])
-			}
-			fmt.Printf("\n")
+			boolCorrect, correctVector, sumVector := TestGMM(emotion, fileKeys, averaged, trainSet)
+			correctFiles[emotion] += boolCorrect
+			correctVectors[emotion] += correctVector
+			sumVectors[emotion] += sumVector
 		}
+	}
+	sort.Strings(fileKeys)
+	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	for _, emotion := range fileKeys {
+		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
 	}
 
 	return nil
