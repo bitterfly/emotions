@@ -311,8 +311,7 @@ func TrainEeg(eegPositiveFiles []string, eegNegativeFiles []string, eegNeutralFi
 // For each frames we compute Fourier coefficients, then we accumulate these coefficients within the wave ranges
 // then we flip the result again, so we have the feature vectors which are numFrames x (numEl * 4)
 func getFourier(data [][]float64, frameLen int, frameStep int) [][]float64 {
-	fmt.Fprintf(os.Stderr, fmt.Sprintf("Data: %d x %d\n", len(data), len(data[0])))
-
+	// fmt.Fprintf(os.Stderr, fmt.Sprintf("Data: %d x %d\n", len(data), len(data[0])))
 	// elFouriers is elNum x numFrames x 4(numWaves)
 	elFouriers := make([]([][]float64), len(data), len(data))
 

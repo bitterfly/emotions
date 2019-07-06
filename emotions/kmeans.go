@@ -152,16 +152,9 @@ func getClustersμσcount(mfccs []MfccClusterisable, k int) ([][]float64, [][]fl
 	}
 
 	fmt.Printf("numInCluster: %v\n", numInCluster)
-	var c int32
 	for i := 0; i < len(numInCluster); i++ {
 		if numInCluster[i] == 1 {
-			c = int32(i)
 			fmt.Printf("%d\n", i)
-		}
-	}
-	for _, m := range mfccs {
-		if m.clusterID == c {
-			fmt.Printf("%v\n", m)
 		}
 	}
 

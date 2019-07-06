@@ -20,7 +20,6 @@ func getData(bucketSize int, frameLen int, frameStep int, files []string, tag st
 	data := make([][]float64, 0, 100)
 	for i := range files {
 		current := emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)
-		// fmt.Printf("File: %s current: %v\n", files[i], current)
 		average := emotions.GetAverage(bucketSize, frameLen, len(current))
 		data = append(data, emotions.AverageSlice(current, average)...)
 	}
@@ -45,16 +44,16 @@ func marshallToFile(bucketSize int, frameLen int, frameStep int, filename string
 	return err
 }
 
-func KNN(eegPositive []string, eegNegative []string, eegNeutral []string, outputFile string, bucketSize int, frameLen int, frameStep int) error {
-	if fileExists(outputFile) {
-		os.Remove(outputFile)
+func KNN(eegPositive []string, eegNegative []string, eegNeutral []string, outputDirname string, bucketSize int, frameLen int, frameStep int) error {
+	if fileExists(outputDirname) {
+		os.Remove(outputDirname)
 	}
 
-	err := marshallToFile(bucketSize, frameLen, frameStep, outputFile, eegPositive, eegNegative, eegNeutral)
+	err := marshallToFile(bucketSize, frameLen, frameStep, path.Join(outputDirname, "emotion.knn"), eegPositive, eegNegative, eegNeutral)
 	return err
 }
 
-func marshallGMM(outputFilename string, emotion string, data [][]float64, k int) error {
+func marshallGMM(outputDirname string, emotion string, data [][]float64, k int) error {
 	egm := emotions.EmotionGausianMixure{
 		Emotion: emotion,
 		GM:      emotions.GMM(data, k),
@@ -65,38 +64,37 @@ func marshallGMM(outputFilename string, emotion string, data [][]float64, k int)
 		return fmt.Errorf(fmt.Sprintf("Error when marshaling %s with k %d\n", emotion, k))
 	}
 
-	return ioutil.WriteFile(outputFilename, bytes, 0644)
+	return ioutil.WriteFile(outputDirname, bytes, 0644)
 }
 
-func GMM(eegPositive []string, eegNegative []string, eegNeutral []string, outputFile string, k int, bucketSize int, frameLen int, frameStep int) error {
+func GMM(eegPositive []string, eegNegative []string, eegNeutral []string, outputDir string, k int, bucketSize int, frameLen int, frameStep int) error {
 	positive := getData(bucketSize, frameLen, frameStep, eegPositive, "eeg-positive")
 	negative := getData(bucketSize, frameLen, frameStep, eegNegative, "eeg-negative")
 	neutral := getData(bucketSize, frameLen, frameStep, eegNeutral, "eeg-neutral")
 
-	if !fileExists(outputFile) {
-		os.Mkdir(outputFile, 0775)
+	if !fileExists(outputDir) {
+		os.Mkdir(outputDir, 0775)
 	}
 
-	err := marshallGMM(path.Join(outputFile, "positive.gmm"), "eeg-positive", positive.Data, k)
+	err := marshallGMM(path.Join(outputDir, "positive.gmm"), "eeg-positive", positive.Data, k)
 	if err != nil {
 		return err
 	}
-	err = marshallGMM(path.Join(outputFile, "negative.gmm"), "eeg-negative", negative.Data, k)
+	err = marshallGMM(path.Join(outputDir, "negative.gmm"), "eeg-negative", negative.Data, k)
 	if err != nil {
 		return err
 	}
-	return marshallGMM(path.Join(outputFile, "neutral.gmm"), "eeg-neutral", neutral.Data, k)
+	return marshallGMM(path.Join(outputDir, "neutral.gmm"), "eeg-neutral", neutral.Data, k)
 }
 
 func main() {
-
 	//if bucket size is:
 	// 0 take feature vectors every 200ms
 	// 1 take only one vector for the whole file
 	// n, n ≥ 2 take feature vector every n ms
 
 	if len(os.Args) < 3 {
-		panic("go run main.go <type> <bucket-size> <output-file> <input-file>\n<input-file>:<emotion>	<csv-file>")
+		panic("go run main.go <type> <bucket-size> <output-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	classifierType := os.Args[1]
@@ -106,7 +104,7 @@ func main() {
 		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[1]))
 	}
 
-	outputFile := os.Args[3]
+	outputDir := os.Args[3]
 	arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[4], false)
 
 	if err != nil {
@@ -114,8 +112,8 @@ func main() {
 	}
 
 	frameLen := 200
-	frameStep := 200
-	k := 3
+	frameStep := 150
+	k := 4
 
 	eegPositive, ok := arguments["eeg-positive"]
 	if !ok {
@@ -132,12 +130,12 @@ func main() {
 
 	switch classifierType {
 	case "knn":
-		err = KNN(eegPositive, eegNegative, eegNeutral, outputFile, bucketSize, frameLen, frameStep)
+		err = KNN(eegPositive, eegNegative, eegNeutral, outputDir, bucketSize, frameLen, frameStep)
 		if err != nil {
 			panic(err)
 		}
 	case "gmm":
-		err = GMM(eegPositive, eegNegative, eegNeutral, outputFile, k, bucketSize, frameLen, frameStep)
+		err = GMM(eegPositive, eegNegative, eegNeutral, outputDir, k, bucketSize, frameLen, frameStep)
 	default:
 		panic(fmt.Sprintf("Unknown classifier %s", classifierType))
 	}

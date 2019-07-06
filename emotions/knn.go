@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math"
-	"os"
 	"sort"
 )
 
@@ -35,7 +34,7 @@ func UnmarshallGMMEeg(filename string) ([]EmotionGausianMixure, error) {
 
 func GetμAndσTagged(tagged []Tagged) ([]float64, []float64) {
 	featureVectorSize := len(tagged[0].Data[0])
-	fmt.Fprintf(os.Stderr, "FeatureVectorSize: %d\n", featureVectorSize)
+	// fmt.Fprintf(os.Stderr, "FeatureVectorSize: %d\n", featureVectorSize)
 
 	variances := make([]float64, featureVectorSize, featureVectorSize)
 
@@ -56,7 +55,7 @@ func GetμAndσTagged(tagged []Tagged) ([]float64, []float64) {
 		numVectors += len(tagged[t].Data)
 	}
 
-	fmt.Fprintf(os.Stderr, "numVectors: %d\n", numVectors)
+	// fmt.Fprintf(os.Stderr, "numVectors: %d\n", numVectors)
 	for j := 0; j < featureVectorSize; j++ {
 		expectation[j] /= float64(numVectors)
 		expectationSquared[j] /= float64(numVectors)
@@ -64,8 +63,8 @@ func GetμAndσTagged(tagged []Tagged) ([]float64, []float64) {
 		variances[j] = expectationSquared[j] - expectation[j]*expectation[j]
 	}
 
-	fmt.Fprintf(os.Stderr, "Expectations: %d\n", len(expectation))
-	fmt.Fprintf(os.Stderr, "Variances: %d\n", len(variances))
+	// fmt.Fprintf(os.Stderr, "Expectations: %d\n", len(expectation))
+	// fmt.Fprintf(os.Stderr, "Variances: %d\n", len(variances))
 	return expectation, variances
 }
 
@@ -86,54 +85,49 @@ func findClosest(v []float64, trainSet []Tagged, trainVar []float64) string {
 	return minDistTag
 }
 
-func KNN(vectors [][]float64, trainSet []Tagged, trainVar []float64) (map[string]int, string) {
-	freqMap := make(map[string]int)
-	for t := range trainSet {
-		freqMap[trainSet[t].Tag] = 0
+func testKNN(emotion string, emotions []string, vectors [][]float64, trainSet []Tagged, trainVar []float64) (int, int, int) {
+	fmt.Printf("%s\t", emotion)
+
+	counters := make(map[string]int)
+	for _, e := range emotions {
+		counters[e] = 0
 	}
 
 	for v := range vectors {
-		freqMap[findClosest(vectors[v], trainSet, trainVar)]++
+		counters[findClosest(vectors[v], trainSet, trainVar)]++
 	}
 
-	max := 0
-	maxe := ""
-	for e, f := range freqMap {
-		if f > max {
-			max = f
-			maxe = e
-		}
-
+	sum := 0
+	for _, e := range emotions {
+		fmt.Printf("%d\t", counters[e])
+		sum += counters[e]
 	}
-	return freqMap, maxe
+	fmt.Printf("\n")
+
+	return correct(emotion, counters), counters[emotion], sum
 }
 
-func ClassifyOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
-	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
-	average := GetAverage(bucketSize, frameStep, len(vec))
-	averaged := AverageSlice(vec, average)
-	_, mc := KNN(averaged, trainSet, trainVar)
-	switch mc {
-	case "eeg-neutral":
-		return 0
-	case "eeg-positive":
-		return 1
-	case "eeg-negative":
-		return -1
-	}
-	return 0
-}
+// func ClassifyOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
+// 	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
+// 	average := GetAverage(bucketSize, frameStep, len(vec))
+// 	averaged := AverageSlice(vec, average)
+// 	_, mc := testKNN(averaged, trainSet, trainVar)
+// 	switch mc {
+// 	case "eeg-neutral":
+// 		return 0
+// 	case "eeg-positive":
+// 		return 1
+// 	case "eeg-negative":
+// 		return -1
+// 	}
+// 	return 0
+// }
 
 func ClassifyKNN(trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
 	trainSet, err := UnmarshallKNNEeg(trainSetFilename)
 	if err != nil {
 		return err
 	}
-
-	for i := range trainSet {
-		fmt.Fprintf(os.Stderr, "Tag: %s, len: %d x %d\n", trainSet[i].Tag, len(trainSet[i].Data), len(trainSet[i].Data[0]))
-	}
-
 	_, trainVar := GetμAndσTagged(trainSet)
 
 	fileKeys := make([]string, 0, len(emotionFiles))
@@ -142,24 +136,27 @@ func ClassifyKNN(trainSetFilename string, bucketSize int, frameLen int, frameSte
 	}
 	sort.Strings(fileKeys)
 
-	counts := make(map[string]int)
+	correctFiles := make(map[string]int, len(fileKeys))
+	correctVectors := make(map[string]int, len(fileKeys))
+	sumVectors := make(map[string]int, len(fileKeys))
 
 	for _, emotion := range fileKeys {
-		counts[emotion] = 0
 		for _, f := range emotionFiles[emotion] {
 			fmt.Printf("%s\t", emotion)
 			vec := GetFourierForFile(f, 19, frameLen, frameStep)
 			average := GetAverage(bucketSize, frameStep, len(vec))
 			averaged := AverageSlice(vec, average)
 
-			dict, _ := KNN(averaged, trainSet, trainVar)
-			keys := SortKeys(dict)
-
-			for _, k := range keys {
-				fmt.Printf("%d\t", dict[k])
-			}
-			fmt.Printf("\n")
+			boolCorrect, correctVector, sumVector := testKNN(emotion, fileKeys, averaged, trainSet, trainVar)
+			correctFiles[emotion] += boolCorrect
+			correctVectors[emotion] += correctVector
+			sumVectors[emotion] += sumVector
 		}
+	}
+	sort.Strings(fileKeys)
+	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	for _, emotion := range fileKeys {
+		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
 	}
 
 	return nil

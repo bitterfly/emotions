@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		panic("go run main.go <bucket-size> <eeg-train-file> <input-file>\n<input-file>:<emotion>	<csv-file>")
+		panic("go run main.go <classifier-type> <bucket-size> <gmm-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	//if bucket size is:
