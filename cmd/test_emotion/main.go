@@ -28,24 +28,24 @@ func correct(emotion string, counters map[string]int) int {
 	return 0
 }
 
-func testEmotion(emotion string, data [][]float64, egms []emotions.EmotionGausianMixure) (int, int, int) {
-	fmt.Printf("%s\t", emotion)
+// func testEmotion(emotion string, data [][]float64, egms []emotions.EmotionGausianMixure) (int, int, int) {
+// 	fmt.Printf("%s\t", emotion)
 
-	emotionNames := make([]string, 0, len(egms))
-	for _, egm := range egms {
-		emotionNames = append(emotionNames, egm.Emotion)
-	}
+// 	emotionNames := make([]string, 0, len(egms))
+// 	for _, egm := range egms {
+// 		emotionNames = append(emotionNames, egm.Emotion)
+// 	}
 
-	counters := emotions.TestGMM(emotionNames, data, egms)
-	sum := 0
-	keys := emotions.SortKeys(counters)
-	for _, k := range keys {
-		fmt.Printf("%d\t", counters[k])
-		sum += counters[k]
-	}
-	fmt.Printf("\n")
-	return correct(emotion, counters), counters[emotion], sum
-}
+// 	counters := emotions.TestGMM(emotionNames, data, egms)
+// 	sum := 0
+// 	keys := emotions.SortKeys(counters)
+// 	for _, k := range keys {
+// 		fmt.Printf("%d\t", counters[k])
+// 		sum += counters[k]
+// 	}
+// 	fmt.Printf("\n")
+// 	return correct(emotion, counters), counters[emotion], sum
+// }
 
 func main() {
 	if len(os.Args) < 3 {
@@ -63,19 +63,19 @@ func main() {
 		panic(err)
 	}
 
-	emotions := make([]string, 0, len(emotionFiles))
+	emotionTypes := make([]string, 0, len(emotionFiles))
 	for e := range emotionFiles {
-		emotions = append(emotions, e)
+		emotionTypes = append(emotionTypes, e)
 	}
 
-	sort.Strings(emotions)
-	correctFiles := make(map[string]int, len(emotions))
-	correctVectors := make(map[string]int, len(emotions))
-	sumVectors := make(map[string]int, len(emotions))
+	sort.Strings(emotionTypes)
+	correctFiles := make(map[string]int, len(emotionTypes))
+	correctVectors := make(map[string]int, len(emotionTypes))
+	sumVectors := make(map[string]int, len(emotionTypes))
 
-	for _, emotion := range emotions {
+	for _, emotion := range emotionTypes {
 		for _, file := range emotionFiles[emotion] {
-			boolCorrect, correctVector, sumVector := testEmotion(emotion, readEmotion(file), egms)
+			boolCorrect, correctVector, sumVector := emotions.TestGMM(emotion, emotionTypes, readEmotion(file), egms)
 			correctFiles[emotion] += boolCorrect
 			correctVectors[emotion] += correctVector
 			sumVectors[emotion] += sumVector
@@ -83,7 +83,7 @@ func main() {
 	}
 
 	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
-	for _, emotion := range emotions {
+	for _, emotion := range emotionTypes {
 		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
 	}
 }
