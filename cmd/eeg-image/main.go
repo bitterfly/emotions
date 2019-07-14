@@ -105,11 +105,6 @@ func (self GradientTable) GetInterpolatedColorFor(t float64) colorful.Color {
 }
 
 func ramp(x float64) color.Color {
-	// gr := GradientTable{
-	// 	{MustParseHex("#FF1E38"), 0.0},
-	// 	{MustParseHex("#5CC549"), 0.5},
-	// 	{MustParseHex("#29357B"), 1.0},
-	// }
 	gr := GradientTable{
 		{MustParseHex("#FFFFFF"), 0.0},
 		{MustParseHex("#000000"), 1.0},
@@ -192,28 +187,6 @@ func drawEeg(colours []float64, outputFile string) {
 	}
 }
 
-func normalizeByWave(data []float64) []float64 {
-	result := make([]float64, len(data), len(data))
-
-	minimum := data[0]
-	maximum := data[0]
-
-	for i := 0; i < len(data); i++ {
-		if data[i] < minimum {
-			minimum = data[i]
-		}
-		if data[i] > maximum {
-			maximum = data[i]
-		}
-	}
-
-	for i := 0; i < len(data); i++ {
-		result[i] = (data[i] - minimum) / (maximum - minimum)
-	}
-
-	return result
-}
-
 func min(a, b, c float64) float64 {
 	if a < b {
 		if c < a {
@@ -266,15 +239,6 @@ func normaliZeDataByWaves(e1 []float64, e2 []float64, e3 []float64) {
 		e1[i] = (e1[i] - waveMin[i%4]) / (waveMax[i%4] - waveMin[i%4])
 		e2[i] = (e2[i] - waveMin[i%4]) / (waveMax[i%4] - waveMin[i%4])
 		e3[i] = (e3[i] - waveMin[i%4]) / (waveMax[i%4] - waveMin[i%4])
-		if e1[i] < 0 || e1[i] > 1 {
-			panic(fmt.Sprintf("AAA: %f", e1[i]))
-		}
-		if e2[i] < 0 || e2[i] > 1 {
-			panic(fmt.Sprintf("AAA: %f", e2[i]))
-		}
-		if e3[i] < 0 || e3[i] > 1 {
-			panic(fmt.Sprintf("AAA: %f", e3[i]))
-		}
 	}
 }
 
