@@ -1,11 +1,13 @@
 #!/bin/zsh
 
-if [ $# -ne 2 ]; then
-    echo "usage: <wav-dir> <output-dir>"
+if [ $# -ne 3 ]; then
+    echo "usage: <wav-dir> <output-dir> <batch-num>"
+    exit 1
 fi
 
 wav_dir="${1}"
 output_dir="${2}"
+batchnum="${3}"
 
 if [ ! -d ${output_dir} ]; then
     mkdir ${output_dir}
@@ -19,12 +21,12 @@ happiness=$(echo  ${wavs} | grep "happiness")
 sadness=$(echo  ${wavs} | grep "sadness")
 neutral=$(echo  ${wavs} | grep "neutral")
 
-anger_batch=$(echo ${anger} | wc -l | awk '{print int($0/10)}')
-happiness_batch=$(echo ${happiness} | wc -l | awk '{print int($0/10)}')
-sadness_batch=$(echo ${sadness} | wc -l | awk '{print int($0/10)}')
-neutral_batch=$(echo ${neutral} | wc -l | awk '{print int($0/10)}')
+anger_batch=$(echo ${anger} | wc -l | awk -v batchnum=${batchnum} '{print int($0/batchnum)}')
+happiness_batch=$(echo ${happiness} | wc -l | awk  -v batchnum=${batchnum} '{print int($0/batchnum)}')
+sadness_batch=$(echo ${sadness} | wc -l | awk  -v batchnum=${batchnum} '{print int($0/batchnum)}')
+neutral_batch=$(echo ${neutral} | wc -l | awk  -v batchnum=${batchnum} '{print int($0/batchnum)}')
 
-for i in $(seq 1 10); do
+for i in $(seq 1 ${batchnum}); do
     batch=$(echo ${anger} | shuf -n ${anger_batch})
     paste <(yes "anger" | head -n ${anger_batch}) <(echo ${batch}) >> ${output_dir}/batch_${i}.txt
     anger=$(comm -23 <(echo ${anger}|sort) <(echo ${batch} | sort))
