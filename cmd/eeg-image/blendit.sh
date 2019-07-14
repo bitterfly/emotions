@@ -21,4 +21,3 @@ montage -label '%f' -pointsize 20 "${outputDir}"/eeg-neutral* \
 
 montage "${outputDir}"/positive.png "${outputDir}"/negative.png "${outputDir}"/neutral.png \
           -geometry '1024x1024+4+4>'  "${outputDir}"/all.png
-
