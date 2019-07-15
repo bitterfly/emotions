@@ -6,18 +6,21 @@
 \usepackage{xltxtra}
 \usepackage{appendix}
 
-
+\usepackage{fontspec}
 \usepackage{polyglossia}
 \setmainlanguage{bulgarian}
 \setotherlanguage{english}
 
+% \usepackage{sfmath}
 
-% \usepackage{cmbright}
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont{Comfortaa-Regular}
-% \setmathfont{cmbright}
 \newfontfamily\cyrillicfont{Comfortaa-Regular}
 \newfontfamily\cyrillicfonttt{Comfortaa-Regular}
+\setmathfont[%
+  Path = /usr/share/fonts/,
+]{asana}
+\setmathfont[range={\mathcal,\mathbfcal},Path = /usr/share/fonts/,StylisticSet=1]{xits}
 
 \usepackage[a4paper, portrait, margin = 1.5 cm]{geometry}
 \usepackage{url}
