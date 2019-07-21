@@ -78,11 +78,23 @@ func CutSliceIntoFrames(data []float64, sampleRate uint32, frameInMs int, stepIn
 	return frames
 }
 
+func PutWindow(data []float64, win string) []float64 {
+	second := make([]float64, len(data), len(data))
+	copy(second, data)
+	if win == "rec" {
+		rectangularWindow(second)
+	} else if win == "han" {
+		hanningWindow(second)
+	} else {
+		hammingWindow(second)
+	}
+	return second
+}
+
 func sliceCopyWithWindow(first []float64, from, to, length int) []float64 {
 	second := make([]float64, length, length)
 	copy(second, first[from:Min(to, len(first))])
-	// hammingWindow(second[0 : Min(to, len(first))-from])
-	rectangularWindow(second[0 : Min(to, len(first))-from])
+	hammingWindow(second[0 : Min(to, len(first))-from])
 	return second
 }
 
