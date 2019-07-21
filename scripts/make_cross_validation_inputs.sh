@@ -20,6 +20,10 @@ anger=$(echo  ${wavs} | grep "anger")
 happiness=$(echo  ${wavs} | grep "happiness")
 sadness=$(echo  ${wavs} | grep "sadness")
 neutral=$(echo  ${wavs} | grep "neutral")
+echo -e "anger: $(echo ${anger} |wc -l)"
+echo -e "happiness: $(echo ${happiness} |wc -l)"
+echo -e "sadness: $(echo ${sadness} |wc -l)"
+echo -e "neutral: $(echo ${neutral} |wc -l)"
 
 anger_batch=$(echo ${anger} | wc -l | awk -v batchnum=${batchnum} '{print int($0/batchnum)}')
 happiness_batch=$(echo ${happiness} | wc -l | awk  -v batchnum=${batchnum} '{print int($0/batchnum)}')
