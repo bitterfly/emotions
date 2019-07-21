@@ -209,21 +209,24 @@ func getLogDeterminant(variance []float64) float64 {
 func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
 	max := math.Inf(-42)
 	argmax := -1
+
 	for i, g := range egmms {
-		currEmotion := EvaluateVector(X, k, g.GM)
-		if math.IsInf(currEmotion, -42) {
-			panic(fmt.Sprintf("X: %v\n", X))
+		currEmotion, err := EvaluateVector(X, k, g.GM)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Vector has 0 likelihood\n")
+			continue
 		}
 		if currEmotion > max {
 			max = currEmotion
 			argmax = i
 		}
 	}
+
 	return argmax
 }
 
 // EvaluateVector returns the likelihood a given vector
-func EvaluateVector(X []float64, k int, g GaussianMixture) float64 {
+func EvaluateVector(X []float64, k int, g GaussianMixture) (float64, error) {
 	return likelihoodFloat(X, k, g)
 }
 
@@ -239,6 +242,11 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 
 	for _, m := range coefficient {
 		best := FindBestGaussian(m, k, egmms)
+		if best == -1 {
+			fmt.Fprintf(os.Stderr, "Could not classify vector\n")
+			fmt.Fprintf(os.Stderr, "%v\n", m)
+			continue
+		}
 		counters[egmms[best].Emotion]++
 	}
 
@@ -272,7 +280,6 @@ func N(xi []float64, expectation []float64, variance []float64) float64 {
 	for i := 0; i < len(xi); i++ {
 		exp += (xi[i] - expectation[i]) * (xi[i] - expectation[i]) / variance[i]
 	}
-
 	return -0.5 * (exp + float64(len(xi))*math.Log(2.0*math.Pi) + getLogDeterminant(variance))
 	// return log of this
 	// return math.Exp(-0.5*exp) / math.Sqrt(math.Pow(2*math.Pi, float64(len(xi)))*getDeterminant(variance))
@@ -286,12 +293,20 @@ func logLikelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
 	return math.Log(sum)
 }
 
-func likelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
+func likelihoodFloat(X []float64, k int, g GaussianMixture) (float64, error) {
 	sum := 0.0
 	for j := 0; j < k; j++ {
 		sum += g[j].Phi * math.Exp(N(X, g[j].Expectations, g[j].Variances))
 	}
-	return sum
+
+	if sum == 0.0 || sum == -0.0 {
+		for i := 0; i < k; i++ {
+			fmt.Fprintf(os.Stderr, "pi[%d] = %.20f, exp = %.64f\n", i, g[i].Phi, math.Exp(N(X, g[i].Expectations, g[i].Variances)))
+		}
+
+		return -1, fmt.Errorf("The likelihood is 0")
+	}
+	return sum, nil
 }
 
 // sum_i log(sum_j phi_j * N(x[i], m[k], s[k]))
