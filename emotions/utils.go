@@ -75,6 +75,7 @@ func PlotSignal(data []float64, file string) {
 	plots.Y.Max = ymax + 2.0
 	plots.Y.Min = ymin - 2.0
 	plots.Add(line)
+	plots.HideAxes()
 
 	if err := plots.Save(64*vg.Inch, 32*vg.Inch, file); err != nil {
 		panic(err)
@@ -179,8 +180,8 @@ func PlotBarSignal(data []float64, file string) {
 
 	plotc.X.Label.Text = "Frequency"
 	plotc.Y.Label.Text = "Log(Energy)"
-	plotc.Y.Label.Font.Size = 64
-	plotc.X.Label.Font.Size = 64
+	plotc.Y.Label.Font.Size = 124
+	plotc.X.Label.Font.Size = 124
 
 	plotc.Add(bars)
 	if err := plotc.Save(32*vg.Inch, 32*vg.Inch, file); err != nil {
