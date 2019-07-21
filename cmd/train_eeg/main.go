@@ -113,7 +113,7 @@ func main() {
 
 	frameLen := 200
 	frameStep := 150
-	k := 4
+	k := 3
 
 	eegPositive, ok := arguments["eeg-positive"]
 	if !ok {
@@ -121,11 +121,11 @@ func main() {
 	}
 	eegNegative, ok := arguments["eeg-negative"]
 	if !ok {
-		panic("No eeg positive files were provided")
+		panic("No eeg negative files were provided")
 	}
 	eegNeutral, ok := arguments["eeg-neutral"]
 	if !ok {
-		panic("No eeg positive files were provided")
+		panic("No eeg neutral files were provided")
 	}
 
 	switch classifierType {
