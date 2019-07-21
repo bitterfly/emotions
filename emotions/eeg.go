@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"math"
+	"math/rand"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -84,7 +85,7 @@ func ReadXML(filename string, elNum int) [][]float64 {
 		}
 
 		for i, value := range getVector(line) {
-			electrodes[i] = append(electrodes[i], value)
+			electrodes[i] = append(electrodes[i], value+rand.NormFloat64()*0.0001)
 		}
 	}
 
