@@ -1,13 +1,18 @@
 #!/bin/zsh
 
-if [ $# -ne 3 ]; then
-    echo "usage: <wav-dir> <output-dir> <batch-num>"
+if [ $# -le 3 ]; then
+    echo "usage: <dir> <output-dir> <batch-num>"
     exit 1
 fi
 
-wav_dir="${1}"
+dir="${1}"
 output_dir="${2}"
 batchnum="${3}"
+ext="${4}"
+
+if [ -z ${ext} ]; then
+    ext="wav"
+fi
 
 if [ ! -d ${output_dir} ]; then
     mkdir ${output_dir}
@@ -15,11 +20,12 @@ fi
 
 rm -rf ${output_dir}/*
 
-wavs=$(find "${wav_dir}" -type f -name "*.wav")
-anger=$(echo  ${wavs} | grep "anger")
-happiness=$(echo  ${wavs} | grep "happiness")
-sadness=$(echo  ${wavs} | grep "sadness")
-neutral=$(echo  ${wavs} | grep "neutral")
+files=$(find "${dir}" -type f -name "*.${ext}")
+
+anger=$(echo  ${files} | grep "anger")
+happiness=$(echo  ${files} | grep "happiness")
+sadness=$(echo  ${files} | grep "sadness")
+neutral=$(echo  ${files} | grep "neutral")
 echo -e "anger: $(echo ${anger} |wc -l)"
 echo -e "happiness: $(echo ${happiness} |wc -l)"
 echo -e "sadness: $(echo ${sadness} |wc -l)"
