@@ -30,26 +30,22 @@ func getData(bucketSize int, frameLen int, frameStep int, files []string, tag st
 	}
 }
 
-func marshallToFile(bucketSize int, frameLen int, frameStep int, filename string, positiveFiles []string, negativeFiles []string, neutralFiles []string) error {
-	bytes, err := json.Marshal([]emotions.Tagged{
-		getData(bucketSize, frameLen, frameStep, positiveFiles, "eeg-positive"),
-		getData(bucketSize, frameLen, frameStep, negativeFiles, "eeg-negative"),
-		getData(bucketSize, frameLen, frameStep, neutralFiles, "eeg-neutral"),
-	})
-	if err != nil {
-		return fmt.Errorf("could not marshal eeg data: %s", err.Error())
-	}
-
-	err = ioutil.WriteFile(filename, bytes, 0664)
-	return err
-}
-
-func KNN(eegPositive []string, eegNegative []string, eegNeutral []string, outputDirname string, bucketSize int, frameLen int, frameStep int) error {
+func KNN(arguments map[string][]string, outputDirname string, bucketSize int, frameLen int, frameStep int) error {
 	if fileExists(outputDirname) {
 		os.Remove(outputDirname)
 	}
 
-	err := marshallToFile(bucketSize, frameLen, frameStep, path.Join(outputDirname, "emotion.knn"), eegPositive, eegNegative, eegNeutral)
+	data := make([]emotions.Tagged, 0, 10)
+	for e, v := range arguments {
+		data = append(data, getData(bucketSize, frameLen, frameStep, v, e))
+	}
+
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return fmt.Errorf("could not marshal eeg data: %s", err.Error())
+	}
+	err = ioutil.WriteFile(path.Join(outputDirname, "emotion.knn"), bytes, 0664)
+
 	return err
 }
 
@@ -67,24 +63,23 @@ func marshallGMM(outputDirname string, emotion string, data [][]float64, k int) 
 	return ioutil.WriteFile(outputDirname, bytes, 0644)
 }
 
-func GMM(eegPositive []string, eegNegative []string, eegNeutral []string, outputDir string, k int, bucketSize int, frameLen int, frameStep int) error {
-	positive := getData(bucketSize, frameLen, frameStep, eegPositive, "eeg-positive")
-	negative := getData(bucketSize, frameLen, frameStep, eegNegative, "eeg-negative")
-	neutral := getData(bucketSize, frameLen, frameStep, eegNeutral, "eeg-neutral")
+func GMM(arguments map[string][]string, outputDir string, k int, bucketSize int, frameLen int, frameStep int) error {
+	data := make(map[string]emotions.Tagged)
+	for e, v := range arguments {
+		data[e] = getData(bucketSize, frameLen, frameStep, v, e)
+	}
 
 	if !fileExists(outputDir) {
 		os.Mkdir(outputDir, 0775)
 	}
 
-	err := marshallGMM(path.Join(outputDir, "positive.gmm"), "eeg-positive", positive.Data, k)
-	if err != nil {
-		return err
+	for e, v := range data {
+		err := marshallGMM(path.Join(outputDir, fmt.Sprintf("%s.gmm", e)), e, v.Data, k)
+		if err != nil {
+			return err
+		}
 	}
-	err = marshallGMM(path.Join(outputDir, "negative.gmm"), "eeg-negative", negative.Data, k)
-	if err != nil {
-		return err
-	}
-	return marshallGMM(path.Join(outputDir, "neutral.gmm"), "eeg-neutral", neutral.Data, k)
+	return nil
 }
 
 func main() {
@@ -115,27 +110,17 @@ func main() {
 	frameStep := 150
 	k := 3
 
-	eegPositive, ok := arguments["eeg-positive"]
-	if !ok {
-		panic("No eeg positive files were provided")
-	}
-	eegNegative, ok := arguments["eeg-negative"]
-	if !ok {
-		panic("No eeg negative files were provided")
-	}
-	eegNeutral, ok := arguments["eeg-neutral"]
-	if !ok {
-		panic("No eeg neutral files were provided")
-	}
-
 	switch classifierType {
 	case "knn":
-		err = KNN(eegPositive, eegNegative, eegNeutral, outputDir, bucketSize, frameLen, frameStep)
+		err = KNN(arguments, outputDir, bucketSize, frameLen, frameStep)
 		if err != nil {
 			panic(err)
 		}
 	case "gmm":
-		err = GMM(eegPositive, eegNegative, eegNeutral, outputDir, k, bucketSize, frameLen, frameStep)
+		err = GMM(arguments, outputDir, k, bucketSize, frameLen, frameStep)
+		if err != nil {
+			panic(err)
+		}
 	default:
 		panic(fmt.Sprintf("Unknown classifier %s", classifierType))
 	}
