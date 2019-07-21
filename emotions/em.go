@@ -171,7 +171,6 @@ func em(X []MfccClusterisable, k int, gMixture GaussianMixture) GaussianMixture 
 		likelihood = logLikelihood(X, k, gMixture)
 
 		if math.IsNaN(likelihood) {
-
 			panic(fmt.Sprintf("Likelihood is NAN, step: %d", step))
 		}
 
@@ -212,6 +211,9 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
 	argmax := -1
 	for i, g := range egmms {
 		currEmotion := EvaluateVector(X, k, g.GM)
+		if math.IsInf(currEmotion, -42) {
+			panic(fmt.Sprintf("X: %v\n", X))
+		}
 		if currEmotion > max {
 			max = currEmotion
 			argmax = i
@@ -222,7 +224,7 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
 
 // EvaluateVector returns the likelihood a given vector
 func EvaluateVector(X []float64, k int, g GaussianMixture) float64 {
-	return logLikelihoodFloat(X, k, g)
+	return likelihoodFloat(X, k, g)
 }
 
 func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure) (int, int, int) {
@@ -282,6 +284,14 @@ func logLikelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
 		sum += g[j].Phi * math.Exp(N(X, g[j].Expectations, g[j].Variances))
 	}
 	return math.Log(sum)
+}
+
+func likelihoodFloat(X []float64, k int, g GaussianMixture) float64 {
+	sum := 0.0
+	for j := 0; j < k; j++ {
+		sum += g[j].Phi * math.Exp(N(X, g[j].Expectations, g[j].Variances))
+	}
+	return sum
 }
 
 // sum_i log(sum_j phi_j * N(x[i], m[k], s[k]))
