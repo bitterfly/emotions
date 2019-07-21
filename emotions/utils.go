@@ -52,17 +52,28 @@ func PlotSignal(data []float64, file string) {
 		panic(err)
 	}
 
+	ymin := data[0]
+	ymax := data[0]
 	s := make(plotter.XYs, len(data))
 	for i := 0; i < len(data); i++ {
 		s[i].X = float64(i)
 		// s[i].X = math.Log(float64(i) + 1)
 		s[i].Y = data[i]
+		if s[i].Y > ymax {
+			ymax = s[i].Y
+		}
+		if s[i].Y < ymin {
+			ymin = s[i].Y
+		}
 		// s[i].Y = math.Log(data[i])
 	}
 
 	line, _ := plotter.NewLine(s)
 	line.Color = color.RGBA{0, 100, 88, 255}
+	line.Width = vg.Points(10)
 
+	plots.Y.Max = ymax + 2.0
+	plots.Y.Min = ymin - 2.0
 	plots.Add(line)
 
 	if err := plots.Save(64*vg.Inch, 32*vg.Inch, file); err != nil {
@@ -136,6 +147,47 @@ func PlotClusters(data []MfccClusterisable, k int, file string) {
 	}
 }
 
+func PlotBarSignal(data []float64, file string) {
+	v := make(plotter.Values, len(data))
+	min := data[0]
+	for i := range v {
+		v[i] = data[i]
+		if data[i] < min {
+			min = data[i]
+		}
+	}
+
+	for i := range v {
+		v[i] -= min
+	}
+
+	bars, err := plotter.NewBarChart(v, 2)
+	if err != nil {
+		panic(err)
+	}
+
+	bars.Color = color.RGBA{0, 100, 88, 255}
+	bars.Width = vg.Points(10)
+
+	plotc, err := plot.New()
+	if err != nil {
+		panic(err)
+	}
+	plotc.X.Min = 0
+	plotc.X.Max = float64(len(data))
+	plotc.HideAxes()
+
+	plotc.X.Label.Text = "Frequency"
+	plotc.Y.Label.Text = "Log(Energy)"
+	plotc.Y.Label.Font.Size = 64
+	plotc.X.Label.Font.Size = 64
+
+	plotc.Add(bars)
+	if err := plotc.Save(32*vg.Inch, 32*vg.Inch, file); err != nil {
+		panic(err)
+	}
+}
+
 // PlotCoefficients draws a bar plot of the fourier coefficients and saves it into a file
 func PlotCoefficients(coefficients []Complex, file string) {
 	v := make(plotter.Values, len(coefficients))
@@ -158,10 +210,12 @@ func PlotCoefficients(coefficients []Complex, file string) {
 
 	plotc.X.Min = 0
 	plotc.X.Max = float64(len(coefficients))
+
 	plotc.X.Label.Text = "Frequency"
 	plotc.Y.Label.Text = "Energy"
 
 	bars, err := plotter.NewBarChart(v, 2)
+
 	plotc.Add(bars)
 
 	if err := plotc.Save(16*vg.Inch, 16*vg.Inch, file); err != nil {
@@ -447,4 +501,20 @@ func GetEGMs(dirname string) ([]EmotionGausianMixure, error) {
 	}
 
 	return egms, nil
+}
+
+func GetMagnitute(c []Complex, n int) []float64 {
+	data := make([]float64, n, n)
+	for i := 0; i < len(data); i++ {
+		data[i] = Magnitude(c[i])
+	}
+	return data
+}
+
+func GetPower(c []Complex, n int) []float64 {
+	data := make([]float64, n, n)
+	for i := 0; i < len(data); i++ {
+		data[i] = math.Log(Power(c[i]))
+	}
+	return data
 }
