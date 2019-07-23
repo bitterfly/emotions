@@ -16,12 +16,16 @@ func fileExists(filename string) bool {
 	return !os.IsNotExist(err)
 }
 
-func getData(bucketSize int, frameLen int, frameStep int, files []string, tag string) emotions.Tagged {
+func getData(featureType string, bucketSize int, frameLen int, frameStep int, files []string, tag string) emotions.Tagged {
 	data := make([][]float64, 0, 100)
 	for i := range files {
 		current := emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)
 		average := emotions.GetAverage(bucketSize, frameLen, len(current))
-		data = append(data, emotions.AverageSlice(current, average)...)
+		if featureType == "de" {
+			data = append(data, emotions.GetDE(emotions.AverageSlice(current, average))...)
+		} else {
+			data = append(data, emotions.AverageSlice(current, average)...)
+		}
 	}
 
 	return emotions.Tagged{
@@ -30,14 +34,14 @@ func getData(bucketSize int, frameLen int, frameStep int, files []string, tag st
 	}
 }
 
-func KNN(arguments map[string][]string, outputDirname string, bucketSize int, frameLen int, frameStep int) error {
+func KNN(arguments map[string][]string, featureType string, outputDirname string, bucketSize int, frameLen int, frameStep int) error {
 	if fileExists(outputDirname) {
 		os.Remove(outputDirname)
 	}
 
 	data := make([]emotions.Tagged, 0, 10)
 	for e, v := range arguments {
-		data = append(data, getData(bucketSize, frameLen, frameStep, v, e))
+		data = append(data, getData(featureType, bucketSize, frameLen, frameStep, v, e))
 	}
 
 	bytes, err := json.Marshal(data)
@@ -63,10 +67,10 @@ func marshallGMM(outputDirname string, emotion string, data [][]float64, k int) 
 	return ioutil.WriteFile(outputDirname, bytes, 0644)
 }
 
-func GMM(arguments map[string][]string, outputDir string, k int, bucketSize int, frameLen int, frameStep int) error {
+func GMM(arguments map[string][]string, featureType string, outputDir string, k int, bucketSize int, frameLen int, frameStep int) error {
 	data := make(map[string]emotions.Tagged)
 	for e, v := range arguments {
-		data[e] = getData(bucketSize, frameLen, frameStep, v, e)
+		data[e] = getData(featureType, bucketSize, frameLen, frameStep, v, e)
 	}
 
 	if !fileExists(outputDir) {
@@ -88,19 +92,21 @@ func main() {
 	// 1 take only one vector for the whole file
 	// n, n ≥ 2 take feature vector every n ms
 
-	if len(os.Args) < 3 {
-		panic("go run main.go <type> <bucket-size> <output-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
+	if len(os.Args) < 5 {
+		panic("go run main.go <classifier-type> <feature-type> <bucket-size> <output-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	classifierType := os.Args[1]
 
-	bucketSize, err := strconv.Atoi(os.Args[2])
+	featureType := os.Args[2]
+
+	bucketSize, err := strconv.Atoi(os.Args[3])
 	if err != nil {
-		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[1]))
+		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[3]))
 	}
 
-	outputDir := os.Args[3]
-	arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[4], false)
+	outputDir := os.Args[4]
+	arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[5], false)
 
 	if err != nil {
 		panic(err)
@@ -112,12 +118,12 @@ func main() {
 
 	switch classifierType {
 	case "knn":
-		err = KNN(arguments, outputDir, bucketSize, frameLen, frameStep)
+		err = KNN(arguments, featureType, outputDir, bucketSize, frameLen, frameStep)
 		if err != nil {
 			panic(err)
 		}
 	case "gmm":
-		err = GMM(arguments, outputDir, k, bucketSize, frameLen, frameStep)
+		err = GMM(arguments, featureType, outputDir, k, bucketSize, frameLen, frameStep)
 		if err != nil {
 			panic(err)
 		}

@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 if [ $# -le 3 ]; then
-    echo "usage: <dir> <output-dir> <batch-num>"
+    echo "usage: <dir> <output-dir> <batch-num> [<ext>]"
     exit 1
 fi
 
