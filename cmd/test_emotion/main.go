@@ -28,25 +28,6 @@ func correct(emotion string, counters map[string]int) int {
 	return 0
 }
 
-// func testEmotion(emotion string, data [][]float64, egms []emotions.EmotionGausianMixure) (int, int, int) {
-// 	fmt.Printf("%s\t", emotion)
-
-// 	emotionNames := make([]string, 0, len(egms))
-// 	for _, egm := range egms {
-// 		emotionNames = append(emotionNames, egm.Emotion)
-// 	}
-
-// 	counters := emotions.TestGMM(emotionNames, data, egms)
-// 	sum := 0
-// 	keys := emotions.SortKeys(counters)
-// 	for _, k := range keys {
-// 		fmt.Printf("%d\t", counters[k])
-// 		sum += counters[k]
-// 	}
-// 	fmt.Printf("\n")
-// 	return correct(emotion, counters), counters[emotion], sum
-// }
-
 func main() {
 	if len(os.Args) < 3 {
 		panic("go run main.go <gmm-dir> <input-file>\n<input-file>:<emotion> <wav-file>")
