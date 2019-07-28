@@ -123,7 +123,7 @@ func testKNN(emotion string, emotions []string, vectors [][]float64, trainSet []
 // 	return 0
 // }
 
-func ClassifyKNN(trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
+func ClassifyKNN(featureType string, trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
 	trainSet, err := UnmarshallKNNEeg(trainSetFilename)
 	if err != nil {
 		return err
@@ -162,7 +162,7 @@ func ClassifyKNN(trainSetFilename string, bucketSize int, frameLen int, frameSte
 	return nil
 }
 
-func ClassifyGMM(trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
+func ClassifyGMM(featureType string, trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
 	trainSet, err := GetEGMs(trainSetFilename)
 	if err != nil {
 		return err
@@ -182,7 +182,13 @@ func ClassifyGMM(trainSetFilename string, bucketSize int, frameLen int, frameSte
 		for _, f := range emotionFiles[emotion] {
 			vec := GetFourierForFile(f, 19, frameLen, frameStep)
 			average := GetAverage(bucketSize, frameStep, len(vec))
-			averaged := AverageSlice(vec, average)
+
+			var averaged [][]float64
+			if featureType == "de" {
+				averaged = GetDE(AverageSlice(vec, average))
+			} else {
+				averaged = AverageSlice(vec, average)
+			}
 
 			boolCorrect, correctVector, sumVector := TestGMM(emotion, fileKeys, averaged, trainSet)
 			correctFiles[emotion] += boolCorrect

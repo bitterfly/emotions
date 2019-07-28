@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		panic("go run main.go <classifier-type> <bucket-size> <gmm-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
+	if len(os.Args) < 5 {
+		panic("go run main.go <classifier-type> <feature-type> <bucket-size> <gmm-dir> <input-file>\n<input-file>:<emotion>	<csv-file>")
 	}
 
 	//if bucket size is:
@@ -19,13 +19,14 @@ func main() {
 	// n, n ≥ 2 take feature vector every n ms
 
 	classifierType := os.Args[1]
-	bucketSize, err := strconv.Atoi(os.Args[2])
+	featureType := os.Args[2]
+	bucketSize, err := strconv.Atoi(os.Args[3])
 	if err != nil {
-		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[1]))
+		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[3]))
 	}
 
-	trainDir := os.Args[3]
-	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[4], false)
+	trainDir := os.Args[4]
+	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[5], false)
 
 	frameLen := 200
 	frameStep := 150
@@ -35,12 +36,12 @@ func main() {
 	}
 	switch classifierType {
 	case "knn":
-		err = emotions.ClassifyKNN(trainDir, bucketSize, frameLen, frameStep, emotionFiles)
+		err = emotions.ClassifyKNN(featureType, trainDir, bucketSize, frameLen, frameStep, emotionFiles)
 		if err != nil {
 			panic(err.Error())
 		}
 	case "gmm":
-		err = emotions.ClassifyGMM(trainDir, bucketSize, frameLen, frameStep, emotionFiles)
+		err = emotions.ClassifyGMM(featureType, trainDir, bucketSize, frameLen, frameStep, emotionFiles)
 	default:
 		panic(fmt.Sprintf("Unknown classifier %s", classifierType))
 	}

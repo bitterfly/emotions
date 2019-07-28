@@ -119,3 +119,35 @@ func AverageSlice(x [][]float64, average int) [][]float64 {
 
 	return averagedSlice
 }
+
+var ElectrodeCouples [][2]int = [][2]int{
+	[2]int{0, 1},
+	[2]int{2, 3},
+	[2]int{5, 6},
+	[2]int{8, 9},
+	[2]int{11, 12},
+	[2]int{13, 14},
+	[2]int{15, 16},
+	[2]int{17, 18},
+}
+
+func GetDE(data [][]float64) [][]float64 {
+	result := make([][]float64, len(data), len(data))
+	n := len(ElectrodeCouples) * len(waveRanges)
+
+	for i := 0; i < len(result); i++ {
+		result[i] = make([]float64, n+3*len(waveRanges), n+3*len(waveRanges))
+		for j, c := range ElectrodeCouples {
+			for k := 0; k < len(waveRanges); k++ {
+				// fmt.Printf("result[%d][%d] = data[%d][%d] - data[%d][%d]\n", i, k+j*len(waveRanges), i, k+(c[0]*len(waveRanges)), i, k+(c[1]*len(waveRanges)))
+				result[i][k+j*len(waveRanges)] = math.Abs(data[i][k+(c[0]*len(waveRanges))] - data[i][k+(c[1]*len(waveRanges))])
+			}
+		}
+		for k := 0; k < len(waveRanges); k++ {
+			result[i][n+k] = data[i][k+4*len(waveRanges)]
+			result[i][n+len(waveRanges)+k] = data[i][k+7*len(waveRanges)]
+			result[i][n+2*len(waveRanges)+k] = data[i][k+10*len(waveRanges)]
+		}
+	}
+	return result
+}
