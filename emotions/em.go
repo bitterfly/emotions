@@ -29,6 +29,11 @@ type EmotionGausianMixure struct {
 	GM      GaussianMixture
 }
 
+type AlphaEGM struct {
+	Alpha float64
+	EGM   EmotionGausianMixure
+}
+
 // GMM returns the k gaussian mixures for the given data
 func GMM(mfccsFloats [][]float64, k int) GaussianMixture {
 	X, expectations, variances, numInCluster := KMeans(mfccsFloats, k)
@@ -221,7 +226,22 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
 			argmax = i
 		}
 	}
+	return argmax
+}
 
+func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) int {
+	scores := make([]int, len(egmms), len(egmms))
+	for _, x := range X {
+		scores[FindBestGaussian(x, k, egmms)]++
+	}
+	best := scores[0]
+	argmax := 0
+	for i, s := range scores {
+		if s > best {
+			best = s
+			argmax = i
+		}
+	}
 	return argmax
 }
 
@@ -258,6 +278,39 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 	fmt.Printf("\n")
 
 	return correct(emotion, counters), counters[emotion], sum
+}
+
+func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEGM, speechEGM []EmotionGausianMixure, speechFile string, eegAlphaEGM []AlphaEGM, eegEGM []EmotionGausianMixure, eegFile string, bucketSize int) (int, int, int) {
+	kS := len(speechAlphaEGM[0].EGM.GM)
+	kE := len(eegAlphaEGM[0].EGM.GM)
+
+	speechFeatures := GetSpeechFeatureForFile(speechFile)
+	eegFeatures := GetEegFeaturesForFile(bucketSize, eegFile)
+
+	speechBest := FindBestGaussianMany(speechFeatures, kS, speechEGM)
+	speechEmotion := speechAlphaEGM[speechBest].EGM.Emotion
+
+	eegBest := FindBestGaussianMany(eegFeatures, kE, eegEGM)
+	eegEmotion := eegAlphaEGM[eegBest].EGM.Emotion
+
+	bestBoth := -1.0
+	bothEmotion := emotionTypes[0]
+	for _, e := range emotionTypes {
+		current := speechAlphaEGM[0].Alpha*float64(bToI(speechEmotion == e)) + eegAlphaEGM[0].Alpha*float64(bToI(eegEmotion == e))
+		if current > bestBoth {
+			bestBoth = current
+			bothEmotion = e
+		}
+	}
+	// return correct(emotion, counters), counters[emotion], sum
+	return bToI(speechEmotion == emotion), bToI(eegEmotion == emotion), bToI(bothEmotion == emotion)
+}
+
+func bToI(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }
 
 func correct(emotion string, counters map[string]int) int {

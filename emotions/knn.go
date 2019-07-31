@@ -203,3 +203,59 @@ func ClassifyGMM(featureType string, trainSetFilename string, bucketSize int, fr
 
 	return nil
 }
+
+func GetEegFeaturesForFile(bucketSize int, file string) [][]float64 {
+	frameLen := 200
+	frameStep := 150
+
+	data := GetFourierForFile(file, 19, frameLen, frameStep)
+	average := GetAverage(bucketSize, frameLen, len(data))
+	return AverageSlice(data, average)
+}
+
+func GetSpeechFeatureForFile(filename string) [][]float64 {
+	wf, _ := Read(filename, 0.01, 0.97)
+	return MFCCs(wf, 13, 23)
+}
+
+func ClassifyGMMBoth(bucketSize int, frameLen int, frameStep int, speechTrainDir string, speechFiles map[string][]string, eegTrainDir string, eegFiles map[string][]string) error {
+	speechAlphaTrainSet, err := GetAlphaEGMs(speechTrainDir)
+	if err != nil {
+		return err
+	}
+
+	speechTrainSet := make([]EmotionGausianMixure, len(speechAlphaTrainSet), len(speechAlphaTrainSet))
+	for i := 0; i < len(speechAlphaTrainSet); i++ {
+		speechTrainSet[i] = speechAlphaTrainSet[i].EGM
+	}
+
+	eegAlphaTrainSet, err := GetAlphaEGMs(eegTrainDir)
+	if err != nil {
+		return err
+	}
+
+	eegTrainSet := make([]EmotionGausianMixure, len(eegAlphaTrainSet), len(eegAlphaTrainSet))
+	for i := 0; i < len(eegAlphaTrainSet); i++ {
+		eegTrainSet[i] = eegAlphaTrainSet[i].EGM
+	}
+
+	fileKeys := make([]string, 0, len(speechFiles))
+	for k := range speechFiles {
+		fileKeys = append(fileKeys, k)
+	}
+
+	sort.Strings(fileKeys)
+	for _, emotion := range fileKeys {
+		for i := 0; i < len(speechFiles[emotion]); i++ {
+			sC, eC, bC := TestGMMBoth(emotion, fileKeys, speechAlphaTrainSet, speechTrainSet, speechFiles[emotion][i], eegAlphaTrainSet, eegTrainSet, eegFiles[emotion][i], bucketSize)
+			fmt.Printf("%s\t%d\t%d\t%d\n", emotion, sC, eC, bC)
+		}
+	}
+
+	// fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	// for _, emotion := range fileKeys {
+	// 	fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
+	// }
+
+	return nil
+}

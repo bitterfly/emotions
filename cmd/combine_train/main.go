@@ -43,11 +43,6 @@ func getEegFeaturesForFiles(bucketSize int, files []string, eegFeatures *[]([][]
 	return data
 }
 
-func getSpeechFeatureForFile(filename string) [][]float64 {
-	wf, _ := emotions.Read(filename, 0.01, 0.97)
-	return emotions.MFCCs(wf, 13, 23)
-}
-
 func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
 	return emotions.GMM(mfccs, k)
 }
@@ -74,13 +69,21 @@ func getError(emotionTypes []string, trainingSize int,
 	return err / sum, incorrect
 }
 
-func getWeightsAndAlpha(k int, incorrectFiles []int, err float64, weights []float64) (float64, []float64) {
+func getWeightsAndAlpha(emotionTypes []string, trainingSize int,
+	files map[string][]string,
+	gmms []emotions.EmotionGausianMixure,
+	features []([][]float64),
+	tags []string,
+	weights []float64,
+) (float64, []float64) {
+	err, incorrectFiles := getError(emotionTypes, trainingSize, files, gmms, features, tags, weights)
+	k := len(emotionTypes)
+
 	alpha := math.Log((1-err)/err) + math.Log(float64(k-1))
 	newWeights := make([]float64, len(incorrectFiles), len(incorrectFiles))
 	sum := 0.0
 	for i := 0; i < len(incorrectFiles); i++ {
 		newWeights[i] = weights[i] * math.Exp(alpha*float64(incorrectFiles[i]))
-		fmt.Printf("%f * math.Exp(%f * %d) = %f; ", weights[i], alpha, incorrectFiles[i], newWeights[i])
 		sum += newWeights[i]
 	}
 	fmt.Printf("\n")
@@ -105,29 +108,22 @@ func getWeights(emotionTypes []string, trainingSize int, vectorTags []string,
 		weights[i] = 1.0 / float64(trainingSize)
 	}
 
-	errSpeech, incorrectSpeech := getError(emotionTypes, trainingSize, speechFiles, speechGMMs, speechFeatures, vectorTags, weights)
-	errEeg, incorrectEEG := getError(emotionTypes, trainingSize, eegFiles, eegGMMs, eegFeatures, vectorTags, weights)
-
 	var alphaSpeech, alphaEeg float64
 	var newWeights []float64
 
-	fmt.Printf("numVectors: %d\nWeights: %v\n", len(weights), weights)
+	errSpeech, _ := getError(emotionTypes, trainingSize, speechFiles, speechGMMs, speechFeatures, vectorTags, weights)
+	errEeg, _ := getError(emotionTypes, trainingSize, eegFiles, eegGMMs, eegFeatures, vectorTags, weights)
 
-	fmt.Printf("Speech\ncorrect: %v\nerror: %f\n", incorrectSpeech, errSpeech)
-	fmt.Printf("Eeg\ncorrect: %v\nerror: %f\n", incorrectEEG, errEeg)
+	for i := 0; i < 10; i++ {
+		if errSpeech <= errEeg {
+			alphaSpeech, newWeights = getWeightsAndAlpha(emotionTypes, trainingSize, speechFiles, speechGMMs, speechFeatures, vectorTags, weights)
+		} else {
+			alphaEeg, newWeights = getWeightsAndAlpha(emotionTypes, trainingSize, eegFiles, eegGMMs, eegFeatures, vectorTags, weights)
+		}
+		errEeg, _ = getError(emotionTypes, trainingSize, eegFiles, eegGMMs, eegFeatures, vectorTags, newWeights)
+		errSpeech, _ = getError(emotionTypes, trainingSize, speechFiles, speechGMMs, speechFeatures, vectorTags, newWeights)
 
-	if errSpeech < errEeg {
-		fmt.Printf("Speech has better error\n")
-
-		alphaSpeech, newWeights = getWeightsAndAlpha(len(emotionTypes), incorrectSpeech, errSpeech, weights)
-		fmt.Printf("New weights: %v\n", newWeights)
-		alphaEeg, _ = getWeightsAndAlpha(len(emotionTypes), incorrectEEG, errEeg, newWeights)
-	} else {
-
-		fmt.Printf("Speech has better error\n")
-		alphaEeg, newWeights = getWeightsAndAlpha(len(emotionTypes), incorrectEEG, errEeg, weights)
-		fmt.Printf("New weights: %v\n", newWeights)
-		alphaSpeech, _ = getWeightsAndAlpha(len(emotionTypes), incorrectSpeech, errSpeech, newWeights)
+		weights = append([]float64{}, newWeights...)
 	}
 
 	return alphaSpeech, alphaEeg
@@ -156,8 +152,12 @@ func main() {
 		panic(err)
 	}
 
-	if _, err := os.Stat(fmt.Sprintf("%s_k%d", outputDir, k)); os.IsNotExist(err) {
-		os.Mkdir(fmt.Sprintf("%s_k%d", outputDir, k), 0775)
+	if _, err := os.Stat(fmt.Sprintf("%s_speech", outputDir)); os.IsNotExist(err) {
+		os.Mkdir(fmt.Sprintf("%s_speech", outputDir), 0775)
+	}
+
+	if _, err := os.Stat(fmt.Sprintf("%s_eeg", outputDir)); os.IsNotExist(err) {
+		os.Mkdir(fmt.Sprintf("%s_eeg", outputDir), 0775)
 	}
 
 	emotionTypes := make([]string, 0, len(speechFiles))
@@ -200,11 +200,11 @@ func main() {
 		}
 	}
 
-	getWeights(emotionTypes, wLen, vectorTags, speechFiles, speechGMMs, speechFeatures, eegFiles, eegGMMs, eegFeatures)
+	speechAlpha, eegAlpha := getWeights(emotionTypes, wLen, vectorTags, speechFiles, speechGMMs, speechFeatures, eegFiles, eegGMMs, eegFeatures)
 
 	for i := 0; i < len(speechGMMs); i++ {
 		emotion := emotionTypes[i]
-		bytes, err := json.Marshal(speechGMMs[i])
+		bytes, err := json.Marshal(emotions.AlphaEGM{Alpha: speechAlpha, EGM: eegGMMs[i]})
 		if err != nil {
 			panic(fmt.Sprintf("Error when marshaling %s", emotion))
 		}
@@ -216,7 +216,7 @@ func main() {
 
 	for i := 0; i < len(eegGMMs); i++ {
 		emotion := emotionTypes[i]
-		bytes, err := json.Marshal(eegGMMs[i])
+		bytes, err := json.Marshal(emotions.AlphaEGM{Alpha: eegAlpha, EGM: eegGMMs[i]})
 		if err != nil {
 			panic(fmt.Sprintf("Error when marshaling %s", emotion))
 		}

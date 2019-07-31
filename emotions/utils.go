@@ -486,6 +486,23 @@ func SortKeysS(m map[string][]string) []string {
 	return keys
 }
 
+func GetAlphaEGMs(dirname string) ([]AlphaEGM, error) {
+	files, err := ioutil.ReadDir(dirname)
+	if err != nil {
+		return nil, err
+	}
+
+	egms := make([]AlphaEGM, len(files), len(files))
+	for i, f := range files {
+		bytes, _ := ioutil.ReadFile(filepath.Join(dirname, f.Name()))
+		err := json.Unmarshal(bytes, &egms[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return egms, nil
+}
+
 func GetEGMs(dirname string) ([]EmotionGausianMixure, error) {
 	files, err := ioutil.ReadDir(dirname)
 	if err != nil {
