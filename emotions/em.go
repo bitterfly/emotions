@@ -211,11 +211,11 @@ func getLogDeterminant(variance []float64) float64 {
 	return det
 }
 
-func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
+func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) string {
 	max := math.Inf(-42)
-	argmax := -1
+	argmax := ""
 
-	for i, g := range egmms {
+	for _, g := range egmms {
 		currEmotion, err := EvaluateVector(X, k, g.GM)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Vector has 0 likelihood\n")
@@ -223,26 +223,24 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) int {
 		}
 		if currEmotion > max {
 			max = currEmotion
-			argmax = i
+			argmax = g.Emotion
 		}
 	}
 	return argmax
 }
 
-func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) int {
-	scores := make([]int, len(egmms), len(egmms))
+func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) (map[string]int, int) {
+	scores := make(map[string]int)
+	for _, egmm := range egmms {
+		scores[egmm.Emotion] = 0
+	}
+
+	sum := 0
 	for _, x := range X {
 		scores[FindBestGaussian(x, k, egmms)]++
+		sum++
 	}
-	best := scores[0]
-	argmax := 0
-	for i, s := range scores {
-		if s > best {
-			best = s
-			argmax = i
-		}
-	}
-	return argmax
+	return scores, sum
 }
 
 // EvaluateVector returns the likelihood a given vector
@@ -250,8 +248,10 @@ func EvaluateVector(X []float64, k int, g GaussianMixture) (float64, error) {
 	return likelihoodFloat(X, k, g)
 }
 
-func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure) (int, int, int) {
-	fmt.Printf("%s\t", emotion)
+func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure, verbose bool) (int, map[string]int, int) {
+	if verbose {
+		fmt.Printf("%s\t", emotion)
+	}
 
 	k := len(egmms[0].GM)
 
@@ -262,22 +262,38 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 
 	for _, m := range coefficient {
 		best := FindBestGaussian(m, k, egmms)
-		if best == -1 {
+		if best == "" {
 			fmt.Fprintf(os.Stderr, "Could not classify vector\n")
 			fmt.Fprintf(os.Stderr, "%v\n", m)
 			continue
 		}
-		counters[egmms[best].Emotion]++
+		counters[best]++
 	}
 
 	sum := 0
 	for _, e := range emotions {
-		fmt.Printf("%d\t", counters[e])
+		if verbose {
+			fmt.Printf("%d\t", counters[e])
+		}
 		sum += counters[e]
 	}
-	fmt.Printf("\n")
+	if verbose {
+		fmt.Printf("\n")
+	}
 
-	return correct(emotion, counters), counters[emotion], sum
+	return correct(emotion, counters), counters, sum
+}
+
+func getBest(dict map[string]int) string {
+	best := -1
+	bestArg := ""
+	for k, v := range dict {
+		if v > best {
+			best = v
+			bestArg = k
+		}
+	}
+	return bestArg
 }
 
 func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEGM, speechEGM []EmotionGausianMixure, speechFile string, eegAlphaEGM []AlphaEGM, eegEGM []EmotionGausianMixure, eegFile string, bucketSize int) (int, int, int) {
@@ -287,23 +303,30 @@ func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEG
 	speechFeatures := GetSpeechFeatureForFile(speechFile)
 	eegFeatures := GetEegFeaturesForFile(bucketSize, eegFile)
 
-	speechBest := FindBestGaussianMany(speechFeatures, kS, speechEGM)
-	speechEmotion := speechAlphaEGM[speechBest].EGM.Emotion
+	speechClassified, sumSpeech := FindBestGaussianMany(speechFeatures, kS, speechEGM)
 
-	eegBest := FindBestGaussianMany(eegFeatures, kE, eegEGM)
-	eegEmotion := eegAlphaEGM[eegBest].EGM.Emotion
+	eegClassified, sumEEG := FindBestGaussianMany(eegFeatures, kE, eegEGM)
 
 	bestBoth := -1.0
 	bothEmotion := emotionTypes[0]
 	for _, e := range emotionTypes {
-		current := speechAlphaEGM[0].Alpha*float64(bToI(speechEmotion == e)) + eegAlphaEGM[0].Alpha*float64(bToI(eegEmotion == e))
+		// bool
+		// current := speechAlphaEGM[0].Alpha*float64(bToI(getBest(speechClassified) == e)) +
+		// 	eegAlphaEGM[0].Alpha*float64(bToI(getBest(eegClassified) == e))
+
+		//float
+		current := speechAlphaEGM[0].Alpha*(float64(speechClassified[e])/float64(sumSpeech)) +
+			eegAlphaEGM[0].Alpha*(float64(eegClassified[e])/float64(sumEEG))
+
+		// fmt.Printf("%s %f %f*%f + %f*%f\n", e, current, speechAlphaEGM[0].Alpha, float64(speechClassified[e])/float64(sumSpeech), eegAlphaEGM[0].Alpha, float64(eegClassified[e])/float64(sumEEG))
+
 		if current > bestBoth {
 			bestBoth = current
 			bothEmotion = e
 		}
 	}
 	// return correct(emotion, counters), counters[emotion], sum
-	return bToI(speechEmotion == emotion), bToI(eegEmotion == emotion), bToI(bothEmotion == emotion)
+	return bToI(getBest(speechClassified) == emotion), bToI(getBest(eegClassified) == emotion), bToI(bothEmotion == emotion)
 }
 
 func bToI(b bool) int {

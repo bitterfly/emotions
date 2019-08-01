@@ -56,9 +56,9 @@ func main() {
 
 	for _, emotion := range emotionTypes {
 		for _, file := range emotionFiles[emotion] {
-			boolCorrect, correctVector, sumVector := emotions.TestGMM(emotion, emotionTypes, readEmotion(file), egms)
+			boolCorrect, vectors, sumVector := emotions.TestGMM(emotion, emotionTypes, readEmotion(file), egms)
 			correctFiles[emotion] += boolCorrect
-			correctVectors[emotion] += correctVector
+			correctVectors[emotion] += vectors[emotion]
 			sumVectors[emotion] += sumVector
 		}
 	}

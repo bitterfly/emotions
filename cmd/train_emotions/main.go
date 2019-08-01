@@ -6,30 +6,11 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"sort"
 	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
-
-func readEmotion(filenames []string) [][]float64 {
-	mfccs := make([][]float64, 0, len(filenames)*100)
-	for _, f := range filenames {
-		wf, _ := emotions.Read(f, 0.01, 0.97)
-
-		mfcc := emotions.MFCCs(wf, 13, 23)
-		mfccs = append(mfccs, mfcc...)
-	}
-
-	return mfccs
-}
-
-func getGMM(mfccs [][]float64, k int) emotions.GaussianMixture {
-	return emotions.GMM(mfccs, k)
-}
-
-func getGMMfromEmotion(filenames []string, k int) emotions.GaussianMixture {
-	return getGMM(readEmotion(filenames), k)
-}
 
 func main() {
 	if len(os.Args) < 3 {
@@ -65,13 +46,23 @@ func main() {
 		}
 	}
 
-	for emotion, files := range emotionFiles {
-		mfccs := readEmotion(files)
+	emotionTypes := make([]string, 0, len(emotionFiles))
+	for e := range emotionFiles {
+		emotionTypes = append(emotionTypes, e)
+	}
+
+	sort.Strings(emotionTypes)
+
+	for _, emotion := range emotionTypes {
+		files := emotionFiles[emotion]
+		mfccs := emotions.ReadSpeechFeatures(files)
 		for j := k; j <= maxK; j++ {
 			fmt.Fprintf(os.Stderr, "%s %d\n", emotion, j)
+			fmt.Printf("k: %d SpeechFiles: %v\n", j, files)
+
 			egm := emotions.EmotionGausianMixure{
 				Emotion: emotion,
-				GM:      getGMM(mfccs, j),
+				GM:      emotions.GMM(mfccs, j),
 			}
 
 			bytes, err := json.Marshal(egm)

@@ -190,9 +190,9 @@ func ClassifyGMM(featureType string, trainSetFilename string, bucketSize int, fr
 				averaged = AverageSlice(vec, average)
 			}
 
-			boolCorrect, correctVector, sumVector := TestGMM(emotion, fileKeys, averaged, trainSet)
+			boolCorrect, vectors, sumVector := TestGMM(emotion, fileKeys, averaged, trainSet, true)
 			correctFiles[emotion] += boolCorrect
-			correctVectors[emotion] += correctVector
+			correctVectors[emotion] += vectors[emotion]
 			sumVectors[emotion] += sumVector
 		}
 	}
@@ -251,11 +251,6 @@ func ClassifyGMMBoth(bucketSize int, frameLen int, frameStep int, speechTrainDir
 			fmt.Printf("%s\t%d\t%d\t%d\n", emotion, sC, eC, bC)
 		}
 	}
-
-	// fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
-	// for _, emotion := range fileKeys {
-	// 	fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(emotionFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
-	// }
 
 	return nil
 }
