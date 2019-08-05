@@ -29,8 +29,6 @@ fi
 wav_files=$(find "${wav_dir}" -type f -name "*.${ext}" | sort)
 eeg_files=$(find "${eeg_dir}" -type f -name "*.${ext2}" | sort)
 
-paste <(echo ${wav_files}) <(echo ${eeg_files})
-
 anger=$(paste <(echo  ${wav_files}) <(echo ${eeg_files}) | grep "anger")
 happiness=$(paste <(echo  ${wav_files}) <(echo ${eeg_files}) | grep "happiness")
 sadness=$(paste <(echo  ${wav_files}) <(echo ${eeg_files}) | grep "sadness")
@@ -39,7 +37,6 @@ echo -e "anger: $(echo ${anger} |wc -l)"
 echo -e "happiness: $(echo ${happiness} |wc -l)"
 echo -e "sadness: $(echo ${sadness} |wc -l)"
 echo -e "neutral: $(echo ${neutral} |wc -l)"
-
 
 anger_batch=$(echo ${anger} | wc -l | awk -v batchnum=${batchnum} '{print int($0/batchnum)}')
 happiness_batch=$(echo ${happiness} | wc -l | awk  -v batchnum=${batchnum} '{print int($0/batchnum)}')
