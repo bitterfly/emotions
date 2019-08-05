@@ -211,14 +211,15 @@ func getLogDeterminant(variance []float64) float64 {
 	return det
 }
 
-func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) string {
+func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) (string, bool) {
 	max := math.Inf(-42)
 	argmax := ""
+	failed := 0
 
 	for _, g := range egmms {
 		currEmotion, err := EvaluateVector(X, k, g.GM)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Vector has 0 likelihood\n")
+			failed++
 			continue
 		}
 		if currEmotion > max {
@@ -226,7 +227,7 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) string {
 			argmax = g.Emotion
 		}
 	}
-	return argmax
+	return argmax, failed == len(egmms)
 }
 
 func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) (map[string]int, int) {
@@ -236,9 +237,19 @@ func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) (m
 	}
 
 	sum := 0
+	failedAll := 0
 	for _, x := range X {
-		scores[FindBestGaussian(x, k, egmms)]++
+		best, failed := FindBestGaussian(x, k, egmms)
+		if failed {
+			failedAll++
+		} else {
+			scores[best]++
+		}
 		sum++
+	}
+
+	if failedAll > 0 {
+		fmt.Fprintf(os.Stderr, "Failed (%d/%d)\n", failedAll, sum)
 	}
 	return scores, sum
 }
@@ -254,6 +265,7 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 	}
 
 	k := len(egmms[0].GM)
+	failedAll := 0
 
 	counters := make(map[string]int)
 	for _, e := range emotions {
@@ -261,10 +273,10 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 	}
 
 	for _, m := range coefficient {
-		best := FindBestGaussian(m, k, egmms)
-		if best == "" {
-			fmt.Fprintf(os.Stderr, "Could not classify vector\n")
-			fmt.Fprintf(os.Stderr, "%v\n", m)
+		failedAll := 0
+		best, failed := FindBestGaussian(m, k, egmms)
+		if failed {
+			failedAll++
 			continue
 		}
 		counters[best]++
@@ -281,6 +293,9 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 		fmt.Printf("\n")
 	}
 
+	if failedAll > 0 {
+		fmt.Fprintf(os.Stderr, "%s Failed (%d/%d)\n", emotion, failedAll, sum)
+	}
 	return correct(emotion, counters), counters, sum
 }
 
@@ -376,10 +391,6 @@ func likelihoodFloat(X []float64, k int, g GaussianMixture) (float64, error) {
 	}
 
 	if sum == 0.0 || sum == -0.0 {
-		for i := 0; i < k; i++ {
-			fmt.Fprintf(os.Stderr, "pi[%d] = %.20f, exp = %.64f\n", i, g[i].Phi, math.Exp(N(X, g[i].Expectations, g[i].Variances)))
-		}
-
 		return -1, fmt.Errorf("The likelihood is 0")
 	}
 	return sum, nil

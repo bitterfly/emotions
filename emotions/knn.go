@@ -245,11 +245,29 @@ func ClassifyGMMBoth(bucketSize int, frameLen int, frameStep int, speechTrainDir
 	}
 
 	sort.Strings(fileKeys)
+	speechAccuracy := make(map[string]int)
+	EEGAccuracy := make(map[string]int)
+	bothAccuracy := make(map[string]int)
+
+	for _, emotion := range fileKeys {
+		speechAccuracy[emotion] = 0
+		EEGAccuracy[emotion] = 0
+		bothAccuracy[emotion] = 0
+	}
+
 	for _, emotion := range fileKeys {
 		for i := 0; i < len(speechFiles[emotion]); i++ {
 			sC, eC, bC := TestGMMBoth(emotion, fileKeys, speechAlphaTrainSet, speechTrainSet, speechFiles[emotion][i], eegAlphaTrainSet, eegTrainSet, eegFiles[emotion][i], bucketSize)
+
+			speechAccuracy[emotion] += sC
+			EEGAccuracy[emotion] += eC
+			bothAccuracy[emotion] += bC
 			fmt.Printf("%s\t%d\t%d\t%d\n", emotion, sC, eC, bC)
 		}
+	}
+	fmt.Printf("Accuracy\n")
+	for _, emotion := range fileKeys {
+		fmt.Printf("%s\t%f\t%f\t%f\n", emotion, float64(speechAccuracy[emotion])/float64(len(speechFiles[emotion])), float64(EEGAccuracy[emotion])/float64(len(speechFiles[emotion])), float64(bothAccuracy[emotion])/float64(len(speechFiles[emotion])))
 	}
 
 	return nil
