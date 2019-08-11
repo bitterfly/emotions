@@ -59,8 +59,8 @@ func getWeightsAndAlpha(emotionTypes []string, filesTags []string,
 	weights []float64,
 ) (float64, []float64) {
 	err, incorrectFiles := getError(emotionTypes, filesTags, gmms, features, weights)
-	if err < 0.000001 {
-		err = 0.00001
+	if err < emotions.EPS && err > -emotions.EPS {
+		err = emotions.EPS
 	}
 
 	k := len(emotionTypes)
@@ -197,6 +197,13 @@ func main() {
 	}
 
 	speechAlpha, eegAlpha := getWeights(emotionTypes, filesTags, speechGMMs, speechFeatures, eegGMMs, eegFeatures)
+	if speechAlpha < emotions.EPS && speechAlpha > -emotions.EPS {
+		speechAlpha = emotions.EPS
+	}
+
+	if eegAlpha < emotions.EPS && eegAlpha > -emotions.EPS {
+		eegAlpha = emotions.EPS
+	}
 	// getWeights(emotionTypes, wLen, filesTags, speechFiles, speechGMMs, speechFeatures, eegFiles, eegGMMs, eegFeatures)
 
 	for i := 0; i < len(speechGMMs); i++ {
