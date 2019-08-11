@@ -97,24 +97,52 @@ func combineSlices(a, b []string) []string {
 	return c
 }
 
+func Average(x [][]float64) []float64 {
+	result := make([]float64, len(x[0]), len(x[0]))
+	for i := 0; i < len(x); i++ {
+		for j := 0; j < len(x[0]); j++ {
+			result[j] += x[i][j]
+		}
+	}
+
+	for j := 0; j < len(x[0]); j++ {
+		result[j] /= float64(len(x))
+	}
+
+	return result
+}
+
+// Concat concatenates the tuples of vectors of x and y
+func Concat(x [][]float64, y [][]float64) [][]float64 {
+	z := make([][]float64, len(x), len(x))
+	if len(x) != len(y) {
+		panic(fmt.Sprintf("When using concat, sizes of the arrays should match: %d != %d\n", len(x), len(y)))
+	}
+	for i := 0; i < len(x); i++ {
+		z[i] = make([]float64, len(x[i])+len(y[i]))
+		t := 0
+		for j := 0; j < len(x[i]); j++ {
+			z[i][t] = x[i][j]
+			t++
+		}
+		for j := 0; j < len(y[i]); j++ {
+			z[i][t] = y[i][j]
+			t++
+		}
+	}
+
+	return z
+}
+
 // AverageSlice accumulates every average elements of the array x
 func AverageSlice(x [][]float64, average int) [][]float64 {
 	averagedSlice := make([][]float64, 0, len(x)/average)
-	currentSlice := make([]float64, len(x[0]), len(x[0]))
-	for xi := range x {
-		if xi != 0 && xi%average == 0 {
-
-			averagedSlice = append(averagedSlice, multiplied(currentSlice, 1/float64(average)))
-			zero(&currentSlice)
-		}
-
-		add(&currentSlice, x[xi])
+	for i := 0; i+average <= len(x); i += average {
+		averagedSlice = append(averagedSlice, Average(x[i:i+average]))
 	}
 
-	averagedSlice = append(averagedSlice, multiplied(currentSlice, 1/float64(average)))
-
-	if len(averagedSlice) != (len(x)+average-1)/average {
-		panic(fmt.Sprintf("Len: %d shoudl be: %d", len(averagedSlice), (len(x)+average)/average))
+	if len(averagedSlice) != len(x)/average {
+		panic(fmt.Sprintf("Len: %d should be: %d", len(averagedSlice), len(x)/average))
 	}
 
 	return averagedSlice
