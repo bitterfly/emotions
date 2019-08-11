@@ -107,22 +107,6 @@ func testKNN(emotion string, emotions []string, vectors [][]float64, trainSet []
 	return correct(emotion, counters), counters[emotion], sum
 }
 
-// func ClassifyOne(trainSet []Tagged, trainVar []float64, bucketSize int, frameLen int, frameStep int, filename string) float64 {
-// 	vec := GetFourierForFile(filename, 19, frameLen, frameStep)
-// 	average := GetAverage(bucketSize, frameStep, len(vec))
-// 	averaged := AverageSlice(vec, average)
-// 	_, mc := testKNN(averaged, trainSet, trainVar)
-// 	switch mc {
-// 	case "eeg-neutral":
-// 		return 0
-// 	case "eeg-positive":
-// 		return 1
-// 	case "eeg-negative":
-// 		return -1
-// 	}
-// 	return 0
-// }
-
 func ClassifyKNN(featureType string, trainSetFilename string, bucketSize int, frameLen int, frameStep int, emotionFiles map[string][]string) error {
 	trainSet, err := UnmarshallKNNEeg(trainSetFilename)
 	if err != nil {
@@ -204,6 +188,43 @@ func ClassifyGMM(featureType string, trainSetFilename string, bucketSize int, fr
 	return nil
 }
 
+func ClassifyGMMConcat(trainSetFilename string, speechFiles map[string][]string, eegFiles map[string][]string) error {
+	trainSet, err := GetEGMs(trainSetFilename)
+	if err != nil {
+		return err
+	}
+
+	fileKeys := make([]string, 0, len(speechFiles))
+	for k := range speechFiles {
+		fileKeys = append(fileKeys, k)
+	}
+
+	correctFiles := make(map[string]int, len(fileKeys))
+	correctVectors := make(map[string]int, len(fileKeys))
+	sumVectors := make(map[string]int, len(fileKeys))
+
+	sort.Strings(fileKeys)
+	for _, emotion := range fileKeys {
+		for i := 0; i < len(speechFiles[emotion]); i++ {
+			eegFeatures := GetFourierForFile(eegFiles[emotion][i], 19, 200, 150)
+			allSpeech := ReadSpeechFeaturesOne(speechFiles[emotion][i])
+			averaged := AverageSlice(allSpeech, len(allSpeech)/len(eegFeatures))
+			speechFeatures := averaged[0 : len(averaged)-(len(averaged)-len(eegFeatures))]
+
+			boolCorrect, vectors, sumVector := TestGMM(emotion, fileKeys, Concat(speechFeatures, eegFeatures), trainSet, true)
+			correctFiles[emotion] += boolCorrect
+			correctVectors[emotion] += vectors[emotion]
+			sumVectors[emotion] += sumVector
+		}
+	}
+	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	for _, emotion := range fileKeys {
+		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(speechFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
+	}
+
+	return nil
+}
+
 func GetEegFeaturesForFile(bucketSize int, file string) [][]float64 {
 	frameLen := 200
 	frameStep := 150
@@ -257,12 +278,20 @@ func ClassifyGMMBoth(bucketSize int, frameLen int, frameStep int, speechTrainDir
 
 	for _, emotion := range fileKeys {
 		for i := 0; i < len(speechFiles[emotion]); i++ {
-			sC, eC, bC := TestGMMBoth(emotion, fileKeys, speechAlphaTrainSet, speechTrainSet, speechFiles[emotion][i], eegAlphaTrainSet, eegTrainSet, eegFiles[emotion][i], bucketSize)
+			sC, eC, bC, bA := TestGMMBoth(emotion, fileKeys, speechAlphaTrainSet, speechTrainSet, speechFiles[emotion][i], eegAlphaTrainSet, eegTrainSet, eegFiles[emotion][i], bucketSize)
 
 			speechAccuracy[emotion] += sC
 			EEGAccuracy[emotion] += eC
 			bothAccuracy[emotion] += bC
-			fmt.Printf("%s\t%d\t%d\t%d\n", emotion, sC, eC, bC)
+			fmt.Printf("%s\t", emotion)
+			for _, e := range fileKeys {
+				if e == bA {
+					fmt.Printf("1\t")
+				} else {
+					fmt.Printf("0\t")
+				}
+			}
+			fmt.Printf("%d\t%d\t%d\n", sC, eC, bC)
 		}
 	}
 	fmt.Printf("Accuracy\n")

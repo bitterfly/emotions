@@ -184,7 +184,8 @@ func getμAndσ(mfccs [][]float64) ([]float64, []float64) {
 		expectationSquared[j] /= float64(len(mfccs))
 		variances[j] = expectationSquared[j] - expectation[j]*expectation[j]
 		if variances[j] < EPS {
-			panic(fmt.Sprintf("%d %f", j, variances[j]))
+			fmt.Fprintf(os.Stderr, fmt.Sprintf("variance is EPS: %d %f", j, variances[j]))
+			variances[j] = EPS
 		}
 	}
 

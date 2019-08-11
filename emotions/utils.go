@@ -537,6 +537,11 @@ func GetPower(c []Complex, n int) []float64 {
 	return data
 }
 
+func ReadSpeechFeaturesOne(filename string) [][]float64 {
+	wf, _ := Read(filename, 0.01, 0.97)
+	return MFCCs(wf, 13, 23)
+}
+
 func ReadSpeechFeatures(filenames []string) [][]float64 {
 	mfccs := make([][]float64, 0, len(filenames)*100)
 	for _, f := range filenames {

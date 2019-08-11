@@ -311,7 +311,7 @@ func getBest(dict map[string]int) string {
 	return bestArg
 }
 
-func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEGM, speechEGM []EmotionGausianMixure, speechFile string, eegAlphaEGM []AlphaEGM, eegEGM []EmotionGausianMixure, eegFile string, bucketSize int) (int, int, int) {
+func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEGM, speechEGM []EmotionGausianMixure, speechFile string, eegAlphaEGM []AlphaEGM, eegEGM []EmotionGausianMixure, eegFile string, bucketSize int) (int, int, int, string) {
 	kS := len(speechAlphaEGM[0].EGM.GM)
 	kE := len(eegAlphaEGM[0].EGM.GM)
 
@@ -329,11 +329,8 @@ func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEG
 		// current := speechAlphaEGM[0].Alpha*float64(bToI(getBest(speechClassified) == e)) +
 		// 	eegAlphaEGM[0].Alpha*float64(bToI(getBest(eegClassified) == e))
 
-		//float
 		current := speechAlphaEGM[0].Alpha*(float64(speechClassified[e])/float64(sumSpeech)) +
 			eegAlphaEGM[0].Alpha*(float64(eegClassified[e])/float64(sumEEG))
-
-		// fmt.Printf("%s %f %f*%f + %f*%f\n", e, current, speechAlphaEGM[0].Alpha, float64(speechClassified[e])/float64(sumSpeech), eegAlphaEGM[0].Alpha, float64(eegClassified[e])/float64(sumEEG))
 
 		if current > bestBoth {
 			bestBoth = current
@@ -341,7 +338,7 @@ func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEG
 		}
 	}
 	// return correct(emotion, counters), counters[emotion], sum
-	return bToI(getBest(speechClassified) == emotion), bToI(getBest(eegClassified) == emotion), bToI(bothEmotion == emotion)
+	return bToI(getBest(speechClassified) == emotion), bToI(getBest(eegClassified) == emotion), bToI(bothEmotion == emotion), bothEmotion
 }
 
 func bToI(b bool) int {
