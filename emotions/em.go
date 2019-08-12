@@ -273,7 +273,6 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 	}
 
 	for _, m := range coefficient {
-		failedAll := 0
 		best, failed := FindBestGaussian(m, k, egmms)
 		if failed {
 			failedAll++
