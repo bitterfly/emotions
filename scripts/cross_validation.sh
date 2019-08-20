@@ -24,6 +24,10 @@ for file in $(find ${batch_files_dir} -type f | sort); do
         "${test_executable}" 0 ${gmm_models_dir}/gmm_$(basename ${file%.txt})_speech ${gmm_models_dir}/gmm_$(basename ${file%.txt})_eeg <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt}).res 2> ${result_dir}/result_$(basename ${file%.txt}).err
     else 
         "${train_executable}" ${k} ${gmm_models_dir}/gmm_$(basename ${file%.txt}) <(cat $(comm -23 <(echo ${batch_files} | sort) <(echo ${file})))
-        "${test_executable}" ${gmm_models_dir}/gmm_$(basename ${file%.txt})_k${k} <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt})_k${k}
+        if [[ ${type} == "vector" ]]; then
+            ${test_executable} ${gmm_models_dir}/gmm_$(basename ${file%.txt})_speech ${gmm_models_dir}/gmm_$(basename ${file%.txt})_eeg <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt})_k${k}.res 2>${result_dir}/result_$(basename ${file%.txt}).err
+        else
+            ${test_executable} ${gmm_models_dir}/gmm_$(basename ${file%.txt})_k${k} <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt})_k${k}
+        fi
     fi
 done
