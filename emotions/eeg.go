@@ -67,7 +67,7 @@ func getVector(line []string) []float64 {
 func ReadXML(filename string, elNum int) [][]float64 {
 	file, err := os.Open(filename)
 	if err != nil {
-		panic(err)
+		panic(fmt.Sprintf("%s: %s", filename, err))
 	}
 
 	electrodes := make([][]float64, elNum, elNum)
@@ -80,7 +80,7 @@ func ReadXML(filename string, elNum int) [][]float64 {
 			if err == io.EOF {
 				break
 			} else {
-				panic(err)
+				panic(fmt.Sprintf("%s %s", filename, err))
 			}
 		}
 
