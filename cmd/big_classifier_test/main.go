@@ -12,7 +12,7 @@ func main() {
 	}
 
 	gmmDir := os.Args[1]
-	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[2], true)
+	speechFiles, eegFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[2], true)
 	if err != nil {
 		panic(err)
 	}

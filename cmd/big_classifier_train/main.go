@@ -40,7 +40,7 @@ func main() {
 	k = 3
 
 	outputDir := os.Args[2]
-	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[3], true)
+	speechFiles, eegFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[3], true)
 
 	if err != nil || len(speechFiles) != len(eegFiles) {
 		panic(err)

@@ -34,7 +34,7 @@ func main() {
 	}
 
 	outputDir := os.Args[outputDirIndex]
-	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[outputDirIndex+1], false)
+	emotionFiles, _, _, err := emotions.ParseArgumentsFromFile(os.Args[outputDirIndex+1], false)
 
 	if err != nil {
 		panic(err)

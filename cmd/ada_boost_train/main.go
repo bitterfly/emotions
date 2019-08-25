@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"sort"
-	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
@@ -145,18 +144,11 @@ func getFinalAlpha(emotionTypes []string, filesTags []string,
 func main() {
 	if len(os.Args) < 4 {
 
-		panic("go run main.go <k> <bucket-size> <dir-template> <input_file>\n<input_file>: <emotion>	<wav_file>")
+		panic("go run main.go <speech-gmm-dir> <eeg-gmm-dir> <output-dir> <input_file>\n<input_file>: <emotion>	<wav_file>")
 	}
 
-	k, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		panic("Must provide k")
-	}
-
-	bucketSize, err := strconv.Atoi(os.Args[2])
-	if err != nil {
-		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[2]))
-	}
+	speechGmmDir := os.Args[1]
+	eegGmmDir := os.Args[1]
 
 	outputDir := os.Args[3]
 	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
@@ -194,25 +186,21 @@ func main() {
 	for i, emotion := range emotionTypes {
 		currentSpeechFiles := speechFiles[emotion]
 		currentEegFiles := eegFiles[emotion]
-		wLen += len(currentSpeechFiles)
 		for j := 0; j < len(currentSpeechFiles); j++ {
 			filesTags = append(filesTags, emotion)
 		}
-		eegFilesSorted = append(eegFilesSorted, currentEegFiles...)
-		currentSpeechFeatures := emotions.ReadSpeechFeaturesAppend(currentSpeechFiles, &speechFeatures)
-
-		speechGMMs[i] = emotions.EmotionGausianMixure{
-			Emotion: emotion,
-			GM:      emotions.GMM(currentSpeechFeatures, k),
-		}
-
-		currentEegFeatures := getEegFeaturesForFiles(bucketSize, currentEegFiles, &eegFeatures)
-
-		eegGMMs[i] = emotions.EmotionGausianMixure{
-			Emotion: emotion,
-			GM:      emotions.GMM(currentEegFeatures, 3),
-		}
 	}
+
+	speechGMMs, err := emotions.GetEGMs(speechGmmDir)
+	if err != nil {
+		panic(err)
+	}
+
+	eegGMMs, err := emotions.GetEGMs(eegGmmDir)
+	if err != nil {
+		panic(err)
+	}
+
 	speechAlpha, eegAlpha := getFinalAlpha(emotionTypes, filesTags, speechGMMs, speechFeatures, eegGMMs, eegFeatures)
 	if speechAlpha < emotions.EPS && speechAlpha > -emotions.EPS {
 		speechAlpha = emotions.EPS

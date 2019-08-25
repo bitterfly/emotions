@@ -39,7 +39,7 @@ func main() {
 		panic(err)
 	}
 
-	emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[2], false)
+	emotionFiles, _, _, err := emotions.ParseArgumentsFromFile(os.Args[2], false)
 	if err != nil {
 		panic(err)
 	}

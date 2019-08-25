@@ -428,30 +428,35 @@ func ParseArguments(args []string) map[string][]string {
 	return emotions
 }
 
-func ParseArgumentsFromFile(input_filename string, multiple bool) (map[string][]string, map[string][]string, error) {
-	first_files := make(map[string][]string)
-	second_files := make(map[string][]string)
+//ParseArgumentsFromFile takes a txt file in the format
+//<emotion>\t<wav-file>(\t<eeg-gile>)
+//and returns dictionaries with the file for each emotion (the keys are the emotions)
+func ParseArgumentsFromFile(inputFilename string, multiple bool) (map[string][]string, map[string][]string, []string, error) {
+	firstFiles := make(map[string][]string)
+	secondFiles := make(map[string][]string)
+	emotionTags := make([]string, 0, 100)
 
-	file, err := os.Open(input_filename)
+	file, err := os.Open(inputFilename)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := strings.Split(scanner.Text(), "\t")
-		first_files[line[0]] = append(first_files[line[0]], line[1])
+		emotionTags = append(emotionTags, line[0])
+		firstFiles[line[0]] = append(firstFiles[line[0]], line[1])
 		if multiple {
-			second_files[line[0]] = append(second_files[line[0]], line[2])
+			secondFiles[line[0]] = append(secondFiles[line[0]], line[2])
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
-	return first_files, second_files, nil
+	return firstFiles, secondFiles, emotionTags, nil
 }
 
 func GetAverage(bucketSize int, frameLen int, arrayLen int) int {

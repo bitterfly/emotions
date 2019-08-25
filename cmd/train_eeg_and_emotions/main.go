@@ -82,7 +82,7 @@ func main() {
 	}
 	outputDir := os.Args[3]
 
-	wavFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
+	wavFiles, eegFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
 	if err != nil {
 		panic(err)
 	}
