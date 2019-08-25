@@ -230,6 +230,25 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) (string,
 	return argmax, failed == len(egmms)
 }
 
+func FindBestGaussianAlpha(X []float64, k int, egmms []AlphaEGM) (string, bool) {
+	max := math.Inf(-42)
+	argmax := ""
+	failed := 0
+
+	for _, g := range egmms {
+		currEmotion, err := EvaluateVector(X, k, g.EGM.GM)
+		if err != nil {
+			failed++
+			continue
+		}
+		if currEmotion > max {
+			max = currEmotion
+			argmax = g.EGM.Emotion
+		}
+	}
+	return argmax, failed == len(egmms)
+}
+
 func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) (map[string]int, int) {
 	scores := make(map[string]int)
 	for _, egmm := range egmms {
@@ -338,6 +357,41 @@ func TestGMMBoth(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEG
 	}
 	// return correct(emotion, counters), counters[emotion], sum
 	return bToI(getBest(speechClassified) == emotion), bToI(getBest(eegClassified) == emotion), bToI(bothEmotion == emotion), bothEmotion
+}
+
+func TestGMMBothConcat(emotion string, emotionTypes []string, speechAlphaEGM []AlphaEGM, speechFeatures [][]float64, eegAlphaEGM []AlphaEGM, eegFeatures [][]float64) (int, map[string]int, int) {
+	kS := len(speechAlphaEGM[0].EGM.GM)
+	kE := len(eegAlphaEGM[0].EGM.GM)
+
+	counters := make(map[string]int)
+	for _, e := range emotionTypes {
+		counters[e] = 0
+	}
+
+	for i := 0; i < len(speechFeatures); i++ {
+		speechChoice, _ := FindBestGaussianAlpha(speechFeatures[i], kS, speechAlphaEGM)
+		eegChoice, _ := FindBestGaussianAlpha(eegFeatures[i], kE, eegAlphaEGM)
+		fmt.Fprintf(os.Stderr, "%s %s %s\n", emotion, speechChoice, eegChoice)
+		maxE := ""
+		maxV := -1.0
+		for _, e := range emotionTypes {
+			current := speechAlphaEGM[0].Alpha*float64(bToI(e == speechChoice)) + eegAlphaEGM[0].Alpha*float64(bToI(e == eegChoice))
+			if current > maxV {
+				maxV = current
+				maxE = e
+			}
+		}
+		counters[maxE]++
+	}
+	sum := 0
+	fmt.Printf("%s", emotion)
+	for _, e := range emotionTypes {
+		fmt.Printf("\t%d", counters[e])
+		sum += counters[e]
+	}
+	fmt.Printf("\n")
+
+	return bToI(getBest(counters) == emotion), counters, sum
 }
 
 func bToI(b bool) int {

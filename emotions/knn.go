@@ -301,3 +301,52 @@ func ClassifyGMMBoth(bucketSize int, frameLen int, frameStep int, speechTrainDir
 
 	return nil
 }
+
+func ClassifyGMMBothConcat(speechTrainDir string, speechFiles map[string][]string, eegTrainDir string, eegFiles map[string][]string) error {
+	speechAlphaTrainSet, err := GetAlphaEGMs(speechTrainDir)
+	if err != nil {
+		return err
+	}
+
+	eegAlphaTrainSet, err := GetAlphaEGMs(eegTrainDir)
+	if err != nil {
+		return err
+	}
+
+	fileKeys := make([]string, 0, len(speechFiles))
+	for k := range speechFiles {
+		fileKeys = append(fileKeys, k)
+	}
+
+	sort.Strings(fileKeys)
+	correctFiles := make(map[string]int, len(fileKeys))
+	correctVectors := make(map[string]int, len(fileKeys))
+	sumVectors := make(map[string]int, len(fileKeys))
+
+	for _, emotion := range fileKeys {
+		correctFiles[emotion] = 0
+		correctVectors[emotion] = 0
+		sumVectors[emotion] = 0
+	}
+
+	for _, emotion := range fileKeys {
+		for i := 0; i < len(speechFiles[emotion]); i++ {
+			eegFeatures := GetEegFeaturesForFile(0, eegFiles[emotion][i])
+			allFeatures := GetSpeechFeatureForFile(speechFiles[emotion][i])
+			averaged := AverageSlice(allFeatures, len(allFeatures)/len(eegFeatures))
+			speechFeatures := averaged[0 : len(averaged)-(len(averaged)-len(eegFeatures))]
+
+			boolCorrect, vectors, sumVector := TestGMMBothConcat(emotion, fileKeys, speechAlphaTrainSet, speechFeatures, eegAlphaTrainSet, eegFeatures)
+
+			correctFiles[emotion] += boolCorrect
+			correctVectors[emotion] += vectors[emotion]
+			sumVectors[emotion] += sumVector
+		}
+	}
+	fmt.Printf("\tCorrectFiles\tCorrectVectors\n")
+	for _, emotion := range fileKeys {
+		fmt.Printf("%s\t%f\t%f\n", emotion, float64(correctFiles[emotion])/float64(len(speechFiles[emotion])), float64(correctVectors[emotion])/float64(sumVectors[emotion]))
+	}
+
+	return nil
+}

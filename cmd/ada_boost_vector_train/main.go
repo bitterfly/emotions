@@ -13,18 +13,22 @@ import (
 	"github.com/bitterfly/emotions/emotions"
 )
 
-func getEegFeaturesForFiles(bucketSize int, files []string, eegFeatures *[]([][]float64)) [][]float64 {
+type EmotionFeature struct {
+	emotion string
+	feature []float64
+}
+
+func getEegFeaturesForFiles(emotion string, files []string, eegFeatures *[]EmotionFeature) [][]float64 {
 	frameLen := 200
 	frameStep := 150
 
 	data := make([][]float64, 0, 100)
 	for i := range files {
 		current := emotions.GetFourierForFile(files[i], 19, frameLen, frameStep)
-		average := emotions.GetAverage(bucketSize, frameLen, len(current))
-		averaged := emotions.AverageSlice(current, average)
-		data = append(data, averaged...)
-
-		*eegFeatures = append(*eegFeatures, averaged)
+		data = append(data, current...)
+		for _, c := range current {
+			*eegFeatures = append(*eegFeatures, EmotionFeature{emotion: emotion, feature: c})
+		}
 	}
 
 	return data
@@ -33,6 +37,7 @@ func getEegFeaturesForFiles(bucketSize int, files []string, eegFeatures *[]([][]
 func getError(weights []float64, incorrect []int) float64 {
 	err := 0.0
 	sum := 0.0
+
 	for i := 0; i < len(incorrect); i++ {
 		sum += weights[i]
 		err += weights[i] * float64(incorrect[i])
@@ -43,19 +48,6 @@ func getError(weights []float64, incorrect []int) float64 {
 	}
 
 	return err / sum
-}
-
-func getIncorrect(emotionTypes []string, filesTags []string, features []([][]float64), gmms []emotions.EmotionGausianMixure) []int {
-	incorrect := make([]int, len(filesTags), len(filesTags))
-
-	for i := 0; i < len(features); i++ {
-		correct, _, _ := emotions.TestGMM(filesTags[i], emotionTypes, features[i], gmms, false)
-		if correct == 0 {
-			incorrect[i] = 1
-		}
-	}
-
-	return incorrect
 }
 
 func getAlpha(err float64, k int) float64 {
@@ -77,37 +69,55 @@ func getWeights(alpha float64, weights []float64, incorrect []int) []float64 {
 	return newWeights
 }
 
-func getFinalAlpha(emotionTypes []string, filesTags []string,
-	speechGMMs []emotions.EmotionGausianMixure,
-	speechFeatures []([][]float64),
-	eegGMMs []emotions.EmotionGausianMixure,
-	eegFeatures []([][]float64),
-) (float64, float64) {
+func getIncorrect(features []EmotionFeature, gmms []emotions.EmotionGausianMixure) []int {
+	failedAll := 0
+	incorrect := make([]int, len(features), len(features))
 
-	if len(eegFeatures) != len(speechFeatures) || len(eegFeatures) != len(filesTags) {
-		panic(fmt.Sprintf("Features numbers must be equal to the number of files. EegFeatures: %d\tSpeechFeatures: %d\tFiles: %d\n", len(eegFeatures), len(speechFeatures), len(filesTags)))
+	for i := 0; i < len(features); i++ {
+		best, failed := emotions.FindBestGaussian(features[i].feature, len(gmms[0].GM), gmms)
+		if failed {
+			failedAll++
+			incorrect[i] = 1
+			continue
+		}
+		if best != features[i].emotion {
+			incorrect[i] = 1
+		}
 	}
 
-	trainingSize := len(filesTags)
+	if failedAll != 0 {
+		fmt.Fprintf(os.Stderr, "Failed: %d\n", failedAll)
+	}
+	return incorrect
+}
+
+func getFinalAlpha(emotionTypes []string,
+	speechGMMs []emotions.EmotionGausianMixure,
+	speechFeatures []EmotionFeature,
+	eegGMMs []emotions.EmotionGausianMixure,
+	eegFeatures []EmotionFeature,
+) (float64, float64) {
+
+	if len(eegFeatures) != len(speechFeatures) {
+		panic(fmt.Sprintf("Features numbers must be equal to the number of files. EegFeatures: %d\tSpeechFeatures: %d\n", len(eegFeatures), len(speechFeatures)))
+	}
+
+	trainingSize := len(speechFeatures)
 
 	weights := make([]float64, trainingSize, trainingSize)
 	for i := 0; i < trainingSize; i++ {
 		weights[i] = 1.0 / float64(trainingSize)
 	}
-
 	var alphaSpeech, alphaEeg float64
 	var newWeights []float64
 
-	speechIncorrect := getIncorrect(emotionTypes, filesTags, speechFeatures, speechGMMs)
-	eegIncorrect := getIncorrect(emotionTypes, filesTags, eegFeatures, eegGMMs)
-
-	fmt.Printf("%v\n", speechIncorrect)
-	fmt.Printf("%v\n", eegIncorrect)
+	speechIncorrect := getIncorrect(speechFeatures, speechGMMs)
+	eegIncorrect := getIncorrect(eegFeatures, eegGMMs)
 
 	errSpeech := getError(weights, speechIncorrect)
-	fmt.Printf("ErrSpeech: %f\n", errSpeech)
 	errEeg := getError(weights, eegIncorrect)
-	fmt.Printf("ErrEeg: %f\n", errEeg)
+
+	fmt.Printf("Err speech: %f, err eeg: %f\n", errSpeech, errEeg)
 
 	k := len(emotionTypes)
 
@@ -138,14 +148,19 @@ func getFinalAlpha(emotionTypes []string, filesTags []string,
 		weights = append([]float64{}, newWeights...)
 	}
 	fmt.Printf("Alpha speech: %f, alpha eeg: %f\n", alphaSpeech, alphaEeg)
-
 	return alphaSpeech, alphaEeg
+}
+
+func tag(emotion string, data [][]float64, speechFeatures *[]EmotionFeature) {
+	for _, m := range data {
+		*speechFeatures = append(*speechFeatures, EmotionFeature{emotion: emotion, feature: m})
+	}
 }
 
 func main() {
 	if len(os.Args) < 4 {
 
-		panic("go run main.go <k> <bucket-size> <dir-template> <input_file>\n<input_file>: <emotion>	<wav_file>")
+		panic("go run main.go <k> <dir-template> <input_file>\n<input_file>: <emotion>	<wav_file>")
 	}
 
 	k, err := strconv.Atoi(os.Args[1])
@@ -153,13 +168,8 @@ func main() {
 		panic("Must provide k")
 	}
 
-	bucketSize, err := strconv.Atoi(os.Args[2])
-	if err != nil {
-		panic(fmt.Sprintf("could not parse bucket-size argument: %s", os.Args[2]))
-	}
-
-	outputDir := os.Args[3]
-	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
+	outputDir := os.Args[2]
+	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[3], true)
 
 	if err != nil || len(speechFiles) != len(eegFiles) {
 		panic(err)
@@ -181,39 +191,39 @@ func main() {
 	speechGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
 	eegGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
 
-	speechFeatures := make([]([][]float64), 0, 1024)
-	eegFeatures := make([]([][]float64), 0, 1024)
+	speechFeatures := make([]EmotionFeature, 0, 1024)
+	eegFeatures := make([]EmotionFeature, 0, 1024)
 
 	sort.Strings(emotionTypes)
-
-	wLen := 0
-
 	eegFilesSorted := make([]string, 0, 1024)
-	filesTags := make([]string, 0, 1024)
 
 	for i, emotion := range emotionTypes {
 		currentSpeechFiles := speechFiles[emotion]
 		currentEegFiles := eegFiles[emotion]
-		wLen += len(currentSpeechFiles)
-		for j := 0; j < len(currentSpeechFiles); j++ {
-			filesTags = append(filesTags, emotion)
-		}
+
 		eegFilesSorted = append(eegFilesSorted, currentEegFiles...)
-		currentSpeechFeatures := emotions.ReadSpeechFeaturesAppend(currentSpeechFiles, &speechFeatures)
+		currentEegFeatures := getEegFeaturesForFiles(emotion, currentEegFiles, &eegFeatures)
+
+		eegGMMs[i] = emotions.EmotionGausianMixure{
+			Emotion: emotion,
+			GM:      emotions.GMM(currentEegFeatures, 3),
+		}
+
+		allFeatures := emotions.ReadSpeechFeatures(currentSpeechFiles)
+		averaged := emotions.AverageSlice(allFeatures, len(allFeatures)/len(currentEegFeatures))
+		currentSpeechFeatures := averaged[0 : len(averaged)-(len(averaged)-len(currentEegFeatures))]
+
+		tag(emotion, currentSpeechFeatures, &speechFeatures)
 
 		speechGMMs[i] = emotions.EmotionGausianMixure{
 			Emotion: emotion,
 			GM:      emotions.GMM(currentSpeechFeatures, k),
 		}
 
-		currentEegFeatures := getEegFeaturesForFiles(bucketSize, currentEegFiles, &eegFeatures)
+		fmt.Printf("emotion: %s, eeg: %d, speech %d\n", emotion, len(currentEegFeatures), len(currentSpeechFeatures))
 
-		eegGMMs[i] = emotions.EmotionGausianMixure{
-			Emotion: emotion,
-			GM:      emotions.GMM(currentEegFeatures, 3),
-		}
 	}
-	speechAlpha, eegAlpha := getFinalAlpha(emotionTypes, filesTags, speechGMMs, speechFeatures, eegGMMs, eegFeatures)
+	speechAlpha, eegAlpha := getFinalAlpha(emotionTypes, speechGMMs, speechFeatures, eegGMMs, eegFeatures)
 	if speechAlpha < emotions.EPS && speechAlpha > -emotions.EPS {
 		speechAlpha = emotions.EPS
 	}
