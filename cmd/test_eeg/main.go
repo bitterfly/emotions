@@ -26,7 +26,7 @@ func main() {
 	}
 
 	trainDir := os.Args[4]
-	_, emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[5], false)
+	_, emotionFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[5], true)
 
 	frameLen := 200
 	frameStep := 150

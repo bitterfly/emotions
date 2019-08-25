@@ -148,10 +148,10 @@ func main() {
 	}
 
 	speechGmmDir := os.Args[1]
-	eegGmmDir := os.Args[1]
+	eegGmmDir := os.Args[2]
 
 	outputDir := os.Args[3]
-	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
+	speechFiles, eegFiles, filesTags, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
 
 	if err != nil || len(speechFiles) != len(eegFiles) {
 		panic(err)
@@ -169,27 +169,10 @@ func main() {
 	for e := range speechFiles {
 		emotionTypes = append(emotionTypes, e)
 	}
-
-	speechGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
-	eegGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
+	sort.Strings(emotionTypes)
 
 	speechFeatures := make([]([][]float64), 0, 1024)
 	eegFeatures := make([]([][]float64), 0, 1024)
-
-	sort.Strings(emotionTypes)
-
-	wLen := 0
-
-	eegFilesSorted := make([]string, 0, 1024)
-	filesTags := make([]string, 0, 1024)
-
-	for i, emotion := range emotionTypes {
-		currentSpeechFiles := speechFiles[emotion]
-		currentEegFiles := eegFiles[emotion]
-		for j := 0; j < len(currentSpeechFiles); j++ {
-			filesTags = append(filesTags, emotion)
-		}
-	}
 
 	speechGMMs, err := emotions.GetEGMs(speechGmmDir)
 	if err != nil {
@@ -199,6 +182,13 @@ func main() {
 	eegGMMs, err := emotions.GetEGMs(eegGmmDir)
 	if err != nil {
 		panic(err)
+	}
+
+	for _, emotion := range emotionTypes {
+		currentSpeechFiles := speechFiles[emotion]
+		currentEegFiles := eegFiles[emotion]
+		emotions.ReadSpeechFeaturesAppend(currentSpeechFiles, &speechFeatures)
+		getEegFeaturesForFiles(0, currentEegFiles, &eegFeatures)
 	}
 
 	speechAlpha, eegAlpha := getFinalAlpha(emotionTypes, filesTags, speechGMMs, speechFeatures, eegGMMs, eegFeatures)

@@ -8,7 +8,6 @@ import (
 	"os"
 	"path"
 	"sort"
-	"strconv"
 
 	"github.com/bitterfly/emotions/emotions"
 )
@@ -160,16 +159,14 @@ func tag(emotion string, data [][]float64, speechFeatures *[]EmotionFeature) {
 func main() {
 	if len(os.Args) < 4 {
 
-		panic("go run main.go <k> <dir-template> <input_file>\n<input_file>: <emotion>	<wav_file>")
+		panic("go run main.go <speech-gmm-dir> <eeg-gmm-dir> <output-dir> <input_file>\n<input_file>: <emotion>	<wav_file>")
 	}
 
-	k, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		panic("Must provide k")
-	}
+	speechGmmDir := os.Args[1]
+	eegGmmDir := os.Args[2]
 
-	outputDir := os.Args[2]
-	speechFiles, eegFiles, err := emotions.ParseArgumentsFromFile(os.Args[3], true)
+	outputDir := os.Args[3]
+	speechFiles, eegFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[4], true)
 
 	if err != nil || len(speechFiles) != len(eegFiles) {
 		panic(err)
@@ -188,40 +185,31 @@ func main() {
 		emotionTypes = append(emotionTypes, e)
 	}
 
-	speechGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
-	eegGMMs := make([]emotions.EmotionGausianMixure, len(emotionTypes), len(emotionTypes))
+	speechGMMs, err := emotions.GetEGMs(speechGmmDir)
+	if err != nil {
+		panic(err)
+	}
+
+	eegGMMs, err := emotions.GetEGMs(eegGmmDir)
+	if err != nil {
+		panic(err)
+	}
 
 	speechFeatures := make([]EmotionFeature, 0, 1024)
 	eegFeatures := make([]EmotionFeature, 0, 1024)
 
 	sort.Strings(emotionTypes)
-	eegFilesSorted := make([]string, 0, 1024)
 
-	for i, emotion := range emotionTypes {
+	for _, emotion := range emotionTypes {
 		currentSpeechFiles := speechFiles[emotion]
 		currentEegFiles := eegFiles[emotion]
 
-		eegFilesSorted = append(eegFilesSorted, currentEegFiles...)
 		currentEegFeatures := getEegFeaturesForFiles(emotion, currentEegFiles, &eegFeatures)
-
-		eegGMMs[i] = emotions.EmotionGausianMixure{
-			Emotion: emotion,
-			GM:      emotions.GMM(currentEegFeatures, 3),
-		}
 
 		allFeatures := emotions.ReadSpeechFeatures(currentSpeechFiles)
 		averaged := emotions.AverageSlice(allFeatures, len(allFeatures)/len(currentEegFeatures))
 		currentSpeechFeatures := averaged[0 : len(averaged)-(len(averaged)-len(currentEegFeatures))]
-
 		tag(emotion, currentSpeechFeatures, &speechFeatures)
-
-		speechGMMs[i] = emotions.EmotionGausianMixure{
-			Emotion: emotion,
-			GM:      emotions.GMM(currentSpeechFeatures, k),
-		}
-
-		fmt.Printf("emotion: %s, eeg: %d, speech %d\n", emotion, len(currentEegFeatures), len(currentSpeechFeatures))
-
 	}
 	speechAlpha, eegAlpha := getFinalAlpha(emotionTypes, speechGMMs, speechFeatures, eegGMMs, eegFeatures)
 	if speechAlpha < emotions.EPS && speechAlpha > -emotions.EPS {

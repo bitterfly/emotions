@@ -106,7 +106,7 @@ func main() {
 	}
 
 	outputDir := os.Args[4]
-	_, arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[5], false)
+	_, arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[5], true)
 
 	if err != nil {
 		panic(err)
