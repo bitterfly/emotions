@@ -249,6 +249,25 @@ func FindBestGaussianAlpha(X []float64, k int, egmms []AlphaEGM) (string, bool) 
 	return argmax, failed == len(egmms)
 }
 
+func FindBestGaussianAlphaFloat(X []float64, e string, k int, egmms []AlphaEGM) float64 {
+	for _, g := range egmms {
+		if g.EGM.Emotion == e {
+			currEmotion, _ := EvaluateVector(X, k, g.EGM.GM)
+			return currEmotion
+		}
+	}
+	return -1
+}
+
+func sumGaussianAlpha(X []float64, k int, egmms []AlphaEGM) float64 {
+	sum := 0.0
+	for _, g := range egmms {
+		s, _ := EvaluateVector(X, k, g.EGM.GM)
+		sum += s
+	}
+	return sum
+}
+
 func FindBestGaussianMany(X [][]float64, k int, egmms []EmotionGausianMixure) (map[string]int, int) {
 	scores := make(map[string]int)
 	for _, egmm := range egmms {
@@ -317,6 +336,45 @@ func TestGMM(emotion string, emotions []string, coefficient [][]float64, egmms [
 	return correct(emotion, counters), counters, sum
 }
 
+// func TestGMMFloat(emotion string, emotions []string, coefficient [][]float64, egmms []EmotionGausianMixure, verbose bool) (int, map[string]float64, float64) {
+// 	if verbose {
+// 		fmt.Printf("%s\t", emotion)
+// 	}
+
+// 	k := len(egmms[0].GM)
+// 	failedAll := 0
+
+// 	counters := make(map[string]float64)
+// 	for _, e := range emotions {
+// 		counters[e] = 0
+// 	}
+
+// 	for _, m := range coefficient {
+// 		best, val, failed := FindBestGaussianFloat(m, k, egmms)
+// 		if failed {
+// 			failedAll++
+// 			continue
+// 		}
+// 		counters[best] += val
+// 	}
+
+// 	sum := 0.0
+// 	for _, e := range emotions {
+// 		if verbose {
+// 			fmt.Printf("%d\t", counters[e])
+// 		}
+// 		sum += counters[e]
+// 	}
+// 	if verbose {
+// 		fmt.Printf("\n")
+// 	}
+
+// 	if failedAll > 0 {
+// 		fmt.Fprintf(os.Stderr, "%s Failed (%d/%d)\n", emotion, failedAll, sum)
+// 	}
+// 	return correctFloat(emotion, counters), counters, sum
+// }
+
 func getBest(dict map[string]int) string {
 	best := -1
 	bestArg := ""
@@ -369,13 +427,21 @@ func TestGMMBothConcat(emotion string, emotionTypes []string, speechAlphaEGM []A
 	}
 
 	for i := 0; i < len(speechFeatures); i++ {
-		speechChoice, _ := FindBestGaussianAlpha(speechFeatures[i], kS, speechAlphaEGM)
-		eegChoice, _ := FindBestGaussianAlpha(eegFeatures[i], kE, eegAlphaEGM)
-		fmt.Fprintf(os.Stderr, "%s %s %s\n", emotion, speechChoice, eegChoice)
 		maxE := ""
 		maxV := -1.0
+
+		sumSpeech := sumGaussianAlpha(speechFeatures[i], kS, speechAlphaEGM)
+		sumEeg := sumGaussianAlpha(eegFeatures[i], kE, eegAlphaEGM)
+
 		for _, e := range emotionTypes {
-			current := speechAlphaEGM[0].Alpha*float64(bToI(e == speechChoice)) + eegAlphaEGM[0].Alpha*float64(bToI(e == eegChoice))
+			speechChoice := FindBestGaussianAlphaFloat(speechFeatures[i], e, kS, speechAlphaEGM)
+			eegChoice := FindBestGaussianAlphaFloat(eegFeatures[i], e, kE, eegAlphaEGM)
+
+			speechChoice /= sumSpeech
+			eegChoice /= sumEeg
+			// fmt.Fprintf(os.Stderr, "%d %d\n", bToI(speechChoice == emotion), bToI(eegChoice == emotion))
+
+			current := speechAlphaEGM[0].Alpha*speechChoice + eegAlphaEGM[0].Alpha*eegChoice
 			if current > maxV {
 				maxV = current
 				maxE = e
@@ -383,6 +449,7 @@ func TestGMMBothConcat(emotion string, emotionTypes []string, speechAlphaEGM []A
 		}
 		counters[maxE]++
 	}
+
 	sum := 0
 	fmt.Printf("%s", emotion)
 	for _, e := range emotionTypes {
@@ -403,6 +470,21 @@ func bToI(b bool) int {
 
 func correct(emotion string, counters map[string]int) int {
 	maxV := 0
+	maxE := ""
+	for e, v := range counters {
+		if v > maxV {
+			maxV = v
+			maxE = e
+		}
+	}
+	if maxE == emotion {
+		return 1
+	}
+	return 0
+}
+
+func correctFloat(emotion string, counters map[string]float64) int {
+	maxV := 0.0
 	maxE := ""
 	for e, v := range counters {
 		if v > maxV {

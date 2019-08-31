@@ -100,9 +100,6 @@ func getFinalAlpha(emotionTypes []string, filesTags []string,
 	speechIncorrect := getIncorrect(emotionTypes, filesTags, speechFeatures, speechGMMs)
 	eegIncorrect := getIncorrect(emotionTypes, filesTags, eegFeatures, eegGMMs)
 
-	fmt.Printf("%v\n", speechIncorrect)
-	fmt.Printf("%v\n", eegIncorrect)
-
 	errSpeech := getError(weights, speechIncorrect)
 	fmt.Printf("ErrSpeech: %f\n", errSpeech)
 	errEeg := getError(weights, eegIncorrect)
@@ -185,6 +182,7 @@ func main() {
 	}
 
 	for _, emotion := range emotionTypes {
+		fmt.Printf("Processing files for %s\n", emotion)
 		currentSpeechFiles := speechFiles[emotion]
 		currentEegFiles := eegFiles[emotion]
 		emotions.ReadSpeechFeaturesAppend(currentSpeechFiles, &speechFeatures)

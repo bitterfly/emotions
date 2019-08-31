@@ -201,6 +201,7 @@ func main() {
 	sort.Strings(emotionTypes)
 
 	for _, emotion := range emotionTypes {
+		fmt.Printf("Reading vectors for %s\n", emotion)
 		currentSpeechFiles := speechFiles[emotion]
 		currentEegFiles := eegFiles[emotion]
 
