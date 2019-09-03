@@ -278,7 +278,7 @@ func main() {
 	arguments := make(map[string][]string)
 	var err error
 	if len(os.Args) > 3 {
-		arguments, _, _, err = emotions.ParseArgumentsFromFile(os.Args[3], false)
+		_, arguments,_ , err = emotions.ParseArgumentsFromFile(os.Args[3], true)
 		if err != nil {
 			panic(err)
 		}

@@ -271,7 +271,7 @@ func main() {
 	}
 
 	outputDir := os.Args[1]
-	arguments, _, _, err := emotions.ParseArgumentsFromFile(os.Args[2], false)
+	_,arguments, _, err := emotions.ParseArgumentsFromFile(os.Args[2], true)
 
 	if err != nil {
 		panic(err)
@@ -280,15 +280,20 @@ func main() {
 	frameLen := 200
 	frameStep := 150
 
-	eegPositive, ok := arguments["eeg-positive"]
+	eegPositive, ok := arguments["happiness"]
 	if !ok {
 		panic("No eeg positive files were provided")
 	}
-	eegNegative, ok := arguments["eeg-negative"]
+	eegNegative, ok := arguments["anger"]
 	if !ok {
 		panic("No eeg positive files were provided")
 	}
-	eegNeutral, ok := arguments["eeg-neutral"]
+	tmp, ok := arguments["sadness"]
+	if !ok {
+		panic("No eeg positive files were provided")
+	}
+	eegNegative = append(eegNegative, tmp...)
+	eegNeutral, ok := arguments["neutral"]
 	if !ok {
 		panic("No eeg positive files were provided")
 	}
