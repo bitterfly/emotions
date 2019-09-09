@@ -18,14 +18,17 @@ fi
 
 batch_files=$(find ${batch_files_dir} -type f)
 for file in $(find ${batch_files_dir} -type f | sort); do
-    echo Testing ${file} 
     if [[ ${type} == "eeg" ]];then
         echo "EEG"
+        echo Training ${file}         
         "${train_executable}" "gmm" "${feature_type}" 0 ${gmm_models_dir}/gmm_$(basename ${file%.txt}) <(cat $(comm -23 <(echo ${batch_files} | sort) <(echo ${file})))
+        echo Testing ${file} 
         "${test_executable}" "gmm" "${feature_type}" 0 ${gmm_models_dir}/gmm_$(basename ${file%.txt}) <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt}).res 2> ${result_dir}/result_$(basename ${file%.txt}).err 
     else 
         echo ${type}
+        echo Training ${file}         
         "${train_executable}" ${k} ${gmm_models_dir}/gmm_$(basename ${file%.txt}) <(cat $(comm -23 <(echo ${batch_files} | sort) <(echo ${file})))
+        echo Testing ${file} 
         "${test_executable}" ${gmm_models_dir}/gmm_$(basename ${file%.txt})_k${k} <(cat ${file}) > ${result_dir}/result_$(basename ${file%.txt})_k${k}
     fi
 done
