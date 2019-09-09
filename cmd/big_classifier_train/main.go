@@ -37,7 +37,6 @@ func main() {
 	if err != nil {
 		panic("Must provide k")
 	}
-	k = 3
 
 	outputDir := os.Args[2]
 	speechFiles, eegFiles, _, err := emotions.ParseArgumentsFromFile(os.Args[3], true)
