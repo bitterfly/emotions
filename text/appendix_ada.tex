@@ -1,0 +1,129 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Приложение за AdaBoost}
+\label{appendix:ada}
+Ще разгледаме алгоритъма AdaBoost в дискретния случай, както оригинално е представен в фдсдф.
+Задачата, която имаме е следната:
+Имаме тренировъчни данни $M := (x_1, y_1), (x_2, y_2), \cdots (x_n, y_n), x_i \in \mathbb{R}^n, y_i \in \{-1, 1\}, i = 1 \cdots n$. Имаме множество $\mathcal{H}$ от функции от вида $h_i : \mathbb{R}^n \rightarrow \{-1, 1\}$ и е дадена константа $T$. Търсим $T$ функции от $\mathcal{H}$, които да съчетаем до получаването на нова функция, която е линейна комбинация на избраните $T$:
+\[
+	H(x) = \sum\limits_{i=1}^T \alpha_i h_i(x)
+\]
+AdaBoost алгоритъмът избира последователно функции $h_i$ от $\mathcal{H}$ и избира за всяка тегло $\alpha_i$. С $H_t(x)$ ще означаваме линейната комбинация, получена от първи $t$ избрани класификатора и имаме, че:
+\begin{flalign*}
+	H_t(x) & = \sum\limits_{i=1}^t \alpha_i h_i(x)\\
+	& = H_{t-1}(x) + \alpha_t h_t(x)\\
+	\\
+	H_0(x) & = 0 \quad \forall x \in \mathbb{R}^n
+\end{flalign*}
+
+Идеята е $t$-тата избрана хипотеза да поправи грешките, които предните $t-1$ хипотези правят върху тренировъчното множество.
+
+На всяка итерация $t$ на лагоритъма, дефинираме разпределение върху тренировъчните данни, което ще означаваме с $\mathcal{D}_t$, където $\mathcal{D}_t(i)$ дава вероятност на $i$-тия пример. Идеята е да може да се даде по-голяма вероятност на тези примери, върху които предните $t-1$ избрани функции бъркат и да се избере функция, която се представя добре върху така претеглените данни. В началото на алгоритъма за $\mathcal{D}_1$ избираме равномерно разпределение, тоест:
+\[\mathcal{D}_1(i) = \cfrac{1}{n}, i = 1\cdots n\]
+
+Алгоритъмът е следният:
+
+\begin{exampleenv}
+	\begin{enumerate}
+		\item $D_1(i) = \cfrac{1}{n}, i = 1\cdots n$
+		\item $\mathcal{H} = \emptyset$
+		\item За всяко $t$ от 1 до $T$ се прави следното:
+		\begin{enumerate}
+			\item $h_t = argmin_{h\in \mathcal{H}} P_{i\tilde D_t}$
+		\end{enumerate}
+	\end{enumerate}
+\end{exampleenv}
+	% \begin{tabular}{p{0.65\textwidth}|p{0.30\textwidth}}
+	% 	\makecell[l]{1. Инициализираме първоначалните тегла\\$w_i = \cfrac{1}{n}, i = 1, 2,\cdots n$} & \footnotesize{$n$ е броят на тренировъчните примери}\\
+	% 	& \\
+	% 	2. За всяко $t$ от 1 до $T$ се прави следното: & \\
+	% 	\qquad (а) Избираме $h_t = argmin_{h \in \mathcal{H}}\cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$ & \footnotesize{Избираме това $h$, което минимизира грешката на така претеглените данни}\\
+	% 	\makecell[l]{\qquad (б) Пресмятаме грешката\\\qquad $\varepsilon_t = \cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$} & \\
+	% 	\makecell[l]{\qquad (в) Пресмятаме теглото\\\qquad $\alpha_t = \log\cfrac{1 - \varepsilon_t}{\varepsilon_t}$} & \\
+	% 	\makecell[l]{\qquad (г) Обновяваме теглата\\\qquad $w_i\prime = \cfrac{w_i exp(\alpha_t \mathbb{1}(h_t(x_i) \neq c_i))}{\sum\limits_{j=1}^n w_j exp(\alpha_t \mathbb{1}(h_t(x_j) \neq c_j))}$\\\qquad$w_i = w_i\prime, i = 1\cdots n$} & \\
+	% 	3. Изход $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t \mathbb{1}(h_t(x) = c)$ & \footnotesize{или ако $h_t(x, c)$ връща вероятността $x$ да е от клас $c$, то $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t h_t(x, c)$}
+	% \end{tabular}
+% \begin{theorem}
+% \label{appendix:em:th1}
+% $\frac{\partial x^T A x}{\partial x} = 2Ax$, ако $x \in \mathbb{R}^m, A\in \mathbb{R}^m\times\mathbb{R}^m$, а $A$ е диагонална.
+
+% Да разгледаме производната по някоя от координатите - $x_k$
+% \begin{flalign*}
+%     \frac{\partial x^T A x}{\partial x_k}  & = \frac{
+%         \partial \B{x_1, x_2, \dotso x_m}
+%         \begin{pmatrix}
+%             a_{11} & 0 & \dots & 0 \\
+%             0 & a_{22} & \dots & 0 \\
+%             \vdots & \vdots & \ddots & \vdots \\
+%             0 & 0 & \dots & a_{mm}
+%         \end{pmatrix}
+%         \begin{pmatrix}
+%             x_{1} \\6
+%             x_{2} \\
+%             \vdots \\
+%             x_{m}
+%         \end{pmatrix}}{\partial x_k} & \\
+%         & = \frac{\partial\B{x_1 a_{11}, x_2 a_{22}, \dotso x_m a_{mm}}
+%         \begin{pmatrix}
+%             x_{1}\\
+%             x_{2}\\
+%             \vdots \\
+%             x_{m}
+%         \end{pmatrix}}{\partial x_k} & \\
+%         & = \frac{\partial \B{x_1^2 a_{11} + x_2^2 a_{22} + \dotso + x_m ^ 2 a_{mm} }}{\partial x_k} = 2x_k a_{kk}
+% \end{flalign*} 
+
+% Това означава, че:
+% \begin{flalign*}
+%     & \frac{\partial x^T A x}{\partial x} = \B{2x_1 a_{11}, 2x_2 a_{22} \dotso 2x_m a_{mm}} = 2 A x &
+% \end{flalign*}
+% \end{theorem}
+
+% \begin{theorem}
+% \label{appendix:em:th2}
+% Ако $A$ е диагонална матрица, $A=(a_{ii})_{i=1}^m, \cfrac{\partial |A|}{\partial a_{ii}} = \cfrac{|A|}{a_{ii}}$
+
+
+% $\cfrac{\partial |A|}{\partial a_{ii}} = \cfrac{\partial \B{\prod\limits_{i=1}^m a_{ii}}}{\partial a_{ii}} = a_{11}.a_{22}\dotso a_{i-1 i-1}a_{i+1 i+1}\dotso a_{mm} = \cfrac{\prod\limits_{i=1}^m a_{ii}}{a_{ii}} = \cfrac{|A|}{a_{ii}}$
+% \end{theorem}
+
+
+% Нека $L(\pi, \mu, \Sigma) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k \mathcal{N}(x_i\mid \mu_k, \Sigma_k))) + \lambda(\sum\limits_{k=1}^K \pi_k - 1)$
+% и 
+
+% $\mathcal{N}(x_i, \mu_j, \Sigma_j) = \cfrac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}$, 
+
+% \begin{lemma}
+%     Решението на $\cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = 0$ има вида $\mu_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}}$
+% \end{lemma}
+
+% \begin{proof}
+
+
+% $0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}}$ 
+
+% Използвайки \autoref{appendix:em:th1}, можем да намерим производната на $\mathcal{N}(x_i, \mu_j, \Sigma_j)$ по $\mu_j$:
+
+% \begin{flalign*}
+%     \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} & = \partial\Q{\frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}}/\partial \mu_j & \\
+%     & = \frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}} \B{-\frac{1}{2}  2 \Sigma_j^{-1} (x_i - \mu_j)(-1)} & \\
+%     & = \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j) &
+% \end{flalign*}
+
+% Следователно:
+% \begin{flalign*}
+%     & 0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} = \sum\limits_{i=1}^{n} \Q{\cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
+%     & \longleftrightarrow & \\
+%     & \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}x_i}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} } = \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}\mu_j}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} }& 
+% \end{flalign*}
+
+% Нека означим $\gamma_{ij} = \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}$. Тогава имаме:
+
+% \begin{flalign*}
+%     & \sum\limits_{i=1}^N \gamma_{ij}x_i = \mu_j \sum\limits_{i=1}^N \gamma_{ij}& \\
+%     & \mu_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}}  &
+% \end{flalign*}
+
+% \end{proof}
+% \hrulefill
+\end{document}
