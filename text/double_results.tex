@@ -41,10 +41,10 @@
     \makecell[l]{1. Инициализираме първоначалните тегла\\$w_i = \cfrac{1}{n}, i = 1, 2,\cdots n$} & \footnotesize{$n$ е броят на тренировъчните примери}\\
     & \\
     2. За всяко $t$ от 1 до $T$ се прави следното: & \\
-    \qquad (а) Избираме $h_t = argmin_{h \in \mathcal{H}}\cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$ & \footnotesize{Избираме това $h$, което минимизира грешката на така претеглените данни}\\
-    \makecell[l]{\qquad (б) Пресмятаме грешката\\\qquad $\varepsilon_t = \cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$} & \\
-    \makecell[l]{\qquad (в) Пресмятаме теглото\\\qquad $\alpha_t = \log\cfrac{1 - \varepsilon_t}{\varepsilon_t}$} & \\
-    \makecell[l]{\qquad (г) Обновяваме теглата\\\qquad $w_i\prime = \cfrac{w_i exp(\alpha_t \mathbb{1}(h_t(x_i) \neq c_i))}{\sum\limits_{j=1}^n w_j exp(\alpha_t \mathbb{1}(h_t(x_j) \neq c_j))}$\\\qquad$w_i = w_i\prime, i = 1\cdots n$} & \\
+    \qquad 2.1 Избираме $h_t = argmin_{h \in \mathcal{H}}\cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$ & \footnotesize{Избираме това $h$, което минимизира грешката на така претеглените данни}\\
+    \makecell[l]{\qquad 2.2 Пресмятаме грешката\\\qquad $\varepsilon_t = \cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$} & \\
+    \makecell[l]{\qquad 2.3 Пресмятаме теглото\\\qquad $\alpha_t = \log\cfrac{1 - \varepsilon_t}{\varepsilon_t}$} & \\
+    \makecell[l]{\qquad 2.4 Обновяваме теглата\\\qquad $w_i\prime = \cfrac{w_i exp(\alpha_t \mathbb{1}(h_t(x_i) \neq c_i))}{\sum\limits_{j=1}^n w_j exp(\alpha_t \mathbb{1}(h_t(x_j) \neq c_j))}$\\\qquad$w_i = w_i\prime, i = 1\cdots n$} & \\
     3. Изход $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t \mathbb{1}(h_t(x) = c)$ & \footnotesize{или ако $h_t(x, c)$ връща вероятността $x$ да е от клас $c$, то $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t h_t(x, c)$}
 \end{tabular}
 \end{exampleenv}

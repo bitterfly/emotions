@@ -42,6 +42,7 @@
 \usepackage{pgfplots}
 \usepackage{makecell}
 \usepackage{tikz}
+\usepackage{enumitem}
 \usetikzlibrary{external}
 \tikzset{
     external/system call={%
@@ -142,6 +143,11 @@
 \newcommand{\Q}[1]{\left[#1\right]}
 
 \addbibresource{./references.bib}
+
+
+\newlist{alg}{enumerate}{10}
+\setlist[alg]{label*=\arabic*.}
+
 
 \title{Дипломна работа}
 \author{Диана Генева <dageneva@qtrp.org>}

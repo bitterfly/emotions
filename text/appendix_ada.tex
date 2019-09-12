@@ -9,12 +9,13 @@
 	H(x) = \sum\limits_{i=1}^T \alpha_i h_i(x)
 \]
 AdaBoost алгоритъмът избира последователно функции $h_i$ от $\mathcal{H}$ и избира за всяка тегло $\alpha_i$. С $H_t(x)$ ще означаваме линейната комбинация, получена от първи $t$ избрани класификатора и имаме, че:
-\begin{flalign*}
-	H_t(x) & = \sum\limits_{i=1}^t \alpha_i h_i(x)\\
-	& = H_{t-1}(x) + \alpha_t h_t(x)\\
-	\\
+\begin{flalign}
+	\label{appendix:ada:01}
+	\nonumber H_t(x) & = \sum\limits_{i=1}^t \alpha_i h_i(x)\\
+	\nonumber & = H_{t-1}(x) + \alpha_t h_t(x)\\
+	\nonumber \\
 	H_0(x) & = 0 \quad \forall x \in \mathbb{R}^n
-\end{flalign*}
+\end{flalign}
 
 Идеята е $t$-тата избрана хипотеза да поправи грешките, които предните $t-1$ хипотези правят върху тренировъчното множество.
 
@@ -24,106 +25,107 @@ AdaBoost алгоритъмът избира последователно фун
 Алгоритъмът е следният:
 
 \begin{exampleenv}
-	\begin{enumerate}
+	\begin{alg}
 		\item $D_1(i) = \cfrac{1}{n}, i = 1\cdots n$
 		\item $\mathcal{H} = \emptyset$
 		\item За всяко $t$ от 1 до $T$ се прави следното:
-		\begin{enumerate}
-			\item $h_t = argmin_{h\in \mathcal{H}} P_{i\tilde D_t}$
-		\end{enumerate}
-	\end{enumerate}
+		\begin{alg}
+			\item $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}(h(x_i) \neq y_i)$
+			\item $\varepsilon_t = P_{i\sim D_t}(h_t(x_i) \neq y_i)$
+			\item $\alpha_t = \cfrac{1}{2}\ln\B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}}$
+			\item $\mathcal{H}_t = \mathcal{H}_{t-1} \cup \{(h_t, \alpha_t)\}$
+			\item За всяко i от 1 до n:
+			\begin{alg}
+				\item $\mathcal{D}_{t+1}(i) = \cfrac{\mathcal{D}_t(i) e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t(j) e^{-\alpha_t y_j h_t(x_j)}}$
+			\end{alg} 
+		\end{alg}
+		\item $\mathcal{H} = \mathcal{H}_T$
+		\item Връщаме $\mathcal{H}$
+	\end{alg}
 \end{exampleenv}
-	% \begin{tabular}{p{0.65\textwidth}|p{0.30\textwidth}}
-	% 	\makecell[l]{1. Инициализираме първоначалните тегла\\$w_i = \cfrac{1}{n}, i = 1, 2,\cdots n$} & \footnotesize{$n$ е броят на тренировъчните примери}\\
-	% 	& \\
-	% 	2. За всяко $t$ от 1 до $T$ се прави следното: & \\
-	% 	\qquad (а) Избираме $h_t = argmin_{h \in \mathcal{H}}\cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$ & \footnotesize{Избираме това $h$, което минимизира грешката на така претеглените данни}\\
-	% 	\makecell[l]{\qquad (б) Пресмятаме грешката\\\qquad $\varepsilon_t = \cfrac{\sum\limits_{i=1}^n w_i \mathbb{1}(h(x_i) \neq c_i)}{\sum\limits_{i=1}^n w_i}$} & \\
-	% 	\makecell[l]{\qquad (в) Пресмятаме теглото\\\qquad $\alpha_t = \log\cfrac{1 - \varepsilon_t}{\varepsilon_t}$} & \\
-	% 	\makecell[l]{\qquad (г) Обновяваме теглата\\\qquad $w_i\prime = \cfrac{w_i exp(\alpha_t \mathbb{1}(h_t(x_i) \neq c_i))}{\sum\limits_{j=1}^n w_j exp(\alpha_t \mathbb{1}(h_t(x_j) \neq c_j))}$\\\qquad$w_i = w_i\prime, i = 1\cdots n$} & \\
-	% 	3. Изход $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t \mathbb{1}(h_t(x) = c)$ & \footnotesize{или ако $h_t(x, c)$ връща вероятността $x$ да е от клас $c$, то $H(x) = argmax_c \sum\limits_{t=1}^T \alpha_t h_t(x, c)$}
-	% \end{tabular}
-% \begin{theorem}
-% \label{appendix:em:th1}
-% $\frac{\partial x^T A x}{\partial x} = 2Ax$, ако $x \in \mathbb{R}^m, A\in \mathbb{R}^m\times\mathbb{R}^m$, а $A$ е диагонална.
 
-% Да разгледаме производната по някоя от координатите - $x_k$
-% \begin{flalign*}
-%     \frac{\partial x^T A x}{\partial x_k}  & = \frac{
-%         \partial \B{x_1, x_2, \dotso x_m}
-%         \begin{pmatrix}
-%             a_{11} & 0 & \dots & 0 \\
-%             0 & a_{22} & \dots & 0 \\
-%             \vdots & \vdots & \ddots & \vdots \\
-%             0 & 0 & \dots & a_{mm}
-%         \end{pmatrix}
-%         \begin{pmatrix}
-%             x_{1} \\6
-%             x_{2} \\
-%             \vdots \\
-%             x_{m}
-%         \end{pmatrix}}{\partial x_k} & \\
-%         & = \frac{\partial\B{x_1 a_{11}, x_2 a_{22}, \dotso x_m a_{mm}}
-%         \begin{pmatrix}
-%             x_{1}\\
-%             x_{2}\\
-%             \vdots \\
-%             x_{m}
-%         \end{pmatrix}}{\partial x_k} & \\
-%         & = \frac{\partial \B{x_1^2 a_{11} + x_2^2 a_{22} + \dotso + x_m ^ 2 a_{mm} }}{\partial x_k} = 2x_k a_{kk}
-% \end{flalign*} 
+Вижда се, че изборът на разпределението $\mathcal{D}(t+1)$ е такова, че дава висока вероятност на примерите, върху които предният класификатор $h_t$ греши и обратното. Тоест, ако $h_t(x_i) = y_i, e^{-\alpha_t y_i h_i(x_i)} = e^{-\alpha_t}$, тъй като $y_i$ и $h_t(x_i)$ са с еднакъв знак, а при $h_t(x_i) \neq y_i, e^{-\alpha_t y_i h_i(x_i)} = e^{\alpha_i}$. Тъй като $\alpha_t \geq 0$, това означава, че грешката на класификаторите, от които избираме, не трябва да надхвърля $\cfrac{1}{2}$ за бинарни класификатори. При модификацията за няколко класа, трябва да е изпълнено, че грешката е не повече от $\cfrac{1}{K}$, където $K$ е броят на класовете.
 
-% Това означава, че:
-% \begin{flalign*}
-%     & \frac{\partial x^T A x}{\partial x} = \B{2x_1 a_{11}, 2x_2 a_{22} \dotso 2x_m a_{mm}} = 2 A x &
-% \end{flalign*}
-% \end{theorem}
+Целта на AdaBoost алгоритъмът е да се намери такова $\mathcal{H}$, което минимизира експоненциалната грешка, която се пресмята по формулата:
+\[
+	\mathcal{l}(h, x, y) = e^{-yh(x)}
+\]
 
-% \begin{theorem}
-% \label{appendix:em:th2}
-% Ако $A$ е диагонална матрица, $A=(a_{ii})_{i=1}^m, \cfrac{\partial |A|}{\partial a_{ii}} = \cfrac{|A|}{a_{ii}}$
+За да видим, че горният алгоритъм намира такова $\mathcal{H}$, ще разгледаме следните твърдения. 
+
+Нека $w_{t,i} = e^{-y_i\mathcal{H}_{t-1}(x_i)}$
+
+\begin{lemma}
+	$\mathcal{D}_t = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$ 
+\end{lemma}
+
+\begin{proof}
+	Ще го докажем по индукция.
+	\begin{itemize}
+		\item База $t = 1$
+		\begin{flalign*}
+			\cfrac{w_{1, i}}{\sum\limits_{j=1}^n w_{1, j}} & = \cfrac{e^{-y_i\mathcal{H}_{0}(x_i)}}{\sum\limits_{j=1}^n e^{-y_j\mathcal{H}_{0}(x_j)}}&&\\
+			& \stackrel{\mathclap{\normalfont\mbox{\tiny{\ref{appendix:ada:01}}}}}{=\joinrel=} \cfrac{1}{n} &&\\
+			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ред 1.}}}}{=\joinrel=} \mathcal{D}_1(i) \text{ за всяко i} &&
+		\end{flalign*}
+		\item $\mathcal{D}_t = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} \Rightarrow \mathcal{D}_{t+1} = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}}$
+		\begin{flalign*}
+			\mathcal{D}_{t+1} & = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}} && \\
+			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ред 3.5.1.}}}}{=\joinrel=} \cfrac{\mathcal{D}_t e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t e^{-\alpha_t y_j h_t(x_j)} } && \\
+			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ИХ}}}}{=\joinrel=} \cfrac{\frac{1}{1} e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \frac{1}{1} e^{-\alpha_t y_j h_t(x_j)} } && \\
+		\end{flalign*}
+
+	\end{itemize}
+\end{proof}
+
+\begin{lemma}
+	$P_{i\sim D_t}(h(x_i) \neq y_i) = \sum\limits_{i:h(x_i) \neq y_i} \cfrac{e^{y_i \mathcal{H}_{t-1}(x_i)} }{\sum\limits_{j=1}^n e^{y_j \mathcal{H}_{t-1}(x_j)}}$
+\end{lemma}
 
 
-% $\cfrac{\partial |A|}{\partial a_{ii}} = \cfrac{\partial \B{\prod\limits_{i=1}^m a_{ii}}}{\partial a_{ii}} = a_{11}.a_{22}\dotso a_{i-1 i-1}a_{i+1 i+1}\dotso a_{mm} = \cfrac{\prod\limits_{i=1}^m a_{ii}}{a_{ii}} = \cfrac{|A|}{a_{ii}}$
-% \end{theorem}
+\begin{lemma}
+	Изборът на $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}(h(x_i) \neq y_i)$ от точка 3.2 на алгоритъма минимизира експоненциалната грешка на $\mathcal{H}_t$ върху тренировъчното множество, тоест:
+	\[
+		h_t = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(\mathcal{H}_{t-1} + Ch, x_i, y_i)},
+	\]
+	където $C$ е произволна константа.
+\end{lemma}
+
+\begin{proof}
+\begin{flalign*}
+	h_t & = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(\mathcal{H}_{t-1} + Ch, x_i, y_i)} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-y_i(\mathcal{H}_{t-1}(x_i) + Ch(x_i))}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-y_i\mathcal{H}_{t-1}(x_i)} e^{-y_iCh(x_i)}} &&
+\end{flalign*}
+Полагаме  $w_{t,i} = e^{-y_i\mathcal{H}_{t-1}(x_i)}$ и махаме константата $\cfrac{1}{n}$, тъй като тя не влияе на минимизацията.
+
+\begin{flalign*}
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-y_iCh(x_i)}} &&\\
+\end{flalign*}
+
+Сега можем да разделим сумата на две, в зависимост дали $h(x_i) = y_i$. Ако това е изпълнено, то $y_i h(x_i) = 1$ и е равно на -1 в противен случай, тоест:
+
+\begin{flalign*}
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) = y_i}^n w_{t, i} e^{-C} + \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{C}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\Q{\sum\limits_{i=1}^n w_{t, i} e^{-C} - \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{-C}}+ \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{C}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-C} + \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
+\end{flalign*}
+$\sum\limits_{i=1}^n w_{t, i} e^{-C}$ е константа спрямо $h$, затова също не участва в минимизацията и тогава:
+
+\begin{flalign*}
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ (e^{C} - e^{-C}) \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}, &&\\
+\end{flalign*}
+тъй като и $ (e^{C} - e^{-C}) $ не зависи от $h$. Можем да умножим по константата $\cfrac{1}{\sum\limits_{j=1}^n w_{t, j}}$ и да получим:
+
+\begin{flalign*}
+	& = argmin_{h\in \mathcal{H}} \B{\cfrac{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
+	& = P_{i\sim D_t}(h(x_i) \neq y_i) &&
+\end{flalign*}
 
 
-% Нека $L(\pi, \mu, \Sigma) = \sum\limits_{i=1}^{n} \log(\sum\limits_{k=1}^{K} \pi_k \mathcal{N}(x_i\mid \mu_k, \Sigma_k))) + \lambda(\sum\limits_{k=1}^K \pi_k - 1)$
-% и 
-
-% $\mathcal{N}(x_i, \mu_j, \Sigma_j) = \cfrac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}$, 
-
-% \begin{lemma}
-%     Решението на $\cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = 0$ има вида $\mu_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}}$
-% \end{lemma}
-
-% \begin{proof}
-
-
-% $0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}}$ 
-
-% Използвайки \autoref{appendix:em:th1}, можем да намерим производната на $\mathcal{N}(x_i, \mu_j, \Sigma_j)$ по $\mu_j$:
-
-% \begin{flalign*}
-%     \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} & = \partial\Q{\frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}}}/\partial \mu_j & \\
-%     & = \frac{\exp\B{-\frac{1}{2}(x_i - \mu_j)^{T}\Sigma^{-1}_j(x_i - \mu_j)}}{\sqrt{(2\pi)^{39}|\Sigma_j|}} \B{-\frac{1}{2}  2 \Sigma_j^{-1} (x_i - \mu_j)(-1)} & \\
-%     & = \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j) &
-% \end{flalign*}
-
-% Следователно:
-% \begin{flalign*}
-%     & 0 = \cfrac{\partial L(\pi, \mu, \Sigma)}{\partial \mu_j} = \sum\limits_{i=1}^{n} \Q{ \cfrac{\pi_j \cfrac{\partial \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\partial \mu_j} }{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} = \sum\limits_{i=1}^{n} \Q{\cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\Sigma_j^{-1}(x_i - \mu_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}} & \\
-%     & \longleftrightarrow & \\
-%     & \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}x_i}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} } = \sum\limits_{i=1}^N\Q{ \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)\cancel{\Sigma_j^{-1}}\mu_j}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)} }& 
-% \end{flalign*}
-
-% Нека означим $\gamma_{ij} = \cfrac{\pi_j \mathcal{N}(x_i, \mu_j, \Sigma_j)}{\sum\limits_{k=1}^K \pi_k \mathcal{N}(x_i, \mu_k, \Sigma_k)}$. Тогава имаме:
-
-% \begin{flalign*}
-%     & \sum\limits_{i=1}^N \gamma_{ij}x_i = \mu_j \sum\limits_{i=1}^N \gamma_{ij}& \\
-%     & \mu_j = \cfrac{\sum\limits_{i=1}^N \gamma_{ij}x_i}{\sum\limits_{i=1}^N \gamma_{ij}}  &
-% \end{flalign*}
-
-% \end{proof}
-% \hrulefill
+\end{proof}
+\hrulefill
 \end{document}
