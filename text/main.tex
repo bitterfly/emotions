@@ -63,6 +63,12 @@
 \addtokomafont{labelinglabel}{\sffamily}
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+
+
+\def\coolleq#1{\stackrel{\mathclap{\normalfont\mbox{\tiny{#1}}}}{=\joinrel=}} 
+\def\cooleq#1{\stackrel{\mathclap{\normalfont\mbox{\tiny{#1}}}}{=}}
+
+
 \let\endchangemargin=\endlist 
 \renewcommand{\baselinestretch}{1.1}
 \setlength{\emergencystretch}{3em}
@@ -113,6 +119,7 @@
   \def\subparagraphautorefname{subparagraph}%
   \def\FancyVerbLineautorefname{line}%
   \def\theoremautorefname{\text{Пример}}%
+  \def\lemmaautorefname{\text{Твърдение}}%
   \def\propertyautorefname{\text{Свойство}}%
   \def\pageautorefname{page}%
 }

@@ -2,24 +2,80 @@
 \begin{document}
 \chapter{Приложение за AdaBoost}
 \label{appendix:ada}
-Ще разгледаме алгоритъма AdaBoost в дискретния случай, както оригинално е представен в фдсдф.
-Задачата, която имаме е следната:
-Имаме тренировъчни данни $M := (x_1, y_1), (x_2, y_2), \cdots (x_n, y_n), x_i \in \mathbb{R}^n, y_i \in \{-1, 1\}, i = 1 \cdots n$. Имаме множество $\mathcal{H}$ от функции от вида $h_i : \mathbb{R}^n \rightarrow \{-1, 1\}$ и е дадена константа $T$. Търсим $T$ функции от $\mathcal{H}$, които да съчетаем до получаването на нова функция, която е линейна комбинация на избраните $T$:
+Ще разгледаме алгоритъма AdaBoost в дискретния случай, като доказателството следва това в samme.
+
+Задачата е следната:
+Дадено е $K$-брой класове. Имаме тренировъчни данни $M := (x_1, y_1), (x_2, y_2), \cdots (x_n, y_n), x_i \in X, y_i \in \{1\ldots K\}, i = 1 \ldots n$ и множество $\mathcal{H}$ от класификатори от вида $h_i : X\times \{1\ldots K\} \rightarrow \{0, 1\}$, където 
+\begin{flalign*}
+	& h_i(x, y) = \begin{cases} 
+		1, & \text{ако класът на } $x$ \text{ е } $y$\\
+		0, & \text{иначе} \\
+	\end{cases} &&
+\end{flalign*}	
+и съответно $\sum\limits_{j=1}^K h_i(x, j) = 1$. При дадена константа $T$, търсим линейна комбинация на функции от $\mathcal{H}$:
 \[
-	H(x) = \sum\limits_{i=1}^T \alpha_i h_i(x)
+	H = \sum\limits_{i=1}^T \alpha_i h_i
 \]
-AdaBoost алгоритъмът избира последователно функции $h_i$ от $\mathcal{H}$ и избира за всяка тегло $\alpha_i$. С $H_t(x)$ ще означаваме линейната комбинация, получена от първи $t$ избрани класификатора и имаме, че:
+която минимизира загубата на точност.
+По-точно, искаме да оптимизираме следната функция на загубата:
+\begin{flalign*}
+	& L_{0, 1}(g, x, y) = \begin{cases} 
+		0, & g(x, y) = max(g(x, 1), \ldots g(x, K))\\
+		1, & \text{иначе} \\
+	\end{cases} &&
+\end{flalign*}
+Тоест, имаме загуба 1, ако класификаторът ни не е познал правилно класа и 0, в противен случай.
+Това може да се запише и по следния начин:
+\begin{flalign*}
+	& L_{0, 1}(g, x, y) = \begin{cases} 
+		0, & y = argmax_j(g(x, j))\\
+		1, & \text{иначе} \\
+	\end{cases} &&
+\end{flalign*}
+съответно можем да добавим константа, която няма да промени минимизацията:
+
+\begin{flalign*}
+	& L_{0, 1}(g, x, y) = \begin{cases} 
+		0, & y = argmax_j\B{g(x, j) - \cfrac{1}{K}\B{\sum\limits_{k=1}^K g(x, k)}}\\
+		1, & \text{иначе} \\
+	\end{cases} = \begin{cases} 
+		0, & g(x, y) - \cfrac{1}{K}\B{\sum\limits_{j=1}^K g(x, j)} > 0\\
+		1, & \text{иначе} \\
+	\end{cases} &&
+\end{flalign*}
+
+Нека означим $\tilde{g}(x, y) = g(x, y) - \cfrac{1}{K}\B{\sum\limits_{j=1}^K g(x, j)}$. Тоест, искаме да оптимизираме:
+\begin{flalign*}
+	& L_{0, 1}(g, x, y) = \begin{cases} 
+		0, & \tilde{g}(x, y) > 0\\
+		1, & \text{иначе} \\
+	\end{cases} &&
+\end{flalign*}
+
+Тъй като тази функция не е диференцируема, можем за удобство да използваме експоненциалната функция на загубата, дефинирана по следния начин:
+\[
+\mathcal{l}(g, x, y) = e^{-\tilde{g}(x, y)}
+\]
+
+Освен че тя е диференцируема, имаме, че ако $\tilde{g}(x, y) > 0, l(g, x, y) > 0$ и ако $\tilde{g}(x, y) \leq 0, l(g, x, y) \geq 1$, което означава, че $l(g, x, y)$ ограничава отгоре $L_{0, 1}(g, x, y)$ и в някакъв смисъл е ``по-песимистична''.
+
+AdaBoost алгоритъмът избира последователно функции $h_i$ от $\mathcal{H}$ и намира за всяка тегло $\alpha_i$.
+
+С $H_t$ ще означаваме линейната комбинация, получена от първите $t$ избрани класификатори. Имаме, че:
 \begin{flalign}
 	\label{appendix:ada:01}
-	\nonumber H_t(x) & = \sum\limits_{i=1}^t \alpha_i h_i(x)\\
-	\nonumber & = H_{t-1}(x) + \alpha_t h_t(x)\\
-	\nonumber \\
-	H_0(x) & = 0 \quad \forall x \in \mathbb{R}^n
+	\nonumber H_t(x, y) & = \sum\limits_{i=1}^t \alpha_i h_i(x, y)\\
+	\nonumber & = H_{t-1}(x, y) + \alpha_t h_t(x, y)\\
+	\nonumber\\
+	\nonumber \tilde{H}_{t}(x, y) & = && \\
+	\nonumber& = H_{t-1}(x, y) + \alpha h_t(x, y) - \cfrac{1}{K}\B{\sum\limits_{j=1}^K H_{t-1}(x, j) + \alpha h_t(x, j)} &&\\
+	\nonumber& = H_{t-1}(x, y) - \cfrac{1}{K}\B{\sum\limits_{j=1}^K H_{t-1}(x, j)} + \alpha\Q{h_{t}(x, y) - \cfrac{1}{K}\B{\sum\limits_{j=1}^K h_{t}(x, y)}} &&\\
+	& = \tilde{H}_{t-1}(x, y) + \alpha \tilde{h}(x, y) &&\\
+	\label{appendix:ada:02}
+	H_0(x, y) & = 0 \text{ и } \tilde{H}_0(x, y) = 0\quad \forall x \in X, \forall y \in \{1\ldots K\} &&
 \end{flalign}
 
-Идеята е $t$-тата избрана хипотеза да поправи грешките, които предните $t-1$ хипотези правят върху тренировъчното множество.
-
-На всяка итерация $t$ на лагоритъма, дефинираме разпределение върху тренировъчните данни, което ще означаваме с $\mathcal{D}_t$, където $\mathcal{D}_t(i)$ дава вероятност на $i$-тия пример. Идеята е да може да се даде по-голяма вероятност на тези примери, върху които предните $t-1$ избрани функции бъркат и да се избере функция, която се представя добре върху така претеглените данни. В началото на алгоритъма за $\mathcal{D}_1$ избираме равномерно разпределение, тоест:
+На всяка итерация $t$ на алгоритъма, дефинираме разпределение върху тренировъчните данни, което ще означаваме с $\mathcal{D}_t$, където $\mathcal{D}_t(i)$ дава вероятност на $i$-тия пример. Идеята е да може да се даде по-голяма вероятност на тези примери, върху които предните $t-1$ избрани функции бъркат и да се избере тази функция, която се представя най-добре върху така претеглените данни. В началото на алгоритъма за $\mathcal{D}_1$ избираме равномерно разпределение, тоест:
 \[\mathcal{D}_1(i) = \cfrac{1}{n}, i = 1\cdots n\]
 
 Алгоритъмът е следният:
@@ -27,36 +83,31 @@ AdaBoost алгоритъмът избира последователно фун
 \begin{exampleenv}
 	\begin{alg}
 		\item $D_1(i) = \cfrac{1}{n}, i = 1\cdots n$
-		\item $\mathcal{H} = \emptyset$
+		\item $H_0 = \emptyset$
 		\item За всяко $t$ от 1 до $T$ се прави следното:
 		\begin{alg}
-			\item $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}(h(x_i) \neq y_i)$
-			\item $\varepsilon_t = P_{i\sim D_t}(h_t(x_i) \neq y_i)$
-			\item $\alpha_t = \cfrac{1}{2}\ln\B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}}$
-			\item $\mathcal{H}_t = \mathcal{H}_{t-1} \cup \{(h_t, \alpha_t)\}$
+			\item $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}\B{\tilde{h}(x_i, y_i) \leq 0}$
+			\item $\varepsilon_t = P_{i\sim D_t}\B{\tilde{h}(x_i, y_i) \leq 0}$
+			\item $\alpha_t = \ln\B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}} + ln\B{K-1}$
+			\item $H_t = H_{t-1} \cup \{(h_t, \alpha_t)\}$
 			\item За всяко i от 1 до n:
 			\begin{alg}
-				\item $\mathcal{D}_{t+1}(i) = \cfrac{\mathcal{D}_t(i) e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t(j) e^{-\alpha_t y_j h_t(x_j)}}$
+				\item $\mathcal{D}_{t+1}(i) = \cfrac{\mathcal{D}_t(i) e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t(j) e^{-\alpha_t \tilde{h}_t(x_i, y_j)}}$
 			\end{alg} 
 		\end{alg}
-		\item $\mathcal{H} = \mathcal{H}_T$
-		\item Връщаме $\mathcal{H}$
+		\item $H = H_T$
+		\item Връщаме $H$
 	\end{alg}
 \end{exampleenv}
 
-Вижда се, че изборът на разпределението $\mathcal{D}(t+1)$ е такова, че дава висока вероятност на примерите, върху които предният класификатор $h_t$ греши и обратното. Тоест, ако $h_t(x_i) = y_i, e^{-\alpha_t y_i h_i(x_i)} = e^{-\alpha_t}$, тъй като $y_i$ и $h_t(x_i)$ са с еднакъв знак, а при $h_t(x_i) \neq y_i, e^{-\alpha_t y_i h_i(x_i)} = e^{\alpha_i}$. Тъй като $\alpha_t \geq 0$, това означава, че грешката на класификаторите, от които избираме, не трябва да надхвърля $\cfrac{1}{2}$ за бинарни класификатори. При модификацията за няколко класа, трябва да е изпълнено, че грешката е не повече от $\cfrac{1}{K}$, където $K$ е броят на класовете.
+Целта на AdaBoost алгоритъмът е да се намери такова $H$, което минимизира експоненциалната грешка $\mathcal{l}$.
 
-Целта на AdaBoost алгоритъмът е да се намери такова $\mathcal{H}$, което минимизира експоненциалната грешка, която се пресмята по формулата:
-\[
-	\mathcal{l}(h, x, y) = e^{-yh(x)}
-\]
+За да видим, че горният алгоритъм намира такова $H$, ще докажем няколко твърдения. 
 
-За да видим, че горният алгоритъм намира такова $\mathcal{H}$, ще разгледаме следните твърдения. 
-
-Нека $w_{t,i} = e^{-y_i\mathcal{H}_{t-1}(x_i)}$
+Първо нека положим $w_{t,i} = e^{-\tilde{H}_{t-1}(x_i, y_i)}$ за удобство.
 
 \begin{lemma}
-	$\mathcal{D}_t = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$ 
+	$\mathcal{D}_t(i) = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$ 
 \end{lemma}
 
 \begin{proof}
@@ -64,49 +115,59 @@ AdaBoost алгоритъмът избира последователно фун
 	\begin{itemize}
 		\item База $t = 1$
 		\begin{flalign*}
-			\cfrac{w_{1, i}}{\sum\limits_{j=1}^n w_{1, j}} & = \cfrac{e^{-y_i\mathcal{H}_{0}(x_i)}}{\sum\limits_{j=1}^n e^{-y_j\mathcal{H}_{0}(x_j)}}&&\\
-			& \stackrel{\mathclap{\normalfont\mbox{\tiny{\ref{appendix:ada:01}}}}}{=\joinrel=} \cfrac{1}{n} &&\\
+			\cfrac{w_{1, i}}{\sum\limits_{j=1}^n w_{1, j}} & = \cfrac{e^{-\tilde{H}_{0}(x_i, y_i)}}{\sum\limits_{j=1}^n e^{\tilde{H}_{0}(x_j, y_j)}}&&\\
+			& \stackrel{\mathclap{\normalfont\mbox{\tiny{\ref{appendix:ada:02}}}}}{=\joinrel=} \cfrac{1}{n} &&\\
 			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ред 1.}}}}{=\joinrel=} \mathcal{D}_1(i) \text{ за всяко i} &&
 		\end{flalign*}
-		\item $\mathcal{D}_t = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} \Rightarrow \mathcal{D}_{t+1} = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}}$
+		\item Нека твърденито е изпълнено за $\mathcal{D}_t(i)$ за всяко $i$
+		\item $\mathcal{D}_t(i) = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} \Rightarrow \mathcal{D}_{t+1}(i) = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}}$
 		\begin{flalign*}
-			\mathcal{D}_{t+1} & = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}} && \\
-			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ред 3.5.1.}}}}{=\joinrel=} \cfrac{\mathcal{D}_t e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t e^{-\alpha_t y_j h_t(x_j)} } && \\
-			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ИХ}}}}{=\joinrel=} \cfrac{\frac{1}{1} e^{-\alpha_t y_i h_t(x_i)}}{\sum\limits_{j=1}^n \frac{1}{1} e^{-\alpha_t y_j h_t(x_j)} } && \\
+			\mathcal{D}_{t+1}(i) & \coolleq{ред 3.5.1.} \cfrac{\mathcal{D}_t(i) e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t(j) e^{-\alpha_t \tilde{h}_t(x_j, y_j)} } \cooleq{ИХ} \cfrac{\cfrac{w_{t, i}}{\sum\limits_{k=1}^n w_{t, k}} e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \cfrac{w_{t, j}}{\sum\limits_{k=1}^n w_{t, k}} e^{-\alpha_t \tilde{h}_t(x_j, y_j)} } && \\
+			& \cooleq{def} \cfrac{\cfrac{e^{-\tilde{H}_{t-1}(x_i, y_i)}}{\sum\limits_{k=1}^n e^{-\tilde{H}_{t-1}(x_k, y_k)}} e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \cfrac{e^{-\tilde{H}_{t-1}(x_j, y_j)}}{\sum\limits_{k=1}^n e^{-\tilde{H}_{t-1}(x_k, y_k)}} e^{-\alpha_t \tilde{h}_t(x_j, y_j)} } && \\
+			& = \cfrac{e^{-(\tilde{H}_{t-1}(x_i, y_i) + \alpha_t \tilde{h}_t(x_i, y_i))}}{\cancel{\sum\limits_{k=1}^n e^{-\tilde{H}_{t-1}(x_k, y_k)}}} \cfrac{\cancel{\sum\limits_{k=1}^n e^{-\tilde{H}_{t-1}(x_k, y_k)}}}{\sum\limits_{j=1}^n e^{-(\tilde{H}_{t-1}(x_j, y_j) + \alpha_t \tilde{h}_t(x_j, y_j))}} && \\
+			& = \cfrac{e^{-(\tilde{H}_{t-1}(x_i, y_i) + \alpha_t \tilde{h}_t(x_i, y_i))}}{\sum\limits_{j=1}^n e^{-(\tilde{H}_{t-1}(x_j, y_j) + \alpha_t \tilde{h}_t(x_j, y_j))}} \coolleq{\ref{appendix:ada:01}} \cfrac{e^{-\tilde{H}_t(x_i, y_i)}}{\sum\limits_{j=1}^n e^{-\tilde{H}_t(x_j, y_j) }} \cooleq{def} \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}} && \\
 		\end{flalign*}
-
+		
 	\end{itemize}
 \end{proof}
 
 \begin{lemma}
-	$P_{i\sim D_t}(h(x_i) \neq y_i) = \sum\limits_{i:h(x_i) \neq y_i} \cfrac{e^{y_i \mathcal{H}_{t-1}(x_i)} }{\sum\limits_{j=1}^n e^{y_j \mathcal{H}_{t-1}(x_j)}}$
+	\label{appendix:ada:lemma:1}
+	$P_{i\sim D_t}\B{\tilde{h}(x_i, y_i) \leq 0} = \sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$
 \end{lemma}
 
+\begin{proof}
+	Използвайки горното твърдение, имаме че:
+	\begin{flalign*}
+		P_{i\sim D_t}(\tilde{h}(x_i, y_i) \leq 0) = \sum \limits_{i:\tilde{h}(x_i, y_i) \leq 0} \mathcal{D}_t(x_i) = \sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}
+	\end{flalign*}
+\end{proof}
 
 \begin{lemma}
-	Изборът на $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}(h(x_i) \neq y_i)$ от точка 3.2 на алгоритъма минимизира експоненциалната грешка на $\mathcal{H}_t$ върху тренировъчното множество, тоест:
+	\label{appendix:ada:lemma:2}
+	Изборът на $h_t = argmin_{h\in \mathcal{H}} P_{i\sim D_t}(\tilde{h}(x_i, y_i) \leq 0)$ от точка 3.2 на алгоритъма минимизира експоненциалната грешка на $H_t$ върху тренировъчното множество, тоест:
 	\[
-		h_t = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(\mathcal{H}_{t-1} + Ch, x_i, y_i)},
-	\]
-	където $C$ е произволна константа.
+		h_t = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + Ch, x_i, y_i)},
+		\]
+		където $C$ е произволна константа.
 \end{lemma}
 
 \begin{proof}
 \begin{flalign*}
-	h_t & = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(\mathcal{H}_{t-1} + Ch, x_i, y_i)} &&\\
-	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-y_i(\mathcal{H}_{t-1}(x_i) + Ch(x_i))}} &&\\
-	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-y_i\mathcal{H}_{t-1}(x_i)} e^{-y_iCh(x_i)}} &&
+	h_t & = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + Ch, x_i, y_i)} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-(\tilde{H}_{t-1}(x_i, y_i) + C\tilde{h}(x_i, y_i))}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ \cfrac{1}{n}\sum\limits_{i=1}^n e^{-\tilde{H}_{t-1}(x_i, y_i)} e^{-C\tilde{h}(x_i, y_i)}} &&
 \end{flalign*}
-Полагаме  $w_{t,i} = e^{-y_i\mathcal{H}_{t-1}(x_i)}$ и махаме константата $\cfrac{1}{n}$, тъй като тя не влияе на минимизацията.
+Махаме константата $\cfrac{1}{n}$, тъй като тя не влияе на минимизацията, и заместваме с $w_{t, i}$.
 
 \begin{flalign*}
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-y_iCh(x_i)}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-C\tilde{h}(x_i, y_i)}} &&\\
 \end{flalign*}
 
-Сега можем да разделим сумата на две, в зависимост дали $h(x_i) = y_i$. Ако това е изпълнено, то $y_i h(x_i) = 1$ и е равно на -1 в противен случай, тоест:
+Сега можем да разделим сумата на две, в зависимост $\tilde{h}$ е сбъркал, тоест дали $\tilde{h}(x_i, y_i) \leq 0$. Ако това е изпълнено, то $\tilde{h}(x_i, y_i) = h(x_i, y_i) - \cfrac{1}{K} \sum\limits_{j=1}^K\B{h(x_i, j)} = 0 - \cfrac{1}{K} = -\cfrac{1}{K}$ и е равно на $1 - \cfrac{1}{K}$ в противен случай, тоест:
 
 \begin{flalign*}
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) = y_i}^n w_{t, i} e^{-C} + \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{C}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: \tilde{h}(x_i, y_i) > 0}^n w_{t, i} e^{-C(1 - 1/K)} + \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{C/K}} &&\\
 	& = argmin_{h\in \mathcal{H}} \B{\Q{\sum\limits_{i=1}^n w_{t, i} e^{-C} - \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{-C}}+ \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{C}} &&\\
 	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-C} + \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
 \end{flalign*}
@@ -115,17 +176,51 @@ $\sum\limits_{i=1}^n w_{t, i} e^{-C}$ е константа спрямо $h$, з
 \begin{flalign*}
 	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
 	& = argmin_{h\in \mathcal{H}} \B{ (e^{C} - e^{-C}) \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}} &&\\
+\end{flalign*}
+Тъй като и $ (e^{C} - e^{-C}) $ не зависи от $h$: 
+\begin{flalign*}
 	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}, &&\\
 \end{flalign*}
-тъй като и $ (e^{C} - e^{-C}) $ не зависи от $h$. Можем да умножим по константата $\cfrac{1}{\sum\limits_{j=1}^n w_{t, j}}$ и да получим:
-
+Можем да умножим по константата $\cfrac{1}{\sum\limits_{j=1}^n w_{t, j}}$ и да получим:
 \begin{flalign*}
 	& = argmin_{h\in \mathcal{H}} \B{\cfrac{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
 	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
-	& = P_{i\sim D_t}(h(x_i) \neq y_i) &&
+	& \coolleq{\autoref{appendix:ada:lemma:1}} \quad P_{i\sim D_t}(h(x_i) \neq y_i) &&\\
 \end{flalign*}
-
-
 \end{proof}
-\hrulefill
+
+\begin{lemma}
+	\label{appendix:ada:lemma:3}
+	Изборът на $\alpha_t$ от точка 3.3 на алгоритъма минимизира експоненциалната грешка на $H_t$ върху тренировъчното множество, тоест:
+	\[
+		\alpha_t = argmin_\alpha (\cfrac{1}{n} \sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + \alpha h_t, x_i, y_i))
+	\]
+\end{lemma}
+
+\begin{proof}
+
+От точка 3.2 имаме, че $\varepsilon_t = P_{i\sim D_t}(h(x_i) \neq y_i) \quad \coolleq{\autoref{appendix:ada:lemma:1}} \quad \sum\limits_{i:h(x_i) \neq y_i} \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$
+
+От предишното твърдение знаем, че:
+\begin{flalign*}
+	argmin_\alpha (\cfrac{1}{n} \sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + \alpha h_t, x_i, y_i)) = argmin_\alpha (\sum\limits_{i:h(x_i)=y_i} w_{t, i} e^{-\alpha} + \sum\limits_{i:h(x_i)\neq y_i} w_{t, i} e^{\alpha}) && \\
+\end{flalign*}
+Това, от което се интересуваме, е производната по $\alpha$.
+
+\begin{tabular}{l c l}
+	$\cfrac{\partial(\sum\limits_{i:h(x_i)=y_i} w_{t, i} e^{-\alpha} + \sum\limits_{i:h(x_i)\neq y_i} w_{t, i} e^{\alpha})}{\partial \alpha} = 0$ & & $\longleftrightarrow$ \\
+	$-\B{\sum\limits_{i:h(x_i)=y_i} w_{t, i}} e^{-\alpha} + \B{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}} e^{\alpha} = 0$  & & $\longleftrightarrow$\\
+	$\B{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}} e^{\alpha} = \B{\sum\limits_{i:h(x_i)=y_i} w_{t, i}} e^{-\alpha}$  & & $\longleftrightarrow$\\
+	$e^{2\alpha} = \cfrac{\sum\limits_{i:h(x_i)=y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}$ & /логаритмуваме & $\longleftrightarrow$ \\
+	$2\alpha = \ln\B{\cfrac{\sum\limits_{i:h(x_i)=y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}}$ & & $\longleftrightarrow$ \\
+	$2\alpha = \ln\B{\cfrac{\sum\limits_{i=1} w_{t, i} - \sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}}$ & /умножаваме и делим на $\sum\limits_{i=1}^n w_{t, i}$ & $\longleftrightarrow$\\
+	& \\
+	$2\alpha = \ln\B{\cfrac{1 - \cfrac{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}  }{\cfrac{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}}}$ & / заместваме с $\varepsilon_t$  & $\longleftrightarrow$ \\
+	$\alpha = \cfrac{1}{2}\ln\B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}}$ & & 
+\end{tabular}
+
+Което съвпада с избора на $\alpha$ от точка 3.3 на алгоритъма.
+\end{proof}
+
+От \autoref{appendix:ada:lemma:2} и \autoref{appendix:ada:lemma:3} следва, че полученото в точка 5. от алгоритъма $H$ ще е с минимална експоненциална грешка върху тренировъчните данни.
 \end{document}
