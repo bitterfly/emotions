@@ -168,24 +168,24 @@ AdaBoost алгоритъмът избира последователно фун
 
 \begin{flalign*}
 	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: \tilde{h}(x_i, y_i) > 0}^n w_{t, i} e^{-C(1 - 1/K)} + \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{C/K}} &&\\
-	& = argmin_{h\in \mathcal{H}} \B{\Q{\sum\limits_{i=1}^n w_{t, i} e^{-C} - \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{-C}}+ \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} e^{C}} &&\\
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-C} + \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\Q{\sum\limits_{i=1}^n w_{t, i} e^{-C(1 - 1/K)} - \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{-C(1 - 1/K)}}+ \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{C/K}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i=1}^n w_{t, i} e^{-C(1 - 1/K)} + \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} (e^{C/K} - e^{-C(1 - 1/K)}) } &&\\
 \end{flalign*}
-$\sum\limits_{i=1}^n w_{t, i} e^{-C}$ е константа спрямо $h$, затова също не участва в минимизацията и тогава:
+$\sum\limits_{i=1}^n w_{t, i} e^{-C(1 - 1/K)}$ е константа спрямо $h$, затова също не участва в минимизацията и тогава:
 
 \begin{flalign*}
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i} (e^{C} - e^{-C}) } &&\\
-	& = argmin_{h\in \mathcal{H}} \B{ (e^{C} - e^{-C}) \sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} (e^{C/K} - e^{-C(1 - 1/K)})} &&\\
+	& = argmin_{h\in \mathcal{H}} \B{ (e^{C/K} - e^{-C(1 - 1/K)}) \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i}} &&\\
 \end{flalign*}
-Тъй като и $ (e^{C} - e^{-C}) $ не зависи от $h$: 
+Нека $(e^{C/K} - e^{-C(1 - 1/K)}) > 0$. Този израз също не зависи от $h$: 
 \begin{flalign*}
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}, &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i}}, &&\\
 \end{flalign*}
 Можем да умножим по константата $\cfrac{1}{\sum\limits_{j=1}^n w_{t, j}}$ и да получим:
 \begin{flalign*}
-	& = argmin_{h\in \mathcal{H}} \B{\cfrac{\sum\limits_{i: h(x_i) \neq y_i}^n w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
-	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: h(x_i) \neq y_i}^n \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
-	& \coolleq{\autoref{appendix:ada:lemma:1}} \quad P_{i\sim D_t}(h(x_i) \neq y_i) &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\cfrac{\sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
+	& = argmin_{h\in \mathcal{H}} \B{\sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} }, &&\\
+	& \coolleq{\autoref{appendix:ada:lemma:1}} \quad P_{i\sim D_t}(\tilde{h}(x_i, y_i) \leq 0) &&\\
 \end{flalign*}
 \end{proof}
 
@@ -199,28 +199,39 @@ $\sum\limits_{i=1}^n w_{t, i} e^{-C}$ е константа спрямо $h$, з
 
 \begin{proof}
 
-От точка 3.2 имаме, че $\varepsilon_t = P_{i\sim D_t}(h(x_i) \neq y_i) \quad \coolleq{\autoref{appendix:ada:lemma:1}} \quad \sum\limits_{i:h(x_i) \neq y_i} \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$
+Имаме, че $\varepsilon_t = P_{i\sim D_t}(\tilde{h}(x_i, y_i) \leq 0) \quad \coolleq{\autoref{appendix:ada:lemma:1}} \quad \sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}}$
 
-От предишното твърдение знаем, че:
+Ако заместим $C$ с $\alpha$ в предишното твърдение можем да получим, че:
 \begin{flalign*}
-	argmin_\alpha (\cfrac{1}{n} \sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + \alpha h_t, x_i, y_i)) = argmin_\alpha (\sum\limits_{i:h(x_i)=y_i} w_{t, i} e^{-\alpha} + \sum\limits_{i:h(x_i)\neq y_i} w_{t, i} e^{\alpha}) && \\
+	argmin_\alpha (\cfrac{1}{n} \sum\limits_{i=1}^n \mathcal{l}(H_{t-1} + \alpha h_t, x_i, y_i)) = argmin_\alpha \B{\sum\limits_{i: \tilde{h}(x_i, y_i) > 0}^n w_{t, i} e^{-\alpha(1 - 1/K)} + \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{\alpha/K}} && \\
 \end{flalign*}
 Това, от което се интересуваме, е производната по $\alpha$.
 
 \begin{tabular}{l c l}
-	$\cfrac{\partial(\sum\limits_{i:h(x_i)=y_i} w_{t, i} e^{-\alpha} + \sum\limits_{i:h(x_i)\neq y_i} w_{t, i} e^{\alpha})}{\partial \alpha} = 0$ & & $\longleftrightarrow$ \\
-	$-\B{\sum\limits_{i:h(x_i)=y_i} w_{t, i}} e^{-\alpha} + \B{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}} e^{\alpha} = 0$  & & $\longleftrightarrow$\\
-	$\B{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}} e^{\alpha} = \B{\sum\limits_{i:h(x_i)=y_i} w_{t, i}} e^{-\alpha}$  & & $\longleftrightarrow$\\
-	$e^{2\alpha} = \cfrac{\sum\limits_{i:h(x_i)=y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}$ & /логаритмуваме & $\longleftrightarrow$ \\
-	$2\alpha = \ln\B{\cfrac{\sum\limits_{i:h(x_i)=y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}}$ & & $\longleftrightarrow$ \\
-	$2\alpha = \ln\B{\cfrac{\sum\limits_{i=1} w_{t, i} - \sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}}$ & /умножаваме и делим на $\sum\limits_{i=1}^n w_{t, i}$ & $\longleftrightarrow$\\
-	& \\
-	$2\alpha = \ln\B{\cfrac{1 - \cfrac{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}  }{\cfrac{\sum\limits_{i:h(x_i)\neq y_i} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}}}$ & / заместваме с $\varepsilon_t$  & $\longleftrightarrow$ \\
-	$\alpha = \cfrac{1}{2}\ln\B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}}$ & & 
+	$\cfrac{\partial\B{\sum\limits_{i: \tilde{h}(x_i, y_i) > 0}^n w_{t, i} e^{-\alpha(1 - 1/K)} + \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i} e^{\alpha/K}}}{\partial \alpha} = 0$ & & $\longleftrightarrow$ \\
+	\\
+	$-\alpha\B{1 - \cfrac{1}{K}}e^{-\alpha(1 - 1/K)}\B{\sum\limits_{i:\tilde{h}(x_i, y_i) > 0} w_{t, i}} + \cfrac{\alpha}{K}\ e^{\alpha/K}\B{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}} = 0$ & & $\longleftrightarrow$\\
+	\\
+	$\cfrac{\alpha}{K}\ e^{\alpha/K}\B{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}} = \alpha\B{1 - \cfrac{1}{K}}e^{-\alpha(1 - 1/K)}\B{\sum\limits_{i:\tilde{h}(x_i, y_i) > 0} w_{t, i}}$ & &$\longleftrightarrow$\\
+	\\
+	$\cfrac{\cancel{\alpha}e^{(\alpha/K + \alpha(1 - 1/K))}}{\cancel{K}}\cfrac{\cancel{K}}{\cancel{\alpha}(K - 1)} = \cfrac{\sum\limits_{i:\tilde{h}(x_i, y_i) > 0} w_{t, i}}{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}$ & & $\longleftrightarrow$\\
+	\\ 
+	$\cfrac{e^{\alpha}}{K-1} = \cfrac{\sum\limits_{i:\tilde{h}(x_i, y_i) > 0} w_{t, i}}{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}$ & /логаритмуваме & $\longleftrightarrow$\\
+	\\  
+	$\alpha = ln\B{\cfrac{\sum\limits_{i:\tilde{h}(x_i, y_i) > 0} w_{t, i}}{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}} + ln(K - 1)$ & &$\longleftrightarrow$\\
+	\\
+	$\alpha = ln\B{\cfrac{\sum\limits_{i=1}^n w_{t, i} - \sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}} + ln(K - 1)$ & & \\
+	Умножаваме и делим на $\sum\limits_{i=1}^n w_{t, i}$ в сумата &  &$\longleftrightarrow$\\
+	\\
+	$\alpha = ln\B{\cfrac{\cfrac{\sum\limits_{i=1}^n w_{t, i} - \sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}}{\cfrac{\sum\limits_{i:\tilde{h}(x_i, y_i) \leq 0} w_{t, i}}{\sum\limits_{i=1}^n w_{t, i}}} } + ln(K - 1)$ & & $\longleftrightarrow$\\
+	\\
+	$\alpha = ln \B{\cfrac{1 - \varepsilon_t}{\varepsilon_t}} + ln(K-1)$
 \end{tabular}
 
 Което съвпада с избора на $\alpha$ от точка 3.3 на алгоритъма.
 \end{proof}
 
 От \autoref{appendix:ada:lemma:2} и \autoref{appendix:ada:lemma:3} следва, че полученото в точка 5. от алгоритъма $H$ ще е с минимална експоненциална грешка върху тренировъчните данни.
+
+{\footnotesize \textbf{Наблюдение:} На стъпка} {\normalsize $argmin_{h\in \mathcal{H}} \B{ (e^{C/K} - e^{-C(1 - 1/K)}) \sum\limits_{i: \tilde{h}(x_i, y_i) \leq 0}^n w_{t, i}}$} {\footnotesize при намиране на минимално $h$ за улеснение приехме, че знакът на} {\normalsize $(e^{C/K} - e^{-C(1 - 1/K)})\ $}{\footnotesize  е положителен, за да запазим задачата за минимум. За $C=\alpha$ това означава, че $\alpha > 0$ и тъй като $\alpha = ln\B{\cfrac{1 - \varepsilon}{\varepsilon}} + ln(K-1)$, оттук идва ограничението, че $\varepsilon < \cfrac{K-1}{K}$. Тоест, грешката на всеки от класификаторите не трябва да надхвърля $\cfrac{K-1}{K}$}.
 \end{document}
