@@ -6,6 +6,11 @@ import (
 	"os"
 )
 
+type EmotionFeature struct {
+	Emotion string
+	Feature []float64
+}
+
 // Gaussian represent a single gaussian
 type Gaussian struct {
 	Phi          float64
@@ -228,6 +233,39 @@ func FindBestGaussian(X []float64, k int, egmms []EmotionGausianMixure) (string,
 		}
 	}
 	return argmax, failed == len(egmms)
+}
+
+func SumGmmOverCorpus(Data []EmotionFeature, egmms []EmotionGausianMixure) (float64, bool) {
+	failed := false
+	sum := 0.0
+	for i := 0; i < len(Data); i++ {
+		cur, curFailed := GmmsProbabilityGivenClass(Data[i].Feature, Data[i].Emotion, egmms)
+		if curFailed {
+			failed = true
+		}
+		sum += cur
+	}
+	return sum, failed
+}
+
+func GmmsProbabilityGivenClass(X []float64, givenClass string, egmms []EmotionGausianMixure) (float64, bool) {
+	res := 0.0
+	sum := 0.0
+	failed := false
+
+	for _, g := range egmms {
+		cur, err := EvaluateVector(X, len(egmms[0].GM), g.GM)
+		if err != nil {
+			failed = true
+			continue
+		}
+		sum += cur
+		if givenClass == g.Emotion {
+			res = cur
+		}
+	}
+
+	return res / sum, failed
 }
 
 func FindBestGaussianAlpha(X []float64, k int, egmms []AlphaEGM) (string, bool) {
