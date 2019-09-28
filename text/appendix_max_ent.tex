@@ -1,0 +1,181 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+\chapter{Приложение за Максимизиране на ентропията}
+\label{appendix:max_ent}
+
+Имаме множество от входни данни $\mathcal{D} = \{(x_1, y_1),\ldots, (x_n, y_n)\}$, където $x_i \in X$ са характеристични вектори с етикети $y_i \in Y$. Търсим такова разпределение $p$ върху $\mathcal{D}$, което да максимизира ентропията:
+\[
+H(p) = - \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(p(x, y))    
+\]
+и да изпълнява ограниченията, зададени с множество  от характеристични функции $\mathcal{H}, |\mathcal{H}| = K$. Характеристичните функции са от вида $h_i:\mathcal{D} \rightarrow \{0, 1\}$.
+
+Нека $E(p, h) := \sum\limits_{(x, y)\in\mathcal{D}} p(x, y)h(x, y)$
+
+Тогава ограниченията за търсеното $p$ имат вида:
+\begin{flalign*}
+    & E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H}, &&
+\end{flalign*}
+където с $\tilde{p}$ означаваме емпиричната вероятност върху $\mathcal{D}$. 
+
+Тоест върху наличните данни, искаме това разпределение да се държи очаквано като емпиричното, но да не внася допълнителни предположения.
+
+Нека $P$ е множеството от всички разпределения, които изпълняват това условие. Тоест $P = \{p \ |\  E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H}\}$.
+
+Тогава искаме да намерим $\hat{p} = argmax_{p \in P} H(p)$
+
+Ще покажем, че $\hat{p}$ трябва да има следния вид: $\hat{p}(x, y) = \pi\prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}$
+Тук $\lambda_i \in \mathbb{R}$ е тегло на съответната характеристична функция, а $\pi$ е нормализираща константа, като тогава съществува единствено $\hat{p}$. Ще покажем и че това е еквивалентно на минимизирането на правдоподобието $L(p)$.
+
+Нека с $Q$ означим всички разпределения с желание вид. Имаме, че $Q = \{p \ | \  p(x, y) = \pi\prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}\}$. За да намерим оптималното разпределение, ще ни е нужно да дефинираме разстояние между разпределения - ``Разстояние'' на Кулбек-Лайблър:
+\begin{flalign*}
+    D(p, q) = \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}
+\end{flalign*}
+``Разстоянието'' на Кулбек-Лайблър всъщност не е разстояние в математическия смисъл (в смисъла на метрика), тъй като не е симетрична функция, но често се използва за разстояние между разпределения, тъй като има този интуитивен смисъл. Затова ще продължим да го наричаме разстояние, пропускайки кавичките.
+
+С това сме готови да покажем следните твърдения:
+
+\begin{lemma}
+    \label{appendix:max_ent:01}
+    За всеки две разпределения $p$ и $q$, $D(p, q) \geq 0$, като $D(p, q) = 0 \iff p = q$
+
+    \begin{proof}
+        Тъй като $p$ е разпределение и е изпълнено, че $\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) = 1$, можем да приложим неравенството на Йенсен:
+        \begin{flalign*}
+            & \sum\limits_{i = 1}^n p(x_i, y_i) f(z_i) \leq f\B{\sum\limits_{i = 1}^{n} p(x_i, y_i) z_i}, \forall (z_1,\ldots, z_n) \in \mathbb{R}^n, &&  
+        \end{flalign*}
+        където $f$ е вдлъбната. Ако $f$ е строго вдлъбната ($f'$ е строго намаляваща), равенство се достига, когато $z_i$ е константа.
+        
+        \begin{flalign*}
+            -D(p, q) & = -\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}&&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{q(x, y)}{p(x, y)}}&&\\
+            & \leq \log\B{\sum\limits_{(x, y) \in \mathcal{D}} \cancel{p(x, y)}\cfrac{q(x, y)}{\cancel{p(x, y)}} }&&\\
+            & \leq \log\B{\sum\limits_{(x, y) \in \mathcal{D}} q(x, y)} = 0 &&\\
+            & \iff D(p, q) \geq 0
+        \end{flalign*}
+
+        Тъй като логаритъмът е строго вдлъбната функция, равенство при неравенството на Йенсен се достига, когато $\cfrac{q(x, y)}{p(x, y)}$ е константа, тоест $\cfrac{q(x, y)}{p(x, y)} = 1 \iff p(x, y) = q(x, y)$ за произволно $(x, y) \in \mathcal{D}$.
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    \label{appendix:max_ent:02}
+    За всеки $p_1, p_2 \in P, q\in Q$ е изпълнено $\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) \log(q(x, y)) = \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) \log(q(x, y))$
+
+    \begin{proof}
+        \begin{flalign*}
+            &\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) \log(q(x, y))&&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\log\B{\pi\prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}} &&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \log\B{ \prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}}} &&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \log\B{ e^{\lambda_i h_i(x, y)}}} &&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y)} &&\\
+            & = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\log(\pi) + \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y) &&\\
+            & = \log(\pi)\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) + \sum\limits_{(x, y) \in \mathcal{D}} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
+            & = \log(\pi). 1 + \sum\limits_{(x, y) \in \mathcal{D}} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
+            & = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)  h_i(x, y) &&\\
+            &\text{Тъй като } p_2 \in P \text{ то също изпълнява ограниченията.} &&\\
+            & = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y)  h_i(x, y) &&\\
+            & \text{Използваме и че } \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) = 1 &&\\
+            & = \log(\pi)\sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y)  h_i(x, y) &&\\
+            &\sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) \log(q(x, y))&&\\
+        \end{flalign*}
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    \label{appendix:max_ent:03}
+    Ако $p \in P, q \in Q, r \in P\cap Q$, то $D(p, q) = D(p, r) + D(r, q)$
+   
+    \begin{proof}
+        \begin{flalign*}
+            & D(p, r) + D(r, q) &&\\
+            & = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log\B{\cfrac{p(x, y)}{r(x, y)}} + \sum\limits_{(x, y)\in \mathcal{D}}r(x, y)\log\B{\cfrac{r(x, y)}{q(x, y)}}&&\\
+            & = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log(r(x, y)) + &&\\
+            & \quad\sum\limits_{(x, y)\in \mathcal{D}}r(x, y)\log(r(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y))&&\\
+            & \coolleq{\autoref{appendix:max_ent:01}}
+            & &&\\
+            &\quad \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \cancel{\sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log(r(x, y))} + &&\\
+            & \cancel{\quad\sum\limits_{(x, y)\in \mathcal{D}}{\color{red}p(x, y)}\log(r(x, y))} - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y))&&\\
+            & &&\\
+            & = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y)) &&\\
+            & \coolleq{\autoref{appendix:max_ent:01}} &&\\
+            & \quad \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}{\color{red} p(x, y)} \log(q(x, y)) &&\\
+            & = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}} = D(p, q) &&\\
+        \end{flalign*}
+    \end{proof}
+\end{lemma}
+
+\begin{lemma}
+    \label{appendix:max_ent:04}
+    Ако $r \in P\cap Q$, то $r$ е единствено и $r = \hat{p}$
+    
+    \begin{proof}
+
+    Нека $r \in P\cap Q$. Условието $r = \hat{p}$ значи, че $r = argmax_{p \in P} H(p)$, тоест ще покажем, че за всяко $p \in P: H(r) \geq H(p)$.
+
+    Нека $u$ е равномерното разпределение върху $\mathcal{D}$, тоест $u(x, y) = \cfrac{1}{n}, \forall (x, y)\in \mathcal{D}$. Следователно $u \in Q$, защото можем да изберем $\pi = \cfrac{1}{n}$ и $\lambda_i = 0, \forall i\in \{1\ldots K\}$
+    
+    Нека фиксираме произволно $p \in P$. Тогава от \autoref{appendix:max_ent:03} следва, че
+    \begin{flalign*}
+        & D(p, u)  = D(p, r) + D(r, u) &&\\
+        & D(p, u) \quad \coolgeq{\autoref{appendix:max_ent:01}} \quad D(r, u) &&\\
+        & \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{u(x, y)}} \geq \sum\limits_{(x, y) \in \mathcal{D}} r(x, y) \log\B{\cfrac{r(x, y)}{u(x, y)}} && \\
+        & -H(p) - \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(u(x, y)) \geq -H(r) - \sum\limits_{(x, y) \in \mathcal{D}} r(x, y) \log(u(x, y)) &&\\
+        & \coollra{\autoref{appendix:max_ent:02}} &&\\
+        & -H(p) - \cancel{\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(u(x, y))} \geq -H(r) - \cancel{\sum\limits_{(x, y) \in \mathcal{D}} {\color{red} p(x, y)} \log(u(x, y))} &&\\
+        & H(r) \geq H(p) &&
+    \end{flalign*}
+    Следователно $r = argmax_{p \in P} H(p)$
+
+    Сега нека видим защо $r$ е единствено.
+    Нека $r' = argmax_{p \in P} H(P)$. Тогава:
+    \begin{flalign*}
+        & H(r') = H(r) \longleftrightarrow D(r, u) = D(r', u) && \\
+        & \text{ но } D(r, u) = D(r, r') + D(r', u) \text{ по }\autoref{appendix:max_ent:02} && \\
+        & \Longrightarrow \quad D(r, r') = 0 &&\\
+        & \coolra{\autoref{appendix:max_ent:01}} \quad r = r' &&\\
+    \end{flalign*}
+    \end{proof}
+\end{lemma}
+
+Сега, нека дефинираме правдоподобие на разпределение $p$ като при дадено множество $\mathcal{D}$:
+\begin{flalign*}
+    & \widehat{L}_{\mathcal{D}}(p) = \prod\limits_{(x, y) \in \mathcal{D}} p(x, y) &&
+\end{flalign*}
+Тъй като логаритъмът е вдлъбната и монотонно растяща функция, често се разглежда за удобство:
+\begin{flalign*}
+    & log\B{\widehat{L}_{\mathcal{D}}(p)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(x, y)) &&
+\end{flalign*}
+
+Дефинираме фунцкията $L(p)$:
+\begin{flalign*}
+    L(p) = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) \log(p(x, y)) & = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + \sum\limits_{(x, y) \notin D} \tilde{p}(x, y) \log(p(x, y)) && \\
+    & = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + 0 && \\
+    & = \sum\limits_{(x, y) \in D} \cfrac{1}{n} \log(p(x, y)) = C\log\B{\widehat{L}_{\mathcal{D}}(p)} && \\
+\end{flalign*}
+Тоест $L$ е пропорционална на логаритъм от правдоподобието. Тоест, ако $p$ максимизира $L$, то максимизира и правдоодобието, и обратното. 
+
+\begin{lemma}
+    \label{appendix:max_ent:05}
+    Ако $r \in P\cup Q$, то $r$ е единствено и $r = argmax_{q \in Q} L(q)$
+
+    \begin{proof}
+    Искаме да покажем, че за всяко $q \in Q: L(r) \geq L(q)$.
+    
+    Нека фиксираме едно $q \in Q$, а $\tilde{p}$ е емпиричното разпределение и следователно $\tilde{p} \in P$.
+
+    Тогава от \autoref{appendix:max_ent:03} следва, че:
+    \begin{flalign*}
+        & D(\tilde{p}, q)  = D(\tilde{p}, r) + D(r, q) &&\\
+        & D(\tilde{p}, q) \quad \coolgeq{\autoref{appendix:max_ent:01}} \quad D(\tilde{p}, r) &&\\ 
+        & -\cancel{H(\tilde{p})} - L(q) \geq -\cancel{H(\tilde{p})} - L(r) && \\
+        & \longleftrightarrow L(r) \geq L(q)
+    \end{flalign*}
+
+    Сега нека $r' = argmax_{q \in Q} L(q)$, тоест $L(r) = L(r') \Longrightarrow D(\tilde{p}, r) = D(\tilde{p}, r')$.
+
+    Но по \autoref{appendix:max_ent:03}, $D(\tilde{p}, r') = D(\tilde{p}, r) + D(r, r') \Longrightarrow D(r, r') = 0 \coollra{\autoref{appendix:max_ent:01}} r' = r$, следователно $r$ е единствено.
+    \end{proof}
+\end{lemma}
+
+От \autoref{appendix:max_ent:04} и \autoref{appendix:max_ent:05}, че ако вземем разпределение от сечението на $P$ и $Q$, то е единствено и е равно на $\hat{p} = argmax_{p \in P} H(p) = argmax_{q \in Q} L(q)$. Тъй като $L$ е пропорционално на правдоподобието, за да намерим търсеното разпределение е достатъчно да максимизираме правдоподобието.
+\end{document}
