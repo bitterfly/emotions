@@ -32,11 +32,38 @@
 
 \section{Съчетаване чрез максимизиране на ентропията}
 \subsection{Описание}
-Другият похват, който е приложен използва модел максимизиращ ентропията. Идеята е да намерим такова разпределение $p$ върху входните дани, което изпълнява дадените ограничения, но в същото време не прави допълнителни предположения, тоест максимизира ентропията.
-Тоест имайки входни данни от вида $\mathcal{D} = (x_1, y_1)\ldots (x_n, y_n)$, където $x_i \in X$ са характеристични вектори с етикети $y_i \in Y$, където $Y = \{1,\ldots K\}$ представя множеството от търсените емоции, искаме да максимизираме ентропията:
+Другият похват, който е приложен използва модел максимизиращ ентропията. Идеята е да намерим такова разпределение $p$ върху входните дани, което изпълнява дадените ограничения, но в същото време не прави допълнителни предположения. 
+Тоест имайки входни данни от вида $\mathcal{D} = \{(x_1, y_1),\ldots, (x_n, y_n)\}$, където $x_i \in X$ са характеристични вектори с етикети $y_i \in Y$, където $Y = \{1,\ldots K\}$ представя множеството от търсените емоции, искаме да максимизираме ентропията:
 \[
 H(p) = - \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(p(x, y))    
 \]
-и да бъде консистентно с ограниченията наложени от двата класификатора. Ако с $h_1$ бележим класификатора на реч
+и да бъде консистентно с ограниченията наложени от двата класификатора. Ако с $h_1$ бележим класификатора на реч, а с $h_2$ този на ЕЕГ, то $h_1, h_2$ играят роля на характеристични функции, тъй като $h_i: X \mapsto \{0, 1\}$.
+В \autoref{appendix:max_ent} е показано, че търсеното разпределение $\hat{p}$, което максимизира ентропията и максимизира (логаритъм) от правдоподобието, има вида $\hat{p}(x, y) = \pi e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}$.
 
-\end{document}
+$\pi = \sum\limits_{y' \in Y} p(x, y')$. Тоест:
+
+$\hat{p}(x, y) = \cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }$
+
+В същото приложение е показано, че е достатъчно да максимизираме логаритъм от правдоподобието, а именно:
+
+\begin{flalign*}
+\Lambda(\lambda_1, \lambda_2) & = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in \mathcal{D}} ln(p(x, y)) && \\
+& = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }} &&
+\end{flalign*}
+
+Намираме производните:
+
+\begin{flalign*}
+    \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_1} & = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }}}}{\partial \lambda_1}&&\\
+    & = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \lambda_1 h_1(x, y) + \lambda_2 h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} log\B{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y'
+    )} } }}{\partial \lambda_1} &&\\
+    & = \sum\limits_{(x, y) \in \mathcal{D}} h_1(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_1(x, y')}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
+\end{flalign*}
+
+Съответно: 
+
+\begin{flalign*}
+    & \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_2} = \sum\limits_{(x, y) \in \mathcal{D}} h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_2(x, y')}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
+\end{flalign*}
+
+\end{document} 
