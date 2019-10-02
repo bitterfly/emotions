@@ -1,34 +1,102 @@
-\documentclass[main.tex]{subfiles}
+e\documentclass[main.tex]{subfiles}
 \begin{document}
 \chapter{Приложение за Максимизиране на ентропията}
 \label{appendix:max_ent}
 
-Имаме списък от входни данни $\mathcal{D} = (x_1, y_1),\ldots, (x_n, y_n)$, където $x_i \in X$ са характеристични вектори с етикети $y_i \in Y$. Търсим такова разпределение $p$ върху $\mathcal{D}$, което да максимизира ентропията:
-\[
-	H(p) = - \sum\limits_{(x, y) \in X\times Y} p(x, y) \log(p(x, y))
-\]
-и да изпълнява ограниченията, зададени с множество  от характеристични функции $\mathcal{H}, |\mathcal{H}| = K$. Характеристичните функции са от вида $h_i:X\times Y \rightarrow [0, 1]$.
+Нека имаме входни данни $X\times Y = (x_1, y_1),\ldots, (x_n, y_n)$, където $x_i \in X$, а $y_i \in Y$. 
 
-Нека $E(p, h) := \sum\limits_{(x, y)\in X \times Y} p(x, y)h(x, y)$
+Това търсим разпределение $p$, което приближава разпределението, генерирало данните в $X\times Y$ и което се държи равномерно иначе.
 
-Тогава ограниченията за търсеното $p$ имат вида:
+Тоест търсеното разпределение $p$, трябва да изпълнява:
 \begin{flalign*}
-	& E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H}, &&
+	& p(x, y) = \tilde{p}(x) p(y|x), &&
 \end{flalign*}
-където с $\tilde{p}$ означаваме емпиричната вероятност върху $\mathcal{D}$ $\B{p(x, y) = \cfrac{\#(x, y)}{n}}.$
+където с $\tilde{p}$ означаваме емпиричната разпределение $\B{\forall(x, y) \in X\times Y: \tilde{p}(x, y) = \cfrac{\#(x, y)}{n}}.$ С други думи:
+\begin{flalign*}
+	p(x) = \sum\limits_{y\in Y} p(x, y) & = \sum\limits_{y \in Y} \tilde{p}(x) p(y|x)&&\\
+	&= \tilde{p}(x)\sum\limits_{y\in Y} p(y|x)&&\\& = \tilde{p}(x)
+\end{flalign*}
 
-Тоест върху наличните данни искаме това разпределение да се държи очаквано като емпиричното, но да не внася допълнителни предположения извън $\mathcal{D}$, да се държи равномерно.
+и да максимизира ентропията:
+\begin{flalign*}
+	H(X, Y) & = - \sum\limits_{(x, y) \in X\times Y} p(x, y) \log(p(x, y)) &&
+\end{flalign*}
 
-Нека $P$ е множеството от всички разпределения, които изпълняват това условие: $P = \{p \ |\  E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H}\}$.
+Нека имаме още множество  от характеристични функции $\mathcal{H}, |\mathcal{H}| = K$, които са от вида $h_i:X\times Y \rightarrow [0, 1]$.
 
-Тогава искаме да намерим $\hat{p} = argmax_{p \in P} H(p)$.
+Ако с $E(q, h)$ означим очакването на $h$, спрямо разпределение $q$, тоест:
+\begin{flalign*}
+	& E(q, h) = \sum\limits_{(x, y) \in X\times Y} q(x, y)h(x, y) &&
+\end{flalign*}
 
-Ще покажем, че $\hat{p}$ трябва да има следния вид: $\hat{p}(x, y) = \pi\prod\limits_{i=1}^{K} e^{\lambda_i h_i(x, y)}$.
-Тук $\lambda_i \in \mathbb{R}$ е тегло на съответната характеристична функция, а $\pi$ е нормализираща константа. Ще покажем, че съществува единствено $\hat{p}$ и че минимизацията на ентропията е еквивалентна на минимизацията на правдоподобието.
+То искаме за търсеното $p$ да е изпълнено:
+\begin{flalign*}
+	& E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H} &&
+\end{flalign*}
+тоест
+\begin{flalign*}
+	E(p, h) & = \sum\limits_{(x, y) \in X\times Y} p(x, y)h(x, y) && \\
+	& = \sum\limits_{(x, y)\in X\times Y} \tilde{p}(x)p(y|x)h(x, y) && \\
+	& = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y)h(x, y) = E(\tilde{p}, h)
+\end{flalign*}
+
+Ако означим:
+\begin{flalign*}
+	& P = \{ p | E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H} \}&&,
+\end{flalign*}
+тогава искаме да намерим 
+\begin{flalign*}
+	\hat{p} & = argmax_{p \in P} H(X, Y) &&\\
+	& = argmax_{p \in P}\B{  - \sum\limits_{(x, y) \in X\times Y} p(x, y) \log(p(x, y))}&&\\
+	& = argmax_{p \in P}\B{ -\sum\limits_{(x, y) \in X\times Y} p(x, y)\log(\tilde{p}(x)p(y|x)) }&&\\
+	& = argmax_{p \in P}\B{ -\sum\limits_{(x, y) \in X\times Y} p(x, y)log(\tilde{p}(x))-\sum\limits_{(x, y) \in X\times Y} p(x, y)\log(p(y|x)) }&&\\
+	& = argmax_{p \in P}\B{ -\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x) p(y | x) log(\tilde{p}(x)) + H(Y|X) }&&\\
+	& = argmax_{p \in P}\B{ -\sum\limits_{x\in X} \tilde{p}(x) log(\tilde{p}(x))\sum\limits_{y\in Y}p(y|x) + H(Y|X) }&&\\
+	& = argmax_{p \in P}\B{ -\sum\limits_{x\in X} \tilde{p}(x) log(\tilde{p}(x)) + H(Y|X) }&&\\
+	&  -\sum\limits_{x\in X} \tilde{p}(x)log(\tilde{p}(x)) \text{ е константа спрямо } p \text{, следователно:} &&\\
+	& = argmax_{p\in P} \B{H(Y|X)}
+\end{flalign*}
+
+За да решим тази оптимизационна задача, ще ползваме множители на Лагранж. Тъй като имаме $K$ ограничения за всяка от характеристичните функции и трябва да отчетем, че търсим разпределение, задачата ще има вида:
+\[
+\Lambda(p, \lambda) = H(Y|X) + \sum\limits_{i=1}^{K} \lambda_i (E(p, h_i) - E(\tilde{p}, h_i )) + \sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1
+\]
+
+Нека фиксираме едно $x_0 \in X, y_0 \in Y$.
+\begin{flalign*}
+	& \cfrac{\partial\B{\Lambda(p, \lambda)}}{\partial p(y_0 | x_0)} && = \\
+	& = \cfrac{\partial H(Y|X)}{\partial p(y_0 | x_0)} + \cfrac{\partial\B{\lambda_i (E(p, h_i) - E(\tilde{p}, h_i ))}}{\partial p(y_0 | x_0)} + \cfrac{\B{\sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1}}{\partial p(y_0 | x_0)}&&\\
+	& = \cfrac{\partial\B{-\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x)p(y | x)\log(p(y|x))}}{\partial p(y_0 | x_0)} + \cfrac{\partial\B{\sum\limits_{i=1}^K \lambda_i\Q{\sum\limits_{(x, y)\in X\times Y} \tilde{p}(x) h_i(x, y)\B{p(y|x) - \tilde{p}(y|x)} }}}{\partial p(y_0 | x_0)} + \mu_{x_0}&& \\
+	\\
+	& = -\tilde{p}(x_0) log(p(y_0 | x_0)) - \tilde{p}(x_0) + \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) + \mu_{x_0}
+\end{flalign*}
+
+Искаме да я нулираме:
+
+\begin{flalign}
+	\label{appendix:max_ent:00}
+	\nonumber &-\tilde{p}(x_0) log(p(y_0 | x_0)) - \tilde{p}(x_0) + \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) + \mu_{x_0}= 0 \longleftrightarrow &&\\
+	\nonumber &\tilde{p}(x_0) log(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) - \tilde{p}(x_0) + \mu_{x_0}\longleftrightarrow && \\
+	\nonumber & ln(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0) - 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)} \longleftrightarrow&&\\
+	& p(y_0 | x_0) = \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0) - 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}}
+\end{flalign}
+
+Производната по $\mu_{x_0}$ ни дава:
+\begin{flalign*}
+	&\sum\limits_{y\in Y} p(y | x_0) = 1 \longleftrightarrow && \\
+	& \sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0) - 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}} = 1 \longleftrightarrow && \\
+	& exp\B{-1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}}\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)} = 1 &&\\
+	& \longleftrightarrow &&\\
+	& exp\B{-1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}} = \cfrac{1}{\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}} &&\\
+	& \text{Заместваме в \autoref{appendix:max_ent:00}:} &&\\
+	& p(y_0 | x_0) = \cfrac{\exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}}{\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}} &&
+\end{flalign*}
+
+Следователно вида на търсеното $\hat{p}$ е $\hat{p}(x, y) = \pi\prod\limits_{i=1}^{K} e^{\lambda_i h_i(x, y)}$, като $\pi$ е нормализиращата константа. Ще покажем че $\hat{p}$, което минимизира ентропията също минимизира и условното правдоподобие.
 
 Нека с $Q$ означим всички разпределения с желание вид. Имаме, че $Q = \{p \ | \  p(x, y) = \pi\prod\limits_{i = 1}^{K} e^{\lambda_i h_i(x, y)}\}$. За да намерим оптималното разпределение, ще ни е нужно да дефинираме разстояние между разпределения - ``Разстояние'' на Кулбек-Лайблър:
 \begin{flalign*}
-	D(p, q) = \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}
+	D(p, q) = \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}
 \end{flalign*}
 
 ``Разстоянието'' на Кулбек-Лайблър всъщност не е разстояние в математическия смисъл (в смисъла на метрика), тъй като не е симетрична функция, но често се използва за разстояние между разпределения, тъй като има този интуитивен смисъл. Затова ще продължим да го наричаме разстояние, пропускайки кавичките.
@@ -40,44 +108,44 @@
 	За всеки две разпределения $p$ и $q$, $D(p, q) \geq 0$, като $D(p, q) = 0 \iff p = q$
 
 	\begin{proof}
-		Тъй като $p$ е разпределение и е изпълнено, че $\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) = 1$, можем да приложим неравенството на Йенсен:
+		Тъй като $p$ е разпределение и е изпълнено, че $\sum\limits_{(x, y) \in X\times Y} p(x, y) = 1$, можем да приложим неравенството на Йенсен:
 		\begin{flalign*}
 			& \sum\limits_{i = 1}^n p(x_i, y_i) f(z_i) \leq f\B{\sum\limits_{i = 1}^{n} p(x_i, y_i) z_i}, \forall (z_1,\ldots, z_n) \in \mathbb{R}^n, &&
 		\end{flalign*}
 		където $f$ е вдлъбната. Ако $f$ е строго вдлъбната ($f'$ е строго намаляваща), равенство се достига, когато $z_i$ е константа.
 
 		\begin{flalign*}
-			-D(p, q) & = -\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}&&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{q(x, y)}{p(x, y)}}&&\\
-			& \leq \log\B{\sum\limits_{(x, y) \in \mathcal{D}} \cancel{p(x, y)}\cfrac{q(x, y)}{\cancel{p(x, y)}} }&&\\
-			& \leq \log\B{\sum\limits_{(x, y) \in \mathcal{D}} q(x, y)} = 0 &&\\
+			-D(p, q) & = -\sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}&&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{q(x, y)}{p(x, y)}}&&\\
+			& \leq \log\B{\sum\limits_{(x, y) \in X\times Y} \cancel{p(x, y)}\cfrac{q(x, y)}{\cancel{p(x, y)}} }&&\\
+			& \leq \log\B{\sum\limits_{(x, y) \in X\times Y} q(x, y)} = 0 &&\\
 			& \iff D(p, q) \geq 0
 		\end{flalign*}
 
-		Тъй като логаритъмът е строго вдлъбната функция, равенство при неравенството на Йенсен се достига, когато $\cfrac{q(x, y)}{p(x, y)}$ е константа, тоест $\cfrac{q(x, y)}{p(x, y)} = 1 \iff p(x, y) = q(x, y)$ за произволно $(x, y) \in \mathcal{D}$.
+		Тъй като логаритъмът е строго вдлъбната функция, равенство при неравенството на Йенсен се достига, когато $\cfrac{q(x, y)}{p(x, y)}$ е константа, тоест $\cfrac{q(x, y)}{p(x, y)} = 1 \iff p(x, y) = q(x, y)$ за произволно $(x, y) \in X\times Y$.
 	\end{proof}
 \end{lemma}
 
 \begin{lemma}
 	\label{appendix:max_ent:02}
-	За всеки $p_1, p_2 \in P, q\in Q$ е изпълнено $\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) \log(q(x, y)) = \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) \log(q(x, y))$
+	За всеки $p_1, p_2 \in P, q\in Q$ е изпълнено $\sum\limits_{(x, y) \in X\times Y} p_1(x, y) \log(q(x, y)) = \sum\limits_{(x, y) \in X\times Y} p_2(x, y) \log(q(x, y))$
 
 	\begin{proof}
 		\begin{flalign*}
-			&\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) \log(q(x, y))&&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\log\B{\pi\prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}} &&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \log\B{ \prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}}} &&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \log\B{ e^{\lambda_i h_i(x, y)}}} &&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y)} &&\\
-			& = \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\log(\pi) + \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)\sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y) &&\\
-			& = \log(\pi)\sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y) + \sum\limits_{(x, y) \in \mathcal{D}} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
-			& = \log(\pi). 1 + \sum\limits_{(x, y) \in \mathcal{D}} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
-			& = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_1(x, y)  h_i(x, y) &&\\
-			&\text{Тъй като } p_2 \in P \text{ то също изпълнява ограниченията.} &&\\
-			& = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y)  h_i(x, y) &&\\
-			& \text{Използваме и че } \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) = 1 &&\\
-			& = \log(\pi)\sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y)  h_i(x, y) &&\\
-			&\sum\limits_{(x, y) \in \mathcal{D}} p_2(x, y) \log(q(x, y))&&\\
+			&\sum\limits_{(x, y) \in X\times Y} p_1(x, y) \log(q(x, y))&&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\log\B{\pi\prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}} &&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\B{\log(\pi) + \log\B{ \prod\limits_{h_i \in \mathcal{H}} e^{\lambda_i h_i(x, y)}}} &&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \log\B{ e^{\lambda_i h_i(x, y)}}} &&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\B{\log(\pi) + \sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y)} &&\\
+			& = \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\log(\pi) + \sum\limits_{(x, y) \in X\times Y} p_1(x, y)\sum\limits_{h_i \in \mathcal{H}} \lambda_i h_i(x, y) &&\\
+			& = \log(\pi)\sum\limits_{(x, y) \in X\times Y} p_1(x, y) + \sum\limits_{(x, y) \in X\times Y} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
+			& = \log(\pi). 1 + \sum\limits_{(x, y) \in X\times Y} \sum\limits_{h_i \in \mathcal{H}} p_1(x, y) \lambda_i h_i(x, y) &&\\
+			& = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_1(x, y)  h_i(x, y) &&\\
+			&\text{Тъй като } p_2 \in P: &&\\
+			& = \log(\pi). 1 +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_2(x, y)  h_i(x, y) &&\\
+			& \text{Използваме и че } \sum\limits_{(x, y) \in X\times Y} p_2(x, y) = 1 &&\\
+			& = \log(\pi)\sum\limits_{(x, y) \in X\times Y} p_2(x, y) +  \sum\limits_{h_i \in \mathcal{H}} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_2(x, y)  h_i(x, y) &&\\
+			&\sum\limits_{(x, y) \in X\times Y} p_2(x, y) \log(q(x, y))&&\\
 		\end{flalign*}
 	\end{proof}
 \end{lemma}
@@ -89,18 +157,18 @@
 	\begin{proof}
 		\begin{flalign*}
 			& D(p, r) + D(r, q) &&\\
-			& = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log\B{\cfrac{p(x, y)}{r(x, y)}} + \sum\limits_{(x, y)\in \mathcal{D}}r(x, y)\log\B{\cfrac{r(x, y)}{q(x, y)}}&&\\
-			& = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log(r(x, y)) + &&\\
-			& \quad\sum\limits_{(x, y)\in \mathcal{D}}r(x, y)\log(r(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y))&&\\
+			& = \sum\limits_{(x, y)\in X\times Y}p(x, y)\log\B{\cfrac{p(x, y)}{r(x, y)}} + \sum\limits_{(x, y)\in X\times Y}r(x, y)\log\B{\cfrac{r(x, y)}{q(x, y)}}&&\\
+			& = \sum\limits_{(x, y)\in X\times Y}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in X\times Y}p(x, y) \log(r(x, y)) + &&\\
+			& \quad\sum\limits_{(x, y)\in X\times Y}r(x, y)\log(r(x, y)) - \sum\limits_{(x, y)\in X\times Y}r(x, y) \log(q(x, y))&&\\
 			& \coolleq{\autoref{appendix:max_ent:01}}
 			& &&\\
-			&\quad \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \cancel{\sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log(r(x, y))} + &&\\
-			& \cancel{\quad\sum\limits_{(x, y)\in \mathcal{D}}{\color{red}p(x, y)}\log(r(x, y))} - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y))&&\\
+			&\quad \sum\limits_{(x, y)\in X\times Y}p(x, y)\log(p(x, y)) - \cancel{\sum\limits_{(x, y)\in X\times Y}p(x, y) \log(r(x, y))} + &&\\
+			& \cancel{\quad\sum\limits_{(x, y)\in X\times Y}{\color{red}p(x, y)}\log(r(x, y))} - \sum\limits_{(x, y)\in X\times Y}r(x, y) \log(q(x, y))&&\\
 			& &&\\
-			& = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}r(x, y) \log(q(x, y)) &&\\
+			& = \sum\limits_{(x, y)\in X\times Y}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in X\times Y}r(x, y) \log(q(x, y)) &&\\
 			& \coolleq{\autoref{appendix:max_ent:01}} &&\\
-			& \quad \sum\limits_{(x, y)\in \mathcal{D}}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in \mathcal{D}}{\color{red} p(x, y)} \log(q(x, y)) &&\\
-			& = \sum\limits_{(x, y)\in \mathcal{D}}p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}} = D(p, q) &&\\
+			& \quad \sum\limits_{(x, y)\in X\times Y}p(x, y)\log(p(x, y)) - \sum\limits_{(x, y)\in X\times Y}{\color{red} p(x, y)} \log(q(x, y)) &&\\
+			& = \sum\limits_{(x, y)\in X\times Y}p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}} = D(p, q) &&\\
 		\end{flalign*}
 	\end{proof}
 \end{lemma}
@@ -113,16 +181,16 @@
 
 		Нека $r \in P\cap Q$. Условието $r = \hat{p}$ значи, че $r = argmax_{p \in P} H(p)$, тоест ще покажем, че за всяко $p \in P: H(r) \geq H(p)$.
 
-		Нека $u$ е равномерното разпределение върху $\mathcal{D}$, тоест $u(x, y) = \cfrac{1}{n}, \forall (x, y)\in \mathcal{D}$. Следователно $u \in Q$, защото можем да изберем $\pi = \cfrac{1}{n}$ и $\lambda_i = 0, \forall i\in \{1\ldots K\}$
+		Нека $u$ е равномерното разпределение върху $X\times Y$, тоест $u(x, y) = \cfrac{1}{n}, \forall (x, y)\in X\times Y$. Следователно $u \in Q$, защото можем да изберем $\pi = \cfrac{1}{n}$ и $\lambda_i = 0, \forall i\in \{1\ldots K\}$
 
 		Нека фиксираме произволно $p \in P$. Тогава от \autoref{appendix:max_ent:03} следва, че
 		\begin{flalign*}
 			& D(p, u)  = D(p, r) + D(r, u) &&\\
 			& D(p, u) \quad \coolgeq{\autoref{appendix:max_ent:01}} \quad D(r, u) &&\\
-			& \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log\B{\cfrac{p(x, y)}{u(x, y)}} \geq \sum\limits_{(x, y) \in \mathcal{D}} r(x, y) \log\B{\cfrac{r(x, y)}{u(x, y)}} && \\
-			& -H(p) - \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(u(x, y)) \geq -H(r) - \sum\limits_{(x, y) \in \mathcal{D}} r(x, y) \log(u(x, y)) &&\\
+			& \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{u(x, y)}} \geq \sum\limits_{(x, y) \in X\times Y} r(x, y) \log\B{\cfrac{r(x, y)}{u(x, y)}} && \\
+			& -H(p) - \sum\limits_{(x, y) \in X\times Y} p(x, y) \log(u(x, y)) \geq -H(r) - \sum\limits_{(x, y) \in X\times Y} r(x, y) \log(u(x, y)) &&\\
 			& \coollra{\autoref{appendix:max_ent:02}} &&\\
-			& -H(p) - \cancel{\sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(u(x, y))} \geq -H(r) - \cancel{\sum\limits_{(x, y) \in \mathcal{D}} {\color{red} p(x, y)} \log(u(x, y))} &&\\
+			& -H(p) - \cancel{\sum\limits_{(x, y) \in X\times Y} p(x, y) \log(u(x, y))} \geq -H(r) - \cancel{\sum\limits_{(x, y) \in X\times Y} {\color{red} p(x, y)} \log(u(x, y))} &&\\
 			& H(r) \geq H(p) &&
 		\end{flalign*}
 		Следователно $r = argmax_{p \in P} H(p)$
@@ -140,24 +208,24 @@
 
 Сега, нека дефинираме правдоподобие на разпределение $p$ като при дадено множество $\mathcal{D}$:
 \begin{flalign*}
-	& \widehat{L}_{\mathcal{D}}(p) = \prod\limits_{(x, y) \in \mathcal{D}} p(x, y) &&
+	& \widehat{L}_{\mathcal{D}}(p) = \prod\limits_{(x, y) \in X\times Y} p(x, y) &&
 \end{flalign*}
 Тъй като логаритъмът е вдлъбната и монотонно растяща функция, често се разглежда за удобство:
 \begin{flalign*}
-	& log\B{\widehat{L}_{\mathcal{D}}(p)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(x, y)) &&
+	& log\B{\widehat{L}_{X\times Y}(p)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(x, y)) &&
 \end{flalign*}
 
 Дефинираме фунцкията $L(p)$:
 \begin{flalign*}
 	L(p) = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) \log(p(x, y)) & = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + \sum\limits_{(x, y) \notin D} \tilde{p}(x, y) \log(p(x, y)) && \\
 	& = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + 0 && \\
-	& = \sum\limits_{(x, y) \in D} \cfrac{1}{n} \log(p(x, y)) = C\log\B{\widehat{L}_{\mathcal{D}}(p)} && \\
+	& = \sum\limits_{(x, y) \in D} \cfrac{1}{n} \log(p(x, y)) = C\log\B{\widehat{L}_{X\times Y}(p)} && \\
 \end{flalign*}
 Тоест $L$ е пропорционална на логаритъм от правдоподобието. Тоест, ако $p$ максимизира $L$, то максимизира и правдоодобието, и обратното.
 
 \begin{lemma}
 	\label{appendix:max_ent:05}
-	Ако $r \in P\cup Q$, то $r$ е единствено и $r = argmax_{q \in Q} L(q)$
+	Ако $r \in P\cap Q$, то $r$ е единствено и $r = argmax_{q \in Q} L(q)$
 
 	\begin{proof}
 		Искаме да покажем, че за всяко $q \in Q: L(r) \geq L(q)$.
@@ -168,6 +236,7 @@
 		\begin{flalign*}
 			& D(\tilde{p}, q)  = D(\tilde{p}, r) + D(r, q) &&\\
 			& D(\tilde{p}, q) \quad \coolgeq{\autoref{appendix:max_ent:01}} \quad D(\tilde{p}, r) &&\\
+			& \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) log\B{\cfrac{\tilde{p}(x, y)}{q(x,y)}} \geq \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) log\B{\cfrac{\tilde{p}(x, y)}{r(x, y)}} &&\\
 			& -\cancel{H(\tilde{p})} - L(q) \geq -\cancel{H(\tilde{p})} - L(r) && \\
 			& \longleftrightarrow L(r) \geq L(q)
 		\end{flalign*}
