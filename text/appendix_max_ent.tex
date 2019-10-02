@@ -206,22 +206,11 @@ e\documentclass[main.tex]{subfiles}
 	\end{proof}
 \end{lemma}
 
-Сега, нека дефинираме правдоподобие на разпределение $p$ като при дадено множество $\mathcal{D}$:
-\begin{flalign*}
-	& \widehat{L}_{\mathcal{D}}(p) = \prod\limits_{(x, y) \in X\times Y} p(x, y) &&
-\end{flalign*}
-Тъй като логаритъмът е вдлъбната и монотонно растяща функция, често се разглежда за удобство:
-\begin{flalign*}
-	& log\B{\widehat{L}_{X\times Y}(p)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(x, y)) &&
-\end{flalign*}
-
 Дефинираме фунцкията $L(p)$:
 \begin{flalign*}
-	L(p) = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) \log(p(x, y)) & = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + \sum\limits_{(x, y) \notin D} \tilde{p}(x, y) \log(p(x, y)) && \\
-	& = \sum\limits_{(x, y) \in D} \tilde{p} (x, y) \log(p(x, y)) + 0 && \\
-	& = \sum\limits_{(x, y) \in D} \cfrac{1}{n} \log(p(x, y)) = C\log\B{\widehat{L}_{X\times Y}(p)} && \\
+	L(p) & = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) \log(p(x, y)) &&\\
 \end{flalign*}
-Тоест $L$ е пропорционална на логаритъм от правдоподобието. Тоест, ако $p$ максимизира $L$, то максимизира и правдоодобието, и обратното.
+
 
 \begin{lemma}
 	\label{appendix:max_ent:05}
@@ -247,5 +236,24 @@ e\documentclass[main.tex]{subfiles}
 	\end{proof}
 \end{lemma}
 
-От \autoref{appendix:max_ent:04} и \autoref{appendix:max_ent:05}, че ако вземем разпределение от сечението на $P$ и $Q$, то е единствено и е равно на $\hat{p} = argmax_{p \in P} H(p) = argmax_{q \in Q} L(q)$. Тъй като $L$ е пропорционално на правдоподобието, за да намерим търсеното разпределение е достатъчно да максимизираме правдоподобието.
+Сега, нека дефинираме правдоподобие на разпределение $p$ като при дадено множество $\mathcal{D}$:
+\begin{flalign*}
+	& \widehat{L}_{\mathcal{D}}(Y|X) = \prod\limits_{(x, y) \in X\times Y} p(y|x) &&
+\end{flalign*}
+Тъй като логаритъмът е вдлъбната и монотонно растяща функция, често се разглежда за удобство:
+\begin{flalign*}
+	& log\B{\widehat{L}_{\mathcal{D}}(Y | X)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(y | x)) &&
+\end{flalign*}
+
+Тъй като $\hat{p}$  е в $P$, имаме:
+\begin{flalign*}
+	\hat{p} & = argmax_{p\in Q} L(p) &&\\
+	& = argmax_{p\in Q}\B{\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y) log(\tilde{p}(x)p(y|x))} &&\\
+	& = argmax_{p\in Q} \B{\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y)log(\tilde{p}(x)) + \sum\limits_{(x, y)\in X\times Y} \tilde{p}(x, y)log(p(y | x))}&&\\
+	&  = argmax_{p\in Q} \B{\sum\limits_{(x, y)\in X\times Y} \tilde{p}(x, y)log(p(y | x))}&&\\
+	&  = argmax_{p\in Q} \B{0 + \sum\limits_{(x, y)\in \mathcal{D}} \cfrac{\#(x, y)}{n} log(p(y | x))}&&\\
+\end{flalign*}
+
+
+От \autoref{appendix:max_ent:04} и \autoref{appendix:max_ent:05}, че ако вземем разпределение от сечението на $P$ и $Q$, то е единствено и е равно на $\hat{p} = argmax_{p \in P} H(p) = argmax_{q \in Q} L(q) = argmax_{q\in Q} log\B{\widehat{L}_{\mathcal{D}}(Y|X) }$
 \end{document}
