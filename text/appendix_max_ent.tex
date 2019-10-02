@@ -236,13 +236,13 @@ e\documentclass[main.tex]{subfiles}
 	\end{proof}
 \end{lemma}
 
-Сега, нека дефинираме правдоподобие на разпределение $p$ като при дадено множество $\mathcal{D}$:
+Сега, нека дефинираме правдоподобие на разпределение $p$ при дадено множество $\mathcal{D}$ като:
 \begin{flalign*}
-	& \widehat{L}_{\mathcal{D}}(Y|X) = \prod\limits_{(x, y) \in X\times Y} p(y|x) &&
+	& \widehat{L}_{\mathcal{D}}(Y|X) = \prod\limits_{(x, y) \in X\times Y} p(y|x)^{\#(x, y)} &&
 \end{flalign*}
 Тъй като логаритъмът е вдлъбната и монотонно растяща функция, често се разглежда за удобство:
 \begin{flalign*}
-	& log\B{\widehat{L}_{\mathcal{D}}(Y | X)} = \sum\limits_{(x, y) \in \mathcal{D}} log(p(y | x)) &&
+	& log\B{\widehat{L}_{\mathcal{D}}(Y | X)} = \sum\limits_{(x, y) \in \mathcal{D}} \#(x, y) log(p(y | x)) &&
 \end{flalign*}
 
 Тъй като $\hat{p}$  е в $P$, имаме:
@@ -252,6 +252,8 @@ e\documentclass[main.tex]{subfiles}
 	& = argmax_{p\in Q} \B{\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y)log(\tilde{p}(x)) + \sum\limits_{(x, y)\in X\times Y} \tilde{p}(x, y)log(p(y | x))}&&\\
 	&  = argmax_{p\in Q} \B{\sum\limits_{(x, y)\in X\times Y} \tilde{p}(x, y)log(p(y | x))}&&\\
 	&  = argmax_{p\in Q} \B{0 + \sum\limits_{(x, y)\in \mathcal{D}} \cfrac{\#(x, y)}{n} log(p(y | x))}&&\\
+	&  = argmax_{p\in Q} \B{\sum\limits_{(x, y)\in \mathcal{D}} \#(x, y) log(p(y | x))}&&\\
+	& = argmax_{p\in Q} \B{log\B{\widehat{L}_{\mathcal{D}}(Y|X) }}
 \end{flalign*}
 
 
