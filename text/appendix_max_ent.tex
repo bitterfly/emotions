@@ -44,16 +44,10 @@ $\forall(x, y) \in X\times Y: \tilde{p}(x, y) = \cfrac{\#(x, y)}{n}$,  къде�
 \begin{flalign*}
 	& E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H} &&
 \end{flalign*}
-% тоест
-% \begin{flalign*}
-% 	E(p, h) & = \sum\limits_{(x, y) \in X\times Y} p(x, y)h(x, y) && \\
-% 	& = \sum\limits_{(x, y)\in X\times Y} \tilde{p}(x)p(y|x)h(x, y) && \\
-% 	& = \sum\limits_{(x, y) \in X\times Y} \tilde{p}(x, y)h(x, y) = E(\tilde{p}, h)
-% \end{flalign*}
 
 Ако означим:
 \begin{flalign*}
-	& P = \{ p | E(p, h) = E(\tilde{p}, h), \forall h \in \mathcal{H} \}&&,
+	& P = \{ p | \B{\forall x \in X: p(x) = \tilde{p}(x)} \land \B{\forall h \in \mathcal{H}: E(p, h) = E(\tilde{p}, h)}  \}&&,
 \end{flalign*}
 тогава искаме да намерим
 \begin{flalign*}
@@ -68,38 +62,41 @@ $\forall(x, y) \in X\times Y: \tilde{p}(x, y) = \cfrac{\#(x, y)}{n}$,  къде�
 	& = argmax_{p\in P} H_p(Y|X)
 \end{flalign*}
 
-За да решим тази оптимизационна задача, ще ползваме множители на Лагранж. Тъй като имаме $K$ ограничения за всяка от характеристичните функции и трябва да отчетем, че търсим разпределение, задачата ще има вида:
-\[
-	\Lambda(p, \lambda) = H_p(Y|X) + \sum\limits_{i=1}^{K} \lambda_i (E(p, h_i) - E(\tilde{p}, h_i )) + \sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1
-\]
+За да решим тази оптимизационна задача, ще ползваме множители на Лагранж. Тъй като имаме $K$ ограничения за всяка от характеристичните функции и трябва да отчетем, че търсим разпределение с определени свойства, задачата ще има вида:
+\begin{flalign*}
+	\Lambda(p, \tau, \lambda, \mu) = H_p(Y|X) &+ \sum\limits_{x\in X} \tau_x\Q{\sum\limits_{y\in Y} \B{p(x, y) - \tilde{p}(x)p(y|x)}} &&\\
+	& + \sum\limits_{i=1}^{K} \lambda_i (E(p, h_i) - E(\tilde{p}, h_i )) +  \sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1 &&
+\end{flalign*}
 
 Нека фиксираме едно $x_0 \in X, y_0 \in Y$.
 \begin{flalign*}
-	& \cfrac{\partial\B{\Lambda(p, \lambda)}}{\partial p(y_0 | x_0)} = && \\
-	& = \cfrac{\partial H_p(Y|X)}{\partial p(y_0 | x_0)} + \cfrac{\partial\B{\lambda_i (E(p, h_i) - E(\tilde{p}, h_i ))}}{\partial p(y_0 | x_0)} + \cfrac{\B{\sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1}}{\partial p(y_0 | x_0)}&&\\
+	\cfrac{\partial\B{\Lambda(p, \tau, \lambda, \mu)}}{\partial p(y_0 | x_0)} = \cfrac{\partial H_p(Y|X)}{\partial p(y_0 | x_0)} & +  \cfrac{\partial\B{\sum\limits_{x\in X} \tau_x\Q{\sum\limits_{y\in Y} \B{p(x, y) - \tilde{p}(x)p(y|x)}}}}{\partial p(y_0 | x_0)} &&\\
+	& + \cfrac{\partial\B{\sum\limits_{i=1}^K\lambda_i (E(p, h_i) - E(\tilde{p}, h_i ))}}{\partial p(y_0 | x_0)} + \cfrac{\B{\sum\limits_{x\in X} \mu_x \sum\limits_{y \in Y} p(y|x) -1}}{\partial p(y_0 | x_0)}&&\\
+\end{flalign*}
+\begin{flalign*}
+	& = \cfrac{\partial\B{-\sum\limits_{(x, y) \in X\times Y} p(x)p(y | x)\log(p(y|x))}}{\partial p(y_0 | x_0)} +  \cfrac{\partial\B{\sum\limits_{x\in X} \tau_x\Q{\sum\limits_{y\in Y} \B{p(x)p(y|x) - \tilde{p}(x)p(y|x)}}}}{\partial p(y_0 | x_0)} &&\\
+	&\quad + \cfrac{\partial\B{\sum\limits_{i=1}^K \lambda_i\Q{\sum\limits_{(x, y)\in X\times Y} p(x)p(y|x) h_i(x, y)}}}{\partial p(y_0 | x_0)} + \mu_{x_0}&& \\
 	\\
-	& = \cfrac{\partial\B{-\sum\limits_{(x, y) \in X\times Y} \tilde{p}(x)p(y | x)\log(p(y|x))}}{\partial p(y_0 | x_0)} + \cfrac{\partial\B{\sum\limits_{i=1}^K \lambda_i\Q{\sum\limits_{(x, y)\in X\times Y} \tilde{p}(x) h_i(x, y)\B{p(y|x) - \tilde{p}(y|x)} }}}{\partial p(y_0 | x_0)} + \mu_{x_0}&& \\
-	\\
-	& = -\tilde{p}(x_0) log(p(y_0 | x_0)) - \tilde{p}(x_0) + \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) + \mu_{x_0}
+	& = -p(x_0) log(p(y_0 | x_0)) - p(x_0) + \tau_{x_0}(p(x_0) - \tilde{p}(x_0)) + \sum\limits_{i=1}^K \lambda_i p(x_0) h_i(x_0, y_0) + \mu_{x_0}
 \end{flalign*}
 
 Искаме да я нулираме:
 
 \begin{flalign}
 	\label{appendix:max_ent:00}
-	\nonumber &-\tilde{p}(x_0) log(p(y_0 | x_0)) - \tilde{p}(x_0) + \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) + \mu_{x_0}= 0 \longleftrightarrow &&\\
-	\nonumber &\tilde{p}(x_0) log(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i \tilde{p}(x_0) h_i(x_0, y_0) - \tilde{p}(x_0) + \mu_{x_0}\longleftrightarrow && \\
-	\nonumber & log(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0) - 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)} \longleftrightarrow&&\\
-	& p(y_0 | x_0) = \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}\exp\B{- 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}}
+	\nonumber &-p(x_0) log(p(y_0 | x_0)) - p(x_0) + \tau_{x_0}(p(x_0) - \tilde{p}(x_0)) + \sum\limits_{i=1}^K \lambda_i p(x_0) h_i(x_0, y_0) + \mu_{x_0}= 0 \longleftrightarrow &&\\
+	\nonumber &p(x_0) log(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i p(x_0) h_i(x_0, y_0) - p(x_0) + \tau_{x_0}(p(x_0) - \tilde{p}(x_0)) + \mu_{x_0}\longleftrightarrow && \\
+	\nonumber & log(p(y_0 | x_0)) = \sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0) - 1 + \tau_{x_0}\B{1 - \cfrac{\tilde{p}(x_0)}{p(x_0)}} + \cfrac{\mu_{x_0}}{p(x_0)} \longleftrightarrow&&\\
+	& p(y_0 | x_0) = \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}\exp\B{\tau_{x_0}\B{1 - \cfrac{\tilde{p}(x_0)}{p(x_0)}}- 1 + \cfrac{\mu_{x_0}}{p(x_0)}}
 \end{flalign}
 
 Производната по $\mu_{x_0}$ ни дава:
 \begin{flalign*}
 	&\sum\limits_{y\in Y} p(y | x_0) = 1 \longleftrightarrow && \\
-	& \sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y) - 1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}} = 1 \longleftrightarrow && \\
-	& exp\B{-1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}}\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y)} = 1 &&\\
+	& \sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y) + \tau_{x_0}\B{1 - \cfrac{\tilde{p}(x_0)}{p(x_0)}}- 1 + \cfrac{\mu_{x_0}}{p(x_0)}} = 1 \longleftrightarrow && \\
+	& exp\B{\tau_{x_0}\B{1 - \cfrac{\tilde{p}(x_0)}{p(x_0)}}- 1 + \cfrac{\mu_{x_0}}{p(x_0)}}\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y)} = 1 &&\\
 	& \longleftrightarrow &&\\
-	& exp\B{-1 + \cfrac{\mu_{x_0}}{\tilde{p}(x_0)}} = \cfrac{1}{\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y)}} &&\\
+	& exp\B{\tau_{x_0}\B{1 - \cfrac{\tilde{p}(x_0)}{p(x_0)}}- 1 + \cfrac{\mu_{x_0}}{p(x_0)}} = \cfrac{1}{\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y)}} &&\\
 	& \text{Заместваме в \autoref{appendix:max_ent:00}:} &&\\
 	& p(y_0 | x_0) = \cfrac{\exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y_0)}}{\sum\limits_{y\in Y} \exp\B{\sum\limits_{i=1}^K \lambda_i h_i(x_0, y)}} &&
 \end{flalign*}

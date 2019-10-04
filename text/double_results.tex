@@ -2,7 +2,7 @@
 
 \begin{document}
 
-В предните раздели описахме получаването на класификатори за сигнали от реч и ЕЕГ поотделно. Сега въпросът е дали можем да съчетаем по някакъв начин данните или класификаторите с цел да получим по-добра класификационна точност. Разгледаните подходи са два. Първият е наивен и съчетава самите характеристични вектори, а вторият - вече получените класификатори. 
+В предните раздели описахме получаването на класификатори за сигнали от реч и ЕЕГ поотделно. Сега въпросът е дали можем да съчетаем по някакъв начин данните или класификаторите с цел да получим по-добра класификационна точност. Разгледаните подходи са два. Първият е наивен и съчетава самите характеристични вектори, а вторият - вече получените класификатори.
 
 \section{Съчетаване чрез конкатенация на характеристичните вектори}
 \subsection{Описание}
@@ -11,59 +11,82 @@
 На таблица \autoref{tab:double:results:01} е показана средната класификационна точност за всяка една от емоциите за двата класификатора поотделно и накрая за този, получен при конкатенацията на векторите. Всяка от Гаусовите смески на класификатора на реч има 8 гаусиани, докато този за ЕЕГ и полученият при конкатенация имат по 3 гаусиани. От таблицата се вижда, че този метод не довежда до подобрение. Това вероятно се дължи на малкото количество данни, тъй като векторите, с които работим, са $39 + 76 = 115$ мерни. Това означава, че за да видим повече проявления на характеристиките, ще са нужни много повече данни. Освен набавянето на допълнително данни, може да се намали пространството чрез факторен анализ, за да се подобри обучението на класификатора.
 
 \begin{table}[h]
-    \begin{center}
-    \begin{tabular}{|l|r r r|} 
-        \hline
-        Емоция & Само реч & Само ЕЕГ & Конкатенация \\ 
-        \hline
-        Гняв & 85.00\% & 80.00\% & 85.00\%\\ 
-        Щастие & 75.00\% & 75.00\% & 50.00\%\\ 
-        Неутрално & 7.50\% & 97.50\% & 97.50\%\\ 
-        Тъга & 85.42\% & 87.50\% & 87.50\%\\ 
-        \hline
-        \hline
-        Общо & \textbf{63.23\%} & \textbf{85.00\%} &  \textbf{80.00\%}\\
-        \hline
-    \end{tabular}
-    \caption{Класификационна точност на класификатор за реч, класификатор за ЕЕГ и класификатор, получен при конкатенация на характеристичните вектори}
-    \label{tab:double:results:01}
-    \end{center}
+	\begin{center}
+		\begin{tabular}{|l|r r r|}
+			\hline
+			Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
+			\hline
+			Гняв      & 85.00\%          & 80.00\%          & 85.00\%          \\
+			Щастие    & 75.00\%          & 75.00\%          & 50.00\%          \\
+			Неутрално & 7.50\%           & 97.50\%          & 97.50\%          \\
+			Тъга      & 85.42\%          & 87.50\%          & 87.50\%          \\
+			\hline
+			\hline
+			Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{80.00\%} \\
+			\hline
+		\end{tabular}
+		\caption{Класификационна точност на класификатор за реч, класификатор за ЕЕГ и класификатор, получен при конкатенация на характеристичните вектори}
+		\label{tab:double:results:01}
+	\end{center}
 \end{table}
 
 \section{Съчетаване чрез максимизиране на ентропията}
 \subsection{Описание}
-Другият похват, който е приложен използва модел максимизиращ ентропията. Идеята е да намерим такова разпределение $p$ върху входните дани, което изпълнява дадените ограничения, но в същото време не прави допълнителни предположения. 
-Тоест имайки входни данни от вида $\mathcal{D} = \{(x_1, y_1),\ldots, (x_n, y_n)\}$, където $x_i \in X$ са характеристични вектори с етикети $y_i \in Y$, където $Y = \{1,\ldots K\}$ представя множеството от търсените емоции, искаме да максимизираме ентропията:
+Другият похват, който е приложен, използва модел, максимизиращ ентропията. Идеята е да намерим такова разпределение $p$, което се държи като емпиричното разпределение върху тренировъчните данни, но в същото време не прави допълнителни предположения извън тях.
+Тоест имайки входни данни от вида $\mathcal{D} = (x_1, y_1),\ldots, (x_n, y_n)$, където $x_i \in X = \mathbb{R}^n$ са характеристични вектори с етикети $y_i \in Y$, където $Y = \{1,\ldots, K\}$ представя множеството от търсените емоции, искаме да максимизираме ентропията:
 \[
-H(p) = - \sum\limits_{(x, y) \in \mathcal{D}} p(x, y) \log(p(x, y))    
+	H_p(X, Y) = - \int\limits_{x\in X} \sum\limits_{y \in Y} p(x, y) \log(p(x, y))
 \]
-и да бъде консистентно с ограниченията наложени от двата класификатора. Ако с $h_1$ бележим класификатора на реч, а с $h_2$ този на ЕЕГ, то $h_1, h_2$ играят роля на характеристични функции, тъй като $h_i: X \mapsto \{0, 1\}$.
-В \autoref{appendix:max_ent} е показано, че търсеното разпределение $\hat{p}$, което максимизира ентропията и максимизира (логаритъм) от правдоподобието, има вида $\hat{p}(x, y) = \pi e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}$.
+Нека с $h_1$ бележим класификатора на реч, а с $h_2$ този на ЕЕГ. Тогава $h_1, h_2$ играят роля на характеристични функции, тъй като имат вида $h_i: X \times Y \mapsto [0, 1]$.
 
-$\pi = \sum\limits_{y' \in Y} p(x, y')$. Тоест:
+Очакването на всеки от класификаторите спрямо търсенето разпределение, трябва да съвпада с това на емпиричното. В \autoref{appendix:max_ent} е показано, че търсеното $\hat{p}$ има вида $\hat{p}(x, y) = \pi exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}$,
+където $\pi$ е нормализираща константа и има вида $\pi = \sum\limits_{y' \in Y} exp\B{p(x, y')}$. Тоест:
 
-$\hat{p}(x, y) = \cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }$
+$\hat{p}(y|x) = \cfrac{exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }$
 
-В същото приложение е показано, че е достатъчно да максимизираме логаритъм от правдоподобието, а именно:
+В същото приложение е показано, че е достатъчно да максимизираме логаритъм от условното правдоподобие над $\mathcal{D}$, зададено с:
+\begin{flalign*}
+	& \log\B{\widehat{L}_{\mathcal{D}}(Y|X)} = \sum\limits_{(x, y) \in X\times Y} \#(x, y) p(y|x) &&
+\end{flalign*}
+С $\#(x, y)$ бележим броя на срещанията на $(x, y)$ в корпуса.
+
+Тоест оптимизационната задача е:
 
 \begin{flalign*}
-\Lambda(\lambda_1, \lambda_2) & = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in \mathcal{D}} ln(p(x, y)) && \\
-& = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }} &&
+	\hat{\lambda}_1, \hat{\lambda}_2 & = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in X\times Y} \#(x, y) log(p(y | x)) && \\
+	& = argmax_{\lambda_1, \lambda_2} \sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{\exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} \exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }} &&
 \end{flalign*}
 
 Намираме производните:
 
 \begin{flalign*}
-    \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_1} & = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{e^{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }}}}{\partial \lambda_1}&&\\
-    & = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \lambda_1 h_1(x, y) + \lambda_2 h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} log\B{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y'
-    )} } }}{\partial \lambda_1} &&\\
-    & = \sum\limits_{(x, y) \in \mathcal{D}} h_1(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_1(x, y')}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
+	& = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \log\B{\cfrac{exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }}}}{\partial \lambda_1}&&\\
+	& = \cfrac{\partial\Q{\sum\limits_{(x, y) \in \mathcal{D}} \lambda_1 h_1(x, y) + \lambda_2 h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} log\B{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y'
+					)} } }}{\partial \lambda_1} &&\\
+	& = \sum\limits_{(x, y) \in \mathcal{D}} h_1(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_1(x, y')}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
 \end{flalign*}
-
-Съответно: 
-
+Съответно:
 \begin{flalign*}
-    & \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_2} = \sum\limits_{(x, y) \in \mathcal{D}} h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_2(x, y')}{\sum\limits_{y' \in Y} e^{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
+	& \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_2} = \sum\limits_{(x, y) \in \mathcal{D}} h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_2(x, y')}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
 \end{flalign*}
 
-\end{document} 
+\begin{exampleenv}
+	\begin{enumerate}
+		\item Избираме $\lambda^0_1 = \lambda^0_2 = 0.5$ и пресмятаме $\hat{L}^0_{\mathcal{D}}(Y|X)$
+		\item За всяка стъпка $t$ се прави следното:
+		      \begin{enumerate}
+			      \item Намираме $\hat{\lambda}_1$ и $\hat{\lambda}_2$
+			      \item Вървим по градиента:
+			            \begin{flalign*}
+				            & \lambda^t_1 = \lambda^{t-1}_1 + C \hat{\lambda}_1 &&\\
+				            & \lambda^t_2 = \lambda^{t-1}_2 + C\hat{\lambda}_2 &&
+			            \end{flalign*}
+			      \item Пресмята се $\hat{L}^t_{\mathcal{D}}(Y|X)$. Ако $\hat{L}^t_{\mathcal{D}}(Y|X) \leq \hat{L}^{t-1}_{\mathcal{D}}(Y|X)$ (или $t > 200$), алгоритъмът приключва с отговор $\lambda^{t-1}_1, \lambda^{t-1}_2$
+		      \end{enumerate}
+	\end{enumerate}
+\end{exampleenv}
+При получените по горния начин $\lambda_1$ и $\lambda_2$ и подаден вектор $x\in X$, новополученият класификатор работи по следния наичин:
+\[
+    H(x) = argmax_{y\in Y} \B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}
+\]
+\end{document}
