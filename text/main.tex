@@ -6,7 +6,6 @@
 \usepackage{xltxtra}
 \usepackage{appendix}
 \usepackage{dirtytalk}
-\usepackage{csquotes}
 \usepackage{fontspec}
 \usepackage{polyglossia}
 \usepackage[bottom]{footmisc}
@@ -19,12 +18,13 @@
 \setmainfont{Comfortaa-Regular}
 \newfontfamily\cyrillicfont{Comfortaa-Regular}
 \newfontfamily\cyrillicfonttt{Comfortaa-Regular}
+\newfontfamily\fontcomic[NFSSFamily=roboto]{Roboto}
 % \setmathfont[%
 %   Path = /usr/share/fonts/,
 % ]{asana}
 % \setmathfont[range={\mathcal,\mathbfcal},Path = /usr/share/fonts/,StylisticSet=1]{xits}
 
-\usepackage[a4paper, portrait, margin = 1.5 cm]{geometry}
+\usepackage[a4paper, portrait, margin = 1.4 cm]{geometry}
 \usepackage{url}
 \usepackage{color}
 \usepackage{float}
@@ -45,15 +45,19 @@
 \usepackage{makecell}
 \usepackage{tikz}
 \usepackage{enumitem}
+\usepackage{titling}
+\usepackage{etoolbox}
 \usetikzlibrary{external}
 \tikzset{
     external/system call={%
     xelatex \tikzexternalcheckshellescape
     -halt-on-error -interaction=batchmode -shell-escape
     -jobname "\image" "\texsource"}
-}
-\tikzexternalize
-\usepackage[style=alphabetic]{biblatex}
+    }
+    \tikzexternalize
+    \usepackage[style=english]{csquotes}
+    \usepackage[style=alphabetic]{biblatex}
+    \addbibresource{./references.bib}
 
 \newtheorem{theorem}{Пример}
 \newtheorem*{definition*}{Дефиниция}
@@ -66,6 +70,7 @@
 
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
 
+% \def\@makefnmark{\hbox{\@textsuperscript{\normalfont\@thefnmark}}}
 
 \def\coolleq#1{\stackrel{\mathclap{\normalfont\mbox{\tiny{#1}}}}{=\joinrel=}} 
 \def\coollra#1{\stackrel{\mathclap{\normalfont\mbox{\tiny{#1}}}}{\longleftrightarrow}} 
@@ -128,8 +133,8 @@
   \def\lemmaautorefname{\text{Твърдение}}%
   \def\propertyautorefname{\text{Свойство}}%
   \def\pageautorefname{page}%
-}
-\let\inlineextras@bulgarian\blockextras@bulgarian
+  }
+  \let\inlineextras@bulgarian\blockextras@bulgarian
 \fi
 \makeatother
 
@@ -155,21 +160,59 @@
 \newcommand{\B}[1]{\left(#1\right)}
 \newcommand{\Q}[1]{\left[#1\right]}
 
-\addbibresource{./references.bib}
 
 
 \newlist{alg}{enumerate}{10}
 \setlist[alg]{label*=\arabic*.}
 
 
-\title{Дипломна работа}
-\author{Диана Генева <dageneva@qtrp.org>}
+\title{Разпознаване на емоции в сигнали от реч и ЕЕГ}
+\author{Диана Генева}
+\newcommand{\theemail}{dageneva@qtrp.org}
 \date{2019}
 
 \begin{document}
-\maketitle
+% \patchcmd{compat=1.16}{\@makefnmark}{\normalfont}{\fontfamily{roboto}\selectfont}{}{}
+\begin{center}
+    Софийски университет ``Св. Климент Охридски'' \\
+    Факултет по математика и информатика \\
+    Катедра ``Математическа логика и приложенията ѝ''
+    \vspace{4cm}
+
+    {\LARGE Дипломна работа} \\
+
+    \vspace{1cm}
+
+    {\huge \thetitle} \\
+
+    \vspace{2cm}
+
+    {\LARGE \theauthor} \\
+
+    \vspace{15mm}
+
+    {\large Специалност ``Компютърна лингвистика''} \\
+
+    \vspace{3mm}
+
+    \begin{tabular}{r l}
+        Факултетен номер: & $\mathsf{25742}$ \\
+        Email: & $\mathsf{\theemail}$ \\
+
+    \vspace{1cm} \\
+        \large Научен ръководител: & \large Доц. Стоян Михов \\
+    \end{tabular}
+
+    \vspace{4cm}
+
+    {\large \thedate}
+\end{center}
 \thispagestyle{empty}
+
+\pagebreak
+\hypersetup{linkcolor=black}
 \tableofcontents
 \pagebreak
+
 \input{./structure.tex}
 \end{document}
