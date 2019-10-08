@@ -29,7 +29,6 @@
 \usepackage{color}
 \usepackage{float}
 \usepackage{xcolor}
-\usepackage{graphicx}
 \usepackage{listings}
 \usepackage{subfig}
 \usepackage[export]{adjustbox}
@@ -47,6 +46,7 @@
 \usepackage{enumitem}
 \usepackage{titling}
 \usepackage{etoolbox}
+\usepackage{graphicx}
 \usetikzlibrary{external}
 \tikzset{
     external/system call={%
@@ -84,7 +84,6 @@
 \renewcommand{\baselinestretch}{1.1}
 \setlength{\emergencystretch}{3em}
 
-\usepackage{graphicx}
 \graphicspath{ {./resources/} }
 
 \lstset{
@@ -103,14 +102,16 @@
 \definecolor{Greenish}{HTML}{66772d}
 
 \usepackage{hyperref}
+
 \hypersetup{
     colorlinks=true,
     linktoc=all,
-    citecolor=Bluish,
+    citecolor=Greenish,
     filecolor=black,
-    linkcolor=Greenish,
+    linkcolor=Bluish,
     urlcolor=Greenish
 }
+
 \makeatletter
 \ifdefined\HyLang@bulgarian\else
 \appto\blockextras@bulgarian{%
@@ -213,13 +214,6 @@
 \hypersetup{linkcolor=black}
 \tableofcontents
 \pagebreak
-\hypersetup{
-    colorlinks=true,
-    linktoc=all,
-    citecolor=Greenish,
-    filecolor=black,
-    linkcolor=Bluish,
-    urlcolor=Greenish
-}
+\hypersetup{linkcolor=Bluish}
 \input{./structure.tex}
 \end{document}
