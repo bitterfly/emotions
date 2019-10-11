@@ -233,9 +233,9 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$.
 $Z_L(\mathcal{z})$ се нарича радиационен импеданс (пълно съпротивление), описва загубите, които се получават на изхода, и има вида:
 \begin{align}
     \label{eq:tubes:impedance}
-    Z_L(\mathcal{z}) = \cfrac{i\mathcal{z} L_r R_r}{R_r + i\mathcal{z} L_r},    
+    Z_L(\mathcal{z}) = \cfrac{i\omega L_r R_r}{R_r + i\omega L_r},    
 \end{align}
-Където $\mathcal{z} = e^{i\omega_k}$ означава сигнал с ъглова честота $\omega_k$, а $L_r$ и $R_r$ са константи, определени от размера на отвора на устата. За практически цели се избират:
+Където $\mathcal{z} = e^{i\omega}$ означава сигнал с ъглова честота $\omega$, а $L_r$ и $R_r$ са константи, определени от размера на отвора на устата. За практически цели се избират:
 
 \begin{multicols}{2}
     \begin{equation*}
@@ -248,12 +248,12 @@ $Z_L(\mathcal{z})$ се нарича радиационен импеданс (п
 $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на звука.
 
 При много ниски честоти $Z_L(\mathcal{z}) \approx 0$, което значи, че съпротивлението на устните е почти нулево.
-При средни честоти ($\mathcal{z}L_r \ll R_r$), $Z_L(\mathcal{z}) \approx i\mathcal{z}L_r$, а високи честоти, ($\mathcal{z}L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
-Това значи, че загубите при устните са най-големи при големи честоти, тъй като тогава импедансът е най-голям.
+При средни честоти ($\omega L_r \ll R_r$), $Z_L(\mathcal{z}) \approx i\omega L_r$, а високи честоти, ($\omega L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
+Това значи, че загубите при устните са най-големи при високи честоти, тъй като тогава импедансът е най-голям.
 
 В случая, в който честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$, тоест $Z_L(\mathcal{z}) = Z_L$. 
 
-Тогава, ако $p_N(l_N, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}}  P_N(l_N, \mathcal{z}), u_N(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_N(l_N, \mathcal{z}) \text{ и съответно } Z_L \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_L$, можем да разгледаме уравнението $\eqref{eq:tubes:14}$ във
+Тогава ако $p_N(l_N, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}}  P_N(l_N, \mathcal{z}), u_N(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_N(l_N, \mathcal{z}) \text{ и съответно предположим, че} Z_L \text{ е константа и } Z_L \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_L$, можем да разгледаме уравнението $\eqref{eq:tubes:14}$ във
 времевия домейн:
 \begin{flalign*}
     & p_N(l_N, t) = Z_L u_N(l_N, t), &&
@@ -270,7 +270,7 @@ $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на з
     r_L = \B{\frac{\frac{\rho\mathcal{c}}{Z_L} - A_N}{\frac{\rho\mathcal{c}}{Z_L} + A_N}}
 \end{align*}
 
-В случая, в който $Z_L \approx i\mathcal{z}L_r$ е комплексно, може да се покаже, че уравнение \eqref{eq:tubes:15} остава в сила,
+В случая, в който $Z_L \approx i\omega L_r$ е комплексно, може да се покаже, че уравнение \eqref{eq:tubes:15} остава в сила,
 но в този случай и $r_L$ също ще бъде комплексно.
 
 \subsection{Ограничения при глотиса}
@@ -282,13 +282,13 @@ $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на з
 \label{eq:tubes:16}
     U_1(0, \mathcal{z}) =  U_G(\mathcal{z}) - \frac{P_1(0, \mathcal{z})}{Z_G(\mathcal{z})},
 \end{align}
-където $\mathcal{z} = e^{i\omega_k}$, $Z_G$ описва импеднса на глотиса и $Z_G(\mathcal{z}) = R_G + i \mathcal{z} L_G,$
+където $\mathcal{z} = e^{i\omega }$, $Z_G$ описва импеднса на глотиса и $Z_G(\mathcal{z}) = R_G + i \omega L_G,$
 
 $L_G, R_G$ - константи
 Отново предполагайки, че $Z_G$ е реално, тоест честотата $\omega_k$ е много ниска, можем да разгледаме
 уравнение $\eqref{eq:tubes:16}$ във времевия домейн.
 
-Нека $u_1(0, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, \mathcal{z}), p_1(0, t) = \xleftrightarrow{\mathcal{F}\mathcal{S}} P_q(0, \mathcal{z})$ за фиксиран първи аргумент и съответно $Z_G \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_G$:
+Нека $u_1(0, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, \mathcal{z}), p_1(0, t) = \xleftrightarrow{\mathcal{F}\mathcal{S}} P_q(0, \mathcal{z})$ за фиксиран първи аргумент и съответно $Z_G$ е константа и $Z_G \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_G$:
 
 \begin{flalign*}
     & u_1(0, t) = u_G(t) - \cfrac{p_1(0, t)}{Z_G} &&
