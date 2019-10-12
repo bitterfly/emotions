@@ -239,7 +239,7 @@ $Z_L(\mathcal{z})$ се нарича радиационен импеданс (п
 
 \begin{multicols}{2}
     \begin{equation*}
-      R_r = \cfrac{128}{9\pi^2} > 1
+      R_r = \cfrac{128}{9\pi^2} \approx 1.44
     \end{equation*}\break
     \begin{equation*}
       L_r = \cfrac{8a}{3\pi \mathcal{c}}
@@ -247,7 +247,31 @@ $Z_L(\mathcal{z})$ се нарича радиационен импеданс (п
   \end{multicols}
 $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на звука.
 
-При много ниски честоти $Z_L(\mathcal{z}) \approx 0$, което значи, че съпротивлението на устните е почти нулево.
+
+
+\begin{figure}[H]%
+    \centering
+        \begin{tikzpicture}[baseline]
+            \begin{axis}[
+                xlabel={Честота},
+                ylabel={Стойност на $Z_L$},
+                width=\textwidth,
+                xmin=0, xmax=7,
+                ymin=0, ymax=2,
+                xtick={0, 1, 2, 3, 4, 5, 6, 7},
+                ytick={0, 0.5, 1, 1.5, 2},
+                ymajorgrids=true,
+                xmajorgrids=true,
+                grid style=dashed,]
+                \addplot [domain=0:7, samples=500,]{((x * 2 * pi)^2 * 1.44) / (1.44^2 + (x * 2 * pi)^2)};
+                \addplot [domain=0:7, samples=500, red]{((x * 2 * pi) * 1.44) / (1.44^2 + (x * 2 * pi)^2)};
+                \end{axis}
+        \end{tikzpicture}
+        \caption{Реална(черно) и имагинерна(червено) част на $Z_L$}
+        \label{fig:tubes:z}
+\end{figure}   
+
+От \autoref{fig:tubes:z} се вижда, че при много ниски честоти $Z_L(\mathcal{z}) \approx 0$, което значи, че съпротивлението на устните е почти нулево.
 При средни честоти ($\omega L_r \ll R_r$), $Z_L(\mathcal{z}) \approx i\omega L_r$, а високи честоти, ($\omega L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
 Това значи, че загубите при устните са най-големи при високи честоти, тъй като тогава импедансът е най-голям.
 
