@@ -14,7 +14,7 @@
    viewBox="0 0 189.8828 65.7631"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="glotal_pulse.svg"
    inkscape:export-filename="/home/do/geek/gits/emotions/text/resources/glotal_pulse.png"
    inkscape:export-xdpi="96"
@@ -119,17 +119,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="484.19431"
-     inkscape:cy="35.05482"
+     inkscape:zoom="1.4"
+     inkscape:cx="246.1864"
+     inkscape:cy="83.24148"
      inkscape:document-units="mm"
-     inkscape:current-layer="g840"
+     inkscape:current-layer="g4970"
      showgrid="false"
      inkscape:snap-global="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1024"
+     inkscape:window-height="1032"
      inkscape:window-x="0"
-     inkscape:window-y="30"
+     inkscape:window-y="24"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -143,7 +143,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -232,9 +232,9 @@
            id="text4827"
            y="19.891897"
            x="53.858521"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:6.61458302px;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777778px;line-height:6.61458302px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
            xml:space="preserve"><tspan
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="19.891897"
              x="53.858521"
              id="tspan4825"
@@ -243,21 +243,21 @@
            id="text4831"
            y="17.891897"
            x="89.203865"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:6.61458302px;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777778px;line-height:6.61458302px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
            xml:space="preserve"><tspan
              dy="2"
              id="tspan4833"
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="17.891897"
              x="89.203865"
              sodipodi:role="line">фаза на</tspan><tspan
              id="tspan4846"
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="24.506481"
              x="89.203865"
              sodipodi:role="line">затваряне</tspan><tspan
              id="tspan4848"
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="31.121063"
              x="89.203865"
              sodipodi:role="line" /></text>
@@ -265,19 +265,50 @@
            id="text4839"
            y="17.297619"
            x="112.65608"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:6.61458302px;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777778px;line-height:6.61458302px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
            xml:space="preserve"><tspan
              dy="2"
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="17.297619"
              x="112.65608"
              id="tspan4837"
              sodipodi:role="line">затворена</tspan><tspan
              id="tspan4850"
-             style="stroke-width:0.26458332px"
+             style="stroke-width:0.26458332px;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:3.52777778px;text-anchor:middle;text-align:center;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
              y="23.912203"
              x="112.65608"
              sodipodi:role="line">фаза</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;line-height:1.25;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           x="78.312836"
+           y="70.520935"
+           id="text8389"><tspan
+             sodipodi:role="line"
+             id="tspan8391"
+             x="78.312836"
+             y="70.520935">F₁</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;line-height:1.25;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           x="100.23545"
+           y="70.520935"
+           id="text8395"><tspan
+             sodipodi:role="line"
+             id="tspan8397"
+             x="100.23545"
+             y="70.520935">F₂</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;line-height:1.25;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           x="30.309858"
+           y="70.421028"
+           id="text8401"><tspan
+             sodipodi:role="line"
+             id="tspan8399"
+             x="30.309858"
+             y="70.421028"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05555534px;font-family:Abel;-inkscape-font-specification:'Abel, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332">0</tspan></text>
       </g>
     </g>
   </g>

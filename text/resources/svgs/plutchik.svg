@@ -12,7 +12,7 @@
    version="1.1"
    id="svg5201"
    sodipodi:docname="plutchik.svg"
-   inkscape:version="0.92.4 5da689c313, 2019-01-14">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata5207">
     <rdf:RDF>
@@ -36,14 +36,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1918"
-     inkscape:window-height="1139"
+     inkscape:window-height="1080"
      id="namedview5203"
      showgrid="false"
      inkscape:zoom="1.2957623"
-     inkscape:cx="360.79679"
+     inkscape:cx="213.39321"
      inkscape:cy="362.33496"
      inkscape:window-x="0"
-     inkscape:window-y="30"
+     inkscape:window-y="24"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg5201" />
   <path
@@ -438,7 +438,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5075">
@@ -452,7 +452,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5079">
@@ -466,7 +466,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5083">
@@ -479,7 +479,7 @@
      y="472.98361"
      font-size="14"
      font-weight="400"
-     style="font-weight:400;font-size:14px;font-family:Tahoma;-inkscape-font-specification:Tahoma;text-align:center;text-anchor:middle"
+     style="font-weight:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';text-align:center;text-anchor:middle;font-style:normal;font-stretch:normal;font-variant:normal;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      id="text5087">
     <tspan
        sodipodi:role="line"
@@ -493,7 +493,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5091">
@@ -507,7 +507,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5095">
@@ -521,7 +521,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5099">
@@ -535,7 +535,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5103">
@@ -548,7 +548,7 @@
      y="586.31561"
      font-size="14"
      font-weight="400"
-     style="font-weight:400;font-size:14px;font-family:Tahoma;-inkscape-font-specification:Tahoma;text-align:center;text-anchor:middle"
+     style="font-weight:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';text-align:center;text-anchor:middle;font-style:normal;font-stretch:normal;font-variant:normal;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      id="text5107">
     <tspan
        sodipodi:role="line"
@@ -562,7 +562,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5111">
@@ -576,7 +576,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5115">
@@ -590,7 +590,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;fill:#ffffff;fill-opacity:1;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;fill:#ffffff;fill-opacity:1;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5119">
@@ -604,7 +604,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;fill:#2c2c00;fill-opacity:1;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;fill:#2c2c00;fill-opacity:1;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5123">
@@ -618,7 +618,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5127">
@@ -632,7 +632,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5131">
@@ -646,7 +646,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma;fill:#ffffff;fill-opacity:1;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';fill:#ffffff;fill-opacity:1;font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5135">
@@ -660,7 +660,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5139">
@@ -673,7 +673,7 @@
      y="370.23618"
      font-size="14"
      font-weight="400"
-     style="font-weight:400;font-size:14px;font-family:Tahoma;-inkscape-font-specification:Tahoma;text-align:center;text-anchor:middle"
+     style="font-weight:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';text-align:center;text-anchor:middle;font-style:normal;font-stretch:normal;font-variant:normal;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      id="text5143">
     <tspan
        sodipodi:role="line"
@@ -686,7 +686,7 @@
      y="315.00519"
      font-size="14"
      font-weight="400"
-     style="font-weight:400;font-size:14px;font-family:Tahoma;-inkscape-font-specification:Tahoma;text-align:center;text-anchor:middle;fill:#0c0c0c;fill-opacity:1;"
+     style="font-weight:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';text-align:center;text-anchor:middle;fill:#0c0c0c;fill-opacity:1;font-style:normal;font-stretch:normal;font-variant:normal;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      id="text5147">
     <tspan
        sodipodi:role="line"
@@ -700,7 +700,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5151">
@@ -714,7 +714,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5155">
@@ -727,7 +727,7 @@
      y="315.77695"
      font-size="14"
      font-weight="400"
-     style="font-weight:400;font-size:14px;font-family:Tahoma;-inkscape-font-specification:Tahoma;text-align:center;text-anchor:middle;fill:#0b0b0b;fill-opacity:1;"
+     style="font-weight:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';text-align:center;text-anchor:middle;fill:#0b0b0b;fill-opacity:1;font-style:normal;font-stretch:normal;font-variant:normal;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      id="text5159">
     <tspan
        sodipodi:role="line"
@@ -741,7 +741,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5163">
@@ -755,7 +755,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5167">
@@ -769,7 +769,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5171">
@@ -783,7 +783,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5175">
@@ -796,7 +796,7 @@
      y="416.12421"
      font-size="14"
      font-weight="400"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;font-family:Tahoma;-inkscape-font-specification:'Tahoma, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1;"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14px;font-family:'Roboto Mono';-inkscape-font-specification:'Roboto Mono, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr;text-anchor:middle;stroke:none;stroke-opacity:1;fill:#ffffff;fill-opacity:1;"
      id="text5179">
     <tspan
        sodipodi:role="line"
@@ -807,12 +807,12 @@
        sodipodi:role="line"
        id="tspan5225"
        x="290.18454"
-       y="433.62421"></tspan>
+       y="433.62421" />
     <tspan
        sodipodi:role="line"
        id="tspan5227"
        x="290.18454"
-       y="451.12421"></tspan>
+       y="451.12421" />
   </text>
   <text
      x="439.40332"
@@ -820,7 +820,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma;fill:#ffffff;fill-opacity:1;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';fill:#ffffff;fill-opacity:1;font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5183">
@@ -834,7 +834,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5187">
@@ -848,7 +848,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:'Tahoma, Normal';font-family:Tahoma;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5191">
@@ -862,7 +862,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5195">
@@ -876,7 +876,7 @@
      font-family="Tahoma"
      font-size="14"
      font-weight="400"
-     style="text-align:center;-inkscape-font-specification:Tahoma;fill:#ffffff;fill-opacity:1;"
+     style="text-align:center;-inkscape-font-specification:'Roboto Mono, Normal';fill:#ffffff;fill-opacity:1;font-family:'Roboto Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:14px;text-anchor:middle;writing-mode:lr;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;"
      text-anchor="middle"
      transform="translate(-14.33743497 -163.84609643)"
      id="text5199">

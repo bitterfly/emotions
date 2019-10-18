@@ -39,8 +39,8 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
     \item{$\mathcal{c}$} - скорост на звука в еластична среда
     \item{$\rho$} - плътност на въздуха в тръбите
     \item{$A$} - лицето на напречното сечение в тръба (константа)
-    \item{$u = u(x, t)$} - е в обемната скорост на позиция $x$ в момента $t$
-    \item{$p = p(x, t)$} - е в звуковото налягане
+    \item{$u = u(x, t)$} - е обемната скорост на позиция $x$ в момента $t$
+    \item{$p = p(x, t)$} - е звуковото налягане
 \end{enumerate}
 
 Свойствата на звуковите вълни, преминаващи през течна среда в тръба, могат да се опишат с уравненията на Навие-Стокс:
@@ -64,7 +64,7 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
 \end{subequations}
 
 Уравнение $\eqref{eq:tubes:02:a}$ има следното значение: при преминаване от една тръба в друга, част от вълните ще преминат към следващата тръба, а част от тях ще се отразят наобратно.
-В такъв случай във всеки момент от време $t$ и във всяка точка $x$ на $k$-тата тръба, обемната скорост $u_k$ ще зависи от обемната скорост на вълните, които вървят ,,напред'', и тази на вълните, които вървят ,,назад''.
+В такъв случай във всеки момент от време $t$ и във всяка точка $x$ на $k$-тата тръба, обемната скорост $u$ ще зависи от обемната скорост на вълните, които вървят ,,напред'', и тази на вълните, които вървят ,,назад''.
 
 С помощта на тези две уравнения, ще изразим връзката между две съседни тръби.
 
@@ -113,7 +113,7 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
     & \frac{A_{k+1}}{A_{k}}[u_{k}^{+}(t - \tau_k) + u_{k}^{-}(t + \tau_k)] = u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
 \end{flalign}
 
-Първо, нека да изразим скоростта на вълните, които вървят "напред"
+Първо, нека да изразим обемната скорост на вълните, които вървят "напред"
 в $(k+1)$-та тръба $\B{u_{k+1}^{+}}$, чрез тези, които са преминали от предната тръба $\B{u_k^{+}}$
 и тези, които се отразяват от текущата $\B{u_{k+1}^{-}}$.
 \begin{flalign}
@@ -144,6 +144,9 @@ $\mathcal{Y}(\mathcal{z}) = \mathcal{G}(\mathcal{z}) \mathcal{V}(\mathcal{z}) \m
 \end{equation}
 се нарича \textbf{коефициент на отразяване} за $k$-тия преход. 
 
+Тъй като $A_k, A_{k+1} > 0, |A_{k+1} + A_k| > |A_{k+1} - A_k| \longleftrightarrow \cfrac{|A_{k+1} - A_k|}{|A_{k+1} + A_k|} < 1 \longleftrightarrow -1 < r_k < 1$.
+
+
 Можем да забележим, че в специалния случай, в който напречните сечения на
 две съседни тръби са равни ($A_k = A_{k+1}$), би следвало всички
 вълни да преминават свободно. Наистина, ако заместим в уравнение $\eqref{eq:tubes:10}$,
@@ -169,13 +172,13 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$.
     \\
     \cfrac{r_k}{1 + r_k} & = \cfrac{(A_{k+1} - A_k)}{(A_k + A_{k+1})} \cfrac{(A_k + A_{k+1})}{2A_{k+1}} = \cfrac{A_{k+1} - A_k}{2A_{k+1}}, &&
 \end{flalign*}
-можем да запишем Уравнения $\eqref{eq:tubes:11}$ във вида:
+и $-1 < r_k < 1, r_k \neq -1$ можем да запишем Уравнения $\eqref{eq:tubes:11}$ във вида:
 
 \begin{subequations}
     \label{eq:tubes:12}
     \begin{flalign}
        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
-       & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) + u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
+       & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
     \end{flalign}
 \end{subequations}
 
@@ -184,10 +187,10 @@ $r_k = 0$, a от $\eqref{eq:tubes:09}$ се вижда, че $t_k = 1$.
     \label{eq:tubes:13}
     \begin{flalign}
         & \nonumber \mathcal{z}^{-\tau_k}U_k^{+}(\mathcal{z}) = \cfrac{1}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) && \\
-        & \nonumber \mathcal{z}^{\tau_k} U_k^{-}(\mathcal{z}) = - \cfrac{r_k}{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{1}{1 + r_k} U_{k+1}^{-}(\mathcal{z}) && \\
+        & \nonumber \mathcal{z}^{\tau_k} U_k^{-}(\mathcal{z}) = - \cfrac{r_k}{1+r_k} U_{k+1}^{+}(\mathcal{z}) + \cfrac{1}{1 + r_k} U_{k+1}^{-}(\mathcal{z}) && \\
         & \iff && \\
         & U_k^{+}(\mathcal{z}) = \cfrac{\mathcal{z}^{\tau_k}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k\mathcal{z}^{\tau_k}}{1+r_k} U_{k+1}^{-}(\mathcal{z}) && \\
-        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-\tau_k} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(\mathcal{z}) &&
+        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-\tau_k} }{1+r_k} U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(\mathcal{z}) &&
     \end{flalign}
 \end{subequations}
 
@@ -275,7 +278,7 @@ $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на з
 При средни честоти ($\omega L_r \ll R_r$), $Z_L(\mathcal{z}) \approx i\omega L_r$, а високи честоти, ($\omega L_r \gg R_r$) $Z_L(\mathcal{z}) \approx R_r$. 
 Това значи, че загубите при устните са най-големи при високи честоти, тъй като тогава импедансът е най-голям.
 
-В случая, в който честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$, тоест $Z_L(\mathcal{z}) = Z_L$. 
+Ако предположим, че честотата $\mathcal{z}$ е висока, $Z_L \approx R_r$ е реално число  и не зависи от $\mathcal{z}$, тоест $Z_L(\mathcal{z}) = Z_L$. 
 
 Тогава ако $p_N(l_N, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}}  P_N(l_N, \mathcal{z}), u_N(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_N(l_N, \mathcal{z}) \text{ и съответно предположим, че} Z_L \text{ е константа и } Z_L \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_L$, можем да разгледаме уравнението $\eqref{eq:tubes:14}$ във
 времевия домейн:
@@ -294,25 +297,27 @@ $a$ - радиус на отвора, $\mathcal{c}$ - скоростта на з
     r_L = \B{\frac{\frac{\rho\mathcal{c}}{Z_L} - A_N}{\frac{\rho\mathcal{c}}{Z_L} + A_N}}
 \end{align*}
 
-В случая, в който $Z_L \approx i\omega L_r$ е комплексно, може да се покаже, че уравнение \eqref{eq:tubes:15} остава в сила,
+В случая, в който $Z_L \approx i\omega L_r$ е комплексно, в \cite{rabiner_schafer78} се показва, че уравнение \eqref{eq:tubes:15} остава в сила,
 но в този случай и $r_L$ също ще бъде комплексно.
 
 \subsection{Ограничения при глотиса}
 
 Както при устните, така и при глотиса, трябва да се отчете импедансът. Например когато глотисът е затворен, импедансът е безкраен, а обемната скорост нулева.
 
-Връзката $U_1(0, \mathcal{z}) = U_G(\mathcal{z})$ е твърде наивна и може да се покаже, че по-добро приближение би било:
+Връзката $U_1(0, \mathcal{z}) = U_G(\mathcal{z})$ е твърде наивна и в \cite{rabiner_schafer78} е показано, че по-добро приближение би било:
 \begin{align}
 \label{eq:tubes:16}
     U_1(0, \mathcal{z}) =  U_G(\mathcal{z}) - \frac{P_1(0, \mathcal{z})}{Z_G(\mathcal{z})},
 \end{align}
 където $\mathcal{z} = e^{i\omega }$, $Z_G$ описва импеданса на глотиса и $Z_G(\mathcal{z}) = R_G + i \omega L_G,$
 
-$L_G, R_G$ - константи
-Отново предполагайки, че $Z_G$ е реално, тоест честотата $\omega_k$ е много ниска, можем да разгледаме
+$L_G, R_G$ - константи.
+
+
+Отново предполагайки, че $Z_G$ е реално, тоест $\omega_kL_G << R_G$, можем да разгледаме
 уравнение $\eqref{eq:tubes:16}$ във времевия домейн.
 
-Нека $u_1(0, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, \mathcal{z}), p_1(0, t) = \xleftrightarrow{\mathcal{F}\mathcal{S}} P_q(0, \mathcal{z})$ за фиксиран първи аргумент и съответно $Z_G$ е константа и $Z_G \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_G$:
+Нека $u_1(0, t)  \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, \mathcal{z}), p_1(0, t) = \xleftrightarrow{\mathcal{F}\mathcal{S}} P_q(0, \mathcal{z})$ за фиксиран първи аргумент и съответно $Z_G$ е константа и $Z_G \xleftrightarrow{\mathcal{F}\mathcal{S}} Z_G(\mathcal{z}) = Z_G$:
 
 \begin{flalign*}
     & u_1(0, t) = u_G(t) - \cfrac{p_1(0, t)}{Z_G} &&
@@ -343,7 +348,7 @@ $L_G, R_G$ - константи
 \end{flalign}
 
 
-Отново може да се покаже, че ако $Z_G$ е комплексно, уравнението $\eqref{eq:tubes:17}$ е в сила и
+Отново в \cite{rabiner_schafer78} е показано, че ако $Z_G$ е комплексно, уравнението $\eqref{eq:tubes:17}$ е в сила и
 в този случай $r_G$ също е комплексно.
 За улеснение обикновено $Z_L$ и $Z_G$ се взимат реални. 
 
@@ -356,7 +361,7 @@ $L_G, R_G$ - константи
     \begin{flalign}
         & U_k^{+}(\mathcal{z}) = \cfrac{\mathcal{z}^{1/2}}{1 + r_k} U_{k+1}^{+}(\mathcal{z}) - \cfrac{r_k\mathcal{z}^{1/2}}{1+r_k} U_{k+1}^{-}(\mathcal{z}) &&\\
         & \nonumber \\
-        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-1/2} }{1+r_k} U_{k+1}^{-}(\mathcal{z}) + U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-1/2} }{1 + r_k} U_{k+1}^{-}(\mathcal{z}) &&
+        & U_k^{-}(\mathcal{z}) = - \cfrac{r_k\mathcal{z}^{-1/2} }{1+r_k} U_{k+1}^{+}(\mathcal{z}) + \cfrac{\mathcal{z}^{-1/2} }{1 + r_k} U_{k+1}^{-}(\mathcal{z}) &&
     \end{flalign}
 \end{subequations}
 
@@ -489,7 +494,7 @@ $U_k = Q_k U_{k+1}$ за
 \label{eq:tubes:23}
 & \mathcal{V}(\mathcal{z}) = \frac{0.5 (1+r_G)\prod\limits_{i=1}^{2}(1 + r_i)\mathcal{z}^{-1}}{1 + (r_Gr_1 + r_1r_2)\mathcal{z}^{-1} + (r_Gr_2)\mathcal{z}^{-2}}, &&
 \end{flalign}
-както е показано в $\autoref{appendix:2:02}$
+както е показано в $\autoref{appendix:2:02}$ на \nameref{appendix_speech}.
 
 Може да се покаже, че в общия случай за произволно $N$, \autoref{eq:tubes:22} може да се развие итеративно до:
 
@@ -507,8 +512,10 @@ $U_k = Q_k U_{k+1}$ за
 се приближава достатъчно добре с една нула в единичната окръжност, тоест:
 \begin{flalign}
     \label{eq:tubes:25}
-    & \mathcal{R}(\mathcal{z}) = (1 - \gamma\mathcal{z} ^ {-1}) &&
+    & \mathcal{R}(\mathcal{z}) = (1 - \gamma\mathcal{z} ^ {-1}), \gamma < 1 &&
 \end{flalign}
+
+Обикновено $\gamma \approx 0.95$.
 
 %============================================================================
 \subsection{Общ вид на $\mathcal{G}$}
@@ -537,7 +544,7 @@ $U_k = Q_k U_{k+1}$ за
     & g(t) = 
     \begin{cases}
         \cfrac{1}{2}( 1 - \cos{(\pi n / F1)}), & 0\leq t \leq F_1\\
-        \cos{(\pi(n - N_1)/2N_2)}, & F_1 \leq t \leq F_2\\
+        \cos{(\pi(n - F_1)/2(F_2 - F_1))}, & F_1 \leq t \leq F_2\\
         0, & \text{иначе}   
     \end{cases}   &&     
 \end{flalign*}
@@ -551,7 +558,7 @@ $U_k = Q_k U_{k+1}$ за
 В \cite{quatieri}
 е показано, че по-добро приближение се получава при $\alpha = \beta$ и $\mathcal{G}(\mathcal{z}) = \tilde{\mathcal{G}}(-\mathcal{z})$, тоест
 \begin{flalign*}
-    & \mathcal{G}(\mathcal{z}) = \frac{1}{(1 - \beta\mathcal{z})^2}&&
+    & \mathcal{G}(\mathcal{z}) = \frac{1}{(1 - \beta\mathcal{z})^2}, \beta < 1&&
 \end{flalign*}
 
 Сигналът, показан на \autoref{fig:tubes:2}, е почти идеален. В действителност е почти невъзможно да се поддържа тон, който има еднакви разстояния между
