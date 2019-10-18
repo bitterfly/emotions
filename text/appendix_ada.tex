@@ -119,7 +119,7 @@ AdaBoost алгоритъмът избира последователно фун
 			& \stackrel{\mathclap{\normalfont\mbox{\tiny{\ref{appendix:ada:02}}}}}{=\joinrel=} \cfrac{1}{n} &&\\
 			& \stackrel{\mathclap{\normalfont\mbox{\tiny{ред 1.}}}}{=\joinrel=} \mathcal{D}_1(i) \text{ за всяко i} &&
 		\end{flalign*}
-		\item Нека твърденито е изпълнено за $\mathcal{D}_t(i)$ за всяко $i$
+		\item Нека твърдението е изпълнено за $\mathcal{D}_t(i)$ за всяко $i$
 		\item $\mathcal{D}_t(i) = \cfrac{w_{t, i}}{\sum\limits_{j=1}^n w_{t, j}} \Rightarrow \mathcal{D}_{t+1}(i) = \cfrac{w_{t+1, i}}{\sum\limits_{j=1}^n w_{t+1, j}}$
 		\begin{flalign*}
 			\mathcal{D}_{t+1}(i) & \coolleq{ред 3.5.1.} \cfrac{\mathcal{D}_t(i) e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \mathcal{D}_t(j) e^{-\alpha_t \tilde{h}_t(x_j, y_j)} } \cooleq{ИХ} \cfrac{\cfrac{w_{t, i}}{\sum\limits_{k=1}^n w_{t, k}} e^{-\alpha_t \tilde{h}_t(x_i, y_i)}}{\sum\limits_{j=1}^n \cfrac{w_{t, j}}{\sum\limits_{k=1}^n w_{t, k}} e^{-\alpha_t \tilde{h}_t(x_j, y_j)} } && \\
