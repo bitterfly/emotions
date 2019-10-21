@@ -2,17 +2,24 @@
 \usepackage{fontspec}
 \usepackage[english,bulgarian]{babel}
 \usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{mathtools} 
 
 \defaultfontfeatures{Ligatures=TeX}
 \newfontfamily\cyrillicfont{Comfortaa-Regular}
 \newfontfamily\cyrillicfonttt{Comfortaa-Regular}
 \newfontfamily\fontcomic[NFSSFamily=roboto]{Roboto}
 \setsansfont{Comfortaa-Regular}
+\usefonttheme[onlymath]{serif}
 
 \definecolor{mygreen}{rgb}{0.3333, 0.4196, 0.1843}
 \definecolor{mypink}{rgb}{0.858, 0.188, 0.478}
 
 \graphicspath{ {./resources/} }
+
+\newcommand{\Q}[1]{\left[#1\right]}
+\newcommand{\B}[1]{\left(#1\right)}
+
 
 \usetheme{metropolis}
 \begin{document}
@@ -233,19 +240,19 @@
 
     \section{Сигнал от реч}
 
-    \begin{frame}{Сигнал от реч}
+    \begin{frame}{Сигнал от реч - физическа обосновка}
         \includegraphics[width=0.48\paperwidth]{physics}%
         \hfill
         \includegraphics[width=0.28\paperwidth]{tubes}%
     \end{frame}
 
-    \begin{frame}{Сигнал от реч}
+    \begin{frame}{Сигнал от реч - физическа обосновка}
         \centering{
             \includegraphics[height=\textheight]{glottis}%
         }
     \end{frame}
 
-    \begin{frame}{Сигнал от реч}
+    \begin{frame}{Сигнал от реч - физическа обосновка}
     Видове звуци:
     \vspace{1cm} \leavevmode \newline
     \pause
@@ -264,7 +271,7 @@
     ``Страхът стискаше гърлото, задушаваше гласа.''
     \end{frame}
 
-    \begin{frame}{Сигнал от реч}
+    \begin{frame}{Сигнал от реч - физическа обосновка}
         \begin{itemize}
             \item Спектрални характеристики
             \pause
@@ -278,4 +285,73 @@
         \textbf{За да изследваме подлежащата емоция, трябва да изследваме спектралните свойства на статична конфигурация на вокалния тракт.}
     \end{frame}
 
+    \begin{frame}{Сигнал от реч - модел на тръбите}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \item Ще моделираме системата за производство на реч с модела на тръбите
+            \pause
+            \item Искаме да отделим вокалния тракт от останалите компоненти
+            \pause
+            \item Да разгледаме фонемата ``ъ''
+            \pause
+            \item Глотисът $\textbf{g}$ трепти, вокалният тракт $\textbf{v}$ филтрира сигнала, и вълната евентуално излиза и допълнително се променя от устните $\textbf{r}$ 
+            \pause
+            \item[$\ $] Ако  $g(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{G}(z), v(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{V}(z), r(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{R}(z)$, а новият сигнал е $y$ с $y(t)=g(t)\ast v(t) \ast r(t), y(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} Y(z)$, е изпълнено, че
+            \pause
+            \item $\mathcal{Y}(z) = \mathcal{G}(z) \mathcal{V}(z) \mathcal{R}(z)$
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Сигнал от реч - модел на тръбите}
+    \centering{
+        \includegraphics[width=0.7\textwidth]{vocal_tubes}%
+    }
+    \begin{itemize}
+        \item{$c$} - скорост на звука в еластична среда
+        \item{$\rho$} - плътност на въздуха в тръбите
+        \item{$A$} - лицето на напречното сечение в тръба (константа)
+        \item{$u = u(x, t)$} - е обемната скорост на позиция $x$ в момента $t$
+        \item{$p = p(x, t)$} - е звуковото налягане
+    \end{itemize}
+    \end{frame}
+    
+    \begin{frame}{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                
+                Уравнения на Навие-Стокс:
+                \begin{flalign*}
+                    -\frac{\partial\rho}{\partial x} & = \frac{\rho}{A} \frac{\partial u}{\partial t}\\
+                    -\frac{\partial u}{\partial x} & = \frac{A}{\rho c^2} \frac{\partial \rho}{\partial t} 
+                \end{flalign*}
+            \end{column}%
+            \hfill%
+            \pause
+            \begin{column}{0.48\textwidth}
+                С решения от вида:
+                \begin{flalign*}
+                    u(x, t) & = \Q{u^+\B{t - \frac{x}{c}} - u^-\B{t + \frac{x}{c}}} && \\
+                    p(x, t) & = \cfrac{\rho c}{A}\Q{u^+\B{t - \frac{x}{c}} + u^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+        \end{columns}
+    \end{frame}
+
+    \begin{frame}{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \centering{
+                    \includegraphics[width=0.7\textwidth]{vocal_tubes}%
+                }
+            \end{column}%
+            \hfill%
+            \begin{column}{0.48\textwidth}
+                С решения от вида:
+                \begin{flalign*}
+                    u(x, t) & = \Q{u^+\B{t - \frac{x}{c}} - u^-\B{t + \frac{x}{c}}} && \\
+                    p(x, t) & = \cfrac{\rho c}{A}\Q{u^+\B{t - \frac{x}{c}} + u^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+        \end{columns}
+    \end{frame}
 \end{document}
