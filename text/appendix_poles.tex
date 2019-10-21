@@ -26,12 +26,12 @@ $\lim\limits_{\mathcal{z} \rightarrow \alpha_i} \mathcal{H}(\mathcal{z}) = \inft
 Това представяне е удобно, защото ни позволява да разбием $\mathcal{H}$ на произведение от по-прости предавателни функции:
 
 \begin{flalign*}
-    & \mathcal{H} = 
+    & \mathcal{H}(\mathcal{z}) = 
         \underbrace{G \frac{(\mathcal{z} - \beta_1)}{(\mathcal{z} - \alpha_1)}}_{} 
         \underbrace{\frac{(\mathcal{z} - \beta_2)}{(\mathcal{z} - \alpha_2)}}_{} 
         \dots
         \underbrace{\frac{(\mathcal{z} - \beta_M)}{(\mathcal{z} - \alpha_N)}}_{} &&\\
-    & \mathcal{H} = \mathcal{H}_1(\mathcal{z})\mathcal{H}_2(\mathcal{z})\dots\mathcal{H}_K(\mathcal{z}),&&
+    & \mathcal{H}(\mathcal{z}) = \mathcal{H}_1(\mathcal{z})\mathcal{H}_2(\mathcal{z})\dots\mathcal{H}_K(\mathcal{z}),&&
 \end{flalign*}
 където $\mathcal{H}_i$ е произведение на няколко полюса и нули.
 
@@ -87,9 +87,13 @@ $\lim\limits_{\mathcal{z} \rightarrow \alpha_i} \mathcal{H}(\mathcal{z}) = \inft
 
 Нека имаме следния филтър от първи ред:
 \begin{flalign*}
-    & y[n] = b_0 x[n] + a_1 y[n-1] && \\
-    & \mathcal{H} = G \frac{1}{1 - a_1\mathcal{z}^{-1}}, && \\
-    & G = b_0 &&
+    & y[n] = b_0 x[n] + a_1 y[n-1] \xleftrightarrow{\mathcal{F}\mathcal{S}} && \\
+    \\
+    & Y(\mathcal{z}) = b_0 X(\mathcal{z}) + a_1 \mathcal{z}^{-1} Y(\mathcal{z}) \longleftrightarrow && \\
+    \\
+    & \cfrac{Y(\mathcal{z})}{X(\mathcal{z})} = \cfrac{b_0}{1 - a_0\mathcal{z}^{-1}} \longleftrightarrow && \\
+    \\
+    & \mathcal{H}(\mathcal{z}) = G \frac{1}{1 - a_1\mathcal{z}^{-1}}, G = b_0 &&
 \end{flalign*}
 
 Тъй като имаме само един полюс, то следва, че $a_1$ е реално число, тъй като няма как да е част от
@@ -120,7 +124,7 @@ $b_0$ играе ролята на усилващ коефициент.
         \end{tikzpicture}
         } 
         \hfill
-        \subfloat[Графика на $g(\omega)$ за $a=0.7, a=0.5, a=0.35$]{%
+        \subfloat[Графика на $g(\omega)$. От горе надолу:$a=0.7, a=0.5, a=0.35$]{%
         \begin{tikzpicture}[baseline]
             \begin{axis}[
                 xlabel={Ъглова честота},
@@ -162,7 +166,7 @@ $b_0$ играе ролята на усилващ коефициент.
             \end{axis}
         \end{tikzpicture}
         }
-        \caption{Действие на филтър от първи ред за различни стойности на $a$ и $b$}
+        \caption{Действие на филтър от първи ред за различни стойности на $a$ и $b$\\С черно от ляво надясно:\\a = 0.5, b = 2.8;\\a = 0.7, b = 1;\\a = 0.865, b = 0.2\\Със синьо:\\a = -0.7, b = 1}
         \label{fig:appendix:1:2:2}
 \end{figure}   
 
@@ -371,6 +375,17 @@ $\mathcal{H}(e^{\mathcal{i}\omega}) = \cfrac{b_0}{1 - a_1e^{-\mathcal{i}\omega}}
 
 Използвайки вида на филтрите от първи и втори ред, можем да разложим даден сложен филтър
 $\mathcal{H}$ на произведение от по-прости филтри от първи и втори ред, чиито вид може
-по-лесно да се моделира чрез промяна на коефициентите. След това съчетаването им е просто произведение в честотния домейн, а свойствата на Фурие
+по-лесно да се моделира чрез промяна на коефициентите. 
+
+Тоест, 
+\begin{flalign*}
+    & \mathcal{H}(\mathcal{z}) = \mathcal{H}_1(\mathcal{z})\mathcal{H}_2(\mathcal{z})\dots\mathcal{H}_K(\mathcal{z}) \text{, където} &&\\
+    \\
+    & \mathcal{H}_i(\mathcal{z}) = \cfrac{G}{(1 - \alpha_{i, 1} {z}^{-1})(1 - \alpha_{i, 2} {z}^{-1})}, \alpha_{i, j} \in \mathbb{C} \text{ или } && \\
+    \\
+    & \mathcal{H}_i(\mathcal{z}) = \frac{G}{1 - a_{i, 1}\mathcal{z}^{-1}}, a_{i, 1} \in \mathbb{R} &&
+\end{flalign*}
+
+След това съчетаването им е просто произведение в честотния домейн, а свойствата на Фурие
 преобразуванията ни дават вида и във времевия домейн.
 \end{document}
