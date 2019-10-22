@@ -339,7 +339,7 @@
 
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
         \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.46\textwidth}
                 \begin{flalign*}
                     & u(x, t) = \Q{u^+\B{t - \frac{x}{c}} - u^-\B{t + \frac{x}{c}}} && \\
                     & p(x, t) = \cfrac{\rho c}{A}\Q{u^+\B{t - \frac{x}{c}} + u^-\B{t + \frac{x}{c}}} &&
@@ -381,11 +381,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t)= u_{k+1}(0, t) && \\
                     & p_k(l_k, t)= p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \pause
@@ -405,11 +408,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t)= u_{k+1}(0, t) && \\
                     & p_k(l_k, t)= p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \begin{flalign*}
@@ -427,11 +433,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t) = u_{k+1}(0, t) && \\
                     & p_k(l_k, t) = p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \begin{flalign*}
@@ -450,11 +459,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t) = u_{k+1}(0, t) && \\
                     & p_k(l_k, t) = p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \begin{flalign*}
@@ -465,6 +477,7 @@
         \begin{flalign*}
             & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
         \end{flalign*}
+        \vspace{1.7cm}
     \end{frame}
 
 
@@ -477,11 +490,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t) = u_{k+1}(0, t) && \\
                     & p_k(l_k, t) = p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \begin{flalign*}
@@ -503,11 +519,14 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t) = u_{k+1}(0, t) && \\
                     & p_k(l_k, t) = p_{k+1}(0, t) &&
                 \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
             \end{column}%
         \end{columns}
         \begin{flalign*}
@@ -515,8 +534,20 @@
             & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
         \end{flalign*}
         \begin{flalign*}
-            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
+            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
+            & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
         \end{flalign*}
+        \pause
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                $t_k = \cfrac{2A_{k+1}}{A_k + A_{k+1}}$
+            \end{column}%
+            \hfill%
+            \pause
+            \begin{column}{0.48\textwidth}
+                $r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}$
+            \end{column}%
+        \end{columns}
     \end{frame}
 
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
@@ -528,10 +559,16 @@
                 \end{flalign*}
             \end{column}%
             \hfill%
-            \begin{column}{0.48\textwidth}
+            \begin{column}{0.26\textwidth}
                 \begin{flalign*}
                     & u_k(l_k, t) = u_{k+1}(0, t) && \\
                     & p_k(l_k, t) = p_{k+1}(0, t) &&
+                \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
+                \begin{flalign*}
+                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
                 \end{flalign*}
             \end{column}%
         \end{columns}
@@ -543,5 +580,1259 @@
             & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
             & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
         \end{flalign*}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                $t_k = \cfrac{2A_{k+1}}{A_k + A_{k+1}}$
+            \end{column}%
+            \hfill%
+            \begin{column}{0.48\textwidth}
+                $r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}$
+            \end{column}%
+        \end{columns}
     \end{frame}
+
+        
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \begin{flalign*}
+                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.26\textwidth}
+                \begin{flalign*}
+                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                    & p_k(l_k, t) = p_{k+1}(0, t) &&
+                \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
+                \begin{flalign*}
+                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+                \end{flalign*}
+            \end{column}%
+        \end{columns}
+        \begin{flalign*}
+            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+        \end{flalign*}
+        \begin{flalign*}
+            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
+            & {\color{mypink}u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} &&
+        \end{flalign*}
+    \end{frame}
+            
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \begin{flalign*}
+                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.26\textwidth}
+                \begin{flalign*}
+                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                    & p_k(l_k, t) = p_{k+1}(0, t) &&
+                \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
+                \begin{flalign*}
+                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+                \end{flalign*}
+            \end{column}%
+        \end{columns}
+        \begin{flalign*}
+            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+        \end{flalign*}
+        \begin{flalign*}
+            & {\color{mypink}u_{k+1}^{+}(t) = \boldsymbol{u_{k}^{+}(t - \tau_k)}\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} &&
+        \end{flalign*}
+    \end{frame}
+    
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \begin{flalign*}
+                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.26\textwidth}
+                \begin{flalign*}
+                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                    & p_k(l_k, t) = p_{k+1}(0, t) &&
+                \end{flalign*}
+            \end{column}%
+            \hfill
+            \begin{column}{0.22\textwidth}
+                \begin{flalign*}
+                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+                \end{flalign*}
+            \end{column}%
+        \end{columns}
+        \begin{flalign*}
+            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+        \end{flalign*}
+        \begin{flalign*}
+            & {\color{mypink}u_{k+1}^{+}(t) = \boldsymbol{u_{k}^{+}(t - \tau_k)}\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} && \\
+            & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
+        \end{flalign*}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+    \end{flalign*}
+    \begin{flalign*}
+        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
+        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & {\color{mypink} u_k^+\B{t - \tau_k} - \boldsymbol{u_k^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)} &&\\
+        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+    \end{flalign*}
+    \begin{flalign*}
+        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
+        & {\color{mypink} u_k^{+}(t - \tau_k)} = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & {\color{mypink} u_k^+\B{t - \tau_k} - \boldsymbol{u_k^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)} &&\\
+        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+    \end{flalign*}
+    \begin{flalign*}
+        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
+        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
+        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+    \end{flalign*}
+    \begin{flalign*}
+        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
+        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
+        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
+        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
+    \end{flalign*}
+    \begin{flalign*}
+        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
+        & {\color{mypink} u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}}} &&\\
+        & {\color{mypink} u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
+        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & {\color{mypink}r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
+        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & {\color{mypink}r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
+        & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
+        & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
+    \end{flalign*}
+    \pause
+    Нека $u_k(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_k(z)$.
+    \pause
+        
+    Тогава $u_k(t - \tau_k) \xleftrightarrow{\mathcal{F}\mathcal{S}} z^{-\tau_k}U_k(z)$.
+    \pause
+
+    \begin{flalign*}
+        & U_k^{+}(z) = \cfrac{ z^{\tau_k}}{1 + r_k} U_{k+1}^{+}( z) - \cfrac{r_k z^{\tau_k}}{1+r_k} U_{k+1}^{-}(z) && \\
+        & U_k^{-}(z) = - \cfrac{r_k z^{-\tau_k} }{1+r_k} U_{k+1}^{+}( z) + \cfrac{ z^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(z) &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
+        & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
+    \end{flalign*}
+    Нека $u_k(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_k(z)$.
+        
+    Тогава $u_k(t - \tau_k) \xleftrightarrow{\mathcal{F}\mathcal{S}} z^{-\tau_k}U_k(z)$.
+
+    \begin{flalign*}
+        & U_k^{+}(z) = \cfrac{ z^{\tau_k}}{1 + r_k} U_{k+1}^{+}( z) - \cfrac{r_k z^{\tau_k}}{1+r_k} U_{k+1}^{-}(z) && \\
+        & U_k^{-}(z) = - \cfrac{r_k z^{-\tau_k} }{1+r_k} U_{k+1}^{+}( z) + \cfrac{ z^{-\tau_k} }{1 + r_k} U_{k+1}^{-}(z) \qquad \tau_k = 1/2&&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.26\textwidth}
+            \begin{flalign*}
+                & u_k(l_k, t) = u_{k+1}(0, t) && \\
+                & p_k(l_k, t) = p_{k+1}(0, t) &&
+            \end{flalign*}
+        \end{column}%
+        \hfill
+        \begin{column}{0.22\textwidth}
+            \begin{flalign*}
+                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
+            \end{flalign*}
+        \end{column}%
+    \end{columns}
+    \begin{flalign*}
+        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
+        & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
+    \end{flalign*}
+    Нека $u_k(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_k(z)$.
+        
+    Тогава $u_k(t - \tau_k) \xleftrightarrow{\mathcal{F}\mathcal{S}} z^{-\tau_k}U_k(z)$.
+
+    \begin{flalign*}
+        & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+        & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \pause
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \pause
+        \begin{flalign*}
+            & \mathcal{P}_N(l_N, z) = Z_L(z) \mathcal{U}_N(l_N, z) &&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & \mathcal{P}_N(l_N, z) = Z_L \mathcal{U}_N(l_N, z) &&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & \mathcal{P}_N(l_N, z) = Z_L \mathcal{U}_N(l_N, z) \qquad p(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}}  \mathcal{P}_N(l_N, z), u_N(l_N, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{U}_N(l_N, z)&&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & p_N(l_N, t) = Z_L u_N(l_N, t) &&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & p_N(l_N, t) = Z_L u_N(l_N, t) &&\\
+            &  u_N^{-}(t + \tau_N) \cfrac{(\rho c + A_N Z_L)}{A_N} = u_N^{+}(t - \tau_N) \cfrac{(A_N Z_L - \rho c)}{A_N} &&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & p_N(l_N, t) = Z_L u_N(l_N, t) &&\\
+            &  u_N^{-}(t + \tau_N) \cfrac{(\rho c + A_N Z_L)}{A_N} = u_N^{+}(t - \tau_N) \cfrac{(A_N Z_L - \rho c)}{A_N} \qquad r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N}&&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+        \begin{flalign*}
+            & p_N(l_N, t) = Z_L u_N(l_N, t) &&\\
+            &  u_N^{-}(t + \tau_N) = -r_L u_N^{+}(t - \tau_N) \qquad r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N}&&
+        \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.24\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при устните}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_a}%
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            \includegraphics[width=0.55\textwidth]{lips_b}%
+        \end{column}
+    \end{columns}
+    \begin{flalign*}
+        & p_N(l_N, t) = Z_L u_N(l_N, t) &&\\
+        &  u_N^{-}(t + \tau_N) = -r_L u_N^{+}(t - \tau_N) \qquad r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N}&&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \pause
+    \centering{Огрнаничения при глотиса}
+    \pause
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G(z)} &&\\
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} &&\\
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&&
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&&
+    \end{flalign*}}
+\end{frame}
+
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & {\color{mypink} u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}}} && \\
+                & {\color{mypink} p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&& \\
+        & u_1^{+}(t) = u_G(t)\Q{\frac{A_1 Z_G}{A_1 Z_G + \rho  c}} + u_1^{-}(t)\Q{\frac{A_1 Z_G - \rho  c}{A_1 Z_G + \rho  c}} &&
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&& \\
+        & u_1^{+}(t) = u_G(t)\Q{\frac{A_1 Z_G}{A_1 Z_G + \rho  c}} + u_1^{-}(t)\Q{\frac{A_1 Z_G - \rho  c}{A_1 Z_G + \rho  c}} \qquad r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}}&&
+    \end{flalign*}}
+\end{frame}
+
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&& \\
+        & u_1^{+}(t) = u_G(t) \Q{\frac{1 + r_G}{2}} + r_G u_1^{-}(t) \qquad r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}}&&
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&& \\
+        & u_1^{+}(t) = u_G(t) \Q{\frac{1 + r_G}{2}} + r_G u_1^{-}(t) \qquad r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}}&&\\
+        & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \centering{Огрнаничения при глотиса}
+    {\small \begin{flalign*}
+        & U_1(0, z) =  U_G(z) - \frac{P_1(0, z)}{Z_G} && \\
+        & u_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_1(0, z), u_G(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} U_G(z), p_1(0, t) \xleftrightarrow{\mathcal{F}\mathcal{S}} P_1(0, z) &&\\
+        & u_1(0, t) = u_G(t) - \frac{p_1(0, t)}{Z_G}&& \\
+        & u_1^{+}(t) = u_G(t) \Q{\frac{1 + r_G}{2}} + r_G u_1^{-}(t) \qquad r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}}&&\\
+        & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+    \end{flalign*}}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
+                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&\\
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \pause
+    \centering{Общ вид}
+    \pause
+    \begin{flalign*}
+            & U_{N+1}^{+} (z) = U_L(z) &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \centering{Общ вид}
+    \begin{flalign*}
+        & U_{N+1}^{+} (z) = U_L(z) &&\\
+        & U_{N+1}^{-}(z) = 0 &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \centering{Общ вид}
+    \begin{flalign*}
+        & U_{N+1}^{+} (z) = U_L(z) &&\\
+        & U_{N+1}^{-}(z) = 0 && \\
+        & r_N = r_L &&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \centering{Общ вид}
+    \begin{flalign*}
+        & U_{N+1}^{+} (z) = U_L(z) &&\\
+        & U_{N+1}^{-}(z) = 0 && \\
+        & r_N = r_L \rightarrow A_{N+1} = \cfrac{\rho c}{Z_L}&&
+    \end{flalign*}
+\end{frame}
+
+\begin{frame}[t]{Сигнал от реч - модел на тръбите}
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            {\tiny \begin{flalign*}
+                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.14\textwidth}
+            {\tiny \begin{flalign*}
+                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+            \end{flalign*}}
+        \end{column}%
+        \hfill%
+        \begin{column}{0.34\textwidth}
+            {\tiny \begin{flalign*}
+                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+            \end{flalign*}}
+        \end{column}%
+    \end{columns}
+    \centering{Общ вид}
+    \begin{flalign*}
+        & U_{N+1}^{+} (z) = U_L(z) &&\\
+        & U_{N+1}^{-}(z) = 0 && \\
+        & r_N = r_L \rightarrow A_{N+1} = \cfrac{\rho c}{Z_L}&&
+    \end{flalign*}
+    $U_k = Q_k U_{k+1}$ за
+    \begin{columns}[T]
+        \begin{column}{0.48\textwidth}
+            $U_k = 
+            \begin{bmatrix}
+                U_k^{+}(z) \\
+                U_k^{-}(z) \\
+            \end{bmatrix}$
+        \end{column}
+        \hfill
+        \begin{column}{0.48\textwidth}
+            $Q_k = 
+            \begin{bmatrix}
+                \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
+                & \\
+                \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
+            \end{bmatrix}$
+        \end{column}
+    \end{columns}   
+\end{frame}
+
+
 \end{document}
