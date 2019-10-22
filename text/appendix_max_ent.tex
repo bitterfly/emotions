@@ -5,7 +5,7 @@
 
 Нека имаме входни данни $\mathcal{D} = (x_1, y_1),\ldots, (x_n, y_n)$, където $x_i \in X$, а $y_i \in Y$, $X$ и $Y$ - изброими.
 
-Търсим това разпределение $p$, което приближава разпределението, генерирало данните в $\mathcal{D}$, и което се държи равномерно иначе.
+Търсим това разпределение $p$, което приближава разпределението, генерирало данните в $\mathcal{D}$, и не прави допълнителни предположения извън $\mathcal{D}$.
 
 Тоест търсеното разпределение $p$, трябва да изпълнява:
 \begin{flalign*}
@@ -78,13 +78,13 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 За да решим тази оптимизационна задача, ще ползваме множители на Лагранж. Тъй като имаме $K$ ограничения за всяка от характеристичните функции и трябва да отчетем, че търсим разпределение с определени свойства, задачата ще има вида:
 \begin{flalign*}
 	\Lambda(p, \tau, \lambda, \mu) = H_p(X, Y) &+ \sum\limits_{x\in Proj_1(\mathcal{D})} \tau_x\B{E(p, h_x) - E(\tilde{p}, h_x)} &&\\
-	& + \sum\limits_{i=1}^{K} \lambda_i (E(p, h_i) - E(\tilde{p}, h_i )) +  \mu \sum\limits_{(x, y) \in X\times Y} p(x, y) -1 &&
+	& + \sum\limits_{i=1}^{K} \lambda_i (E(p, h_i) - E(\tilde{p}, h_i )) +  \mu \Q{\sum\limits_{(x, y) \in X\times Y} p(x, y) -1} &&
 \end{flalign*}
 
 Нека фиксираме едно $x_0 \in X, y_0 \in Y$.
 \begin{flalign*}
 	\cfrac{\partial\B{\Lambda(p, \tau, \lambda, \mu)}}{\partial p(x_0, y_0)} = \cfrac{\partial H_p(X, Y)}{\partial p(x_0, y_0)} & +  \cfrac{\partial\B{\sum\limits_{x\in Proj_1(\mathcal{D})} \tau_x \B{E(p, h_x) - E(\tilde{p}, h_x)}}}{\partial p(x_0, y_0)} &&\\
-	& + \cfrac{\partial\B{\sum\limits_{i=1}^K\lambda_i (E(p, h_i) - E(\tilde{p}, h_i ))}}{\partial p(x_0, y_0)} + \cfrac{\partial\B{\mu \sum\limits_{(x, y) \in X \times Y} p(x, y) -1}}{\partial p(x_0, y_0)}&&\\
+	& + \cfrac{\partial\B{\sum\limits_{i=1}^K\lambda_i (E(p, h_i) - E(\tilde{p}, h_i ))}}{\partial p(x_0, y_0)} + \cfrac{\partial\B{\mu \Q{\sum\limits_{(x, y) \in X \times Y} p(x, y) -1}}}{\partial p(x_0, y_0)}&&\\
 \end{flalign*}
 \begin{flalign*}
 	& = \cfrac{\partial\B{-\sum\limits_{(x, y) \in X\times Y} p(x, y)\log(p(x, y))}}{\partial p(x_0, y_0)} +  \cfrac{\partial\B{\sum\limits_{x\in Proj_1(\mathcal{D})} \tau_x\Q{\sum\limits_{(x', y)\in X\times Y} p(x', y)h_x(x', y) }}}{\partial p(x_0, y_0)} &&\\
@@ -127,32 +127,32 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 \end{flalign*}
 тъй като за $i=K+1,\ldots,K', h_i(x, y)$ не зависят от избора на $y$.
 
-Следователно вида на търсеното $\hat{p}$ е $\hat{p}(x, y) = \pi\prod\limits_{i=1}^{K'} e^{\lambda_i h_i(x, y)}$, като $\pi$ е нормализиращата константа. Ще покажем че $\hat{p}$, което минимизира ентропията, също минимизира и условното правдоподобие.
+Следователно вида на търсеното $\hat{p}$ е $\hat{p}(x, y) = \pi\prod\limits_{i=1}^{K'} e^{\lambda_i h_i(x, y)}$, като $\pi$ е нормализиращата константа. Ще покажем че $\hat{p}$, което максимизира ентропията, също максимизира и условното правдоподобие.
 
 Нека с $Q$ означим всички разпределения с желания вид. Имаме, че $Q = \{p \ | \  p(x, y) = \pi\prod\limits_{i = 1}^{K'} e^{\lambda_i h_i(x, y)}\}$. За да намерим оптималното разпределение, ще ни е нужно да дефинираме разстояние между разпределения - ``Разстояние'' на Кулбек-Лайблър:
 \begin{flalign*}
 	D(p, q) = \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}
 \end{flalign*}
 
-``Разстоянието'' на Кулбек-Лайблър всъщност не е разстояние в математическия смисъл (в смисъла на метрика), тъй като не е симетрична функция, но често се използва за разстояние между разпределения, тъй като има този интуитивен смисъл. Затова ще продължим да го наричаме разстояние, пропускайки кавичките.
+``Разстоянието'' на Кулбек-Лайблър всъщност не е разстояние в математическия смисъл (в смисъла на метрика), тъй като не е симетрична функция, но често се използва за сравнение на разпределения, тъй като има този интуитивен смисъл. Затова ще продължим да го наричаме разстояние, пропускайки кавичките.
 
 С това сме готови да покажем следните твърдения:
 
 \begin{lemma}
 	\label{appendix:max_ent:01}
-	За всеки две разпределения $p$ и $q$, $D(p, q) \geq 0$, като $D(p, q) = 0 \iff p = q$
+	За всеки две разпределения $p$ и $q$ върху $X\times Y$, $D(p, q) \geq 0$, като $D(p, q) = 0 \iff p = q$
 
 	\begin{proof}
 		Тъй като $p$ е разпределение и е изпълнено, че $\sum\limits_{(x, y) \in X\times Y} p(x, y) = 1$, можем да приложим неравенството на Йенсен:
 		\begin{flalign*}
 			& \sum\limits_{i = 1}^{\infty} p(x_i, y_i) f(z_i) \leq f\B{\sum\limits_{i = 1}^{\infty} p(x_i, y_i) z_i}, \forall i: z_i \in \mathbb{R}, &&
 		\end{flalign*}
-		където $f$ е вдлъбната. Ако за $f$ е изпълнено, че $f'' < 0$, то равенство се достига, когато $z_i$ е константа.
+		където $f$ е вдлъбната. Ако за $f$ е изпълнено, че $f'' < 0$, то равенство се достига, когато $\forall i, j: z_i = z_j$.
 
 		\begin{flalign*}
 			-D(p, q) & = -\sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}&&\\
 			& = \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{q(x, y)}{p(x, y)}}&&\\
-			& \leq \log\B{\sum\limits_{(x, y) \in X\times Y} \cancel{p(x, y)}\cfrac{q(x, y)}{\cancel{p(x, y)}} }&&\\
+			& \coolleq{Йенсен} \log\B{\sum\limits_{(x, y) \in X\times Y} \cancel{p(x, y)}\cfrac{q(x, y)}{\cancel{p(x, y)}} }&&\\
 			& = \log\B{\sum\limits_{(x, y) \in X\times Y} q(x, y)} = 0 &&\\
 			& \longleftrightarrow D(p, q) \geq 0
 		\end{flalign*}
@@ -184,7 +184,9 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 			& = \log(\pi)\sum\limits_{(x, y) \in X\times Y} p_1(x, y) + \sum\limits_{(x, y) \in X\times Y} \sum\limits_{i = 1}^{K'} p_1(x, y) \lambda_i h_i(x, y) &&\\
 			& = \log(\pi). 1 + \sum\limits_{(x, y) \in X\times Y} \sum\limits_{i = 1}^{K'} p_1(x, y) \lambda_i h_i(x, y) &&\\
 			& = \log(\pi). 1 +  \sum\limits_{i = 1}^{K'} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_1(x, y)  h_i(x, y) &&\\
+			& = \log(\pi). 1 +  \sum\limits_{i = 1}^{K'} \lambda_i E(p_1, h_i) &&\\
 			&\text{Тъй като } p_2 \in P \text{ и } E(p_1, h) = E(\tilde{p}, h_i) = E(p_2, h_i) \forall i = 1,\ldots, K': &&\\
+			& = \log(\pi). 1 +  \sum\limits_{i = 1}^{K'} \lambda_i E(p_2, h_i) &&\\
 			& = \log(\pi). 1 +  \sum\limits_{i = 1}^{K'} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_2(x, y)  h_i(x, y) &&\\
 			& \text{Използваме и че } \sum\limits_{(x, y) \in X\times Y} p_2(x, y) = 1 &&\\
 			& = \log(\pi)\sum\limits_{(x, y) \in X\times Y} p_2(x, y) +  \sum\limits_{i = 1}^{K'} \lambda_i \sum\limits_{(x, y) \in X\times Y} p_2(x, y)  h_i(x, y) &&\\
@@ -217,11 +219,11 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 
 \begin{lemma}
 	\label{appendix:max_ent:04}
-	Ако $r \in P\cap Q$, то $r$ е единствено и $r = \hat{p}$
+	Ако $r \in P\cap Q$, то $r$ е единствено и $r = argmax_{p \in P} H_p(X, Y) $
 
 	\begin{proof}
 
-		Нека $r \in P\cap Q$. Условието $r = \hat{p}$ значи, че $r = argmax_{p \in P} H_p(X, Y)$, тоест ще покажем, че за всяко $p \in P: H_r(X, Y) \geq H_p(X, Y)$.
+		Нека $r \in P\cap Q$. Ще покажем, че за всяко $p \in P: H_r(X, Y) \geq H_p(X, Y)$.
 
 		Нека $u \in Q$, такова че $u(x, y) \neq 0, \forall (x, y) \in X\times Y$. Всъщност всяко разпределение $q$ от $Q$ е такова, защото $\sum\limits_{(x, y) \in X\times Y}e^{\bullet} > 0$, а $\pi \neq 0$, защото $\pi$ е константа и ако $\pi = 0$, тогава $\sum\limits_{(x, y) \in X\times Y} q(x, y) = 0$ и не изпълнява условието за разпределение. 
 
@@ -256,7 +258,7 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 
 \begin{lemma}
 	\label{appendix:max_ent:05}
-	Ако $r \in P\cap Q$, то $r$ е единствено и $r = argmax_{q \in Q} L(q)$
+	Ако $r \in P\cap Q$, то $r = argmax_{q \in Q} L(q)$
 
 	\begin{proof}
 		Искаме да покажем, че за всяко $q \in Q: L(r) \geq L(q)$.
@@ -271,14 +273,10 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 			& -\cancel{H_{\tilde{p}}(X, Y)} - L(q) \geq -\cancel{H_{\tilde{p}}(X, Y)} - L(r) && \\
 			& \longleftrightarrow L(r) \geq L(q)
 		\end{flalign*}
-
-		Сега нека $r' = argmax_{q \in Q} L(q)$, тоест $L(r) = L(r') \Longrightarrow D(\tilde{p}, r) = D(\tilde{p}, r')$.
-
-		Но по \autoref{appendix:max_ent:03}, $D(\tilde{p}, r') = D(\tilde{p}, r) + D(r, r') \Longrightarrow D(r, r') = 0 \coollra{\autoref{appendix:max_ent:01}} r' = r$, следователно $r$ е единствено.
 	\end{proof}
 \end{lemma}
 
-Сега, нека дефинираме условно правдоподобие на разпределение $p$ при дадено множество $\mathcal{D}$ като:
+Дефиницията на условно правдоподобие на разпределение $p$ при дадено множество $\mathcal{D}$ е следната:
 \begin{flalign*}
 	& \widehat{L}_{\mathcal{D}}(Y|X) = \prod\limits_{(x, y) \in X\times Y} p(y|x)^{\#(x, y)} &&
 \end{flalign*}

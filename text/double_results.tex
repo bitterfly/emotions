@@ -90,7 +90,7 @@ $\hat{p}(y|x) = \cfrac{exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\li
 	& \cfrac{\partial \Lambda(\lambda_1, \lambda_2)}{\partial \lambda_2} = \sum\limits_{(x, y) \in \mathcal{D}} h_2(x, y) - \sum\limits_{(x, y) \in \mathcal{D}} \cfrac{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} h_2(x, y')}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')}}&&
 \end{flalign*}
 
-В имплементацията $\lambda_1$ и $\lambda_2$  се получават итеративно чрез спускане по градиента с  константна скорост на учене $C$.
+В имплементацията $\lambda_1$ и $\lambda_2$  се получават итеративно чрез спускане по градиента с  константна скорост на учене $C$ (в имплементацията на дипломната работа $C=1\times10^{-4}$).
 \begin{exampleenv}
 	\begin{enumerate}
 		\item Избираме $\lambda^0_1 = \lambda^0_2 = 0.5$ и пресмятаме $\hat{L}^0_{\mathcal{D}}(Y|X)$
