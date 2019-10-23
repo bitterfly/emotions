@@ -5,6 +5,8 @@
 \usepackage{amsmath}
 \usepackage{mathtools} 
 \usepackage{nccmath}
+\usepackage{caption}
+\usepackage{subfig}
 
 \defaultfontfeatures{Ligatures=TeX}
 \newfontfamily\cyrillicfont{Comfortaa-Regular}
@@ -360,15 +362,27 @@
         \begin{columns}[T]
             \begin{column}{0.48\textwidth}
                 \begin{flalign*}
+                    & u(x, t) = \Q{u^+\B{t - \frac{x}{c}} - u^-\B{t + \frac{x}{c}}} && \\
+                    & p(x, t) = \cfrac{\rho c}{A}\Q{u^+\B{t - \frac{x}{c}} + u^-\B{t + \frac{x}{c}}} &&
+                \end{flalign*}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.48\textwidth}
+            \end{column}%
+        \end{columns}
+    \end{frame}
+
+
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                \begin{flalign*}
                     & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
                     & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
                 \end{flalign*}
             \end{column}%
             \hfill%
             \begin{column}{0.48\textwidth}
-                \centering{
-                    \includegraphics[width=0.7\textwidth]{vocal_tubes}%
-                }
             \end{column}%
         \end{columns}
     \end{frame}
@@ -448,65 +462,6 @@
             & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
         \end{flalign*}
     \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-        \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
-                \begin{flalign*}
-                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-                \end{flalign*}
-            \end{column}%
-            \hfill%
-            \begin{column}{0.26\textwidth}
-                \begin{flalign*}
-                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                    & p_k(l_k, t) = p_{k+1}(0, t) &&
-                \end{flalign*}
-            \end{column}%
-            \hfill
-            \begin{column}{0.22\textwidth}
-            \end{column}%
-        \end{columns}
-        \begin{flalign*}
-            & {\color{mypink}u_k^+\B{t - \tau_k} - \boldsymbol{u_k^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)} &&\\
-            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
-        \end{flalign*}
-        \pause
-        \begin{flalign*}
-            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
-        \end{flalign*}
-        \vspace{1.7cm}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-        \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
-                \begin{flalign*}
-                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-                \end{flalign*}
-            \end{column}%
-            \hfill%
-            \begin{column}{0.26\textwidth}
-                \begin{flalign*}
-                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                    & p_k(l_k, t) = p_{k+1}(0, t) &&
-                \end{flalign*}
-            \end{column}%
-            \hfill
-            \begin{column}{0.22\textwidth}
-            \end{column}%
-        \end{columns}
-        \begin{flalign*}
-            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-            & {\color{mypink}\cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + \boldsymbol{u_{k}^{-}\B{t + \tau_k}}} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-        \end{flalign*}
-        \begin{flalign*}
-            & {\color{mypink} \boldsymbol{u_k^{-}\B{t + \tau_k}}} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&
-        \end{flalign*}
-        и изразяваме $u_{k+1}^{+}$
-    \end{frame}
     
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
         \begin{columns}[T]
@@ -532,7 +487,6 @@
             & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
         \end{flalign*}
         \begin{flalign*}
-            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
             & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
         \end{flalign*}
         \pause
@@ -575,7 +529,6 @@
             & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
         \end{flalign*}
         \begin{flalign*}
-            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
             & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
         \end{flalign*}
         \begin{columns}[T]
@@ -588,101 +541,7 @@
             \end{column}%
         \end{columns}
     \end{frame}
-      
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-        \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
-                \begin{flalign*}
-                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-                \end{flalign*}
-            \end{column}%
-            \hfill%
-            \begin{column}{0.26\textwidth}
-                \begin{flalign*}
-                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                    & p_k(l_k, t) = p_{k+1}(0, t) &&
-                \end{flalign*}
-            \end{column}%
-            \hfill
-            \begin{column}{0.22\textwidth}
-                \begin{flalign*}
-                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-                \end{flalign*}
-            \end{column}%
-        \end{columns}
-        \begin{flalign*}
-            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-        \end{flalign*}
-        \begin{flalign*}
-            & u_k^{-}\B{t + \tau_k} = u_k^+\B{t - \tau_k} - u_{k+1}^{+}(t) + u_{k+1}^{-}(t) &&\\
-            & {\color{mypink}u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} &&
-        \end{flalign*}
-    \end{frame}
-            
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-        \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
-                \begin{flalign*}
-                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-                \end{flalign*}
-            \end{column}%
-            \hfill%
-            \begin{column}{0.26\textwidth}
-                \begin{flalign*}
-                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                    & p_k(l_k, t) = p_{k+1}(0, t) &&
-                \end{flalign*}
-            \end{column}%
-            \hfill
-            \begin{column}{0.22\textwidth}
-                \begin{flalign*}
-                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-                \end{flalign*}
-            \end{column}%
-        \end{columns}
-        \begin{flalign*}
-            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-        \end{flalign*}
-        \begin{flalign*}
-            & {\color{mypink}u_{k+1}^{+}(t) = \boldsymbol{u_{k}^{+}(t - \tau_k)}\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} &&
-        \end{flalign*}
-    \end{frame}
-    
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-        \begin{columns}[T]
-            \begin{column}{0.48\textwidth}
-                \begin{flalign*}
-                    & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                    & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-                \end{flalign*}
-            \end{column}%
-            \hfill%
-            \begin{column}{0.26\textwidth}
-                \begin{flalign*}
-                    & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                    & p_k(l_k, t) = p_{k+1}(0, t) &&
-                \end{flalign*}
-            \end{column}%
-            \hfill
-            \begin{column}{0.22\textwidth}
-                \begin{flalign*}
-                    & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-                \end{flalign*}
-            \end{column}%
-        \end{columns}
-        \begin{flalign*}
-            & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-            & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-        \end{flalign*}
-        \begin{flalign*}
-            & {\color{mypink}u_{k+1}^{+}(t) = \boldsymbol{u_{k}^{+}(t - \tau_k)}\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}}} && \\
-            & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
-        \end{flalign*}
-    \end{frame}
+
 
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
     \begin{columns}[T]
@@ -710,224 +569,10 @@
         & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
         & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
     \end{flalign*}
-    \begin{flalign*}
-        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
-        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & {\color{mypink} u_k^+\B{t - \tau_k} - \boldsymbol{u_k^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)} &&\\
-        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-    \end{flalign*}
-    \begin{flalign*}
-        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
-        & {\color{mypink} u_k^{+}(t - \tau_k)} = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & {\color{mypink} u_k^+\B{t - \tau_k} - \boldsymbol{u_k^{-}\B{t + \tau_k}} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t)} &&\\
-        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-    \end{flalign*}
-    \begin{flalign*}
-        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
-        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
-        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-    \end{flalign*}
-    \begin{flalign*}
-        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
-        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
-        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & u_k^+\B{t - \tau_k} - u_k^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) - u_{k+1}^{-}(t) &&\\
-        & \cfrac{A_{k+1}}{A_{k}}\Q{u_{k}^{+}\B{t - \tau_k} + u_{k}^{-}\B{t + \tau_k} = u_{k+1}^{+}(t) + u_{k+1}^{-}(t)} &&
-    \end{flalign*}
-    \begin{flalign*}
-        & u_{k+1}^{+}(t) = u_{k}^{+}(t - \tau_k)\Q{\frac{2A_{k+1}}{A_k + A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_{k+1} - A_k}{A_k + A_{k+1}}} && \\
-        & {\color{mypink} u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}}} &&\\
-        & {\color{mypink} u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
+    \pause
     \begin{flalign*}
         & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
         & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & {\color{mypink}r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & u_k^{+}(t - \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} &&\\
-        & u_k^{-}(t + \tau_k) = u_{k+1}^{+}(t)\Q{\frac{A_k - A_{k+1}}{2A_{k+1}}} + u_{k+1}^{-}(t)\Q{\frac{A_k + A_{k+1}}{2A_{k+1}}} &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            \begin{flalign*}
-                & u_k(x, t) = \Q{u_k^+\B{t - \frac{x}{c}} - u_k^-\B{t + \frac{x}{c}}} && \\
-                & p_k(x, t) = \cfrac{\rho c}{A_k}\Q{u_k^+\B{t - \frac{x}{c}} + u_k^-\B{t + \frac{x}{c}}} &&
-            \end{flalign*}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.26\textwidth}
-            \begin{flalign*}
-                & u_k(l_k, t) = u_{k+1}(0, t) && \\
-                & p_k(l_k, t) = p_{k+1}(0, t) &&
-            \end{flalign*}
-        \end{column}%
-        \hfill
-        \begin{column}{0.22\textwidth}
-            \begin{flalign*}
-                & {\color{mypink}r_k = \cfrac{A_{k+1} - A_k}{A_k + A_{k+1}}} &&
-            \end{flalign*}
-        \end{column}%
-    \end{columns}
-    \begin{flalign*}
-        & u_k^{+}(t - \tau_k) = \cfrac{1}{1 + r_k} u_{k+1}^{+}(t) - \cfrac{r_k}{1+r_k} u_{k+1}^{-}(t) && \\
-        & u_k^{-}(t + \tau_k) = - \cfrac{r_k}{1+r_k} u_{k+1}^{+}(t) + \cfrac{1}{1 + r_k} u_{k+1}^{-}(t) &&
     \end{flalign*}
     \end{frame}
 
@@ -2320,6 +1965,93 @@
     \end{frame}
 
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                {\tiny \begin{flalign*}
+                    & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                    & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+                \end{flalign*}}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.14\textwidth}
+                {\tiny \begin{flalign*}
+                    & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+                \end{flalign*}}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.34\textwidth}
+                {\tiny \begin{flalign*}
+                    & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                    & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+                \end{flalign*}}
+            \end{column}%
+        \end{columns}
+        \centering{Общ вид на $\mathcal{V}$}
+        \begin{columns}[c, onlytextwidth]
+            \begin{column}{0.30\textwidth}
+            \begin{flalign*}
+                & Q_k = z^{1/2}
+                    \begin{bmatrix}
+                        \cfrac{1}{1 + r_k} & \cfrac{-r_k }{1 + r_k} \\
+                        & \\
+                        \cfrac{-r_k z^{-1}}{1 + r_k} & \cfrac{z^{-1}}{1 + r_k} \\
+                    \end{bmatrix}&&
+            \end{flalign*}
+            \end{column}
+            \begin{column}{0.70\textwidth}
+                \begin{flalign*}
+                    & U_1 = \Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+                        1 \\
+                        0 \\
+                    \end{bmatrix}U_L(z) &&
+                \end{flalign*}
+            \end{column}
+            \hfill
+        \end{columns}   
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
+            \begin{columns}[T]
+                \begin{column}{0.48\textwidth}
+                    {\tiny \begin{flalign*}
+                        & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                        & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+                    \end{flalign*}}
+                \end{column}%
+                \hfill%
+                \begin{column}{0.14\textwidth}
+                    {\tiny \begin{flalign*}
+                        & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+                    \end{flalign*}}
+                \end{column}%
+                \hfill%
+                \begin{column}{0.34\textwidth}
+                    {\tiny \begin{flalign*}
+                        & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                        & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+                    \end{flalign*}}
+                \end{column}%
+            \end{columns}
+            \centering{Общ вид на $\mathcal{V}$}
+            \begin{columns}[c, onlytextwidth]
+                \begin{column}{0.30\textwidth}
+                \begin{flalign*}
+                    & Q_k = z^{1/2} \widehat{Q}_k &&
+                \end{flalign*}
+                \end{column}
+                \begin{column}{0.70\textwidth}
+                    \begin{flalign*}
+                        & U_1 = \Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+                            1 \\
+                            0 \\
+                        \end{bmatrix}U_L(z) &&
+                    \end{flalign*}
+                \end{column}
+                \hfill
+            \end{columns}   
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
     \begin{columns}[T]
         \begin{column}{0.48\textwidth}
             {\tiny \begin{flalign*}
@@ -2345,12 +2077,7 @@
     \begin{columns}[c, onlytextwidth]
         \begin{column}{0.30\textwidth}
         \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
+            & Q_k = z^{1/2} \widehat{Q}_k &&
         \end{flalign*}
         \end{column}
         \begin{column}{0.70\textwidth}
@@ -2394,12 +2121,7 @@
     \begin{columns}[c, onlytextwidth]
         \begin{column}{0.30\textwidth}
         \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
+            & Q_k = z^{1/2} \widehat{Q}_k &&
         \end{flalign*}
         \end{column}
         \begin{column}{0.70\textwidth}
@@ -2443,12 +2165,7 @@
     \begin{columns}[c, onlytextwidth]
         \begin{column}{0.30\textwidth}
         \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
+            & Q_k = z^{1/2} \widehat{Q}_k &&
         \end{flalign*}
         \end{column}
         \begin{column}{0.70\textwidth}
@@ -2466,165 +2183,6 @@
             1 \\
             0 \\
         \end{bmatrix}U_L(z)&&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
-            \begin{flalign*}
-                & &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
-            \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
-            \begin{flalign*}
-                & &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
-            \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \begin{flalign*}
-        & Q_k = 
-            \begin{bmatrix}
-                \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                & \\
-                \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-            \end{bmatrix}&&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = 
-                \begin{bmatrix}
-                    \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                    & \\
-                    \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-                \end{bmatrix}&&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
-            \begin{flalign*}
-                & &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
-            \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \begin{flalign*}
-        & Q_k = \left[\begin{array}{cc}
-                \cfrac{z^{1/2}}{1 + r_k} & \cfrac{-r_k z^{1/2}}{1 + r_k} \\
-                & \\
-                \cfrac{-r_k z^{-1/2}}{1 + r_k} & \cfrac{z^{-1/2}}{1 + r_k} \\
-            \end{array}\right] = 
-            z^{1/2}\left[\begin{array}{cc}
-                \cfrac{1}{1 + r_k} & \cfrac{-r_k}{1 + r_k} \\
-                & \\
-                \cfrac{-r_k z^{-1}}{1 + r_k} & \cfrac{z^{-1}}{1 + r_k} \\
-            \end{array}\right] = 
-            z^{1/2} \widehat{Q}_k && 
     \end{flalign*}
     \end{frame}
 
@@ -4082,12 +3640,12 @@
         \pause
         \begin{columns}
             \begin{column}{0.48\textwidth}
-                \includegraphics[width=\textwidth]{aaaa.png}
+                % \includegraphics[width=\textwidth]{aaaa.png}
             \end{column}
             \pause
             \hfill
             \begin{column}{0.48\textwidth}
-                \includegraphics[width=\textwidth]{aaaa_log.png}
+                % \includegraphics[width=\textwidth]{aaaa_log.png}
             \end{column}
         \end{columns}
         \begin{itemize}
@@ -4135,11 +3693,11 @@
         \pause
         \begin{columns}[t]
             \begin{column}{0.48\textwidth}
-                \includegraphics[width=0.7\textwidth]{ham.png} 
+                \includegraphics[width=0.65\textwidth]{ham.png} 
             \end{column}
             \hfill
             \begin{column}{0.48\textwidth}
-                \includegraphics[width=0.7\textwidth]{ham_coef.png} 
+                \includegraphics[width=0.65\textwidth]{ham_coef.png} 
             \end{column}
         \end{columns}
         \pause
@@ -4202,7 +3760,7 @@
                 \pause
                 \item Взимаме първите 13 коефициента, които кодират информацията за вокалния тракт 
                 \pause
-                \item За допълнително информация се взимат първите и вторите крайни разлики
+                \item За допълнително информация се взимат първите и вторите производни (в случая крайни разлики)
                 \pause
                 \item За всеки фрейм получаваме 39 коефициента
             \end{itemize}
@@ -4257,5 +3815,578 @@
             \pause
             \item За първоначалнo разбиване на векторите се ползва K-means++
         \end{itemize}
+    \end{frame}
+\section{Бази данни и резултати}
+    \begin{frame}[t]{Сигнал от реч - бази данни и резултати}
+        \begin{itemize}
+            \pause
+            \item Emo-DB
+            \pause - 800 записа от 10 актьора
+        \end{itemize}
+        \pause
+        \begin{center}
+            \resizebox{0.6\textwidth}{!}{\begin{tabular}{|l|r|r|} 
+                \hline
+                Емоция & Брой файлове & Обща дължина\\ 
+                \hline
+                Гняв & 127 & 5 мин. 35 сек.\\ 
+                Щастие &  71 & 3 мин. 00 сек.\\ 
+                Неутрално състояние &  79 & 3 мин. 06 сек.\\ 
+                Тъга &  61 & 4 мин. 05 сек.\\ 
+                \hline
+            \end{tabular}}
+        \end{center}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+                \resizebox{\textwidth}{!}{\begin{tabular}{ |l|c|c|l| } 
+                 \hline
+                 Източник & Тип класификатор &  Тип характеристични вектори & Резултат \\ 
+                 \hline
+                 Текущ & GMM & MFCC & 82.20\% \\ 
+                 2011 & SVM & LPCMFCC & 82.50\% \\ 
+                 2006 &  Naïve Bayes classifier & MFCC & 82.76\% \\ 
+                 2017 &  Random forest & MFCC & 79.02\% \\ 
+                 \hline
+                \end{tabular}}
+                \caption*{Резултати върху emo-DB}
+                \end{center}
+        \end{table}
+        \pause
+        \begin{center}
+            \resizebox{0.75\textwidth}{!}{\begin{tabular}{|l|r r r r|} 
+                \hline
+                & Гняв & Щастие & Неутрално & Тъга \\ 
+                \hline
+                Гняв &  \textbf{91.67\%} & 7.50\% & 0.00\% & 0.01\% \\ 
+                Щастие & 37.14\% & \textbf{54.29\%} & 7.14\% & 1.43\% \\ 
+                Неутрално & 0.00\% & 1.43\% & \textbf{82.86\%} & 15.71\% \\ 
+                Тъга & 0.00\% & 0.00\% & 0.00\% & \textbf{100.00\%}\\ 
+                \hline
+                \hline
+                Общо & & & & \textbf{82.20\%}\\
+                \hline
+            \end{tabular}}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от реч - бази данни и резултати}
+        \pause
+        \begin{itemize}
+            \item Тази сутрин-DB
+        \end{itemize}
+        \pause
+        \begin{center}
+            \resizebox{0.8\textwidth}{!}{\begin{tabular}{|l|r|r|} 
+                \hline
+                Емоция & Брой файлове & Обща дължина\\ 
+                \hline
+                Гняв & 51 & 4 мин. 15 сек.\\ 
+                Щастие &  33 & 2 мин. 45 сек.\\ 
+                Неутрално състояние &  18 & 1 мин. 30 сек.\\ 
+                Тъга &  22 & 1 мин. 59 сек.\\ 
+                \hline
+            \end{tabular}}
+        \end{center}
+        
+    \begin{table}[h]
+        \begin{center}
+            \resizebox{0.8\textwidth}{!}{\begin{tabular}{|l|r r r r|} 
+                \hline
+                & Гняв & Щастие & Неутрално & Тъга\\ 
+                \hline
+                Гняв &  \textbf{72.00\%} & 4.00\% & 12.00\% & 12.00\%\\ 
+                Щастие & 10.00\% & \textbf{73.33\%} & 0.00\% & 16.67\% \\ 
+                Неутрално & 6.67\% & 6.67\% & \textbf{67.67\%} & 20.00\% \\ 
+                Тъга & 0.00\% & 0.00\% & 0.00\% & \textbf{100.00\%}\\ 
+                \hline
+                \hline
+                Общо & & & & \textbf{78.00\%}\\
+                \hline
+            \end{tabular}}
+            \caption*{Матрица на грешките за база данни от ``Тази сутрин'' на ниво файл}
+        \end{center}
+        \end{table}
+    \end{frame}
+
+\section{Сигнал от ЕЕГ}
+    \begin{frame}[t]{Сигнал от ЕЕГ - грубо в мозъка}
+        \pause
+        \center{\includegraphics[width=0.8\paperwidth]{brain}}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Нервна система 
+            \pause - централна (главен и гръбначен мозък) \pause и периферна
+            \pause
+            \item Неврони
+            \pause - предават си електрически сигнали чрез синапсите
+            \pause
+            \item Електроенцефалограф
+            \pause - измерва колебанията в напрежението на тези сигнали
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - грубо в мозъка}
+        \center{\includegraphics[width=0.8\paperwidth]{brain}}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Групиране по полезни честотни ленти:
+            \pause
+            \item $(1-4Hz) \delta$ вълни
+            \pause
+             - най-дълбоката фаза на съня.
+            \pause
+            \item $(4-8Hz) \theta$ вълни
+            \pause
+             - коровите $\theta$ вълни са свързани (REM).
+            \pause
+            \item $(8-12Hz) \alpha$ вълни
+            \pause
+             - спокойно будно състояние със затворени очи.
+            \pause
+            \item $(13-30Hz) \beta$ вълни
+            \pause
+             - нормално будно състояние.
+            \item $(30-50Hz)\gamma$ вълни (ниски)
+            \pause
+             - изострено внимание, работеща краткосрочна и дългосрочна памет.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - грубо в мозъка}
+        \center{\includegraphics[width=0.8\paperwidth]{brain}}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Дялове на мозъчната кора (40\% от обема на главния мозък)
+            \pause
+            \item Челен дял
+            \pause - когнитивни умения и моторни функции
+            \pause
+            \item Теменен дял
+            \pause - съчетаването на сетивна информация ,,диференциране на две точки'', разпознаване на лица и сцени.
+            \pause
+            \item Тилен дял
+            \pause - отговорен е за зрението, ``какво'', ``къде'' и ``как''
+            \pause    
+            \item Слепоочен дял
+            \pause - хипокампа (спомените), амигдалата (емоционален отговор)
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - грубо в мозъка}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Делене на мозъчната кора на лява и дясна половина
+            \pause
+            \item  Различно поведение на $\theta, \delta, \beta, \alpha, \gamma$ вълните, спрямо половината
+            \pause
+            \item По-голяма активация на $\alpha$-вълни в дясната част на челния дял - ``погнуса'', ``страх''
+            \pause
+            \item Асиметрията носи информация за валентността
+        \end{itemize}
+        \pause 
+        \center{\includegraphics[width=0.8\paperwidth]{emotion_map.png}}
+        \begin{itemize}
+            \pause
+            \item Искаме да изследваме $\theta, \delta, \beta, \alpha, \gamma$ вълните в различните дялове на мозъка
+        \end{itemize}
+    \end{frame}
+
+    \section{Сигнал от ЕЕГ - характеристики}
+    \begin{frame}[t]{Сигнал от ЕЕГ - грубо в мозъка}
+        \begin{columns}
+            \begin{column}{0.48\textwidth}
+                \center{\includegraphics[width=0.8\textwidth]{10_20}}
+            \end{column}
+            \begin{column}{0.48\textwidth}
+                За характеристики ще ползваме енергията на  $\delta, \beta, \alpha, \gamma$ вълните.
+
+                Енцефалографът записва $500\times19$ мерни вектора в секунда
+            \end{column}
+        \end{columns}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Прочитаме цялата информация за един електрод
+            \pause
+            \item Разделяме на фреймове с дължина $200ms$, взимайки ги през $150ms$, умножаваме по Хеминг прозорец и правим Фурие преобразувание
+            \pause
+            \item Сумираме енергиите на Фурие коефициентите в съответите 4 честотни банки, отговарящи на $\delta, \beta, \alpha, \gamma$ вълни
+            \pause
+            \item Получаваме F на брой $(19\times 4)$ мерни вектора
+            \pause
+            \item Класифицираме с Гаусови смески
+        \end{itemize}
+    \end{frame}
+\section{Сигнал от ЕЕГ - данни и резултати}
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Правенето на база данни за ЕЕГ е трудно
+            \pause
+            \item Липсва подходяща такава за комбиниране на сигнали
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \center{Опит едно}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Идеята е да се ползват най-честите похвати за двата вида сигнали
+        \end{itemize}
+        \pause
+        \center{\includegraphics[width=\textwidth]{first_db}}
+        \pause
+        \begin{center}
+        \begin{tabular}{|l|r|r|} 
+            \hline
+            Емоция & Брой файлове & Обща дължина\\ 
+            \hline
+            Гняв & 3 & 0 мин. 30 сек.\\ 
+            Щастие & 3 & 0 мин. 30 сек.\\ 
+            Неутрално състояние & 10 & 2 мин. 00 сек. \\ 
+            Тъга & 4 & 0 мин. 40 сек. \\ 
+            \hline
+        \end{tabular}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \center{Наблюдения за Опит едно}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Субектът не е изпитал неподправена емоция
+            \item 1-2 минити са много малко
+            \item Трудно приложим опит за различни хора
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \center{Опит за разбиване на хора}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item 16 категории характер според Юнг
+            \pause интровертен-екстровертен, наблюдаващ-интуитивен,
+            чувстващ-мислещ, съдещ-приемащ
+            \pause
+            \item Съставяне на анкета
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[c]{Сигнал от ЕЕГ - данни и резултати}
+        \begin{itemize}
+            \item Кой стимул предизвиква дадена емоция
+        \end{itemize}        
+        \pause
+        \begin{figure}[H]
+        \centering
+            \hfill
+            \subfloat[Графика на предпочитани стимули за гняв]{%
+                \includegraphics[width=0.25\textwidth]{chart_anger_c}%
+            } 
+            \qquad
+            \subfloat[Графика на предпочитани стимули за щастие]{%
+                \includegraphics[width=0.25\textwidth]{chart_happiness_c}%
+            }
+            \qquad
+            \subfloat[Графика на предпочитани стимули за тъга]{%
+                \includegraphics[width=0.25\textwidth]{chart_sadness_c}%
+            }
+            \hfill
+            \vspace{1cm}
+            \includegraphics[width=\textwidth]{legend}%
+        \end{figure}
+        \pause
+        \begin{itemize}
+            \pause
+            \item Само някои емоции могат да се предизвикат с пасивни стимули
+            \pause
+            \item Други емоции се предизвикват главно с разговор (неподходящо)
+        \end{itemize}
+    \end{frame}
+    
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \center{Втори опит}
+        \begin{itemize}
+            \pause
+            \item Песонална постановка
+            \pause
+            \item Допълнителни стимули 
+        \end{itemize}
+        \pause
+        \begin{center}
+            \begin{tabular}{|l|r|r|} 
+                \hline
+                Емоция & Брой файлове & Обща дължина\\ 
+                \hline
+                Гняв & 18 & 6 мин. 53 сек.\\ 
+                Щастие & 0 & 0 мин. 00 сек. \\ 
+                Неутрално състояние & 31 & 8 мин. 12 сек. \\ 
+                Тъга & 45 & 15 мин. 13 сек. \\ 
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{frame}
+
+    \begin{frame}[t]{Сигнал от ЕЕГ - данни и резултати}
+        \center{Резултати}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+            \begin{tabular}{|l|r r r r|} 
+                \hline
+                & Гняв & Щастие & Неутрално & Тъга \\ 
+                \hline
+                Гняв &  \textbf{33.33\%} & 0.00\% & 33.33\% & 33.33\% \\ 
+                Щастие & 00.00\% & \textbf{100.00\%} & 0.00\% & 0.00\% \\ 
+                Неутрално & 11.11\% & 0.00\% & \textbf{88.89\%} & 0.00\% \\ 
+                Тъга & 0.00\% & 0.00\% & 100.00\% & \textbf{0.00\%}\\ 
+                \hline
+                \hline
+                Общо & & & & \textbf{55.56\%}\\
+                \hline
+            \end{tabular}
+            \caption*{Матрица на грешките от първия опит на ниво файл}
+            \end{center}
+        \end{table}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+                \begin{tabular}{|l|r r r r|} 
+                    \hline
+                    & Гняв & Щастие & Неутрално & Тъга \\ 
+                    \hline
+                    Гняв &  \textbf{100.00\%} & 0.00\% & 0.00\% & 0.00\% \\ 
+                    Щастие & 00.00\% & \textbf{100.00\%} & 0.00\% & 0.00\% \\ 
+                    Неутрално & 0.00\% & 0.00\% & \textbf{100.0\%} & 0.00\% \\ 
+                    Тъга & 0.00\% & 0.00\% & 4.44\% & \textbf{95.56\%}\\ 
+                    \hline
+                    \hline
+                    Общо & & & & \textbf{98.89\%}\\
+                    \hline
+                \end{tabular}
+                \caption*{Матрица на грешките от втория опит на ниво файл}
+            \end{center}
+        \end{table}
+    \end{frame}
+
+    \begin{frame}[c]{Сигнал от ЕЕГ - данни и резултати}
+        \begin{center}
+        \begin{table}[h]
+            \begin{tabular}{|l|r r r r|} 
+                \hline
+                & Гняв & Щастие & Неутрално & Тъга \\ 
+                \hline
+                Гняв &  \textbf{80.33\%} & 5.00\% & 15.33\% & 0.00\% \\ 
+                Щастие & 25.00\% & \textbf{75.00\%} & 0.00\% & 0.00\% \\ 
+                Неутрално & 0.00\% & 2.50\% & \textbf{97.50\%} & 0.00\% \\ 
+                Тъга & 0.00\% & 2.08\% & 10.42\% & \textbf{87.50\%}\\ 
+                \hline
+                \hline
+                Общо & & & & \textbf{85.00\%}\\
+                \hline
+            \end{tabular}
+            \caption*{Матрица на грешките при комбиниране на данните от първия и втория опит на ниво файл}
+        \end{table}
+    \end{center}
+    \end{frame}
+\section{Съчетаване на двата сигнала}
+    \begin{frame}[t]{Съчетаване на двата сигнала}
+        \begin{itemize}
+            \pause
+            \item Идея едно
+            \pause - конкатенираме характеристичните вектори от двата сигнала и тренираме нов класификатор
+        \end{itemize}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+                \resizebox{0.7\textwidth}{!}{\begin{tabular}{|l|r r r|}
+                    \hline
+                    Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
+                    \hline
+                    Гняв      & 85.00\%          & 80.00\%          & 86.50\%          \\
+                    Щастие    & 75.00\%          & 75.00\%          & 57.50\%          \\
+                    Неутрално & 7.50\%           & 97.50\%          & 91.75\%          \\
+                    Тъга      & 85.42\%          & 87.50\%          & 81.04\%          \\
+                    \hline
+                    \hline
+                    Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{79.20\%} \\
+                    \hline
+                \end{tabular}}
+                \caption*{Ниво файл}
+            \end{center}
+        \end{table}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+                \resizebox{0.7\textwidth}{!}{\begin{tabular}{|l|r r r|}
+                    \hline
+                    Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
+                    \hline
+                    Гняв      & 41.53\%          & 53.05\%          & 68.07\%          \\
+                    Щастие    & 37.35\%          & 44.44\%          & 34.55\%          \\
+                    Неутрално & 32.91\%           & 66.72\%          & 68.58\%          \\
+                    Тъга      & 39.66\%          & 70.38\%          & 68.04\%          \\
+                    \hline
+                    \hline
+                    Общо      & \textbf{37.86\%} & \textbf{58.65\%} & \textbf{59.81\%} \\
+                    \hline
+                \end{tabular}}
+                \caption*{Ниво вектор}
+            \end{center}
+        \end{table}
+    \end{frame}
+
+    \section{Съчетаване на двата сигнала}
+    \begin{frame}[t]{Съчетаване на двата сигнала}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Идея две
+            \pause - максимизиране на правдоподобието/ентропията
+            \item Ако имаме входни данни $\mathcal{D} = (x_1, y_1),\ldots,(x_n, y_n)$, където $x_i \in \mathbb{R}^n$ са характеристични вектори с етикети $y_i \in Y=\{1,\ldots, K\}$
+            \pause
+            \item Ако означим двата си класификатора съответно с $h_1, h_2: X\times Y \rightarrow [0, 1]$
+            \pause
+            \item Търсим разпределение над $X\times Y$, което:
+            
+            \pause - се държи като емпиричното разпределение върху дадените данни
+            
+            \pause - очакването на $h_i$, спрямо разпределението, съвпада с очакването на емпиричното
+            \pause - $E(p, h) = \sum\limits_{(x, y) \in X\times Y} p(x, y)h(x, y)$
+
+            \pause - не внася допълнителни предположения извън тренировъчното множество
+            \pause
+            \item Принцип за максимизиране на ентропията
+            \pause - като правим заключения на базата на частична информация, трябва да използваме това разпределение, което има максимална ентропия, спрямо известните велиличини.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Съчетаване на двата сигнала}
+        \begin{itemize}
+            \setlength\itemsep{\fill}
+            \pause
+            \item Може да се покаже, че това разпределение максимизира логаритъм от условното правдоподобие
+            \pause $\log\B{\widehat{L}_{\mathcal{D}}(Y|X)} = \sum\limits_{(x, y) \in X\times Y} \#(x, y) p(y|x)$
+            \pause
+            \item Търсеното разпределение има вида:
+            \pause
+            \[\hat{p}(y|x) = \cfrac{exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }\]
+            \pause
+            \item Намираме $\lambda_1, \lambda_2$ с градиентен метод, максимизирайки логаритъм от правдоподобието
+            \pause
+            \item Получаваме следния класификатор:
+            \pause \[H(x) = argmax_{y\in Y} \B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}\]
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}[t]{Съчетаване на двата сигнала}
+        \begin{table}[h]
+        \pause
+        \begin{center}
+            \begin{tabular}{|l|r r r|}
+                \hline
+                Емоция    & Само реч         & Само ЕЕГ         & Комбинация     \\
+                \hline
+                Гняв      & 85.00\%          & 80.00\%          & 80.00\%          \\
+                Щастие    & 75.00\%          & 75.00\%          & 75.00\%          \\
+                Неутрално & 7.50\%           & 97.50\%          & 97.50\%          \\
+                Тъга      & 85.42\%          & 87.50\%          & 87.50\%          \\
+                \hline
+                \hline
+                Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{85.00\%} \\
+                \hline
+            \end{tabular}
+            \caption*{Ниво файл}
+        \end{center}
+        \end{table}
+        \pause
+        \begin{table}[h]
+            \begin{center}
+                \begin{tabular}{|l|r r r|}
+                    \hline
+                    Емоция    & Само реч         & Само ЕЕГ         & Комбинация     \\
+                    \hline
+                    Гняв      & 41.53\%          & 53.05\%          & 53.30\%          \\
+                    Щастие    & 37.35\%          & 44.44\%          & 44.09\%          \\
+                    Неутрално & 32.91\%           & 66.72\%          & 66.46\%          \\
+                    Тъга      & 39.66\%          & 70.38\%          & 71.07\%          \\
+                    \hline
+                    \hline
+                    Общо      & \textbf{37.86\%} & \textbf{58.65\%} & \textbf{58.73\%} \\
+                    \hline
+                \end{tabular}
+                \caption*{Ниво вектор}
+            \end{center}
+        \end{table}
+    \end{frame}
+
+    \section{Заключение}
+    \begin{frame}[t]{Заключение}
+        \pause
+        \begin{columns}
+            \begin{column}{0.48\textwidth}
+                \begin{table}[h]
+                    \begin{center}
+                        \resizebox{\textwidth}{!}{\begin{tabular}{|l|r r r|}
+                            \hline
+                            Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
+                            \hline
+                            Гняв      & 85.00\%          & 80.00\%          & 86.50\%          \\
+                            Щастие    & 75.00\%          & 75.00\%          & 57.50\%          \\
+                            Неутрално & 7.50\%           & 97.50\%          & 91.75\%          \\
+                            Тъга      & 85.42\%          & 87.50\%          & 81.04\%          \\
+                            \hline
+                            \hline
+                            Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{79.20\%} \\
+                            \hline
+                        \end{tabular}}
+                        \caption*{Чрез конкатенация}
+                    \end{center}
+                \end{table} 
+            \end{column}
+                \hfill
+                \begin{column}{0.48\textwidth}
+                \begin{table}[h]
+                    \begin{center}
+                        \resizebox{\textwidth}{!}{\begin{tabular}{|l|r r r|}
+                            \hline
+                            Емоция    & Само реч         & Само ЕЕГ         & Комбинация     \\
+                            \hline
+                            Гняв      & 85.00\%          & 80.00\%          & 80.00\%          \\
+                            Щастие    & 75.00\%          & 75.00\%          & 75.00\%          \\
+                            Неутрално & 7.50\%           & 97.50\%          & 97.50\%          \\
+                            Тъга      & 85.42\%          & 87.50\%          & 87.50\%          \\
+                            \hline
+                            \hline
+                            Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{85.00\%} \\
+                            \hline
+                        \end{tabular}}
+                        \caption*{Чрез комбинация}
+                    \end{center}
+                    \end{table}
+                \end{column}
+        \end{columns}
+        \begin{center}
+            \begin{itemize}
+                \pause
+                \item \textbf{Заключението, което можем да направим, е, че с тази постановка съчетаването на двата сигнала не довежда до подобрение.}
+                \pause
+                \item Лоши данни?
+                \pause
+                \item Безсмислена задача?
+            \end{itemize}
+            \vspace{2cm}
+            \pause
+            {\footnotesize Сбогом и благодаря за рибата!}
+        \end{center}
     \end{frame}
 \end{document}
