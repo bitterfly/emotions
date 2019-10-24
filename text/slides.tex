@@ -2217,48 +2217,7 @@
         \end{column}
         \begin{column}{0.70\textwidth}
             \begin{flalign*}
-                & &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
-            \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = z^{1/2} \widehat{Q}_k &&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
-            \begin{flalign*}
-                & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+                & U_1 = \Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
                     1 \\
                     0 \\
                 \end{bmatrix}U_L(z) &&
@@ -2267,57 +2226,10 @@
         \hfill
     \end{columns}
     \begin{flalign*}
-        & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+        &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}U_1 = \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
             1 \\
             0 \\
-        \end{bmatrix}U_L(z) &&
-    \end{flalign*}
-    \end{frame}
-
-    \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = z^{1/2} \widehat{Q}_k &&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
-            \begin{flalign*}
-                & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
-            \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \begin{flalign*}
-        & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-            1 \\
-            0 \\
-        \end{bmatrix}U_L(z) = && \\
+        \end{bmatrix}U_L(z)&&\\
         & = \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N z^{1/2} \widehat{Q}_i}\begin{bmatrix}
             1 \\
             0 \\
@@ -2325,59 +2237,60 @@
     \end{flalign*}
     \end{frame}
 
+
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
-    \begin{columns}[T]
-        \begin{column}{0.48\textwidth}
-            {\tiny \begin{flalign*}
-                & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
-                & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.14\textwidth}
-            {\tiny \begin{flalign*}
-                & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
-            \end{flalign*}}
-        \end{column}%
-        \hfill%
-        \begin{column}{0.34\textwidth}
-            {\tiny \begin{flalign*}
-                & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
-                & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
-            \end{flalign*}}
-        \end{column}%
-    \end{columns}
-    \centering{Общ вид на $\mathcal{V}$}
-    \begin{columns}[c, onlytextwidth]
-        \begin{column}{0.30\textwidth}
-        \begin{flalign*}
-            & Q_k = z^{1/2} \widehat{Q}_k &&
-        \end{flalign*}
-        \end{column}
-        \begin{column}{0.70\textwidth}
+        \begin{columns}[T]
+            \begin{column}{0.48\textwidth}
+                {\tiny \begin{flalign*}
+                    & U_k^{+}(z) = \cfrac{ z^{1/2}}{1 + r_k} U_{k+1}^{+}(z) - \cfrac{r_k z^{1/2}}{1+r_k} U_{k+1}^{-}(z) && \\
+                    & U_k^{-}(z) = - \cfrac{r_k z^{-1/2} }{1+r_k} U_{k+1}^{+}(z) + \cfrac{ z^{-1/2} }{1 + r_k} U_{k+1}^{-}(z)&&
+                \end{flalign*}}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.14\textwidth}
+                {\tiny \begin{flalign*}
+                    & r_L = \cfrac{\frac{\rho c}{Z_L} - A_N}{\frac{\rho c}{Z_L} + A_N} &&
+                \end{flalign*}}
+            \end{column}%
+            \hfill%
+            \begin{column}{0.34\textwidth}
+                {\tiny \begin{flalign*}
+                    & r_G = \B{\cfrac{A_1 Z_G - \rho c}{A_1 Z_G + \rho c}} &&\\
+                    & U_1^{+}(z) = U_G(z) \Q{\frac{1 + r_G}{2}} + r_G U_1^{-}(z) &&
+                \end{flalign*}}
+            \end{column}%
+        \end{columns}
+        \centering{Общ вид на $\mathcal{V}$}
+        \begin{columns}[c, onlytextwidth]
+            \begin{column}{0.30\textwidth}
             \begin{flalign*}
-                & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-                    1 \\
-                    0 \\
-                \end{bmatrix}U_L(z) &&
+                & Q_k = z^{1/2} \widehat{Q}_k &&
             \end{flalign*}
-        \end{column}
-        \hfill
-    \end{columns}
-    \begin{flalign*}
-        & U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
-            1 \\
-            0 \\
-        \end{bmatrix}U_L(z) = && \\
-        & = \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N z^{1/2} \widehat{Q}_i}\begin{bmatrix}
-            1 \\
-            0 \\
-        \end{bmatrix}U_L(z) && \\
-        & = z^{N/2} \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N \widehat{Q}_i}\begin{bmatrix}
-            1 \\
-            0 \\
-        \end{bmatrix}U_L(z) &&
-    \end{flalign*}
+            \end{column}
+            \begin{column}{0.70\textwidth}
+                \begin{flalign*}
+                    & U_1 = \Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+                        1 \\
+                        0 \\
+                    \end{bmatrix}U_L(z) &&
+                \end{flalign*}
+            \end{column}
+            \hfill
+        \end{columns}
+        \begin{flalign*}
+            &U_G(z) =  \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}U_1 = \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N Q_i}\begin{bmatrix}
+                1 \\
+                0 \\
+            \end{bmatrix}U_L(z)&&\\
+            & = \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N z^{1/2} \widehat{Q}_i}\begin{bmatrix}
+                1 \\
+                0 \\
+            \end{bmatrix}U_L(z) &&\\
+            & = z^{N/2} \Q{\cfrac{2}{1 + r_G}, -\cfrac{2r_G}{1 + r_G}}\Q{\prod_{i = 1}^N \widehat{Q}_i}\begin{bmatrix}
+                1 \\
+                0 \\
+            \end{bmatrix}U_L(z) &&
+        \end{flalign*}
     \end{frame}
 
     \begin{frame}[t]{Сигнал от реч - модел на тръбите}
@@ -3640,12 +3553,12 @@
         \pause
         \begin{columns}
             \begin{column}{0.48\textwidth}
-                % \includegraphics[width=\textwidth]{aaaa.png}
+                 \includegraphics[width=\textwidth]{aaaa.png}
             \end{column}
             \pause
             \hfill
             \begin{column}{0.48\textwidth}
-                % \includegraphics[width=\textwidth]{aaaa_log.png}
+                 \includegraphics[width=\textwidth]{aaaa_log.png}
             \end{column}
         \end{columns}
         \begin{itemize}
