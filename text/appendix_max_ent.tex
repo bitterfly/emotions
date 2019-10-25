@@ -57,11 +57,12 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 	& \forall x \in Proj_1(\mathcal{D}): E(p, h_{x}) = E(\tilde{p}, h_{x})
 \end{flalign*}
 
+\begin{definition*}{(Множество от допустими вероятностни разпределения)}
+	\begin{flalign*}
+		& P = \{ p | \B{\forall x \in Proj_1(\mathcal{D}): E(p, h_x) = E(\tilde{p}, h_x)} \land \B{\forall h \in \mathcal{H}: E(p, h) = E(\tilde{p}, h)}  \}&&,
+	\end{flalign*}
+\end{definition*}
 
-Ако означим:
-\begin{flalign*}
-	& P = \{ p | \B{\forall x \in Proj_1(\mathcal{D}): E(p, h_x) = E(\tilde{p}, h_x)} \land \B{\forall h \in \mathcal{H}: E(p, h) = E(\tilde{p}, h)}  \}&&,
-\end{flalign*}
 тогава искаме да намерим
 \begin{flalign*}
 	\hat{p} & = argmax_{p \in P} H_p(X, Y) &&\\
@@ -129,7 +130,14 @@ $\#(x, y) :=$ брой срещания на $(x, y)$ в $\mathcal{D}$.
 
 Следователно вида на търсеното $\hat{p}$ е $\hat{p}(x, y) = \pi\prod\limits_{i=1}^{K'} e^{\lambda_i h_i(x, y)}$, като $\pi$ е нормализиращата константа. Ще покажем че $\hat{p}$, което максимизира ентропията, също максимизира и условното правдоподобие.
 
-Нека с $Q$ означим всички разпределения с желания вид. Имаме, че $Q = \{p \ | \  p(x, y) = \pi\prod\limits_{i = 1}^{K'} e^{\lambda_i h_i(x, y)}\}$. За да намерим оптималното разпределение, ще ни е нужно да дефинираме разстояние между разпределения - ``Разстояние'' на Кулбек-Лайблър:
+Нека с $Q$ означим всички разпределения с желания вид.
+\begin{definition*}{(Множество от вероятностни разпределения с търсения вид)}
+	\begin{flalign*}
+		& Q = \{p \ | \  p(x, y) = \pi\prod\limits_{i = 1}^{K'} e^{\lambda_i h_i(x, y)}\} &&,
+	\end{flalign*}
+\end{definition*}
+
+За да намерим оптималното разпределение, ще ни е нужно да дефинираме разстояние между разпределения - ``Разстояние'' на Кулбек-Лайблър:
 \begin{flalign*}
 	D(p, q) = \sum\limits_{(x, y) \in X\times Y} p(x, y) \log\B{\cfrac{p(x, y)}{q(x, y)}}
 \end{flalign*}
