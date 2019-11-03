@@ -8,7 +8,6 @@ import (
 	"log"
 	"math"
 	"os"
-	"os/exec"
 	"path"
 
 	"github.com/bitterfly/emotions/emotions"
@@ -570,8 +569,8 @@ func main() {
 	drawEmotion("eeg-negative", negativeData, outputDir)
 	drawEmotion("eeg-neutral", neutralData, outputDir)
 
-	err = exec.Command("./blendit.sh", outputDir).Run()
-	if err != nil {
-		panic(err)
-	}
+	// err = exec.Command("./blendit.sh", outputDir).Run()
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
