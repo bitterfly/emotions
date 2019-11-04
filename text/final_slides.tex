@@ -48,6 +48,7 @@
     \end{itemize}
 \end{frame}
 
+\section{Емоции}
 \setbeamercolor{background canvas}{bg=white}
 \begin{frame}
     \begin{center}
@@ -147,7 +148,8 @@
         }
 \end{frame}
 
-\begin{frame}{Сигнал от реч}
+\section{Реч}
+\begin{frame}[b]
     \only<1>{
         \includegraphics[width=0.48\paperwidth]{physics}%
         \hfill
@@ -338,8 +340,7 @@
     \end{itemize}
 \end{frame}
 
-\section{Бази данни и резултати}
-    \begin{frame}[t]{Сигнал от реч - бази данни и резултати}
+    \begin{frame}[t]
         \begin{itemize}
             \item Emo-DB
             \pause - 800 записа от 10 актьори
@@ -391,7 +392,7 @@
         \end{center}
     \end{frame}
 
-    \begin{frame}[t]{Сигнал от реч - бази данни и резултати}
+    \begin{frame}[t]
         \pause
         \begin{itemize}
             \item Тази сутрин-DB
@@ -409,7 +410,7 @@
                 \hline
             \end{tabular}}
         \end{center}
-        
+    \pause
     \begin{table}[h]
         \begin{center}
             \resizebox{0.8\textwidth}{!}{\begin{tabular}{|l|r r r r|} 
@@ -453,7 +454,10 @@
     
     \begin{frame}
         \only<1>{
-            \center{\animategraphics[loop,controls,width=0.9\linewidth]{2}{gif/all-}{0}{25}}
+            \center{
+            \href{run:resources/gif/gif.mp4}{Видео}
+            % \center{\animategraphics[loop,controls,width=0.9\linewidth]{2}{gif/all-}{0}{25}}
+            }
         }
         \only<2>{
             \center{\includegraphics[width=0.8\paperwidth]{emotion_map.png}}
@@ -469,7 +473,7 @@
                 \pause
                 За характеристики ще ползваме енергията на  $\theta, \beta, \alpha, \gamma$ вълните.
                 \pause
-                Енцефалографът записва $500\times19$ мерни вектора в секунда
+                Енцефалографът записва $500\times19$ мерни вектора в секунда.
             \end{column}
         \end{columns}
         \begin{itemize}
@@ -585,53 +589,8 @@
         \end{center}
     \end{frame}
 
+    \section{Реч и ЕЕГ}
     \begin{frame}[t]
-        \begin{itemize}
-            \pause
-            \item Идея едно
-            \pause - конкатенираме характеристичните вектори от двата сигнала и тренираме нов класификатор
-        \end{itemize}
-        \pause
-        \begin{table}[h]
-            \begin{center}
-                \resizebox{0.7\textwidth}{!}{\begin{tabular}{|l|r r r|}
-                    \hline
-                    Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
-                    \hline
-                    Гняв      & 85.00\%          & 80.00\%          & 86.50\%          \\
-                    Щастие    & 75.00\%          & 75.00\%          & 57.50\%          \\
-                    Неутрално & 7.50\%           & 97.50\%          & 91.75\%          \\
-                    Тъга      & 85.42\%          & 87.50\%          & 81.04\%          \\
-                    \hline
-                    \hline
-                    Общо      & \textbf{63.23\%} & \textbf{85.00\%} & \textbf{79.20\%} \\
-                    \hline
-                \end{tabular}}
-                \caption*{Ниво файл}
-            \end{center}
-        \end{table}
-        \pause
-        \begin{table}[h]
-            \begin{center}
-                \resizebox{0.7\textwidth}{!}{\begin{tabular}{|l|r r r|}
-                    \hline
-                    Емоция    & Само реч         & Само ЕЕГ         & Конкатенация     \\
-                    \hline
-                    Гняв      & 41.53\%          & 53.05\%          & 68.07\%          \\
-                    Щастие    & 37.35\%          & 44.44\%          & 34.55\%          \\
-                    Неутрално & 32.91\%           & 66.72\%          & 68.58\%          \\
-                    Тъга      & 39.66\%          & 70.38\%          & 68.04\%          \\
-                    \hline
-                    \hline
-                    Общо      & \textbf{37.86\%} & \textbf{58.65\%} & \textbf{59.81\%} \\
-                    \hline
-                \end{tabular}}
-                \caption*{Ниво вектор}
-            \end{center}
-        \end{table}
-    \end{frame}
-
-\begin{frame}[t]{Съчетаване на двата сигнала}
         \begin{itemize}
             \item Идея едно
             \pause - конкатенираме характеристичните вектори от двата сигнала и тренираме нов класификатор
@@ -757,5 +716,8 @@
                 \caption*{Ниво вектор}
             \end{center}
         \end{table}
+    \end{frame}
+    \begin{frame}[t]{Заключение}
+        \pause
     \end{frame}
 \end{document}
