@@ -524,7 +524,7 @@ func main() {
 	}
 
 	frameLen := 200
-	frameStep := 150
+	frameStep := 40
 
 	data := getData(0, frameLen, frameStep, arguments[emotion])
 	for i := 0; i < len(data); i++ {

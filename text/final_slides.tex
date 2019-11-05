@@ -455,7 +455,7 @@
     \begin{frame}
         \only<1>{
             \center{
-            \href{run:resources/gif/gif.mp4}{Видео}
+            \href{run:resources/georgi_video.mp4}{Видео}
             % \center{\animategraphics[loop,controls,width=0.9\linewidth]{2}{gif/all-}{0}{25}}
             }
         }
@@ -639,38 +639,18 @@
         \begin{itemize}
             \setlength\itemsep{\fill}
             \item Идея две
-            \pause - максимизиране на правдоподобието/ентропията
-            \pause
-            \item Ако имаме входни данни $\mathcal{D} = (x_1, y_1),\ldots,(x_n, y_n)$, където $x_i \in \mathbb{R}^n$ са характеристични вектори с етикети $y_i \in Y=\{1,\ldots, K\}$
-            \pause
-            \item Ако означим двата си класификатора съответно с $h_1, h_2: X\times Y \rightarrow [0, 1]$
-            \pause
-            \item Търсим разпределение над $X\times Y$, което:
+            \pause - принцип за максимизиране на ентропията
             
-            \pause - се държи като емпиричното разпределение върху дадените данни
-            
-            \pause - очакването на $h_i$, спрямо разпределението, съвпада с очакването на емпиричното
-            \pause - $E(p, h) = \sum\limits_{(x, y) \in X\times Y} p(x, y)h(x, y)$
-
-            \pause - не внася допълнителни предположения извън тренировъчното множество
-            \pause
-            \item Принцип за максимизиране на ентропията
-            \pause - като правим заключения на базата на частична информация, трябва да използваме това разпределение, което има максимална ентропия, спрямо известните величини.
-        \end{itemize}
-    \end{frame}
-
-
-    \begin{frame}[t]
-        \begin{itemize}
-            \setlength\itemsep{\fill}
-            \item Може да се покаже, че това разпределение максимизира логаритъм от условното правдоподобие
+            \pause Като правим заключения на базата на частична информация, трябва да използваме това разпределение, което има максимална ентропия, спрямо известните величини.
+            \pause 
+            \item Може да се покаже, че това разпределение максимизира и логаритъм от условното правдоподобие
             \pause $\log\B{\widehat{L}_{\mathcal{D}}(Y|X)} = \sum\limits_{(x, y) \in X\times Y} \#(x, y) p(y|x)$
             \pause
-            \item Търсеното разпределение има вида:
+            \item и че има вида има вида:
             \pause
             \[\hat{p}(y|x) = \cfrac{exp\B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}}{\sum\limits_{y' \in Y} exp\B{\lambda_1 h_1(x, y') + \lambda_2 h_2(x, y')} }\]
             \pause
-            \item Намираме $\lambda_1, \lambda_2$ с градиентен метод, максимизирайки логаритъм от правдоподобието
+            \item Намираме $\lambda_1, \lambda_2$ с градиентен метод от първи ред
             \pause
             \item Получаваме следния класификатор:
             \pause \[H(x) = argmax_{y\in Y} \B{\lambda_1 h_1(x, y) + \lambda_2 h_2(x, y)}\]
