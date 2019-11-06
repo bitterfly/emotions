@@ -26,7 +26,20 @@
 % \usetheme{boxes}
 
 \begin{document}
-\section{Разпознаване на емоции в сигнали от реч и ЕЕГ}
+
+\begin{frame}[plain, c]
+    \only<1>{
+        \begin{tikzpicture}[remember picture,overlay]
+            \node at (current page.center) {\includegraphics[width=\paperwidth]{1.png}};
+        \end{tikzpicture}
+    }
+    \only<2>{
+        \begin{tikzpicture}[remember picture,overlay]
+        \node at (current page.center) {\includegraphics[width=\paperwidth]{2.png}};
+    \end{tikzpicture}
+    }
+\end{frame}
+
 \begin{frame}{Нулева зона}
     \pause
     \begin{center}
@@ -698,6 +711,8 @@
         \end{table}
     \end{frame}
     \begin{frame}[t]{Заключение}
-        \pause
+        \begin{tikzpicture}[remember picture,overlay]
+            \node at (current page.center) {\includegraphics[width=\paperwidth]{3.png}};
+        \end{tikzpicture}
     \end{frame}
 \end{document}
