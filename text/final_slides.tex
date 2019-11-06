@@ -65,8 +65,21 @@
 \setbeamercolor{background canvas}{bg=white}
 \begin{frame}
     \begin{center}
-        \only<1>{\includegraphics[width=0.8\textwidth]{plutchik}}%
-        \only<2>{\includegraphics[width=\textwidth]{valence_arousal}}
+        \only<1>{
+            \begin{quote}
+                \textbf{Емоцията е сложна верига от събития, която започва с някакъв стимул.} В следствие настъпва фаза на ``изпитване на емоция'' и фаза на физиологични промени. Те предизвикват целенасочено държание, което цели да премахне дразнението на стимула и да върне състоянието на еквилибриум.
+            \end{quote}
+        }
+        \only<2>{
+            \includegraphics[width=0.8\textwidth]{plutchik}
+        }%
+        \only<3>{
+            \includegraphics[width=\textwidth]{valence_arousal}
+            \begin{itemize}
+                \item В сигнала от реч се измерва по-лесно активацията
+                \item В сигнала от ЕЕГ се измерва по-лесно валентността
+            \end{itemize}
+        }
     \end{center}
 \end{frame}
 
@@ -163,16 +176,9 @@
 
 \section{Реч}
 \begin{frame}[b]
-    \only<1>{
-        \includegraphics[width=0.48\paperwidth]{physics}%
-        \hfill
-        \includegraphics[width=0.28\paperwidth]{tubes}
-    }
-    \only<2>{
-        \centering{
-            \includegraphics[height=\textheight]{glottis}%
-        }
-    }
+    \includegraphics[width=0.48\paperwidth]{physics}%
+    \hfill
+    \includegraphics[width=0.28\paperwidth]{tubes}
 \end{frame}
 
 \begin{frame}
@@ -184,10 +190,12 @@
                     \item  Глотисът $\textbf{g}$ трепти, вокалният тракт $\textbf{v}$ филтрира сигнала, и вълната излиза и допълнително се променя от устните $\textbf{r}$
                  }
         \only<2>{
-                 \item[$\ $] Ако  $g(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{G}(z), v(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{V}(z), r(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{R}(z)$, а сигналът, който получаваме накрая, $y(t)=g(t)\ast v(t) \ast r(t), y(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{Y}(z)$, е изпълнено, че
+                 \item[$\ $] Ако  $g(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{G}(z), v(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{V}(z), r(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{R}(z)$, а сигналът, който получаваме накрая,\\
+                 $y(t)=g(t)\ast v(t) \ast r(t), y(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{Y}(z)$, е изпълнено, че
                  }
         \only<3->{
-                    \item[$\ $] Ако  $g(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{G}(z), v(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{V}(z), r(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{R}(z)$, а сигналът, който получаваме накрая, $y(t)=g(t)\ast v(t) \ast r(t), y(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{Y}(z)$, е изпълнено, че
+                    \item[$\ $] Ако  $g(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{G}(z), v(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{V}(z), r(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{R}(z)$, а сигналът, който получаваме накрая,\\
+                    $y(t)=g(t)\ast v(t) \ast r(t), y(t) \xleftrightarrow{\mathcal{F}\mathcal{S}} \mathcal{Y}(z)$, е изпълнено, че
                  }
         \only<3>{
                  \item $\mathcal{Y}(z) = \mathcal{G}(z) \mathcal{V}(z) \mathcal{R}(z)$
@@ -229,7 +237,7 @@
                 -\frac{\partial u}{\partial x} & = \frac{A}{\rho c^2} \frac{\partial \rho}{\partial t} && 
             \end{flalign*}
         }
-        \only<4>{\item $\mathcal{Y}(z) = \mathcal{G}(z) \cfrac{\sum\limits_{m=0}^{M} b_m z^{-m} }{\sum\limits_{k=0}^{K} a_k z^{-k}}$}
+        \only<4>{\item $\mathcal{Y}(z) = \mathcal{G}(z) \cfrac{\sum\limits_{m=0}^{M} b_m z^{-m} }{\sum\limits_{k=0}^{K} a_k z^{-k}}\hfill z = e^{i\omega}$}
 
     \end{itemize}
 \end{frame}
@@ -283,52 +291,20 @@
                     \end{column}
                 \end{columns}
         }
-        \only<5-11> {
-            \item<5-11> Обратно Фурие преобразувание
-            \item<6-11> $c_y[n] = c_g[n] + c_h[n]$
-            \item<7-11> Кепстър
-            \item<8-11> $c_g[n]$ ще са във високите честоти
-            \item<9-11> $c_h[n]$ ще са в ниските
-            \item<10-11> Използване на логаритимична (Мел) скала
-            \item<11-11> Натрупване в критични области
-        }
+        \only<5-12> {
+            \item<5-12> Обратно Фурие преобразувание - кепстър
+            \item<6-12> $c_y[n] = c_g[n] + c_h[n]$
+            \item<7-12> $c_g[n]$ ще са във високите честоти
+            \item<8-12> $c_h[n]$ ще са в ниските
+            \item<9-12> Използване на логаритимична (Мел) скала
+            \item<10-12> Натрупване в критични области
+            \item<11-12> Първите 13 MFCC коефициента и техните крайни разлики от първи и втори ред
+            \item<12-12> 39-мерни вектори
+            }
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \begin{itemize}
-        \item Започваме от дискретен сигнал:
-        
-        \pause
-        $s[n], n = 0, 1, \ldots, N$
-        \item Разделяме сигнала $s[n]$ на фреймове:
-        
-        \pause
-        $s_t[i] = s[tS + i]$,
-        \pause
-        \item Прилагаме прозоречна функция:
-        
-        \pause
-        $x_t[n] = s_t[n]w_{hamming}[n]$, където
-        \pause
-        \item Намираме Фурие коефициентите:
-        
-        \pause
-        $a_{k, t} = \cfrac{1}{L} \sum\limits_{n=0}^{L-1} x_t[n] e^{-\frac{2\pi i k n}{L}}$
-        
-        \pause
-        \item Взимаме логаритъм от енергиите в критичните области: 
-        
-        \pause
-        $c_{m, t} = \log\B{\sum\limits_{k = 0}^{L-1} |a_{k, t}|^2 H_{m}[k, f[m-1], f[m], f[m+1]]}, m = 0, 1, \ldots, M-1, M$-брой критични области.
-        \pause
-        
-        \item Правим обратно преобразувание:
-        \pause
-        $mfcc_t[n] = \sum\limits_{m = 0}^{M-1} c_{m, t} cos(n\pi \cfrac{m+1/2}{M}), n = 0, 1, \ldots, M-1$
-    \end{itemize}
-\end{frame}
-
+\section{Класификация}
 \begin{frame}[t]
     \begin{itemize}
         \item Гаусови смески
@@ -348,11 +324,10 @@
         \pause
         \item За всяка емоция намираме Гаусовата смеска, която максимизира логаритъм от правдоподобието на съответните вектори
         \pause - ЕМ метод
-        \pause
-        \item За първоначално разбиване на векторите се ползва K-means++
     \end{itemize}
 \end{frame}
 
+\section{Бази данни и резултати (реч)}
     \begin{frame}[t]
         \begin{itemize}
             \item Emo-DB
@@ -504,6 +479,7 @@
         \end{itemize}
     \end{frame}
 
+    \section{Бази данни и резултати (ЕЕГ)}
     \begin{frame}[t]{Опит едно}
         \center{\includegraphics[width=\textwidth]{first_db}}
         \pause
@@ -670,9 +646,8 @@
         \end{itemize}
     \end{frame}
 
-    \begin{frame}[t]{Съчетаване на двата сигнала}
+    \begin{frame}[t]
         \begin{table}[h]
-        \pause
         \begin{center}
             \begin{tabular}{|l|r r r|}
                 \hline
@@ -710,9 +685,18 @@
             \end{center}
         \end{table}
     \end{frame}
-    \begin{frame}[t]{Заключение}
+
+    \section{Заключение}
+    \begin{frame}[t]
         \begin{tikzpicture}[remember picture,overlay]
             \node at (current page.center) {\includegraphics[width=\paperwidth]{3.png}};
         \end{tikzpicture}
+        \begin{center}
+            \textbf{Заключението, което можем да направим, е, че с тази постановка съчетаването на двата сигнала не довежда до подобрение.}
+        \end{center}
+        \vspace{5cm}
+        \begin{center}
+            {\footnotesize Сбогом и благодаря за рибата!}
+        \end{center}
     \end{frame}
 \end{document}
